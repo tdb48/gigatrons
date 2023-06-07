@@ -16,11 +16,7 @@ import net.runelite.client.externalplugins.ExternalPluginManager;
 
 public class ExamplePluginTest {
     public static void main(String[] args) throws Exception {
-        ExternalPluginManager.loadBuiltin(EthanApiPlugin.class, PacketUtilsPlugin.class, EthanPrayerFlickerPlugin.class,
-                gauntletFlicker.class,
-                SuperGlassMakerPlugin.class, UpkeepPlugin.class, LavaRunecrafterPlugin.class,
-                NightmareHelperPlugin.class, SwordFish2Tick.class
-                , e3t4g.class, AutoTele.class);
+        ExternalPluginManager.loadBuiltin(EthanApiPlugin.class, PacketUtilsPlugin.class,UpkeepPlugin.class);
         RuneLite.main(args);
     }
 }
