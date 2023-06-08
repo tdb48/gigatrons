@@ -105,4 +105,25 @@ public class ToaManager
 		this.stage = stage;
 	}
 
+	public void print(String msg)
+	{
+		if (config.debug() && client.isClientThread())
+		{
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", msg, "");
+		}
+	}
+
+
+
+
+	public int getBossHp()
+	{
+		return client.getVarbitValue(Varbits.BOSS_HEALTH_CURRENT);
+	}
+
+	public int getBossMaxHp()
+	{
+		return client.getVarbitValue(Varbits.BOSS_HEALTH_MAXIMUM);
+	}
+
 }

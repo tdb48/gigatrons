@@ -1,12 +1,9 @@
 package com.example.toagigatron.model;
 
-import com.example.toagigatron.manager.GameTickManager;
-import com.example.toagigatron.manager.ToaManager;
-import com.example.toagigatron.model.constants.Stage;
-import com.example.toagigatron.model.constants.ToaConstants;
-import com.example.toagigatron.model.pathing.ToaCollisionMap;
-import com.example.toagigatron.model.puzzlemodel.BabaPuzzleSpecial;
+import com.example.EthanApiPlugin.Collections.NPCs;
+import com.example.Utility.Combat;
 import com.example.Utility.GameObjects;
+import com.example.Utility.Prayers;
 import com.example.Utility.WorldAreas;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
@@ -15,6 +12,7 @@ import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.model.puzzlemodel.BabaPuzzleSpecial;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -37,14 +35,8 @@ import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ProjectileMoved;
-import net.runelite.api.queries.GameObjectQuery;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
-import net.unethicalite.api.entities.NPCs;
-import net.unethicalite.api.entities.TileObjects;
-import net.unethicalite.api.game.Combat;
-import net.unethicalite.api.movement.Reachable;
-import net.unethicalite.api.movement.pathfinder.model.TilePath;
 
 public class Baba
 {
@@ -297,7 +289,7 @@ public class Baba
 		NPC npcThatSpawned = npcSpawned.getNpc();
 		if (npcThatSpawned.getId() == ToaConstants.WEAK_BOULDER)
 		{
-			toaManager.disableOverheadsIfEnabled();
+			Prayers.disableOverheads();
 		}
 	}
 
@@ -317,20 +309,22 @@ public class Baba
 		}
 		shouldTripleBrew = shouldTripleBrew();
 
-		babaBoss = NPCs.getNearest("Ba-Ba");
+		babaBoss = NPCs.search().nameContains("Ba-Ba").result().get(0);
 		if (babaEntry != null)
 		{
 			blockTiles = new ArrayList<>();
-			ArrayList<NPC> boulders = (ArrayList<NPC>) NPCs.getAll(ToaConstants.STRONG_BOULDER, ToaConstants.WEAK_BOULDER);
+			ArrayList<NPC> boulders = (ArrayList<NPC>) NPCs.search().idInList(List.of(ToaConstants.STRONG_BOULDER,ToaConstants.WEAK_BOULDER)).result();
+//			NPCs.getAll(ToaConstants.STRONG_BOULDER, ToaConstants.WEAK_BOULDER);
 			if (!boulders.isEmpty())
 			{
 				for (NPC boulder : boulders)
 				{
-					WorldPoint centerTile = boulder.getWorldArea().getCenter();
-					WorldArea boulderTiles = new WorldArea(
-						centerTile.dx(-2).dy(-1),
-						centerTile.dx(2).dy(2));
-					blockTiles.addAll(boulderTiles.toWorldPointList());
+					// TODO: center
+//					WorldPoint centerTile = boulder.getWorldArea().getCenter();
+//					WorldArea boulderTiles = new WorldArea(
+//						centerTile.dx(-2).dy(-1),
+//						centerTile.dx(2).dy(2));
+//					blockTiles.addAll(boulderTiles.toWorldPointList());
 				}
 			}
 		}
@@ -349,12 +343,14 @@ public class Baba
 		}
 		rockfallTiles.clear();
 		ArrayList<WorldPoint> diagonalRockFallTile = new ArrayList<>();
-		for (GameObject gameObject : new GameObjectQuery().idEquals(ToaConstants.BABA_BOSS_ROCKFALL).result(client))
+		for (TileObject gameObject : GameObjects.getObjects(ToaConstants.BABA_BOSS_ROCKFALL)
+//			new GameObjectQuery().idEquals(ToaConstants.BABA_BOSS_ROCKFALL).result(client)
+		)
 		{
 			WorldPoint refPoint = gameObject.getWorldArea().getCenter();
 			WorldPoint southWest = refPoint.dx(-2).dy(-2);
 			WorldPoint northEast = refPoint.dx(3).dy(3);
-			for (WorldPoint worldPoint : new WorldArea(southWest, northEast).toWorldPointList())
+			for (WorldPoint worldPoint : WorldAreas.createArea(southWest, northEast).toWorldPointList())
 			{
 				if (Reachable.isWalkable(worldPoint))
 				{
@@ -409,7 +405,7 @@ public class Baba
 		if (babaBossRoom.isEmpty() && babaEntry != null)
 		{
 			WorldPoint refPoint = babaEntry.getWorldLocation();
-			babaBossRoom = (ArrayList<WorldPoint>) new WorldArea(
+			babaBossRoom = (ArrayList<WorldPoint>) WorldAreas.createArea(
 				refPoint.dx(4).dy(-7),
 				refPoint.dx(26).dy(8)).toWorldPointList();
 			babaBossRoom.removeIf(x -> !Reachable.isWalkable(x));
@@ -419,7 +415,7 @@ public class Baba
 			WorldPoint centerTile = babaPuzzleStatue.getWorldArea().getCenter();
 			WorldPoint southWest = new WorldPoint(centerTile.getX() - 11, centerTile.getY() - 8, centerTile.getPlane());
 			WorldPoint northEast = new WorldPoint(centerTile.getX() + 12, centerTile.getY() + 10, centerTile.getPlane());
-			ArrayList<WorldPoint> worldArea = (ArrayList<WorldPoint>) new WorldArea(southWest, northEast).toWorldPointList();
+			ArrayList<WorldPoint> worldArea = (ArrayList<WorldPoint>) WorldAreas.createArea(southWest, northEast).toWorldPointList();
 			for (WorldPoint wp : worldArea)
 			{
 				if (Reachable.isWalkable(wp))
@@ -482,7 +478,7 @@ public class Baba
 		badTiles.addAll(diagonalRockFallTile);
 		badTiles.addAll(bananaTiles);
 		// If theres two rocks out, mark tiles 14 away as bad
-		int rocks = new GameObjectQuery().idEquals(ToaConstants.BABA_BOSS_ROCKFALL).result(client).list.size();
+		int rocks = GameObjects.getObjects(ToaConstants.BABA_BOSS_ROCKFALL).size();
 		if (rocks >= 2)
 		{
 			for (WorldPoint wp : babaBossRoom)
