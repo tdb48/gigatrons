@@ -14,7 +14,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import javax.inject.Inject;
 
 @PluginDescriptor(
-        name = "ToA Megatron",
+        name = "ToA Gigatron",
         description = "DOES TOA FOR YOU",
         tags = "toagigatron,toa,amascut,tron")
 @Slf4j
