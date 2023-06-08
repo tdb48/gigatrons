@@ -1,20 +1,23 @@
 package com.example.Utility;
 
-import java.util.function.Supplier;
+import com.example.PacketUtils.WidgetInfoExtended;
+import com.example.Packets.MousePackets;
+import com.example.Packets.WidgetPackets;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
-import net.runelite.api.widgets.Widget;
 
 public class Combat
 {
 	private static final int VENOM_THRESHOLD = 1000000;
 	private static final int SPEC_VARP = 301;
 	private static final int SPEC_ENERGY_VARP = 300;
-	private static final Supplier<Widget> SPEC_BUTTON = () -> Static.getClient().getWidget(593, 36);
+	private static final int SPEC_ORB_ID = WidgetInfoExtended.MINIMAP_SPEC_CLICKBOX.getPackedId();
+
 	public static int getMissingHealth()
 	{
 		return Skills.getLevel(Skill.HITPOINTS) - Skills.getBoostedLevel(Skill.HITPOINTS);
 	}
+
 	public static boolean isPoisoned()
 	{
 		return Static.getClient().getVarpValue(VarPlayer.POISON) > 0;
@@ -41,11 +44,7 @@ public class Combat
 		{
 			return;
 		}
-
-		Widget spec = SPEC_BUTTON.get();
-		if (spec != null)
-		{
-			spec.interact(0);
-		}
+		MousePackets.queueClickPacket();
+		WidgetPackets.queueWidgetActionPacket(1, SPEC_ORB_ID, -1, -1);
 	}
 }
