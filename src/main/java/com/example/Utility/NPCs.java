@@ -10,6 +10,19 @@ public class NPCs
 		return com.example.EthanApiPlugin.Collections.NPCs.search().nameContains(name).result().get(0);
 	}
 
+	public static NPC findNearest(int id) {
+
+		return com.example.EthanApiPlugin.Collections.NPCs.search().withId(id).nearestToPlayer().filter(x -> x.getHealthRatio() != 0).orElse(null);
+
+	}
+
+	public static NPC findNearestNpcAliveOrDead(int id) {
+
+		return com.example.EthanApiPlugin.Collections.NPCs.search().withId(id).nearestToPlayer().orElse(null);
+
+	}
+
+
 //	public static List<NPC> getAll(int... ids)
 //	{
 //
