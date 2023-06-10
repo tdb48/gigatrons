@@ -2,7 +2,11 @@ package com.example.Utility;
 
 import com.example.EthanApiPlugin.Collections.TileObjects;
 
+import static com.example.PacketUtils.PacketReflection.client;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import net.runelite.api.GameObject;
 import net.runelite.api.Perspective;
 import net.runelite.api.TileObject;
@@ -22,7 +26,8 @@ public class Objects
 		return null;
 	}
 
-	public static GameObject getNearestGameObject(int id){
+	public static GameObject getNearestGameObject(int id)
+	{
 		TileObject tileObject = TileObjects.search().withId(id).nearestToPlayer().orElse(null);
 		if (tileObject instanceof GameObject)
 		{
@@ -30,36 +35,73 @@ public class Objects
 		}
 		return null;
 	}
-	public static TileObject getNearestTileObject(int id){
+
+	public static TileObject getNearestTileObject(int id)
+	{
 		return TileObjects.search().withId(id).nearestToPlayer().orElse(null);
 	}
 
-	public static List<TileObject> getObjects(int id)
+	public static int distanceTo(GameObject gameObject, WorldPoint worldPoint)
 	{
-		return TileObjects.search().withId(id).result();
+		if (gameObject == null)
+		{
+			return Integer.MAX_VALUE;
+		}
+		int startX = gameObject.getX();
+		int startY = gameObject.getY();
+		int width = java.util.Objects.requireNonNull(Objects.getWorldArea(gameObject)).getWidth();
+		int height = java.util.Objects.requireNonNull(Objects.getWorldArea(gameObject)).getHeight();
+		int diffX = gameObject.getX() + width - startX;
+		int diffY = gameObject.getY() + height - startY;
+		WorldPoint gameObjectWorldpoint = WorldPoint.fromScene(client, startX + diffX / 2, startY + diffY / 2, gameObject.getPlane());
+		return gameObjectWorldpoint.distanceTo(worldPoint);
 	}
 
-	public static WorldArea getWorldArea(TileObject object){
-		if(!object.getLocalLocation().isInScene()){
+	public static List<TileObject> getObjects(int... id)
+	{
+		List<Integer> arrayList = Arrays.stream(id)
+			.boxed()
+			.collect(Collectors.toList());
+		return TileObjects.search().idInList(arrayList).result();
+	}
+
+	public static List<GameObject> getGameObjects(int... id)
+	{
+		List<GameObject> gameObjects = new ArrayList<>();
+		for (TileObject tileObject : getObjects(id))
+		{
+			if (tileObject instanceof GameObject)
+			{
+				gameObjects.add((GameObject) tileObject);
+			}
+		}
+		return gameObjects;
+	}
+
+	public static WorldArea getWorldArea(TileObject object)
+	{
+		if (!object.getLocalLocation().isInScene())
+		{
 			return null;
 		}
-		if(!(object instanceof GameObject)){
+		if (!(object instanceof GameObject))
+		{
 			return null;
 		}
 		GameObject obj = (GameObject) object;
 		LocalPoint localSWTile = new LocalPoint(
-				obj.getLocalLocation().getX() - obj.sizeX()* Perspective.LOCAL_TILE_SIZE / 2,
-				obj.getLocalLocation().getY() - obj.sizeY() * Perspective.LOCAL_TILE_SIZE / 2
+			obj.getLocalLocation().getX() - obj.sizeX() * Perspective.LOCAL_TILE_SIZE / 2,
+			obj.getLocalLocation().getY() - obj.sizeY() * Perspective.LOCAL_TILE_SIZE / 2
 		);
 
 		LocalPoint localNETile = new LocalPoint(
-				obj.getLocalLocation().getX() + obj.sizeX() * Perspective.LOCAL_TILE_SIZE / 2,
-				obj.getLocalLocation().getY() + obj.sizeY() * Perspective.LOCAL_TILE_SIZE / 2
+			obj.getLocalLocation().getX() + obj.sizeX() * Perspective.LOCAL_TILE_SIZE / 2,
+			obj.getLocalLocation().getY() + obj.sizeY() * Perspective.LOCAL_TILE_SIZE / 2
 		);
 
 		return WorldAreas.createArea(
-				WorldPoint.fromLocal(Static.getClient(), localSWTile),
-				WorldPoint.fromLocal(Static.getClient(), localNETile)
+			WorldPoint.fromLocal(Static.getClient(), localSWTile),
+			WorldPoint.fromLocal(Static.getClient(), localNETile)
 		);
 	}
 }

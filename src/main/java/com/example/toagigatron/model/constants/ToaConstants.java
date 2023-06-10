@@ -125,6 +125,7 @@ public class ToaConstants
 
 	public static final int EXIT_KEPHRI = 45337;
 	public static final int KEPHRI_ANCIENT_BUTTON = 45338;
+	public static final int KEPHRI_ANCIENT_TABLET = 45339;
 	public static final int KEPHRI_MEMORY_LIGHT_ACTIVATED = 45341;
 	public static final int BANDOS_GODSWORD_SPEC = 7642;
 	//45341
