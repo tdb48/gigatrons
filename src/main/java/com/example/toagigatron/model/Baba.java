@@ -312,12 +312,10 @@ public class Baba
 		{
 			blockTiles = new ArrayList<>();
 			ArrayList<NPC> boulders = (ArrayList<NPC>) NPCs.search().idInList(List.of(ToaConstants.STRONG_BOULDER,ToaConstants.WEAK_BOULDER)).result();
-//			NPCs.getAll(ToaConstants.STRONG_BOULDER, ToaConstants.WEAK_BOULDER);
 			if (!boulders.isEmpty())
 			{
 				for (NPC boulder : boulders)
 				{
-					// TODO: center
 					WorldPoint centerTile = WorldAreas.getCenter(boulder.getWorldArea());
 					WorldArea boulderTiles = WorldAreas.createArea(
 							centerTile.dx(-2).dy(-1),
@@ -468,7 +466,7 @@ public class Baba
 			badTiles.addAll(shockwaveTiles);
 			badTiles.addAll(sarcophagusProjectilesTiles);
 		}
-		NPC monkey = com.example.Utility.NPCs.findNearest(ToaConstants.BABA_BOSS_MONKEY);
+		NPC monkey = NPCUtil.findNearest(ToaConstants.BABA_BOSS_MONKEY);
 		if (shockwaveTick == 0 && ceilingTick == 0 && rockfallTick == 0 && monkey == null)
 		{
 			badTiles.addAll(tilesUnderBoss());
