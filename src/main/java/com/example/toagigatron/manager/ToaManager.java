@@ -55,6 +55,7 @@ import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -652,7 +653,7 @@ public class ToaManager
 			if (Bank.isOpen())
 			{
 				MousePackets.queueClickPacket();
-				WidgetPackets.queueWidgetAction(item, "Wield");
+				WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), item.getIndex());
 				counter++;
 			}
 			else
