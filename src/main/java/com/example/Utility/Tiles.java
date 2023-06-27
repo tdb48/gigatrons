@@ -6,6 +6,10 @@ import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
 public class Tiles {
 
 
@@ -34,5 +38,24 @@ public class Tiles {
         int y = correctedY - client.getBaseY();
 
         return client.getScene().getTiles()[plane][x][y];
+    }
+
+    public static List<Tile> getAll(Predicate<Tile> filter) {
+        List<Tile> out = new ArrayList<>();
+        for(int x = 0; x < 104; ++x) {
+            for(int y = 0; y < 104; ++y) {
+                Tile tile = Static.getClient().getScene().getTiles()[Static.getClient().getPlane()][x][y];
+                if (tile != null && filter.test(tile)) {
+                    out.add(tile);
+                }
+            }
+        }
+
+        return out;
+    }
+    public static List<Tile> getAll() {
+        return getAll((x) -> {
+            return true;
+        });
     }
 }

@@ -3,6 +3,7 @@ package com.example.toagigatron.manager;
 import com.example.toagigatron.ReflectBreakHandler;
 import com.example.toagigatron.ToaGigatronConfig;
 import com.example.toagigatron.ToaGigatronPlugin;
+import com.example.toagigatron.model.Overall;
 import com.example.toagigatron.model.constants.Stage;
 import com.google.inject.Singleton;
 import java.util.ArrayList;
@@ -46,6 +47,8 @@ public class ToaManager
 {
 
 	@Inject
+	public Overall overall;
+	@Inject
 	ItemManager itemManager;
 	@Inject
 	public GameTickManager gameTickManager;
@@ -60,6 +63,7 @@ public class ToaManager
 	public boolean allowedToBreak = false;
 	private final ToaGigatronPlugin plugin;
 	public ToaGigatronConfig config;
+
 
 	@Inject
 	public ToaManager(EventBus eventBus, Client client, ToaGigatronConfig config, ToaGigatronPlugin plugin)
