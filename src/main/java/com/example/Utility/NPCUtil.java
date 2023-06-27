@@ -1,6 +1,7 @@
 package com.example.Utility;
 
 import com.example.EthanApiPlugin.Collections.NPCs;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +27,23 @@ public class NPCUtil
 		return NPCs.search().idInList(arrayList).filter(x -> x.getHealthRatio() != 0).result();
 	}
 
+	public static List<NPC> findAll(String... name)
+	{
+		List<String> nameList = Arrays.stream(name)
+			.collect(Collectors.toList());
+		List<NPC> returnList = new ArrayList<>();
+		for (NPC npc : Static.getClient().getNpcs())
+		{
+			if (npc.getName() != null
+				&& nameList.contains(npc.getName())
+				&& npc.getHealthRatio() != 0)
+			{
+				returnList.add(npc);
+			}
+		}
+		return returnList;
+	}
+
 	public static NPC findNearest(String name)
 	{
 		return NPCs.search().withName(name).nearestToPlayer().filter(x -> x.getHealthRatio() != 0).orElse(null);
@@ -36,9 +54,4 @@ public class NPCUtil
 		return NPCs.search().withId(id).nearestToPlayer().orElse(null);
 	}
 
-
-//	public static List<NPC> getAll(int... ids)
-//	{
-//
-//	}
 }

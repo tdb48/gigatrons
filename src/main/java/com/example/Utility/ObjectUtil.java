@@ -14,7 +14,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 
-public class Objects
+public class ObjectUtil
 {
 	public static GameObject getObject(int id)
 	{
@@ -49,8 +49,8 @@ public class Objects
 		}
 		int startX = gameObject.getX();
 		int startY = gameObject.getY();
-		int width = java.util.Objects.requireNonNull(Objects.getWorldArea(gameObject)).getWidth();
-		int height = java.util.Objects.requireNonNull(Objects.getWorldArea(gameObject)).getHeight();
+		int width = java.util.Objects.requireNonNull(ObjectUtil.getWorldArea(gameObject)).getWidth();
+		int height = java.util.Objects.requireNonNull(ObjectUtil.getWorldArea(gameObject)).getHeight();
 		int diffX = gameObject.getX() + width - startX;
 		int diffY = gameObject.getY() + height - startY;
 		WorldPoint gameObjectWorldpoint = WorldPoint.fromScene(client, startX + diffX / 2, startY + diffY / 2, gameObject.getPlane());
