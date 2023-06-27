@@ -1,15 +1,11 @@
 package com.example.toagigatron.model.puzzlemodel;
 
-import com.example.toagigatron.model.constants.ToaConstants;
 import java.util.ArrayList;
-
 import com.example.EthanApiPlugin.Collections.TileObjects;
 import com.example.toagigatron.model.constants.ToaConstants;
 import net.runelite.api.GameObject;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.queries.GameObjectQuery;
-import net.unethicalite.client.Static;
 
 public class AkkhaPuzzleSolution
 {
