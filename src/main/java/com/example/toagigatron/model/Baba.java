@@ -216,7 +216,7 @@ public class Baba
 		}
 		if (graphicsObjectCreated.getGraphicsObject().getId() == ToaConstants.BABA_ROCKFALL_SHADOW)
 		{
-			int rocks = Objects.getObjects(ToaConstants.BABA_BOSS_ROCKFALL).size();
+			int rocks = ObjectUtil.getObjects(ToaConstants.BABA_BOSS_ROCKFALL).size();
 			if (rocks >= 2)
 			{
 				WorldPoint refPoint = WorldPoint.fromLocal(client, graphicsObjectCreated.getGraphicsObject().getLocation());
@@ -339,11 +339,11 @@ public class Baba
 		}
 		rockfallTiles.clear();
 		ArrayList<WorldPoint> diagonalRockFallTile = new ArrayList<>();
-		for (TileObject gameObject : Objects.getObjects(ToaConstants.BABA_BOSS_ROCKFALL)
+		for (TileObject gameObject : ObjectUtil.getObjects(ToaConstants.BABA_BOSS_ROCKFALL)
 //			new GameObjectQuery().idEquals(ToaConstants.BABA_BOSS_ROCKFALL).result(client)
 		)
 		{
-			WorldArea objectArea = Objects.getWorldArea(gameObject);
+			WorldArea objectArea = ObjectUtil.getWorldArea(gameObject);
 			WorldPoint refPoint = WorldAreas.getCenter(java.util.Objects.requireNonNull(objectArea));
 //			WorldPoint refPoint = gameObject.getWorldArea().getCenter();
 			WorldPoint southWest = refPoint.dx(-2).dy(-2);
@@ -391,11 +391,11 @@ public class Baba
 		if (babaPuzzleStatue == null)
 		{
 
-			babaPuzzleStatue = Objects.getObject(ToaConstants.BABA_PUZZLE_STATUE);
+			babaPuzzleStatue = ObjectUtil.getObject(ToaConstants.BABA_PUZZLE_STATUE);
 		}
 		if (babaEntry == null)
 		{
-			babaEntry = Objects.getObject(ToaConstants.BABA_BOSS_ENTRY);
+			babaEntry = ObjectUtil.getObject(ToaConstants.BABA_BOSS_ENTRY);
 		}
 		if (babaBossRowOne == null && babaEntry != null)
 		{
@@ -412,7 +412,7 @@ public class Baba
 		if (babaPuzzleRoom.isEmpty() && babaPuzzleStatue != null)
 		{
 
-			WorldPoint centerTile = WorldAreas.getCenter(java.util.Objects.requireNonNull(Objects.getWorldArea(babaPuzzleStatue)));
+			WorldPoint centerTile = WorldAreas.getCenter(java.util.Objects.requireNonNull(ObjectUtil.getWorldArea(babaPuzzleStatue)));
 			WorldPoint southWest = new WorldPoint(centerTile.getX() - 11, centerTile.getY() - 8, centerTile.getPlane());
 			WorldPoint northEast = new WorldPoint(centerTile.getX() + 12, centerTile.getY() + 10, centerTile.getPlane());
 			ArrayList<WorldPoint> worldArea = (ArrayList<WorldPoint>) WorldAreas.createArea(southWest, northEast).toWorldPointList();
@@ -427,7 +427,7 @@ public class Baba
 
 		if (targetPillarTiles.isEmpty() && targetPillar != null && babaPuzzleStatue != null)
 		{
-			WorldPoint centerTile = WorldAreas.getCenter(java.util.Objects.requireNonNull(Objects.getWorldArea(targetPillar)));
+			WorldPoint centerTile = WorldAreas.getCenter(java.util.Objects.requireNonNull(ObjectUtil.getWorldArea(targetPillar)));
 			WorldPoint statueTile = babaPuzzleStatue.getWorldLocation();
 			// Pillar is south of target statue
 
@@ -476,7 +476,7 @@ public class Baba
 		badTiles.addAll(diagonalRockFallTile);
 		badTiles.addAll(bananaTiles);
 		// If theres two rocks out, mark tiles 14 away as bad
-		int rocks = Objects.getObjects(ToaConstants.BABA_BOSS_ROCKFALL).size();
+		int rocks = ObjectUtil.getObjects(ToaConstants.BABA_BOSS_ROCKFALL).size();
 		if (rocks >= 2)
 		{
 			for (WorldPoint wp : babaBossRoom)
@@ -512,11 +512,11 @@ public class Baba
 	private ArrayList<WorldPoint> nearestRockfallTiles()
 	{
 		ArrayList<WorldPoint> returnList = new ArrayList<>();
-		GameObject obj = Objects.getNearestGameObject(ToaConstants.BABA_BOSS_ROCKFALL);
+		GameObject obj = ObjectUtil.getNearestGameObject(ToaConstants.BABA_BOSS_ROCKFALL);
 		if (obj != null)
 		{
 
-			WorldPoint refPoint = WorldAreas.getCenter(java.util.Objects.requireNonNull(Objects.getWorldArea(obj)));
+			WorldPoint refPoint = WorldAreas.getCenter(java.util.Objects.requireNonNull(ObjectUtil.getWorldArea(obj)));
 			WorldPoint southWest = refPoint.dx(-2).dy(-2);
 			WorldPoint northEast = refPoint.dx(3).dy(3);
 			for (WorldPoint worldPoint : WorldAreas.createArea(southWest, northEast).toWorldPointList())
@@ -707,7 +707,7 @@ public class Baba
 				puzzleSpecialTickTimer = 20;
 				currentSpecial = BabaPuzzleSpecial.VENT;
 
-				TileObject potentialVent = Objects.getNearestTileObject(currentSpecial.objectId);
+				TileObject potentialVent = ObjectUtil.getNearestTileObject(currentSpecial.objectId);
 				if (potentialVent != null)
 				{
 					targetVent = potentialVent;
@@ -718,7 +718,7 @@ public class Baba
 				puzzleSpecialTickTimer = 20;
 				currentSpecial = BabaPuzzleSpecial.PILLAR;
 
-				GameObject potentialPillar = Objects.getNearestGameObject(currentSpecial.objectId);
+				GameObject potentialPillar = ObjectUtil.getNearestGameObject(currentSpecial.objectId);
 				if (potentialPillar != null)
 				{
 					targetPillar = potentialPillar;

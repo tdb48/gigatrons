@@ -2,7 +2,7 @@ package com.example.toagigatron.model;
 
 import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.Utility.NPCUtil;
-import com.example.Utility.Objects;
+import com.example.Utility.ObjectUtil;
 import com.example.Utility.Prayers;
 import com.example.Utility.Reachable;
 import com.example.Utility.Static;
@@ -97,7 +97,7 @@ public class Akkha
 
 	public boolean isPuzzleActive()
 	{
-		GameObject exit = Objects.getNearestGameObject(ToaConstants.AKKHA_PUZZLE_EXIT);
+		GameObject exit = ObjectUtil.getNearestGameObject(ToaConstants.AKKHA_PUZZLE_EXIT);
 		if (exit == null)
 		{
 			return false;
@@ -225,10 +225,10 @@ public class Akkha
 
 	public void generatePuzzle()
 	{
-		GameObject wall = Objects.getNearestGameObject(ToaConstants.AKKHA_PUZZLE_HARD_WALL);
+		GameObject wall = ObjectUtil.getNearestGameObject(ToaConstants.AKKHA_PUZZLE_HARD_WALL);
 		if (puzzle == null && wall != null)
 		{
-			GameObject statue = Objects.getNearestGameObject(ToaConstants.AKKHA_SHIELD_STATUE);
+			GameObject statue = ObjectUtil.getNearestGameObject(ToaConstants.AKKHA_SHIELD_STATUE);
 
 			if (statue != null)
 			{
@@ -243,19 +243,19 @@ public class Akkha
 				ArrayList<AkkhaPuzzleRoomTile> walls = new ArrayList<>();
 				ArrayList<AkkhaPuzzleRoomTile> minedWalls = new ArrayList<>();
 				ArrayList<AkkhaPuzzleRoomTile> moveableMirrors = new ArrayList<>();
-				for (GameObject obj : Objects.getGameObjects(moveableMirroID))
+				for (GameObject obj : ObjectUtil.getGameObjects(moveableMirroID))
 				{
 					moveableMirrors.add(new AkkhaPuzzleRoomTile(obj.getWorldLocation(), obj));
 				}
-				for (GameObject obj : Objects.getGameObjects(mirrorID))
+				for (GameObject obj : ObjectUtil.getGameObjects(mirrorID))
 				{
 					mirrors.add(new AkkhaPuzzleRoomTile(obj.getWorldLocation(), obj));
 				}
-				for (GameObject obj : Objects.getGameObjects(wallIds))
+				for (GameObject obj : ObjectUtil.getGameObjects(wallIds))
 				{
 					walls.add(new AkkhaPuzzleRoomTile(obj.getWorldLocation(), obj));
 				}
-				for (GameObject obj : Objects.getGameObjects(minedWallIds))
+				for (GameObject obj : ObjectUtil.getGameObjects(minedWallIds))
 				{
 					minedWalls.add(new AkkhaPuzzleRoomTile(obj.getWorldLocation(), obj));
 				}
@@ -480,7 +480,7 @@ public class Akkha
 
 	public boolean isNotInBossRoom()
 	{
-		GameObject g = Objects.getNearestGameObject(ToaConstants.AKKHA_BOSS_ENTRY);
+		GameObject g = ObjectUtil.getNearestGameObject(ToaConstants.AKKHA_BOSS_ENTRY);
 		if (g == null)
 		{
 			return true;
@@ -490,7 +490,7 @@ public class Akkha
 
 	public void generateQuadrant()
 	{
-		GameObject g = Objects.getNearestGameObject(ToaConstants.AKKHA_BOSS_ENTRY);
+		GameObject g = ObjectUtil.getNearestGameObject(ToaConstants.AKKHA_BOSS_ENTRY);
 		if (g != null)
 		{
 			WorldPoint refPoint = g.getWorldLocation();
@@ -532,7 +532,7 @@ public class Akkha
 
 	public boolean isBossActive()
 	{
-		GameObject teleportCrystal = Objects.getNearestGameObject(ToaConstants.AKKHA_BOSS_ENTRY);
+		GameObject teleportCrystal = ObjectUtil.getNearestGameObject(ToaConstants.AKKHA_BOSS_ENTRY);
 		if (teleportCrystal == null)
 		{
 			return false;

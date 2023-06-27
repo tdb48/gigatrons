@@ -1,8 +1,7 @@
 package com.example.toagigatron.model;
 
 import com.example.Utility.NPCUtil;
-import com.example.Utility.Objects;
-import com.example.Utility.Static;
+import com.example.Utility.ObjectUtil;
 import com.example.Utility.WorldAreas;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
@@ -352,9 +351,9 @@ public class Kephri
 
 	public void generateKephriPuzzleRooms(GameObject barrier)
 	{
-		GameObject ancientButton = Objects.getNearestGameObject(ToaConstants.KEPHRI_ANCIENT_BUTTON);
-		GameObject ancientTablet = Objects.getNearestGameObject(ToaConstants.KEPHRI_ANCIENT_TABLET);
-		GameObject pillar = Objects.getNearestGameObject(ToaConstants.ZEBAK_ROAR_ROCK);
+		GameObject ancientButton = ObjectUtil.getNearestGameObject(ToaConstants.KEPHRI_ANCIENT_BUTTON);
+		GameObject ancientTablet = ObjectUtil.getNearestGameObject(ToaConstants.KEPHRI_ANCIENT_TABLET);
+		GameObject pillar = ObjectUtil.getNearestGameObject(ToaConstants.ZEBAK_ROAR_ROCK);
 		WorldPoint referencePoint = barrier.getWorldLocation();
 		if (ancientButton == null || ancientTablet == null || pillar == null)
 		{
@@ -394,7 +393,7 @@ public class Kephri
 				}
 			}
 			//First room is memory
-			else if (Objects.distanceTo(ancientButton, WorldAreas.getCenter(room)) < 6)
+			else if (ObjectUtil.distanceTo(ancientButton, WorldAreas.getCenter(room)) < 6)
 			{
 				if (i == 0)
 				{
@@ -406,7 +405,7 @@ public class Kephri
 				}
 			}
 			//First room is math
-			else if (Objects.distanceTo(ancientTablet, WorldAreas.getCenter(room)) < 6)
+			else if (ObjectUtil.distanceTo(ancientTablet, WorldAreas.getCenter(room)) < 6)
 			{
 				if (i == 0)
 				{

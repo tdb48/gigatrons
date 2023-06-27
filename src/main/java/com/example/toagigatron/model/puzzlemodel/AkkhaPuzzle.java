@@ -1,6 +1,6 @@
 package com.example.toagigatron.model.puzzlemodel;
 
-import com.example.Utility.Objects;
+import com.example.Utility.ObjectUtil;
 import com.example.toagigatron.model.constants.ToaConstants;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -264,7 +264,7 @@ public class AkkhaPuzzle
 
 	public void setSolution(String name)
 	{
-		GameObject statue = Objects.getNearestGameObject(ToaConstants.AKKHA_SHIELD_STATUE);
+		GameObject statue = ObjectUtil.getNearestGameObject(ToaConstants.AKKHA_SHIELD_STATUE);
 		if (statue != null)
 		{
 			WorldPoint statueLoc = statue.getWorldLocation();
