@@ -2,7 +2,11 @@ package com.example.toagigatron.model.puzzlemodel;
 
 import com.example.toagigatron.model.constants.ToaConstants;
 import java.util.ArrayList;
+
+import com.example.EthanApiPlugin.Collections.TileObjects;
+import com.example.toagigatron.model.constants.ToaConstants;
 import net.runelite.api.GameObject;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.queries.GameObjectQuery;
 import net.unethicalite.client.Static;
@@ -29,13 +33,22 @@ public class AkkhaPuzzleSolution
 	public ArrayList<GameObject> getWrongMirrors()
 	{
 		ArrayList<GameObject> returnList = new ArrayList<>();
-		for (GameObject gameObject : new GameObjectQuery().idEquals(ToaConstants.AKKHA_MOVEABLE_MIRROR).result(Static.getClient()))
-		{
+		for(TileObject gameObject : TileObjects.search().withId(ToaConstants.AKKHA_MOVEABLE_MIRROR).result()){
+			if(!(gameObject instanceof GameObject)){
+				continue;
+			}
 			if (!hasWorldPoint(gameObject.getWorldLocation()))
 			{
-				returnList.add(gameObject);
+				returnList.add((GameObject) gameObject);
 			}
 		}
+//		for (GameObject gameObject : new GameObjectQuery().idEquals(ToaConstants.AKKHA_MOVEABLE_MIRROR).result(Static.getClient()))
+//		{
+//			if (!hasWorldPoint(gameObject.getWorldLocation()))
+//			{
+//				returnList.add(gameObject);
+//			}
+//		}
 		return returnList;
 	}
 
@@ -46,7 +59,7 @@ public class AkkhaPuzzleSolution
 		{
 			WorldPoint wp = m.worldPoint;
 			int orientation = m.orientation;
-			GameObject mirror = new GameObjectQuery().idEquals(ToaConstants.AKKHA_MOVEABLE_MIRROR).atWorldLocation(wp).result(Static.getClient()).first();
+			GameObject mirror = (GameObject) TileObjects.search().withId(ToaConstants.AKKHA_MOVEABLE_MIRROR).atLocation(wp).first().orElse(null);
 			if (mirror != null && mirror.getOrientation() == orientation)
 			{
 				returnList.add(mirror);
@@ -60,7 +73,8 @@ public class AkkhaPuzzleSolution
 		ArrayList<WorldPoint> returnList = new ArrayList<>();
 		for (Mirror m : mirrors)
 		{
-			GameObject mirror = new GameObjectQuery().idEquals(ToaConstants.AKKHA_MOVEABLE_MIRROR).atWorldLocation(m.worldPoint).result(Static.getClient()).first();
+
+			GameObject mirror = (GameObject) TileObjects.search().withId(ToaConstants.AKKHA_MOVEABLE_MIRROR).atLocation(m.worldPoint).first().orElse(null);
 			if (mirror == null)
 			{
 				returnList.add(m.worldPoint);
@@ -81,7 +95,7 @@ public class AkkhaPuzzleSolution
 		{
 			WorldPoint wp = m.worldPoint;
 			int orientation = m.orientation;
-			GameObject mirror = new GameObjectQuery().idEquals(ToaConstants.AKKHA_MOVEABLE_MIRROR).atWorldLocation(wp).result(Static.getClient()).first();
+			GameObject mirror = (GameObject) TileObjects.search().withId(ToaConstants.AKKHA_MOVEABLE_MIRROR).atLocation(wp).first().orElse(null);
 			if (mirror != null && mirror.getOrientation() != orientation)
 			{
 				returnList.add(m);
@@ -99,7 +113,7 @@ public class AkkhaPuzzleSolution
 	{
 		for (WorldPoint wp : wallsToMine)
 		{
-			GameObject minedWall = new GameObjectQuery().idEquals(ToaConstants.AKKHA_MINED_WALL).atWorldLocation(wp).result(Static.getClient()).first();
+			GameObject minedWall = (GameObject) TileObjects.search().withId(ToaConstants.AKKHA_MINED_WALL).atLocation(wp).first().orElse(null);
 			if (minedWall == null)
 			{
 				return false;
@@ -114,7 +128,7 @@ public class AkkhaPuzzleSolution
 		{
 			WorldPoint wp = m.worldPoint;
 			int orientation = m.orientation;
-			GameObject mirror = new GameObjectQuery().idEquals(ToaConstants.AKKHA_MOVEABLE_MIRROR).atWorldLocation(wp).result(Static.getClient()).first();
+			GameObject mirror = (GameObject) TileObjects.search().withId(ToaConstants.AKKHA_MOVEABLE_MIRROR).atLocation(wp).first().orElse(null);
 			if (mirror == null || mirror.getOrientation() != orientation)
 			{
 				return false;
