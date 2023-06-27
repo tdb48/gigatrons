@@ -1,18 +1,14 @@
 package com.example.toagigatron.model;
 
 
-import com.example.EthanApiPlugin.Collections.Bank;
 import com.example.EthanApiPlugin.Collections.Widgets;
-import com.example.Utility.BankUtility;
-import com.example.toagigatron.ToaGigatronConfig;
+import com.example.Utility.BankUtil;
 import com.example.toagigatron.ToaGigatronPlugin;
 import com.example.toagigatron.manager.ToaManager;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -114,15 +110,15 @@ public class Overall
         {
             saltInTicks--;
         }
-        if (BankUtility.isOpen())
+        if (BankUtil.isOpen())
         {
-            if (!BankUtility.isMainTabOpen())
+            if (!BankUtil.isMainTabOpen())
             {
                 toaManager.print("Opening main tab");
-                BankUtility.openMainTab();
+                BankUtil.openMainTab();
             }
 
-            else if (!BankUtility.contains(ItemID.COINS_995) || BankUtility.getFirst(ItemID.COINS_995).getItemQuantity() < 500000)
+            else if (!BankUtil.contains(ItemID.COINS_995) || BankUtil.getFirst(ItemID.COINS_995).getItemQuantity() < 500000)
             {
                 toaGigatronPlugin.stopPlugin = true;
                 toaManager.print("Not enough coins");

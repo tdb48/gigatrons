@@ -1,39 +1,51 @@
 package com.example.toagigatron.manager;
 
+import com.example.EthanApiPlugin.Collections.Bank;
+import com.example.EthanApiPlugin.Collections.BankInventory;
 import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.EthanApiPlugin.Collections.EquipmentItemWidget;
 import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.Packets.MousePackets;
+import com.example.Packets.NPCPackets;
+import com.example.Packets.WidgetPackets;
+import com.example.Utility.BankUtil;
+import com.example.Utility.Combat;
+import com.example.Utility.Movement;
+import com.example.Utility.Prayer;
+import com.example.Utility.Prayers;
+import com.example.Utility.Static;
+import com.example.Utility.Tiles;
+import com.example.Utility.WidgetUtil;
 import com.example.toagigatron.ReflectBreakHandler;
 import com.example.toagigatron.ToaGigatronConfig;
 import com.example.toagigatron.ToaGigatronPlugin;
+import com.example.toagigatron.model.ConsumableTracker;
 import com.example.toagigatron.model.Overall;
 import com.example.toagigatron.model.Zebak;
 import com.example.toagigatron.model.bossmodel.ZebakJug;
+import com.example.toagigatron.model.constants.Consumables;
 import com.example.toagigatron.model.constants.Stage;
+import com.example.toagigatron.model.constants.ToaConstants;
+import com.example.toagigatron.model.constants.WeaponMap;
 import com.example.toagigatron.model.setup.MageSetup;
 import com.example.toagigatron.model.setup.MeleeSetup;
 import com.example.toagigatron.model.setup.RangeSetup;
 import com.google.inject.Singleton;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
-import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
-import net.runelite.api.Player;
-import net.runelite.api.Prayer;
-import net.runelite.api.Projectile;
-import net.runelite.api.Scene;
 import net.runelite.api.Skill;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
@@ -42,8 +54,6 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -52,7 +62,8 @@ import net.runelite.client.game.ItemManager;
 @Singleton
 public class ToaManager
 {
-
+	@Inject
+	public ConsumableTracker consumableTracker;
 	@Inject
 	public Overall overall;
 	@Inject
@@ -79,6 +90,10 @@ public class ToaManager
 	@Inject
 	public Zebak zebak;
 
+	public int necessarySanfew = 1;
+	public int necessaryAnti = 0;
+	public int necessaryScb = 1;
+	public int necessaryStam = 0;
 
 	@Inject
 	public ToaManager(EventBus eventBus, Client client, ToaGigatronConfig config, ToaGigatronPlugin plugin)
@@ -132,16 +147,6 @@ public class ToaManager
 		}
 	}
 
-	public LocalPoint findClosestTile(ArrayList<LocalPoint> possibleTiles, LocalPoint targetPoint)
-	{
-		return possibleTiles.stream().min(Comparator.comparingInt(wp -> wp.distanceTo(targetPoint))).stream().findAny().orElse(null);
-	}
-
-	public WorldPoint findClosestTile(ArrayList<WorldPoint> possibleTiles, WorldPoint targetPoint)
-	{
-		return possibleTiles.stream().min(Comparator.comparingInt(wp -> wp.distanceTo(targetPoint))).stream().findAny().orElse(null);
-	}
-
 	public ArrayList<WorldPoint> lpToWp(ArrayList<LocalPoint> lps)
 	{
 		ArrayList<WorldPoint> returnList = new ArrayList<>();
@@ -187,6 +192,228 @@ public class ToaManager
 		return true;
 	}
 
+	public String worldPointString(WorldPoint wp)
+	{
+		return "(X: " + wp.getX() + ", Y: " + wp.getY() + ") ";
+	}
+
+	public String worldPointStringVerbose(WorldPoint wp)
+	{
+		return "(X: " + wp.getX() + ", Y: " + wp.getY() + ", Z: " + wp.getPlane() + ") ";
+	}
+
+	public boolean isSaltBrewTick()
+	{
+		return getSaltTick() % 25 == 0;
+	}
+
+	public int getSaltTick()
+	{
+		return overall.saltInTicks;
+	}
+
+	public void reAttack(NPC npc)
+	{
+		if (npc != null)
+		{
+			MousePackets.queueClickPacket();
+			NPCPackets.queueNPCAction(npc, "Attack");
+			print("Re-Attacking " + npc.getName());
+		}
+		else
+		{
+			print("NPC IS NULL IN RE-ATTACK");
+		}
+	}
+
+	public boolean refill()
+	{
+		Widget bag = Inventory.search().withId(Consumables.SUPPLY_BAG).first().orElse(null);
+		if (bag == null)
+		{
+			return false;
+		}
+		if (consumableTracker.inventoryRaidBrewDoses % 4 != 0
+			&& consumableTracker.bagRaidBrewDoses > 0
+			&& consumableTracker.inventoryRaidBrewDoses > 0)
+		{
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(bag, "Resupply");
+			return true;
+		}
+		if (consumableTracker.inventoryRaidRestoreDoses % 4 != 0
+			&& consumableTracker.bagRaidRestoreDoses > 0
+			&& consumableTracker.inventoryRaidRestoreDoses > 0)
+		{
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(bag, "Resupply");
+			return true;
+		}
+		if (consumableTracker.inventorySaltDoses == 1
+			&& consumableTracker.bagSaltDoses > 0)
+		{
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(bag, "Resupply");
+			return true;
+		}
+		if (consumableTracker.inventoryAdrenalineDoses == 1 && consumableTracker.bagAdrenalineDoses > 0)
+		{
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(bag, "Resupply");
+			return true;
+		}
+		if (consumableTracker.inventoryAmbrosiaDoses == 1 && consumableTracker.bagAmbrosiaDoses > 0)
+		{
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(bag, "Resupply");
+			return true;
+		}
+		if (consumableTracker.inventoryScarabDoses == 1 && consumableTracker.bagScarabDoses > 0)
+		{
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(bag, "Resupply");
+			return true;
+		}
+		return false;
+	}
+
+//	@Subscribe
+//	public void onProjectileSpawned(ProjectileSpawned projectileSpawned)
+//	{
+//		Projectile projectile = projectileSpawned.getProjectile();
+//		if (ToaConstants.DARTS.contains(projectile.getId()))
+//		{
+//			gameTickManager.attack(2);
+//		}
+//	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged animationChanged)
+	{
+		if (animationChanged.getActor().equals(client.getLocalPlayer()))
+		{
+			if (client.getLocalPlayer().getAnimation() == ToaConstants.BANDOS_GODSWORD_SPEC)
+			{
+				gameTickManager.attack(6);
+			}
+			if (animationChanged.getActor().getAnimation() == ToaConstants.FANG_ATTACK
+				|| animationChanged.getActor().getAnimation() == ToaConstants.FANG_ATTACK_SPEC
+				|| animationChanged.getActor().getAnimation() == ToaConstants.SHADOW_ATTACK)
+			{
+				gameTickManager.attack(5);
+			}
+			if (client.getLocalPlayer().getAnimation() == ToaConstants.SANG_ATTACK
+				|| client.getLocalPlayer().getAnimation() == ToaConstants.DDS_POKE
+				|| client.getLocalPlayer().getAnimation() == ToaConstants.DDS_SPEC)
+			{
+				gameTickManager.attack(4);
+			}
+		}
+	}
+
+	public List<WorldPoint> findClosestPotentialTiles(
+		WorldPoint currTile, WorldPoint targetTile, List<WorldPoint> tiles,
+		List<Integer> gameObjAvoidIds, List<Integer> groundObjectAvoidIds,
+		int distance)
+	{
+		List<WorldPoint> potentialTiles = new ArrayList<>();
+		if (currTile.distanceTo(targetTile) <= 2)
+		{
+			potentialTiles.add(targetTile);
+			return potentialTiles;
+		}
+		int closestDistance = Integer.MAX_VALUE;
+		for (WorldPoint wp : tiles)
+		{
+			if (wp.distanceTo(currTile) == distance)
+			{
+				Tile tile = Tiles.getAt(wp);
+				//Check if undesirable game object on tile
+				if (tile.getGameObjects() != null)
+				{
+					for (GameObject obj : tile.getGameObjects())
+					{
+						if (obj != null)
+						{
+							if (gameObjAvoidIds != null && gameObjAvoidIds.contains(obj.getId()))
+							{
+								break;
+							}
+						}
+
+					}
+				}
+				//Check if undesirable ground object on tile
+				if (tile.getGroundObject() != null)
+				{
+					if (groundObjectAvoidIds != null && groundObjectAvoidIds.contains(tile.getGroundObject().getId()))
+					{
+						continue;
+					}
+				}
+				if (wp.distanceTo(targetTile) < closestDistance)
+				{
+					closestDistance = wp.distanceTo(targetTile);
+				}
+			}
+		}
+		for (WorldPoint wp : tiles)
+		{
+			if (wp.distanceTo(currTile) == distance)
+			{
+				Tile tile = Tiles.getAt(wp);
+				if (wp.distanceTo(targetTile) == closestDistance)
+				{
+					//Check if undesirable game object on tile
+					if (tile.getGameObjects() != null)
+					{
+						for (GameObject obj : tile.getGameObjects())
+						{
+							if (obj != null)
+							{
+								if (gameObjAvoidIds != null && gameObjAvoidIds.contains(obj.getId()))
+								{
+									break;
+								}
+							}
+						}
+					}
+					//Check if undesirable ground object on tile
+					if (tile.getGroundObject() != null)
+					{
+						if (groundObjectAvoidIds != null && groundObjectAvoidIds.contains(tile.getGroundObject().getId()))
+						{
+							continue;
+						}
+					}
+					potentialTiles.add(wp);
+				}
+			}
+		}
+		return potentialTiles;
+	}
+
+	public WorldPoint findClosestTile(ArrayList<WorldPoint> possibleTiles)
+	{
+		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
+		return possibleTiles.stream().min(Comparator.comparingInt(wp -> wp.distanceTo(playerPoint))).stream().findAny().orElse(null);
+	}
+
+	public WorldPoint findFurthestTile(ArrayList<WorldPoint> possibleTiles, WorldPoint targetTile)
+	{
+		return possibleTiles.stream().max(Comparator.comparingInt(wp -> wp.distanceTo(targetTile))).stream().findAny().orElse(null);
+	}
+
+	public LocalPoint findClosestTile(ArrayList<LocalPoint> possibleTiles, LocalPoint targetPoint)
+	{
+		return possibleTiles.stream().min(Comparator.comparingInt(wp -> wp.distanceTo(targetPoint))).stream().findAny().orElse(null);
+	}
+
+	public WorldPoint findClosestTile(ArrayList<WorldPoint> possibleTiles, WorldPoint targetPoint)
+	{
+		return possibleTiles.stream().min(Comparator.comparingInt(wp -> wp.distanceTo(targetPoint))).stream().findAny().orElse(null);
+	}
+
 	public ZebakJug findClosestNPC(ArrayList<ZebakJug> jugs)
 	{
 		ZebakJug returnObj = null;
@@ -214,6 +441,16 @@ public class ToaManager
 		return returnList;
 	}
 
+	public static ArrayList<Integer> equipmentItemsToIntegers(ArrayList<EquipmentItemWidget> items)
+	{
+		ArrayList<Integer> returnList = new ArrayList<>();
+		for (Widget widget : items)
+		{
+			returnList.add(widget.getItemId());
+		}
+		return returnList;
+	}
+
 	public int getRoomLevel()
 	{
 		Widget roomLevel = client.getWidget(481, 45);
@@ -225,7 +462,6 @@ public class ToaManager
 	}
 
 
-
 	public int getBossHp()
 	{
 		return client.getVarbitValue(Varbits.BOSS_HEALTH_CURRENT);
@@ -235,5 +471,408 @@ public class ToaManager
 	{
 		return client.getVarbitValue(Varbits.BOSS_HEALTH_MAXIMUM);
 	}
+
+	public boolean isNextToNpc(NPC npc)
+	{
+		if (npc == null)
+		{
+			return false;
+		}
+		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
+		WorldArea npcArea = npc.getWorldArea();
+		for (WorldPoint wp : npcArea.toWorldPointList())
+		{
+			if (wp.distanceTo(playerPoint) == 1 && !npcArea.contains(playerPoint))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public ArrayList<Integer> withdrawNecessaryItems()
+	{
+		ArrayList<Integer> returnList = getAllNecessaryItems();
+		ArrayList<Integer> equipment = equipmentItemsToIntegers((ArrayList<EquipmentItemWidget>) Equipment.search().result());
+		ArrayList<Integer> inventory = itemsToIntegers((ArrayList<Widget>) Inventory.search().result());
+		returnList.removeIf(n -> equipment.contains(n) || inventory.contains(n));
+		return returnList;
+	}
+
+	public void withdrawFromBag(ArrayList<Integer> list)
+	{
+		int bag = Consumables.SUPPLY_BAG;
+		Widget bagWidget = client.getWidget(778, 0);
+
+		// If bag is not open, open it
+		if (bagWidget == null || bagWidget.isHidden())
+		{
+			Widget bagItem = Inventory.search().withId(bag).first().orElse(null);
+			if (bagItem != null)
+			{
+				MousePackets.queueClickPacket();
+				WidgetPackets.queueWidgetAction(bagItem, "Open");
+			}
+			return;
+		}
+		Widget closeButton = client.getWidget(778, 2);
+		Widget bagItems = client.getWidget(778, 5);
+		if (bagItems == null || bagWidget.isHidden())
+		{
+			return;
+		}
+		if (closeButton == null || closeButton.isHidden())
+		{
+			return;
+		}
+		for (Widget w : bagItems.getDynamicChildren())
+		{
+			if (list.contains(w.getItemId()))
+			{
+				list.remove(list.indexOf(w.getItemId()));
+				print("Withdrawing " + w.getName());
+				MousePackets.queueClickPacket();
+				WidgetPackets.queueWidgetAction(w, "Withdraw-1");
+				if (list.isEmpty())
+				{
+					MousePackets.queueClickPacket();
+					WidgetPackets.queueWidgetAction(closeButton, "Close");
+				}
+				return;
+			}
+		}
+		if (list.isEmpty())
+		{
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(closeButton, "Close");
+		}
+	}
+
+	public void withdraw(ArrayList<Integer> items)
+	{
+		int swaps = (int) (3 + (Math.abs(random.nextGaussian() * 1.5)));
+		int counter = 0;
+		for (int item : items)
+		{
+			if (counter == swaps)
+			{
+				return;
+			}
+			if (!BankUtil.contains(item))
+			{
+				continue;
+			}
+			if (item == rangeSetup.arrows && item == ItemID.DRAGON_ARROW)
+			{
+				print("Withdrawing all" + itemManager.getItemComposition(item).getName());
+				BankUtil.withdrawAll(item);
+				counter++;
+			}
+			else
+			{
+				print("Withdrawing " + itemManager.getItemComposition(item).getName());
+				BankUtil.withdrawOne(item);
+				counter++;
+			}
+		}
+	}
+
+	public void bank(ArrayList<Item> items)
+	{
+		int swaps = (int) (3 + (Math.abs(random.nextGaussian() * 1.5)));
+		int counter = 0;
+		for (Item item : items)
+		{
+			if (counter == swaps)
+			{
+				return;
+			}
+			print("Banking " + itemManager.getItemComposition(item.getId()).getName());
+			BankUtil.depositAll(item.getId());
+			counter++;
+		}
+	}
+
+	public void swap(ArrayList<Integer> gearList)
+	{
+		int swaps = (int) (3 + (Math.abs(random.nextGaussian() * 1.5)));
+		int counter = 0;
+		// Equip weapon first
+		for (int i : ToaConstants.WEAPONS)
+		{
+			if (gearList.contains(i))
+			{
+				Widget item = Inventory.search().withId(i).first().orElse(null);
+				if (item != null)
+				{
+					Prayer p = prayWithId(i);
+					Prayers.toggle(p);
+					if (WidgetUtil.hasAction(item, "Wield"))
+					{
+						MousePackets.queueClickPacket();
+						WidgetPackets.queueWidgetAction(item, "Wield");
+						counter++;
+						gearList.remove((Integer) i);
+					}
+					else if (WidgetUtil.hasAction(item, "Wear"))
+					{
+						MousePackets.queueClickPacket();
+						WidgetPackets.queueWidgetAction(item, "Wear");
+						counter++;
+						gearList.remove((Integer) i);
+					}
+				}
+			}
+		}
+		int cape = rangeSetup.cape;
+		if (gearList.contains(cape))
+		{
+			Widget item = Inventory.search().withId(cape).first().orElse(null);
+			if (item != null)
+			{
+				if (WidgetUtil.hasAction(item, "Wear"))
+				{
+					MousePackets.queueClickPacket();
+					WidgetPackets.queueWidgetAction(item, "Wear");
+					counter++;
+					gearList.remove((Integer) cape);
+				}
+			}
+		}
+
+
+		int[] gear = gearList.stream().mapToInt(i -> i).toArray();
+		List<Integer> gearAsList = Arrays.stream(gear).boxed().collect(Collectors.toList());
+		for (Widget item : BankInventory.search().idInList(gearAsList).result())
+		{
+			if (counter == swaps)
+			{
+				return;
+			}
+			if (Bank.isOpen())
+			{
+				MousePackets.queueClickPacket();
+				WidgetPackets.queueWidgetAction(item, "Wield");
+				counter++;
+			}
+			else
+			{
+				if (WidgetUtil.hasAction(item, "Wield"))
+				{
+					MousePackets.queueClickPacket();
+					WidgetPackets.queueWidgetAction(item, "Wield");
+					counter++;
+				}
+				else if (WidgetUtil.hasAction(item, "Wear"))
+				{
+					MousePackets.queueClickPacket();
+					WidgetPackets.queueWidgetAction(item, "Wear");
+					counter++;
+				}
+			}
+		}
+	}
+
+	public boolean isAdrenalineActive()
+	{
+		return client.getVarbitValue(ToaConstants.ADRENALINE) != 0;
+	}
+
+	public boolean isBoosted(Skill skill)
+	{
+		return client.getBoostedSkillLevel(skill) > client.getRealSkillLevel(skill);
+	}
+
+	public boolean hasItem(ArrayList<Integer> items)
+	{
+		ArrayList<Widget> inventory = (ArrayList<Widget>) Inventory.search().result();
+		inventory.addAll(Equipment.search().result());
+		inventory.removeIf(n -> !items.contains(n.getId()));
+		return inventory.size() != 0;
+	}
+
+	public boolean hasAllItems(ArrayList<Integer> items)
+	{
+		items.removeIf(n -> n == 0 || n == -1);
+		ArrayList<Widget> playerItems = (ArrayList<Widget>) Inventory.search().result();
+		playerItems.addAll(Equipment.search().result());
+		ArrayList<Integer> returnList = itemsToIntegers(playerItems);
+		for (int i : items)
+		{
+			if (!returnList.contains(i))
+			{
+				System.out.println("missing ID " + i + ", name: " + itemManager.getItemComposition(i).getName());
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+	public boolean readyToEnterRaid()
+	{
+		return !overall.died && isPrePotted() && hasAllItems(getAllNecessaryItems()) && hasRequiredSupplies();
+	}
+
+	public boolean isDiagonalOf(WorldPoint wp, WorldPoint wp2)
+	{
+		int xDifference = Math.abs(wp.getX() - wp2.getX());
+		int yDifference = Math.abs(wp.getY() - wp2.getY());
+		return yDifference == xDifference;
+	}
+
+	public boolean hasRequiredSupplies()
+	{
+		if (Bank.isOpen())
+		{
+			return BankInventory.search().withId(Consumables.FULL_DOSE_ANTI).result().size() == necessaryAnti
+				&& BankInventory.search().withId(Consumables.FULL_DOSE_SANFEW).result().size() == necessarySanfew
+				&& BankInventory.search().withId(Consumables.FULL_DOSE_BREW).result().size() == necessaryBrew()
+				&& BankInventory.search().withId(Consumables.FULL_DOSE_RESTORE).result().size() == necessaryRestore()
+				&& BankInventory.search().withId(Consumables.FULL_DOSE_SCB).result().size() == necessaryScb
+				&& BankInventory.search().withId(Consumables.FULL_DOSE_STAM).result().size() == necessaryStam;
+		}
+		return Inventory.search().withId(Consumables.FULL_DOSE_ANTI).result().size() == necessaryAnti
+			&& Inventory.search().withId(Consumables.FULL_DOSE_SANFEW).result().size() == necessarySanfew
+			&& Inventory.search().withId(Consumables.FULL_DOSE_BREW).result().size() == necessaryBrew()
+			&& Inventory.search().withId(Consumables.FULL_DOSE_RESTORE).result().size() == necessaryRestore()
+			&& Inventory.search().withId(Consumables.FULL_DOSE_SCB).result().size() == necessaryScb
+			&& Inventory.search().withId(Consumables.FULL_DOSE_STAM).result().size() == necessaryStam;
+	}
+
+	public boolean hasTooManySupplies()
+	{
+		if (Bank.isOpen())
+		{
+			return BankInventory.search().withId(Consumables.FULL_DOSE_ANTI).result().size() > necessaryAnti
+				&& BankInventory.search().withId(Consumables.FULL_DOSE_SANFEW).result().size() > necessarySanfew
+				&& BankInventory.search().withId(Consumables.FULL_DOSE_BREW).result().size() > necessaryBrew()
+				&& BankInventory.search().withId(Consumables.FULL_DOSE_RESTORE).result().size() > necessaryRestore()
+				&& BankInventory.search().withId(Consumables.FULL_DOSE_SCB).result().size() > necessaryScb
+				&& BankInventory.search().withId(Consumables.FULL_DOSE_STAM).result().size() > necessaryStam;
+		}
+		return Inventory.search().withId(Consumables.FULL_DOSE_ANTI).result().size() > necessaryAnti
+			&& Inventory.search().withId(Consumables.FULL_DOSE_SANFEW).result().size() > necessarySanfew
+			&& Inventory.search().withId(Consumables.FULL_DOSE_BREW).result().size() > necessaryBrew()
+			&& Inventory.search().withId(Consumables.FULL_DOSE_RESTORE).result().size() > necessaryRestore()
+			&& Inventory.search().withId(Consumables.FULL_DOSE_SCB).result().size() > necessaryScb
+			&& Inventory.search().withId(Consumables.FULL_DOSE_STAM).result().size() > necessaryStam;
+	}
+
+
+	public ArrayList<Integer> getAllNecessaryItems()
+	{
+		ArrayList<Integer> returnList = new ArrayList<>(meleeSetup.getAllItems());
+		returnList.add(meleeSetup.dds);
+		returnList.add(meleeSetup.bgs);
+		returnList.addAll(rangeSetup.getAllItems());
+		returnList.addAll(mageSetup.getAllItems());
+		// Incase range setup has a tbow or bowfa over the blowpipe
+		if (!returnList.contains(rangeSetup.blowpipe))
+		{
+			returnList.add(rangeSetup.blowpipe);
+		}
+		returnList.removeIf(n -> n == 0 || n == -1);
+		return returnList;
+	}
+
+	public boolean isAntiVenomed()
+	{
+		return Static.getClient().getVarpValue(VarPlayer.POISON) < -36;
+	}
+
+	public int requiredAnti()
+	{
+		return necessaryAnti - Inventory.search().withId(Consumables.FULL_DOSE_ANTI).result().size();
+	}
+
+	public int requiredScb()
+	{
+		return necessaryScb - Inventory.search().withId(Consumables.FULL_DOSE_SCB).result().size();
+	}
+
+	public int requiredStam()
+	{
+		return necessaryStam - Inventory.search().withId(Consumables.FULL_DOSE_STAM).result().size();
+	}
+
+	public int requiredRestore()
+	{
+		return necessaryRestore() - Inventory.search().withId(Consumables.FULL_DOSE_RESTORE).result().size();
+	}
+
+	public int requiredSanfew()
+	{
+		return necessarySanfew - Inventory.search().withId(Consumables.FULL_DOSE_SANFEW).result().size();
+	}
+
+	public int requiredBrew()
+	{
+		return necessaryBrew() - Inventory.search().withId(Consumables.FULL_DOSE_BREW).result().size();
+	}
+
+	public int necessaryBrew()
+	{
+		return config.brewCount();
+	}
+
+	public int necessaryRestore()
+	{
+		ArrayList<Integer> gear = getAllNecessaryItems();
+		gear.removeIf(n -> meleeSetup.getAllItems().contains(n));
+		int restore = 28 - gear.size();
+		restore -= necessaryAnti;
+		restore -= necessaryStam;
+		restore -= necessaryScb;
+		restore -= necessarySanfew;
+		restore -= necessaryBrew();
+		return restore;
+	}
+
+	public boolean isPrePotted()
+	{
+		return isBoosted(Skill.STRENGTH)
+			&& isBoosted(Skill.RANGED)
+			&& (client.getVarbitValue(Varbits.IMBUED_HEART_COOLDOWN) > 0 || isBoosted(Skill.MAGIC))
+			&& isBoosted(Skill.HITPOINTS)
+			&& Movement.isStaminaBoosted();
+	}
+
+	public Prayer prayWithId(int weaponId)
+	{
+		ItemContainer equipped = Static.getClient().getItemContainer(InventoryID.EQUIPMENT);
+		if (equipped != null)
+		{
+			WeaponMap.WeaponStyle style = WeaponMap.StyleMap.getOrDefault(weaponId, WeaponMap.WeaponStyle.MELEE);
+			switch (style.ordinal())
+			{
+				case 0:
+					return Prayer.AUGURY;
+				case 1:
+					return Prayer.RIGOUR;
+				case 2:
+					return Prayer.PIETY;
+			}
+
+			Widget atk = Static.getClient().getWidget(Combat.getAttackStyle().getWidgetInfo());
+			if (atk != null)
+			{
+				String[] actions = atk.getActions();
+				if (actions != null && actions.length == 1)
+				{
+					switch (actions[0])
+					{
+						case "Rapid":
+							return Prayer.RIGOUR;
+						case "Accurate":
+						case "Longrange":
+							return Prayer.AUGURY;
+					}
+				}
+			}
+		}
+		return Prayer.PIETY;
+	}
+
 
 }
