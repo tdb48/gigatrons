@@ -1,10 +1,17 @@
 package com.example.toagigatron.manager;
 
+import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.toagigatron.ReflectBreakHandler;
 import com.example.toagigatron.ToaGigatronConfig;
 import com.example.toagigatron.ToaGigatronPlugin;
 import com.example.toagigatron.model.Overall;
+import com.example.toagigatron.model.Zebak;
+import com.example.toagigatron.model.bossmodel.ZebakJug;
 import com.example.toagigatron.model.constants.Stage;
+import com.example.toagigatron.model.setup.MageSetup;
+import com.example.toagigatron.model.setup.MeleeSetup;
+import com.example.toagigatron.model.setup.RangeSetup;
 import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -63,6 +70,14 @@ public class ToaManager
 	public boolean allowedToBreak = false;
 	private final ToaGigatronPlugin plugin;
 	public ToaGigatronConfig config;
+	@Inject
+	public MageSetup mageSetup;
+	@Inject
+	public RangeSetup rangeSetup;
+	@Inject
+	public MeleeSetup meleeSetup;
+	@Inject
+	public Zebak zebak;
 
 
 	@Inject
@@ -117,6 +132,97 @@ public class ToaManager
 		}
 	}
 
+	public LocalPoint findClosestTile(ArrayList<LocalPoint> possibleTiles, LocalPoint targetPoint)
+	{
+		return possibleTiles.stream().min(Comparator.comparingInt(wp -> wp.distanceTo(targetPoint))).stream().findAny().orElse(null);
+	}
+
+	public WorldPoint findClosestTile(ArrayList<WorldPoint> possibleTiles, WorldPoint targetPoint)
+	{
+		return possibleTiles.stream().min(Comparator.comparingInt(wp -> wp.distanceTo(targetPoint))).stream().findAny().orElse(null);
+	}
+
+	public ArrayList<WorldPoint> lpToWp(ArrayList<LocalPoint> lps)
+	{
+		ArrayList<WorldPoint> returnList = new ArrayList<>();
+		for (LocalPoint lp : lps)
+		{
+			returnList.add(WorldPoint.fromLocal(client, lp));
+		}
+		return returnList;
+	}
+
+	public void initialiseSetups()
+	{
+		mageSetup.setVariables();
+		rangeSetup.setVariables();
+		meleeSetup.setVariables();
+	}
+
+	public boolean hasGearEquipped(ArrayList<Integer> gearList)
+	{
+		for (int i : gearList)
+		{
+			if (Equipment.search().withId(i).first().orElse(null) == null
+				&& Inventory.search().withId(i).first().orElse(null) != null)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean isMissingAnyItems(ArrayList<Integer> items)
+	{
+		ArrayList<Widget> playerItems = (ArrayList<Widget>) Inventory.search().result();
+		playerItems.addAll(Equipment.search().result());
+		ArrayList<Integer> returnList = itemsToIntegers(playerItems);
+		for (int i : items)
+		{
+			if (!returnList.contains(i))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public ZebakJug findClosestNPC(ArrayList<ZebakJug> jugs)
+	{
+		ZebakJug returnObj = null;
+		int distance = Integer.MAX_VALUE;
+		LocalPoint playerLoc = client.getLocalPlayer().getLocalLocation();
+		for (ZebakJug jug : jugs)
+		{
+			LocalPoint lp = jug.jugTile;
+			if (lp.distanceTo(playerLoc) <= distance)
+			{
+				returnObj = jug;
+				distance = lp.distanceTo(playerLoc);
+			}
+		}
+		return returnObj;
+	}
+
+	public static ArrayList<Integer> itemsToIntegers(ArrayList<Widget> items)
+	{
+		ArrayList<Integer> returnList = new ArrayList<>();
+		for (Widget widget : items)
+		{
+			returnList.add(widget.getItemId());
+		}
+		return returnList;
+	}
+
+	public int getRoomLevel()
+	{
+		Widget roomLevel = client.getWidget(481, 45);
+		if (roomLevel == null || roomLevel.isHidden())
+		{
+			return -1;
+		}
+		return Integer.parseInt(roomLevel.getText());
+	}
 
 
 
