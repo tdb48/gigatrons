@@ -1,5 +1,8 @@
 package com.example.toagigatron.model.constants;
 
+import com.example.toagigatron.model.setup.mage.MageWeapon;
+import com.example.toagigatron.model.setup.melee.MeleeWeapon;
+import com.example.toagigatron.model.setup.range.RangeWeapon;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -244,14 +247,14 @@ public class ToaConstants
 	public static final int WARDEN_P2_SKULL_PROJECTILE_ID = 2225;
 	public static final List<Integer> ZEBAK_PHANTOM_RANGED_PROJECTILE_IDS = List.of(2176, 2181, 2177);
 	public static final List<Integer> ZEBAK_PHANTOM_MAGIC_PROJECTILE_IDS = List.of(2178, 2187, 2179);
-//	public static final List<Integer> WEAPONS = List.of(
-//		RangeWeapon.BLOWPIPE.itemId,
-//		RangeWeapon.TWISTED_BOW.itemId,
-//		MeleeWeapon.FANG.itemId,
-//		MeleeWeapon.FANG_KIT.itemId,
-//		MageWeapon.SANG.itemId,
-//		MageWeapon.SWAMP.itemId,
-//		MageWeapon.SHADOW.itemId);
+	public static final List<Integer> WEAPONS = List.of(
+		RangeWeapon.BLOWPIPE.itemId,
+		RangeWeapon.TWISTED_BOW.itemId,
+		MeleeWeapon.FANG.itemId,
+		MeleeWeapon.FANG_KIT.itemId,
+		MageWeapon.SANG.itemId,
+		MageWeapon.SWAMP.itemId,
+		MageWeapon.SHADOW.itemId);
 
 
 	/////////////////////////////////////////////////////////////////

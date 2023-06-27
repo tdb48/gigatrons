@@ -11,7 +11,7 @@ import java.awt.event.KeyEvent;
 
 public class Dialog {
     public static boolean isVisible(Widget widget){
-        return WidgetUtility.isVisible(widget);
+        return WidgetUtil.isVisible(widget);
     }
 
     public static boolean canContinue()
