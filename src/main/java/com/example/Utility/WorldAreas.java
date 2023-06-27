@@ -14,6 +14,15 @@ public class WorldAreas
 			swLocation.getPlane());
 	}
 
+	public static WorldArea createArea(WorldPoint location, int width, int height)
+	{
+		return new WorldArea(location.getX(),
+				location.getY(),
+				width,
+				height,
+				location.getPlane());
+	}
+
 	// TODO
 	public static WorldPoint getCenter(WorldArea area)
 	{
