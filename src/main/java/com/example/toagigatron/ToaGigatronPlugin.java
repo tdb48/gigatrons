@@ -17,6 +17,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
@@ -33,7 +34,7 @@ import javax.inject.Inject;
 public class ToaGigatronPlugin extends Plugin {
 
     @Inject
-    ToaGigatronConfig config;
+    public ToaGigatronConfig config;
     @Inject
     Client client;
     @Inject
@@ -73,7 +74,7 @@ public class ToaGigatronPlugin extends Plugin {
     public void resetAllModels()
     {
 //        this.toaManager.overall.reset();
-//        this.toaManager.initialiseSetups();
+        this.toaManager.initialiseSetups();
 //        this.toaManager.zebak.resetVariables();
 //        this.toaManager.kephri.resetVariables();
 //        this.toaManager.baba.resetVariables();
@@ -83,6 +84,13 @@ public class ToaGigatronPlugin extends Plugin {
 //        this.toaManager.wardens12.resetVariables();
 //        this.toaManager.wardens3.resetVariables();
     }
+
+	@Subscribe
+	public void onConfigChange(ConfigChanged configChanged)
+	{
+		this.toaManager.initialiseSetups();
+	}
+
     private void startState()
     {
         chinBreakHandler.registerPlugin(this);
