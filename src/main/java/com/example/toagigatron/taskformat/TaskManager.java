@@ -7,6 +7,9 @@ import com.google.inject.Injector;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ThreadLocalRandom;
+
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -15,12 +18,19 @@ import org.slf4j.LoggerFactory;
 
 public class TaskManager
 {
+    int tickCounter = 0;
+
+    int randomSleep = 0;
+
+    int randomSleepCounter = 0;
+
+    int previousTick = 0;
     private static final Logger log = LoggerFactory.getLogger(TaskManager.class);
-    private final CopyOnWriteArrayList<com.example.toagigatron.taskformat.Task> tasks = new CopyOnWriteArrayList<>();
-    private final HashMap<com.example.toagigatron.taskformat.Task, com.example.toagigatron.taskformat.TaskDescriptor> descriptorHashMap = new HashMap<>();
+    private final CopyOnWriteArrayList<Task> tasks = new CopyOnWriteArrayList<>();
+    private final HashMap<Task, TaskDescriptor> descriptorHashMap = new HashMap<>();
     private final EventBus eventBus;
     private long lastTaskRun = System.currentTimeMillis();
-    private com.example.toagigatron.taskformat.Task currentTask;
+    private Task currentTask;
 
     @Inject
     public TaskManager(EventBus eventBus)
@@ -32,25 +42,25 @@ public class TaskManager
     {
         for (Class<?> task : tasks)
         {
-            if (!task.isAnnotationPresent(com.example.toagigatron.taskformat.TaskDescriptor.class))
+            if (!task.isAnnotationPresent(TaskDescriptor.class))
             {
                 log.error("Task {} is not annotated with @TaskDescriptor", task.getSimpleName());
                 continue;
             }
-            if (!com.example.toagigatron.taskformat.Task.class.isAssignableFrom(task))
+            if (!Task.class.isAssignableFrom(task))
             {
-                log.error("Task {} is not a subclass of Task", task.getAnnotation(com.example.toagigatron.taskformat.TaskDescriptor.class).name());
+                log.error("Task {} is not a subclass of Task", task.getAnnotation(TaskDescriptor.class).name());
                 continue;
             }
 //			System.out.println("Successfully registering task -> " + task.getAnnotation(com.example.toagigatron.taskformat.TaskDescriptor.class).name());
-            this.registerTask(injector, (Class<? super com.example.toagigatron.taskformat.Task>) task);
+            this.registerTask(injector, (Class<? super Task>) task);
         }
     }
 
-    public void registerTask(Injector injector, Class<? super com.example.toagigatron.taskformat.Task> task)
+    public void registerTask(Injector injector, Class<? super Task> task)
     {
-        com.example.toagigatron.taskformat.Task instance = (com.example.toagigatron.taskformat.Task) injector.getInstance(task);
-        com.example.toagigatron.taskformat.TaskDescriptor descriptor = task.getAnnotation(com.example.toagigatron.taskformat.TaskDescriptor.class);
+        Task instance = (Task) injector.getInstance(task);
+        TaskDescriptor descriptor = task.getAnnotation(TaskDescriptor.class);
         this.registerTask(instance, descriptor);
     }
 
@@ -59,7 +69,7 @@ public class TaskManager
         return this.currentTask == null ? "None" : this.descriptorHashMap.get(this.currentTask).name();
     }
 
-    private void registerTask(com.example.toagigatron.taskformat.Task task, com.example.toagigatron.taskformat.TaskDescriptor descriptor)
+    private void registerTask(Task task, TaskDescriptor descriptor)
     {
         this.tasks.add(task);
         if (descriptor.register())
@@ -76,26 +86,35 @@ public class TaskManager
     }
 
     @Subscribe
-    public void onGameTick(GameTick gameTick)
-    {
-        if (Static.getClient().getLocalPlayer().getPoseAnimation() == 5538)
-        {
+    public void onClientTick(ClientTick event){
+        //If a game tick has not yet passed since our last iteration, return
+        if(tickCounter <= previousTick){
             return;
         }
-        for (com.example.toagigatron.taskformat.Task task : this.tasks)
+        randomSleepCounter++;
+        //If we have not yet slept enough client ticks, return
+        if(randomSleepCounter < randomSleep){
+            return;
+        }
+        randomSleepCounter = 0;
+        previousTick = tickCounter;
+        for (Task task : this.tasks)
         {
+//            System.out.println("Iterating tasks");
             if (task.sleeping())
             {
                 continue;
             }
 
-            com.example.toagigatron.taskformat.TaskDescriptor descriptor = this.descriptorHashMap.get(task);
+            TaskDescriptor descriptor = this.descriptorHashMap.get(task);
             if (descriptor.client() || !task.run())
             {
+//                System.out.println("Not running task -> " + descriptor.name());
                 continue;
             }
 
             this.currentTask = task;
+            //System.out.println("Current task -> " + descriptor.name());
             if (!descriptor.blocking())
             {
                 continue;
@@ -104,23 +123,11 @@ public class TaskManager
         }
     }
 
-    public void loop()
+    @Subscribe
+    public void onGameTick(GameTick gameTick)
     {
-        for (com.example.toagigatron.taskformat.Task task : this.tasks)
-        {
-            TaskDescriptor descriptor = this.descriptorHashMap.get(task);
-            if (!descriptor.client() || System.currentTimeMillis() - this.lastTaskRun < 15L || !task.run())
-            {
-                continue;
-            }
-            this.lastTaskRun = System.currentTimeMillis();
-            System.out.println("Ran gt task: " + task.getClass().getSimpleName());
-            if (!descriptor.blocking())
-            {
-                continue;
-            }
-            break;
-        }
+        tickCounter++;
+        randomSleep = ThreadLocalRandom.current().nextInt(0,  20);
     }
 
     public void stop()
@@ -133,11 +140,6 @@ public class TaskManager
         this.tasks.clear();
         this.descriptorHashMap.clear();
         this.currentTask = null;
-    }
-
-    public boolean canPause()
-    {
-        return this.currentTask == null || this.descriptorHashMap.get(this.currentTask).stoppable();
     }
 
 }
