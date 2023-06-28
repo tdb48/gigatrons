@@ -141,6 +141,8 @@ public class ToaConstants
 	public static final int SE_QUADRANT_GAME_OBJECT = 45869;
 	public static final int SW_QUADRANT_GAME_OBJECT = 45870;
 	public static final int[] blowpipe = new int[]{ItemID.TOXIC_BLOWPIPE, ItemID.TOXIC_BLOWPIPE_EMPTY};
+	public static final int BLOWPIPE_EMPTY = ItemID.TOXIC_BLOWPIPE_EMPTY;
+	public static final int BLOWPIPE_CHARGED = ItemID.TOXIC_BLOWPIPE;
 
 	public static final int NE_QUADRANT_GRAPHIC_OBJECT = 2257;
 	public static final int NW_QUADRANT_GRAPHIC_OBJECT = 2258;
