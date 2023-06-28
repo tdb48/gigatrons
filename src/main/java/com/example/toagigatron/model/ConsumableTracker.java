@@ -3,9 +3,8 @@ package com.example.toagigatron.model;
 
 import com.example.toagigatron.model.constants.Consumables;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.TileItem;
+
+import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -15,6 +14,9 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.PluginManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConsumableTracker
 {
@@ -71,6 +73,8 @@ public class ConsumableTracker
 
 	public int scarabTicks = 0;
 
+	List<Item> inventory = new ArrayList<>();
+
 	@Inject
 	public ConsumableTracker(EventBus eventBus, Client client, PluginManager pluginManager)
 	{
@@ -81,6 +85,7 @@ public class ConsumableTracker
 
 	public void resetConsumables()
 	{
+		inventory = new ArrayList<>();
 		totalRaidBrewDoses = 0;
 		totalRaidRestoreDoses = 0;
 		totalSaltDoses = 0;
@@ -203,20 +208,149 @@ public class ConsumableTracker
 //
 //	}
 
+//	@Subscribe
+//	public void onItemContainerChanged(ItemContainerChanged event)
+//	{
+//		ItemContainer container = event.getItemContainer();
+//		int id = event.getContainerId();
+////		if(id == 810){ //supply bag
+////			System.out.println("JUST OPENED BAG!!");
+////			//justWithdrew = true;
+////		}
+////		int count = 1;
+////		System.out.println("Container Id: " + id);
+////		for(Item item : container.getItems()){
+////			System.out.println("Item " + count + ": " + item.getName());
+////		}
+//	}
+
+
+
+
+//	String name = "";
+//	int id = event.getItemId();
+//		if(!Consumables.isRaidPotion(id)){
+//	return;
+//}
+//		if (event.getChangeType().equals(InventoryChanged.ChangeType.ITEM_ADDED))
+//	{
+//		name = client.getItemComposition(event.getItemId()).getName();
+//		//The item disappeared off the ground and appeared in our inventory, logically we likely picked this up
+//		if (name != null && recentlyDespawned != null && recentlyDespawned.getName().equals(name))
+//		{
+//			//Handle adding doses to our inventory
+//			updateInventoryDoses(id, true);
+//			System.out.println("Updating inventory doses after looting something off the ground");
+//		}
+//		else
+//		{
+//			if (justDrank)
+//			{
+//				justDrank = false;
+//				System.out.println("Item added to bag and we drank,updating inventory doses: " + name);
+//				updateInventoryDoses(id, true);
+//			}
+//			else
+//			{
+//				System.out.println("Item added to bag and we did not just drink or loot an item: " + name);
+//				//this must have come from our bag so decrement the count in bag and add it to count in inventory
+//				updateBagDoses(id, false);
+//				updateInventoryDoses(id, true);
+//			}
+//		}
+//	}
+//		if (event.getChangeType().equals(InventoryChanged.ChangeType.ITEM_REMOVED))
+//	{
+//		previousChange = id;
+//		updateInventoryDoses(id, false);
+//	}
+
+
+
+
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
-	{
-		ItemContainer container = event.getItemContainer();
-		int id = event.getContainerId();
-//		if(id == 810){ //supply bag
-//			System.out.println("JUST OPENED BAG!!");
-//			//justWithdrew = true;
-//		}
-//		int count = 1;
-//		System.out.println("Container Id: " + id);
-//		for(Item item : container.getItems()){
-//			System.out.println("Item " + count + ": " + item.getName());
-//		}
+	public void onItemContainerChanged(ItemContainerChanged event){
+		if(event.getContainerId() != InventoryID.INVENTORY.getId()){
+			return;
+		}
+		if(inventory == null){
+			return;
+		}
+		if(inventory.size() == 0){
+			for(int i = 0; i < 28; i++){
+				inventory.add(event.getItemContainer().getItem(i));
+			}
+			return;
+		}
+		for(int i = 0; i < 28; i++){
+			Item newItem = event.getItemContainer().getItem(i);
+			Item oldItem = inventory.get(i);
+
+			if(oldItem == null && newItem == null)
+			{
+				//inventory.set(i, null);
+				System.out.println("BOTH NULL who cares");
+			}
+			//Both items are not null so we may be adding a new item via sipping a potion or swapping gear, if not then items are unchanged
+			else if(oldItem != null && newItem != null){
+				if(!oldItem.equals(newItem)){
+					inventoryChanged(oldItem.getId(), false);
+					inventoryChanged(newItem.getId(), true);
+					System.out.println("Old item was -> " + oldItem + ", new item is -> " + newItem);
+					inventory.set(i, newItem);
+				} else {
+					System.out.println("Unchanged items at these slots");
+				}
+			}
+			//Old item is null empty inv space) new item is not - adding an item
+			else if(oldItem == null){
+				inventoryChanged(newItem.getId(), true);
+				inventory.set(i, newItem);
+				System.out.println("Old item is null, new item is -> " + newItem);
+			}
+			//Old item is not null new item is null - removing an item
+			else {
+				inventoryChanged(oldItem.getId(), false);
+				inventory.set(i, null);
+				System.out.println("Old item was -> " + oldItem + ", new item is null");
+			}
+		}
+	}
+
+	public void inventoryChanged(int id, boolean added){
+		String name = itemManager.getItemComposition(id).getName();
+		if(!Consumables.isRaidPotion(id)){
+			return;
+		}
+		if(added){
+			//The item disappeared off the ground and appeared in our inventory, logically we likely picked this up
+			if(name != null && recentlyDespawned != null && itemManager.getItemComposition(recentlyDespawned.getId()).getName().equals(name))
+			{
+				//Handle adding doses to our inventory
+				updateInventoryDoses(id, true);
+				System.out.println("Updating inventory doses after looting something off the ground");
+			}
+			else
+			{
+				if (justDrank)
+				{
+					justDrank = false;
+					System.out.println("Item added to bag and we drank,updating inventory doses: " + name);
+					updateInventoryDoses(id, true);
+				}
+				else
+				{
+					System.out.println("Item added to bag and we did not just drink or loot an item: " + name);
+					//this must have come from our bag so decrement the count in bag and add it to count in inventory
+					updateBagDoses(id, false);
+					updateInventoryDoses(id, true);
+				}
+			}
+		} else {
+			previousChange = id;
+			updateInventoryDoses(id, false);
+		}
+
 	}
 
 //	@Subscribe
