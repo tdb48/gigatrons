@@ -7,6 +7,9 @@ import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
+import com.example.toagigatron.overlay.ConsumablesTrackerInfobox;
+import com.example.toagigatron.overlay.ToaGigatronInfoBox;
+import com.example.toagigatron.overlay.ToaGigatronOverlay;
 import com.example.toagigatron.taskformat.TaskManager;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +43,14 @@ public class ToaGigatronPlugin extends Plugin {
     @Inject
     PluginManager pluginManager;
     @Inject
+    ToaGigatronInfoBox toaGigatronInfoBox;
+
+    @Inject
+    ToaGigatronOverlay toaGigatronOverlay;
+
+    @Inject
+    ConsumablesTrackerInfobox consumablesTrackerInfobox;
+    @Inject
     OverlayManager overlayManager;
     @Inject
     private TaskManager manager;
@@ -62,14 +73,22 @@ public class ToaGigatronPlugin extends Plugin {
     @Override
     protected void startUp() throws Exception
     {
+        finishRaid = false;
         stopPlugin = false;
         startState();
+        overlayManager.add(toaGigatronInfoBox);
+        overlayManager.add(toaGigatronOverlay);
+        overlayManager.add(consumablesTrackerInfobox);
     }
     @Override
     protected void shutDown() throws Exception
     {
+        finishRaid = false;
         stopPlugin = false;
         stopState();
+        overlayManager.remove(toaGigatronInfoBox);
+        overlayManager.remove(toaGigatronOverlay);
+        overlayManager.remove(consumablesTrackerInfobox);
     }
     public void resetAllModels()
     {
