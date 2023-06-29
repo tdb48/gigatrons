@@ -12,7 +12,9 @@ import java.util.Comparator;
 @Slf4j
 public class Movement
 {
-
+	public static int getRunEnergy() {
+		return Static.getClient().getEnergy() / 100;
+	}
 	public static void walk(WorldPoint worldPoint)
 	{
 		Client client = Static.getClient();

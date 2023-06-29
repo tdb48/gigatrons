@@ -19,9 +19,7 @@ import com.example.Utility.WidgetUtil;
 import com.example.toagigatron.ReflectBreakHandler;
 import com.example.toagigatron.ToaGigatronConfig;
 import com.example.toagigatron.ToaGigatronPlugin;
-import com.example.toagigatron.model.ConsumableTracker;
-import com.example.toagigatron.model.Overall;
-import com.example.toagigatron.model.Zebak;
+import com.example.toagigatron.model.*;
 import com.example.toagigatron.model.bossmodel.ZebakJug;
 import com.example.toagigatron.model.constants.Consumables;
 import com.example.toagigatron.model.constants.Stage;
@@ -38,18 +36,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import net.runelite.api.NPC;
-import net.runelite.api.Skill;
-import net.runelite.api.Tile;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -90,6 +78,22 @@ public class ToaManager
 	public MeleeSetup meleeSetup;
 	@Inject
 	public Zebak zebak;
+	@Inject
+	public Wardens12 wardens12;
+	@Inject
+	public ChargesTracker chargesTracker;
+	@Inject
+	public Wardens3 wardens3;
+	@Inject
+	public Inside inside;
+	@Inject
+	public Outside outside;
+	@Inject
+	public Kephri kephri;
+	@Inject
+	public Baba baba;
+	@Inject
+	public Akkha akkha;
 
 	public int necessarySanfew = 1;
 	public int necessaryAnti = 0;
@@ -873,6 +877,22 @@ public class ToaManager
 			}
 		}
 		return Prayer.PIETY;
+	}
+
+	public NPC playerInteractingWith()
+	{
+		Player p = client.getLocalPlayer();
+		if (p.getInteracting() == null)
+		{
+			return null;
+		}
+
+		if (p.getInteracting() instanceof NPC)
+		{
+			return (NPC) p.getInteracting();
+		}
+
+		return null;
 	}
 
 
