@@ -36,18 +36,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import net.runelite.api.NPC;
-import net.runelite.api.Skill;
-import net.runelite.api.Tile;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -887,6 +877,22 @@ public class ToaManager
 			}
 		}
 		return Prayer.PIETY;
+	}
+
+	public NPC playerInteractingWith()
+	{
+		Player p = client.getLocalPlayer();
+		if (p.getInteracting() == null)
+		{
+			return null;
+		}
+
+		if (p.getInteracting() instanceof NPC)
+		{
+			return (NPC) p.getInteracting();
+		}
+
+		return null;
 	}
 
 

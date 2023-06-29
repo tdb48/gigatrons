@@ -1,6 +1,10 @@
 package com.example.toagigatron.tasks.baba;
 
-import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.InteractionApi.InventoryInteraction;
+import com.example.Packets.WidgetPackets;
+import com.example.Utility.Combat;
+import com.example.Utility.InventoryUtil;
+import com.example.Utility.Movement;
 import com.example.Utility.Prayers;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
@@ -9,7 +13,6 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import com.google.inject.Inject;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
@@ -47,11 +50,11 @@ public class BabaConsumables extends StagedTask
 
 //		//Combat
 		int[] potentialCombat = Consumables.COMBAT.stream().mapToInt(i -> i).toArray();
-		Item combatPotion = Inventory.getFirst(potentialCombat);
+		Widget combatPotion = InventoryUtil.getFirst(potentialCombat);
 
 		// Poison
 		int[] potentialAnti = Consumables.ANTI.stream().mapToInt(i -> i).toArray();
-		Item poisonPotion = Inventory.getFirst(potentialAnti);
+		Widget poisonPotion = InventoryUtil.getFirst(potentialAnti);
 
 		//Healing
 //		int[] potentialBrew = Consumables.BREW.stream().mapToInt(i -> i).toArray();
@@ -59,7 +62,7 @@ public class BabaConsumables extends StagedTask
 
 		//Stamina
 		int[] potentialStamina = Consumables.STAM.stream().mapToInt(i -> i).toArray();
-		Item staminaPotion = Inventory.getFirst(potentialStamina);
+		Widget staminaPotion = InventoryUtil.getFirst(potentialStamina);
 
 		Widget healingPotion = Consumables.getBrew();
 		Widget prayerRestore = Consumables.getRestore();
@@ -70,7 +73,7 @@ public class BabaConsumables extends StagedTask
 		if (Prayers.getPoints() == 0 && prayerRestore != null)
 		{
 			toaManager.print("Drinking restore");
-			prayerRestore.interact("Drink");
+			InventoryInteraction.useItem(prayerRestore, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -79,7 +82,7 @@ public class BabaConsumables extends StagedTask
 		if (toaManager.baba.shouldTripleBrew && healingPotion != null)
 		{
 			toaManager.print("Drinking brew");
-			healingPotion.interact("Drink");
+			InventoryInteraction.useItem(healingPotion, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -88,7 +91,7 @@ public class BabaConsumables extends StagedTask
 		if ((Prayers.getPoints() <= 5 || client.getBoostedSkillLevel(Skill.STRENGTH) < client.getRealSkillLevel(Skill.STRENGTH)) && prayerRestore != null)
 		{
 			toaManager.print("Drinking restore");
-			prayerRestore.interact("Drink");
+			InventoryInteraction.useItem(prayerRestore, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -97,16 +100,15 @@ public class BabaConsumables extends StagedTask
 		if (Combat.isVenomed() && poisonPotion != null)
 		{
 			toaManager.print("Drinking anti");
-			poisonPotion.interact("Drink");
+			InventoryInteraction.useItem(poisonPotion, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
 		}
-
 		if (Movement.getRunEnergy() <= 5 && staminaPotion != null)
 		{
 			toaManager.print("Drinking stamina");
-			staminaPotion.interact("Drink");
+			InventoryInteraction.useItem(staminaPotion, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -115,7 +117,7 @@ public class BabaConsumables extends StagedTask
 		if (toaManager.getStage().equals(Stage.BABA_BOSS) && client.getBoostedSkillLevel(Skill.STRENGTH) < (client.getRealSkillLevel(Skill.STRENGTH) + 13) && combatPotion != null && combatPotion.getId() != ItemID.SUPER_COMBAT_POTION1)
 		{
 			toaManager.print("Drinking scb");
-			combatPotion.interact("Drink");
+			InventoryInteraction.useItem(combatPotion, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
