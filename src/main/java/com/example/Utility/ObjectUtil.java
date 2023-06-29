@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import net.runelite.api.GameObject;
 import net.runelite.api.Perspective;
 import net.runelite.api.TileObject;
+import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -22,6 +23,16 @@ public class ObjectUtil
 		if (tileObject instanceof GameObject)
 		{
 			return (GameObject) tileObject;
+		}
+		return null;
+	}
+
+	public static WallObject getWallObject(int id)
+	{
+		TileObject tileObject = TileObjects.search().withId(id).first().orElse(null);
+		if (tileObject instanceof WallObject)
+		{
+			return (WallObject) tileObject;
 		}
 		return null;
 	}
