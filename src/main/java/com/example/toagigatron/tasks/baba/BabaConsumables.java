@@ -1,5 +1,7 @@
 package com.example.toagigatron.tasks.baba;
 
+import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.Utility.Prayers;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Consumables;
@@ -11,6 +13,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
+import net.runelite.api.widgets.Widget;
 
 @TaskDescriptor(
 	name = "Baba puzzle consumables",
@@ -58,8 +61,8 @@ public class BabaConsumables extends StagedTask
 		int[] potentialStamina = Consumables.STAM.stream().mapToInt(i -> i).toArray();
 		Item staminaPotion = Inventory.getFirst(potentialStamina);
 
-		Item healingPotion = Consumables.getBrew();
-		Item prayerRestore = Consumables.getRestore();
+		Widget healingPotion = Consumables.getBrew();
+		Widget prayerRestore = Consumables.getRestore();
 
 		NPC playerInteracting = toaManager.playerInteractingWith();
 
