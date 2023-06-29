@@ -46,19 +46,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import net.runelite.api.NPC;
-import net.runelite.api.Player;
-import net.runelite.api.Skill;
-import net.runelite.api.Tile;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -896,6 +885,55 @@ public class ToaManager
 	}
 
 
+	public boolean containsObjectBaba(GameObject[] objects)
+	{
+		for (GameObject object : objects)
+		{
+			if (object != null && object.getId() == ToaConstants.BABA_PUZZLE_POISON)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean findTileGameObject(Client client, List<Integer> itemIDs, WorldPoint wp)
+	{
+		List<Tile> tilesList = new ArrayList<>();
+		Scene scene = client.getScene();
+		Tile[][][] tiles = scene.getTiles();
+		int z = client.getPlane();
+		for (int x = 0; x < 104; ++x)
+		{
+			for (int y = 0; y < 104; ++y)
+			{
+				Tile tile = tiles[z][x][y];
+				if (tile == null)
+				{
+					continue;
+				}
+				tilesList.add(tile);
+			}
+		}
+		for (Tile tile : tilesList)
+		{
+			if (tile.getWorldLocation().equals(wp))
+			{
+				if (tile.getGameObjects() != null)
+				{
+					for (GameObject object : tile.getGameObjects())
+					{
+						if (object != null && itemIDs.contains(object.getId()))
+						{
+							return true;
+						}
+					}
+
+				}
+			}
+		}
+		return false;
+	}
 	public NPC playerInteractingWith()
 	{
 		Player p = client.getLocalPlayer();

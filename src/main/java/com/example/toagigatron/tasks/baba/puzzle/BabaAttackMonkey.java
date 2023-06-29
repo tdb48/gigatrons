@@ -1,27 +1,28 @@
 package com.example.toagigatron.tasks.baba.puzzle;
 
+import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.EthanApiPlugin.Collections.NPCs;
+import com.example.EthanApiPlugin.EthanApiPlugin;
+import com.example.Packets.MousePackets;
+import com.example.Packets.NPCPackets;
+import com.example.Utility.*;
+import com.example.Utility.Prayer;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
-import com.example.toagigatron.model.StagedTask;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
+import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import net.runelite.api.*;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ProjectileSpawned;
+import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.eventbus.Subscribe;
-import net.unethicalite.api.entities.NPCs;
-import net.unethicalite.api.game.Combat;
-import net.unethicalite.api.items.Inventory;
-import net.unethicalite.api.movement.Reachable;
-import net.unethicalite.api.scene.Tiles;
-import net.unethicalite.api.widgets.Prayers;
-
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 @TaskDescriptor(
 	name = "Baba attack monkey",
@@ -40,8 +41,9 @@ public class BabaAttackMonkey extends StagedTask
 		super(toaManager, Stage.BABA_PUZZLE);
 	}
 
+
 	@Subscribe
-	public void onProjectileSpawned(ProjectileSpawned projectileSpawned)
+	public void onProjectileMoved(ProjectileMoved projectileSpawned)
 	{
 		Projectile projectile = projectileSpawned.getProjectile();
 		if (ToaConstants.DARTS.contains(projectile.getId()))
@@ -59,7 +61,7 @@ public class BabaAttackMonkey extends StagedTask
 	public boolean execute()
 	{
 		toaManager.baba.attackPath = null;
-		if (!Inventory.contains("Hammer") || !Inventory.contains("Neutralising potion") || gameTickManager.isTickWaiting())
+		if (Inventory.getItemAmount("Hammer") == 0 || Inventory.getItemAmount("Neutralising potion") == 0 || gameTickManager.isTickWaiting())
 		{
 			return false;
 		}
@@ -70,72 +72,72 @@ public class BabaAttackMonkey extends StagedTask
 		}
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
 
-		NPC shaman = NPCs.getNearest(n -> (
+		NPC shaman = NPCs.search().nearestToPlayer().filter(n ->
 				n.getHealthRatio() != 0
-						&& n.distanceTo(playerPoint) > 0
-						&& n.distanceTo(playerPoint) <= 10
-						&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
-						//&& n.getWorldArea().hasLineOfSightTo(client, playerPoint)
-						&& (n.getName().equals("Baboon Shaman"))));
+				&& n.getWorldLocation().distanceTo(playerPoint) > 0
+				&& n.getWorldLocation().distanceTo(playerPoint) <= 10
+				&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
+				&& n.getName() != null && n.getName().equals("Baboon shaman")).orElse(null);
 
-		NPC nearestOther = NPCs.getNearest(n -> (
-			n.getHealthRatio() != 0
-				&& n.distanceTo(playerPoint) > 0
-					&& n.distanceTo(playerPoint) <= 10
-					&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
-				//&& n.getWorldArea().hasLineOfSightTo(client, playerPoint)
-				&& (n.getName().equals("Baboon Thrower")
-				|| n.getName().equals("Baboon Mage")
-				|| n.getName().equals("Baboon Brawler"))));
-
-		NPC thrall = NPCs.getNearest(n -> (
-			n.getHealthRatio() != 0
-				&& n.getIndex() != lastAttackedIndex
-				&& n.distanceTo(playerPoint) > 0
-					&& n.distanceTo(playerPoint) <= 10
-					&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
-				//&& n.getWorldArea().hasLineOfSightTo(client, playerPoint)
-				&& (n.getName().equals("Baboon Thrall"))));
-
-		ArrayList<NPC> allThralls = (ArrayList<NPC>) NPCs.getAll(n -> (
-			n.getHealthRatio() != 0
-					&& n.distanceTo(playerPoint) > 0
-					&& n.distanceTo(playerPoint) <= 10
-				//&& n.getWorldArea().hasLineOfSightTo(client, playerPoint)
-					&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
-				&& (n.getName().equals("Baboon Thrall"))));
-
-		NPC stinker = NPCs.getNearest(n -> (
-			n.getHealthRatio() != 0
-				&& n.distanceTo(playerPoint) > 0
-					&& n.distanceTo(playerPoint) <= 10
-				//&& n.getWorldArea().hasLineOfSightTo(client, playerPoint)
-					&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
-				&& (n.getName().equals("Cursed Baboon"))));
-
-		NPC ranger = NPCs.getNearest(n -> (
-			n.getHealthRatio() != 0
-				&& n.distanceTo(playerPoint) > 0
-					&& n.distanceTo(playerPoint) <= 10
-				//&& n.getWorldArea().hasLineOfSightTo(client, playerPoint)
-					&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
-				&& (n.getName().equals("Baboon Thrower"))));
-
-		NPC brawler = NPCs.getNearest(n -> (
-			n.getHealthRatio() != 0
-				&& n.distanceTo(playerPoint) > 0
-					&& n.distanceTo(playerPoint) <= 10
-				//&& n.getWorldArea().hasLineOfSightTo(client, playerPoint)
-					&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
-				&& (n.getName().equals("Baboon Brawler"))));
-
-		NPC magician = NPCs.getNearest(n -> (
+		NPC nearestOther = NPCs.search().nearestToPlayer().filter(n ->
 				n.getHealthRatio() != 0
-						&& n.distanceTo(playerPoint) > 0
-						&& n.distanceTo(playerPoint) <= 10
-						//&& n.getWorldArea().hasLineOfSightTo(client, playerPoint)
+						&& n.getWorldLocation().distanceTo(playerPoint) > 0
+						&& n.getWorldLocation().distanceTo(playerPoint) <= 10
 						&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
-						&& (n.getName().equals("Baboon Mage"))));
+						&& n.getName() != null
+						&& (n.getName().equals("Baboon Thrower")
+						|| n.getName().equals("Baboon Mage")
+						|| n.getName().equals("Baboon Brawler"))).orElse(null);
+
+		NPC thrall = NPCs.search().nearestToPlayer().filter(n ->
+				n.getHealthRatio() != 0
+						&& n.getWorldLocation().distanceTo(playerPoint) > 0
+						&& n.getWorldLocation().distanceTo(playerPoint) <= 10
+						&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
+						&& n.getName() != null
+						&& n.getName().equals("Baboon Thrall")).orElse(null);
+
+		ArrayList<NPC> allThralls = (ArrayList<NPC>) NPCs.search().filter(n ->
+				n.getHealthRatio() != 0
+						&& n.getWorldLocation().distanceTo(playerPoint) > 0
+						&& n.getWorldLocation().distanceTo(playerPoint) <= 10
+						&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
+						&& n.getName() != null
+						&& n.getName().equals("Baboon Thrall")).result();
+
+		NPC stinker = NPCs.search().nearestToPlayer().filter(n ->
+				n.getHealthRatio() != 0
+						&& n.getWorldLocation().distanceTo(playerPoint) > 0
+						&& n.getWorldLocation().distanceTo(playerPoint) <= 10
+						&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
+						&& n.getName() != null
+						&& n.getName().equals("Cursed Baboon")).orElse(null);
+
+		NPC ranger = NPCs.search().nearestToPlayer().filter(n ->
+				n.getHealthRatio() != 0
+						&& n.getWorldLocation().distanceTo(playerPoint) > 0
+						&& n.getWorldLocation().distanceTo(playerPoint) <= 10
+						&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
+						&& n.getName() != null
+						&& n.getName().equals("Baboon Thrower")).orElse(null);
+
+		NPC brawler = NPCs.search().nearestToPlayer().filter(n ->
+				n.getHealthRatio() != 0
+						&& n.getWorldLocation().distanceTo(playerPoint) > 0
+						&& n.getWorldLocation().distanceTo(playerPoint) <= 10
+						&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
+						&& n.getName() != null
+						&& n.getName().equals("Baboon Brawler")).orElse(null);
+
+
+		NPC magician = NPCs.search().nearestToPlayer().filter(n ->
+				n.getHealthRatio() != 0
+						&& n.getWorldLocation().distanceTo(playerPoint) > 0
+						&& n.getWorldLocation().distanceTo(playerPoint) <= 10
+						&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
+						&& n.getName() != null
+						&& n.getName().equals("Baboon Mage")).orElse(null);
+
 
 		// Fail safe in the case that we end up with only 1 thrall left and it happens to be the index integer
 		if (allThralls.size() <= 1)
@@ -193,14 +195,17 @@ public class BabaAttackMonkey extends StagedTask
 			return attackWithRange(playerPoint, thrall, false);
 		}
 
-		else if (client.getLocalPlayer().isIdle())
+		else if (Game.isIdle())
 		{
 			WorldPoint breakTile = toaManager.findClosestTile(breakLoSPoints());
 			if (breakTile != null && !playerPoint.equals(breakTile))
 			{
 				toaManager.print("Breaking LoS");
-				toaManager.baba.attackPath = com.example.toagigatron.model.pathing.Movement.getAvoidancePath(breakTile, toaManager.baba.toaCollisionMap, toaManager.baba.getTrueBabaRoom(), toaManager.baba.poisonTiles, new ArrayList<>(), false);
-				toaManager.stepAlong(toaManager.baba.attackPath);
+				HashSet<WorldPoint> dangerTiles = new HashSet<>();
+				dangerTiles.addAll(toaManager.baba.explosionTiles);
+				dangerTiles.addAll(toaManager.baba.poisonTiles);
+				toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(breakTile, dangerTiles);
+				Walker.stepAlong(toaManager.baba.attackPath);
 				return true;
 			}
 		}
@@ -215,10 +220,16 @@ public class BabaAttackMonkey extends StagedTask
 		{
 			return returnList;
 		}
-		WorldPoint nw = toaManager.baba.babaPuzzleStatue.getWorldArea().getCenter().dx(-3).dy(3);
-		WorldPoint ne = toaManager.baba.babaPuzzleStatue.getWorldArea().getCenter().dx(3).dy(3);
-		WorldPoint sw = toaManager.baba.babaPuzzleStatue.getWorldArea().getCenter().dx(-3).dy(-3);
-		WorldPoint se = toaManager.baba.babaPuzzleStatue.getWorldArea().getCenter().dx(3).dy(-3);
+		WorldArea babaPuzzleStatueArea = ObjectUtil.getWorldArea(toaManager.baba.babaPuzzleStatue);
+		if(babaPuzzleStatueArea == null){
+			System.out.println("Baba puzzle statue world area is somehow null");
+			return null;
+		}
+
+		WorldPoint nw = WorldAreas.getCenter(babaPuzzleStatueArea).dx(-3).dy(3);
+		WorldPoint ne = WorldAreas.getCenter(babaPuzzleStatueArea).dx(3).dy(3);
+		WorldPoint sw = WorldAreas.getCenter(babaPuzzleStatueArea).dx(-3).dy(-3);
+		WorldPoint se = WorldAreas.getCenter(babaPuzzleStatueArea).dx(3).dy(-3);
 		returnList.add(nw);
 		returnList.add(ne);
 		returnList.add(sw);
@@ -242,8 +253,11 @@ public class BabaAttackMonkey extends StagedTask
 		}
 		if (playerPoint.distanceTo(targetNPC.getWorldLocation()) > (isStinker ? 6 : 8) && safeTile != null)
 		{
-			toaManager.baba.attackPath = com.example.toagigatron.model.pathing.Movement.getAvoidancePath(safeTile, toaManager.baba.toaCollisionMap, toaManager.baba.getTrueBabaRoom(), toaManager.baba.poisonTiles, new ArrayList<>(), false);
-			toaManager.stepAlong(toaManager.baba.attackPath);
+			HashSet<WorldPoint> dangerTiles = new HashSet<>();
+			dangerTiles.addAll(toaManager.baba.explosionTiles);
+			dangerTiles.addAll(toaManager.baba.poisonTiles);
+			toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(safeTile, dangerTiles);
+			Walker.stepAlong(toaManager.baba.attackPath);
 			return true;
 		}
 		if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().equals(targetNPC))
@@ -253,7 +267,8 @@ public class BabaAttackMonkey extends StagedTask
 		else if (playerPoint.distanceTo(targetNPC.getWorldLocation()) < (isStinker ? 7 : 9))
 		{
 			toaManager.print("Attacking " + targetNPC.getName());
-			targetNPC.interact("Attack");
+			MousePackets.queueClickPacket();
+			NPCPackets.queueNPCAction(targetNPC, "Attack");
 			return true;
 		}
 		return false;
@@ -268,8 +283,11 @@ public class BabaAttackMonkey extends StagedTask
 		}
 		if (playerPoint.distanceTo(targetNPC.getWorldLocation()) > 1 && safeTile != null)
 		{
-			toaManager.baba.attackPath = com.example.toagigatron.model.pathing.Movement.getAvoidancePath(safeTile, toaManager.baba.toaCollisionMap, toaManager.baba.getTrueBabaRoom(), toaManager.baba.poisonTiles, new ArrayList<>(), false);
-			toaManager.stepAlong(toaManager.baba.attackPath);
+			HashSet<WorldPoint> dangerTiles = new HashSet<>();
+			dangerTiles.addAll(toaManager.baba.explosionTiles);
+			dangerTiles.addAll(toaManager.baba.poisonTiles);
+			toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(safeTile, dangerTiles);
+			Walker.stepAlong(toaManager.baba.attackPath);
 			return true;
 		}
 		else if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().equals(targetNPC))
@@ -277,10 +295,11 @@ public class BabaAttackMonkey extends StagedTask
 			return false;
 		}
 		// TODO: change if we are next to it, not if distance is 1
-		else if (playerPoint.distanceTo(targetNPC.getWorldLocation()) == 1)
+		else if (playerPoint.distanceTo(targetNPC.getWorldLocation()) == 1 && !toaManager.isDiagonalOf(playerPoint, targetNPC.getWorldLocation()))
 		{
 			toaManager.print("Attacking " + targetNPC.getName());
-			targetNPC.interact("Attack");
+			MousePackets.queueClickPacket();
+			NPCPackets.queueNPCAction(targetNPC, "Attack");
 			return true;
 		}
 		return false;
@@ -302,8 +321,11 @@ public class BabaAttackMonkey extends StagedTask
 		}
 		else if (playerPoint.distanceTo(targetNPC.getWorldLocation()) > (isStinker ? 4 : 5) && safeTile != null)
 		{
-			toaManager.baba.attackPath = com.example.toagigatron.model.pathing.Movement.getAvoidancePath(safeTile, toaManager.baba.toaCollisionMap, toaManager.baba.getTrueBabaRoom(), toaManager.baba.poisonTiles, new ArrayList<>(), false);
-			toaManager.stepAlong(toaManager.baba.attackPath);
+			HashSet<WorldPoint> dangerTiles = new HashSet<>();
+			dangerTiles.addAll(toaManager.baba.explosionTiles);
+			dangerTiles.addAll(toaManager.baba.poisonTiles);
+			toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(safeTile, dangerTiles);
+			Walker.stepAlong(toaManager.baba.attackPath);
 			return true;
 		}
 		else if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().equals(targetNPC))
@@ -313,7 +335,8 @@ public class BabaAttackMonkey extends StagedTask
 		else if (playerPoint.distanceTo(targetNPC.getWorldLocation()) < (isStinker ? 4 : 6))
 		{
 			toaManager.print("Attacking " + targetNPC.getName());
-			targetNPC.interact("Attack");
+			MousePackets.queueClickPacket();
+			NPCPackets.queueNPCAction(targetNPC, "Attack");
 			return true;
 		}
 		return false;
@@ -322,7 +345,7 @@ public class BabaAttackMonkey extends StagedTask
 	private WorldPoint getSafeAttackTile(WorldPoint target, int maxDistance, boolean melee)
 	{
 		ArrayList<WorldPoint> potentialTiles = new ArrayList<>();
-		WorldArea area = new WorldArea(target.dx(-maxDistance).dy(-maxDistance), target.dx(maxDistance + 1).dy(maxDistance + 1));
+		WorldArea area = WorldAreas.createArea(target.dx(-maxDistance).dy(-maxDistance), target.dx(maxDistance + 1).dy(maxDistance + 1));
 		for (WorldPoint wp : area.toWorldPointList())
 		{
 			if (wp.distanceTo(target) > maxDistance || (melee && isCornerTile(wp, target)))
@@ -337,18 +360,19 @@ public class BabaAttackMonkey extends StagedTask
 				potentialTiles.add(wp);
 			}
 		}
-		return getNearest(potentialTiles, client.getLocalPlayer().getWorldLocation(), toaManager.baba.babaPuzzleStatue.getWorldArea().getCenter());
+		return getNearest(potentialTiles, client.getLocalPlayer().getWorldLocation(), WorldAreas.getCenter(Objects.requireNonNull(ObjectUtil.getWorldArea(toaManager.baba.babaPuzzleStatue))));
 	}
 
 	public void clickOnPlayerTile()
 	{
 		WorldPoint walkPoint = client.getLocalPlayer().getWorldLocation();
-		int sceneX = walkPoint.getX() - client.getBaseX();
-		int sceneY = walkPoint.getY() - client.getBaseY();
-		Point canv = Perspective.localToCanvas(client, LocalPoint.fromScene(sceneX, sceneY), client.getPlane());
-		int x = canv != null ? canv.getX() : -1;
-		int y = canv != null ? canv.getY() : -1;
-		client.interact(0, MenuAction.WALK.getId(), sceneX, sceneY, x, y);
+//		int sceneX = walkPoint.getX() - client.getBaseX();
+//		int sceneY = walkPoint.getY() - client.getBaseY();
+//		Point canv = Perspective.localToCanvas(client, LocalPoint.fromScene(sceneX, sceneY), client.getPlane());
+//		int x = canv != null ? canv.getX() : -1;
+//		int y = canv != null ? canv.getY() : -1;
+		MousePackets.queueClickPacket();
+		Movement.walk(walkPoint);
 	}
 
 	private boolean isCornerTile(WorldPoint wp, WorldPoint ref)

@@ -99,8 +99,11 @@ public class Baba
 	public int puzzleSpecialTickTimer = 0;
 	public boolean touchedPrePathTile = false;
 
+	public List<WorldPoint> attackPath = new ArrayList<>();
+
 	public void resetVariables()
 	{
+		attackPath = new ArrayList<>();
 		currentSpecial = BabaPuzzleSpecial.NULL;
 		babaPuzzleRoom = new ArrayList<>();
 		babaBossRoom = new ArrayList<>();
