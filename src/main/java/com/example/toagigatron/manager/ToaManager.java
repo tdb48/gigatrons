@@ -19,7 +19,17 @@ import com.example.Utility.WidgetUtil;
 import com.example.toagigatron.ReflectBreakHandler;
 import com.example.toagigatron.ToaGigatronConfig;
 import com.example.toagigatron.ToaGigatronPlugin;
-import com.example.toagigatron.model.*;
+import com.example.toagigatron.model.Akkha;
+import com.example.toagigatron.model.Baba;
+import com.example.toagigatron.model.ChargesTracker;
+import com.example.toagigatron.model.ConsumableTracker;
+import com.example.toagigatron.model.Inside;
+import com.example.toagigatron.model.Kephri;
+import com.example.toagigatron.model.Outside;
+import com.example.toagigatron.model.Overall;
+import com.example.toagigatron.model.Wardens12;
+import com.example.toagigatron.model.Wardens3;
+import com.example.toagigatron.model.Zebak;
 import com.example.toagigatron.model.bossmodel.ZebakJug;
 import com.example.toagigatron.model.constants.Consumables;
 import com.example.toagigatron.model.constants.Stage;
@@ -36,8 +46,19 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-
-import net.runelite.api.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
+import net.runelite.api.Skill;
+import net.runelite.api.Tile;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -79,6 +100,11 @@ public class ToaManager
 	@Inject
 	public Zebak zebak;
 	@Inject
+	public Kephri kephri;
+	@Inject
+	public Baba baba;
+	@Inject
+	public Akkha akkha;
 	public Wardens12 wardens12;
 	@Inject
 	public ChargesTracker chargesTracker;
@@ -88,13 +114,6 @@ public class ToaManager
 	public Inside inside;
 	@Inject
 	public Outside outside;
-	@Inject
-	public Kephri kephri;
-	@Inject
-	public Baba baba;
-	@Inject
-	public Akkha akkha;
-
 	public int necessarySanfew = 1;
 	public int necessaryAnti = 0;
 	public int necessaryScb = 1;
@@ -180,6 +199,11 @@ public class ToaManager
 			}
 		}
 		return true;
+	}
+
+	public boolean hasEquipped(int itemId)
+	{
+		return Equipment.search().withId(itemId).first().orElse(null) != null;
 	}
 
 	public static boolean isMissingAnyItems(ArrayList<Integer> items)
@@ -504,6 +528,11 @@ public class ToaManager
 		return returnList;
 	}
 
+	public void withdrawFromBag(int i)
+	{
+		withdrawFromBag((ArrayList<Integer>) List.of(i));
+	}
+
 	public void withdrawFromBag(ArrayList<Integer> list)
 	{
 		int bag = Consumables.SUPPLY_BAG;
@@ -580,6 +609,86 @@ public class ToaManager
 				counter++;
 			}
 		}
+	}
+
+	public void openAndCloseBag()
+	{
+		int bag = Consumables.SUPPLY_BAG;
+		Widget bagWidget = client.getWidget(778, 0);
+
+		if (bagWidget == null || bagWidget.isHidden())
+		{
+			Widget bagItem = Inventory.search().withId(bag).first().orElse(null);
+			if (bagItem != null)
+			{
+				MousePackets.queueClickPacket();
+				WidgetPackets.queueWidgetAction(bagItem, "Open");
+			}
+			return;
+		}
+		Widget closeButton = client.getWidget(778, 2);
+		Widget bagItems = client.getWidget(778, 5);
+		if (bagItems == null || bagWidget.isHidden())
+		{
+			return;
+		}
+		if (closeButton == null || closeButton.isHidden())
+		{
+			return;
+		}
+		int brewCount = 0;
+		int resCount = 0;
+		int ambCount = 0;
+		int saltCount = 0;
+		int adrCount = 0;
+		for (Widget w : bagItems.getDynamicChildren())
+		{
+			int id = w.getItemId();
+			if (!Consumables.isRaidPotion(id))
+			{
+				continue;
+			}
+			String name = itemManager.getItemComposition(id).getName();
+			if (Consumables.RAID_BREW.contains(id))
+			{
+				brewCount += consumableTracker.determineDoses(name);
+				//brewCount++;
+			}
+			else if (Consumables.RAID_RESTORE.contains(id))
+			{
+				resCount += consumableTracker.determineDoses(name);
+				//resCount++;
+			}
+			else if (Consumables.AMBROSIA.contains(id))
+			{
+				ambCount += consumableTracker.determineDoses(name);
+				//ambCount++;
+			}
+			else if (Consumables.SALT.contains(id))
+			{
+				saltCount += consumableTracker.determineDoses(name);
+				//saltCount++;
+			}
+			else if (Consumables.SPEC.contains(id))
+			{
+				adrCount += consumableTracker.determineDoses(name);
+				//adrCount++;
+			}
+		}
+		print("Brew count -> " + brewCount);
+		print("Restore count -> " + resCount);
+		print("Ambrosia count -> " + ambCount);
+		print("Adrenaline count -> " + adrCount);
+		print("Salt count -> " + saltCount);
+
+		consumableTracker.bagRaidBrewDoses = brewCount;
+		consumableTracker.bagRaidRestoreDoses = resCount;
+		consumableTracker.bagAmbrosiaDoses = ambCount;
+		consumableTracker.bagAdrenalineDoses = adrCount;
+		consumableTracker.bagSaltDoses = saltCount;
+		MousePackets.queueClickPacket();
+		WidgetPackets.queueWidgetAction(closeButton, "Close");
+		wardens12.bagOpened = true;
 	}
 
 	public void bank(ArrayList<Item> items)
@@ -781,6 +890,28 @@ public class ToaManager
 		return returnList;
 	}
 
+	public boolean isSaltActive()
+	{
+		return getSaltTick() != 0;
+	}
+
+
+	public NPC playerInteractingWith()
+	{
+		Player p = client.getLocalPlayer();
+		if (p.getInteracting() == null)
+		{
+			return null;
+		}
+
+		if (p.getInteracting() instanceof NPC)
+		{
+			return (NPC) p.getInteracting();
+		}
+
+		return null;
+	}
+
 	public boolean isAntiVenomed()
 	{
 		return Static.getClient().getVarpValue(VarPlayer.POISON) < -36;
@@ -877,22 +1008,6 @@ public class ToaManager
 			}
 		}
 		return Prayer.PIETY;
-	}
-
-	public NPC playerInteractingWith()
-	{
-		Player p = client.getLocalPlayer();
-		if (p.getInteracting() == null)
-		{
-			return null;
-		}
-
-		if (p.getInteracting() instanceof NPC)
-		{
-			return (NPC) p.getInteracting();
-		}
-
-		return null;
 	}
 
 
