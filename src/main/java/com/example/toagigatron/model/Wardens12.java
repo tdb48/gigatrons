@@ -1,6 +1,7 @@
 package com.example.toagigatron.model;
 
 
+import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.Utility.NPCUtil;
 import com.example.Utility.ObjectUtil;
 import com.example.Utility.Reachable;
@@ -323,11 +324,12 @@ public class Wardens12
 		{
 			toaManager.print("Core tick is " + coreTick);
 		}
-		obelisk = NPCUtil.findNearest("Obelisk");
-		warden = NPCUtil.findNearest(
-			ToaConstants.WARDENS_P2_ACTIVE_RANGE_MELEE,
-			ToaConstants.WARDENS_P2_ACTIVE_MAGE_MELEE,
-			ToaConstants.WARDENS_P2_DOWNED);
+		obelisk = NPCs.search().withName("Obelisk").withAction("Attack").first().orElse(null);
+		warden = NPCs.search().idInList(ToaConstants.WARDEN_P2_IDS).withAction("Attack").first().orElse(null);
+//			NPCUtil.findNearest(
+//			ToaConstants.WARDENS_P2_ACTIVE_RANGE_MELEE,
+//			ToaConstants.WARDENS_P2_ACTIVE_MAGE_MELEE,
+//			ToaConstants.WARDENS_P2_DOWNED);
 		if (obeliskTile == null)
 		{
 			obeliskTile = obeliskTile();

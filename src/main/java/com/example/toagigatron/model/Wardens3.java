@@ -1,6 +1,7 @@
 package com.example.toagigatron.model;
 
 
+import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.Utility.NPCUtil;
 import com.example.Utility.Reachable;
 import com.example.Utility.WorldAreas;
@@ -165,7 +166,7 @@ public class Wardens3
 			babaTick--;
 		}
 		skullTick++;
-		warden = NPCUtil.findNearest("Tumeken's Warden");
+		warden = NPCs.search().withName("Tumeken's Warden").withAction("Attack").first().orElse(null);
 		if (warden != null && warden.getAnimation() == ToaConstants.WARDENS_P3_ENRAGED_ANIMATION_ID)
 		{
 			enrage = true;
