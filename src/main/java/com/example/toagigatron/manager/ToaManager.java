@@ -19,9 +19,7 @@ import com.example.Utility.WidgetUtil;
 import com.example.toagigatron.ReflectBreakHandler;
 import com.example.toagigatron.ToaGigatronConfig;
 import com.example.toagigatron.ToaGigatronPlugin;
-import com.example.toagigatron.model.ConsumableTracker;
-import com.example.toagigatron.model.Overall;
-import com.example.toagigatron.model.Zebak;
+import com.example.toagigatron.model.*;
 import com.example.toagigatron.model.bossmodel.ZebakJug;
 import com.example.toagigatron.model.constants.Consumables;
 import com.example.toagigatron.model.constants.Stage;
@@ -90,6 +88,22 @@ public class ToaManager
 	public MeleeSetup meleeSetup;
 	@Inject
 	public Zebak zebak;
+	@Inject
+	public Wardens12 wardens12;
+	@Inject
+	public ChargesTracker chargesTracker;
+	@Inject
+	public Wardens3 wardens3;
+	@Inject
+	public Inside inside;
+	@Inject
+	public Outside outside;
+	@Inject
+	public Kephri kephri;
+	@Inject
+	public Baba baba;
+	@Inject
+	public Akkha akkha;
 
 	public int necessarySanfew = 1;
 	public int necessaryAnti = 0;
