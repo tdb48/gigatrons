@@ -1,6 +1,7 @@
 package com.example.toagigatron.tasks.baba;
 
 import com.example.InteractionApi.InventoryInteraction;
+import com.example.Packets.MousePackets;
 import com.example.Packets.WidgetPackets;
 import com.example.Utility.Combat;
 import com.example.Utility.InventoryUtil;
@@ -73,7 +74,8 @@ public class BabaConsumables extends StagedTask
 		if (Prayers.getPoints() == 0 && prayerRestore != null)
 		{
 			toaManager.print("Drinking restore");
-			InventoryInteraction.useItem(prayerRestore, "Drink");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(prayerRestore, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -82,7 +84,8 @@ public class BabaConsumables extends StagedTask
 		if (toaManager.baba.shouldTripleBrew && healingPotion != null)
 		{
 			toaManager.print("Drinking brew");
-			InventoryInteraction.useItem(healingPotion, "Drink");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(healingPotion, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -91,7 +94,8 @@ public class BabaConsumables extends StagedTask
 		if ((Prayers.getPoints() <= 5 || client.getBoostedSkillLevel(Skill.STRENGTH) < client.getRealSkillLevel(Skill.STRENGTH)) && prayerRestore != null)
 		{
 			toaManager.print("Drinking restore");
-			InventoryInteraction.useItem(prayerRestore, "Drink");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(prayerRestore, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -100,7 +104,8 @@ public class BabaConsumables extends StagedTask
 		if (Combat.isVenomed() && poisonPotion != null)
 		{
 			toaManager.print("Drinking anti");
-			InventoryInteraction.useItem(poisonPotion, "Drink");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(poisonPotion, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -108,7 +113,8 @@ public class BabaConsumables extends StagedTask
 		if (Movement.getRunEnergy() <= 5 && staminaPotion != null)
 		{
 			toaManager.print("Drinking stamina");
-			InventoryInteraction.useItem(staminaPotion, "Drink");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(staminaPotion, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -117,7 +123,8 @@ public class BabaConsumables extends StagedTask
 		if (toaManager.getStage().equals(Stage.BABA_BOSS) && client.getBoostedSkillLevel(Skill.STRENGTH) < (client.getRealSkillLevel(Skill.STRENGTH) + 13) && combatPotion != null && combatPotion.getId() != ItemID.SUPER_COMBAT_POTION1)
 		{
 			toaManager.print("Drinking scb");
-			InventoryInteraction.useItem(combatPotion, "Drink");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(combatPotion, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
