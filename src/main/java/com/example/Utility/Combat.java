@@ -20,6 +20,10 @@ public class Combat
 		return Skills.getLevel(Skill.HITPOINTS) - Skills.getBoostedLevel(Skill.HITPOINTS);
 	}
 
+	public static int getCurrentHealth() {
+		return Skills.getBoostedLevel(Skill.HITPOINTS);
+	}
+
 	public static boolean isPoisoned()
 	{
 		return Static.getClient().getVarpValue(VarPlayer.POISON) > 0;
