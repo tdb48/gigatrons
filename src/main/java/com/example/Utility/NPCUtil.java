@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.runelite.api.NPC;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 
 public class NPCUtil
 {
@@ -55,6 +57,24 @@ public class NPCUtil
 	public static NPC findNearest(String name)
 	{
 		return NPCs.search().withName(name).nearestToPlayer().filter(x -> x.getHealthRatio() != 0).orElse(null);
+	}
+
+	public static NPC findAt(LocalPoint localPoint, int id)
+	{
+		WorldPoint worldPoint = WorldPoint.fromLocal(Static.getClient(), localPoint);
+		return findAt(worldPoint, id);
+	}
+
+	public static NPC findAt(WorldPoint worldPoint, int id)
+	{
+		for (NPC npc : Static.getClient().getNpcs())
+		{
+			if (npc.getId() == id && npc.getWorldLocation().equals(worldPoint))
+			{
+				return npc;
+			}
+		}
+		return null;
 	}
 
 	public static NPC findNearestNpcAliveOrDead(int id)
