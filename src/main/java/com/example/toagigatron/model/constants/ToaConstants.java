@@ -129,6 +129,7 @@ public class ToaConstants
 	public static final int EXIT_KEPHRI = 45337;
 	public static final int KEPHRI_ANCIENT_BUTTON = 45338;
 	public static final int KEPHRI_ANCIENT_TABLET = 45339;
+
 	public static final int KEPHRI_MEMORY_LIGHT_ACTIVATED = 45341;
 	public static final int BANDOS_GODSWORD_SPEC = 7642;
 	//45341
@@ -247,6 +248,10 @@ public class ToaConstants
 	 */
 	public static final int BABA_PHANTOM_ROCKTHROW_ANIMATION_ID = 9743;
 	public static final int WARDEN_P2_SKULL_PROJECTILE_ID = 2225;
+	public static final ArrayList<Integer> WARDEN_P2_IDS = (ArrayList<Integer>) List.of(
+		WARDENS_P2_ACTIVE_RANGE_MELEE,
+		WARDENS_P2_ACTIVE_MAGE_MELEE,
+		WARDENS_P2_DOWNED);
 	public static final List<Integer> ZEBAK_PHANTOM_RANGED_PROJECTILE_IDS = List.of(2176, 2181, 2177);
 	public static final List<Integer> ZEBAK_PHANTOM_MAGIC_PROJECTILE_IDS = List.of(2178, 2187, 2179);
 	public static final List<Integer> WEAPONS = List.of(
