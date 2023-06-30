@@ -348,6 +348,7 @@ public class ToaManager
 		unNecessaryItems.removeIf(n -> getAllNecessaryItems().contains(n.getItemId()));
 		return unNecessaryItems;
 	}
+
 	public void disableOverheadsIfEnabled()
 	{
 		for (Prayer p : ToaConstants.OVERHEAD_PRAYERS)
@@ -503,9 +504,10 @@ public class ToaManager
 	public static ArrayList<Integer> equipmentItemsToIntegers(ArrayList<EquipmentItemWidget> items)
 	{
 		ArrayList<Integer> returnList = new ArrayList<>();
-		for (Widget widget : items)
+		for (EquipmentItemWidget widget : items)
 		{
-			returnList.add(widget.getItemId());
+			System.out.println("printing item id : "  +widget.getEquipmentItemId());
+			returnList.add(widget.getEquipmentItemId());
 		}
 		return returnList;
 	}
@@ -731,7 +733,7 @@ public class ToaManager
 			{
 				return;
 			}
-			print("Banking " + itemManager.getItemComposition(item.getId()).getName());
+			print("Banking " + itemManager.getItemComposition(item.getItemId()).getName());
 			BankUtil.depositAll(item.getItemId());
 			counter++;
 		}
@@ -753,15 +755,31 @@ public class ToaManager
 					Prayers.toggle(p);
 					if (WidgetUtil.hasAction(item, "Wield"))
 					{
-						MousePackets.queueClickPacket();
-						WidgetPackets.queueWidgetAction(item, "Wield");
+						if (Bank.isOpen())
+						{
+							MousePackets.queueClickPacket();
+							WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), item.getIndex());
+						}
+						else
+						{
+							MousePackets.queueClickPacket();
+							WidgetPackets.queueWidgetAction(item, "Wield");
+						}
 						counter++;
 						gearList.remove((Integer) i);
 					}
 					else if (WidgetUtil.hasAction(item, "Wear"))
 					{
-						MousePackets.queueClickPacket();
-						WidgetPackets.queueWidgetAction(item, "Wear");
+						if (Bank.isOpen())
+						{
+							MousePackets.queueClickPacket();
+							WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), item.getIndex());
+						}
+						else
+						{
+							MousePackets.queueClickPacket();
+							WidgetPackets.queueWidgetAction(item, "Wear");
+						}
 						counter++;
 						gearList.remove((Integer) i);
 					}
@@ -776,8 +794,16 @@ public class ToaManager
 			{
 				if (WidgetUtil.hasAction(item, "Wear"))
 				{
-					MousePackets.queueClickPacket();
-					WidgetPackets.queueWidgetAction(item, "Wear");
+					if (Bank.isOpen())
+					{
+						MousePackets.queueClickPacket();
+						WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), item.getIndex());
+					}
+					else
+					{
+						MousePackets.queueClickPacket();
+						WidgetPackets.queueWidgetAction(item, "Wear");
+					}
 					counter++;
 					gearList.remove((Integer) cape);
 				}
@@ -831,7 +857,7 @@ public class ToaManager
 	{
 		ArrayList<Widget> inventory = (ArrayList<Widget>) Inventory.search().result();
 		inventory.addAll(Equipment.search().result());
-		inventory.removeIf(n -> !items.contains(n.getId()));
+		inventory.removeIf(n -> !items.contains(n.getItemId()));
 		return inventory.size() != 0;
 	}
 
@@ -975,6 +1001,7 @@ public class ToaManager
 		}
 		return false;
 	}
+
 	public NPC playerInteractingWith()
 	{
 		Player p = client.getLocalPlayer();

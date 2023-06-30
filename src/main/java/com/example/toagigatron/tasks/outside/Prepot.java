@@ -1,5 +1,6 @@
 package com.example.toagigatron.tasks.outside;
 
+import com.example.EthanApiPlugin.Collections.Bank;
 import com.example.EthanApiPlugin.Collections.TileObjects;
 import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
@@ -32,6 +33,7 @@ public class Prepot extends StagedTask
 	ToaGigatronPlugin plugin;
 
 	GameTickManager gameTickManager;
+
 	@Inject
 	public Prepot(ToaManager toaManager, GameTickManager gameTickManager)
 	{
@@ -58,7 +60,8 @@ public class Prepot extends StagedTask
 		{
 			return false;
 		}
-		if(gameTickManager.isTickWaiting()){
+		if (gameTickManager.isTickWaiting())
+		{
 			return false;
 		}
 		if (!BankUtil.isOpen())
@@ -135,9 +138,16 @@ public class Prepot extends StagedTask
 		else
 		{
 			Widget boost = InventoryUtil.getFirst(item);
-			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId(), boost.getItemId(), boost.getIndex());
-
+			if (Bank.isOpen())
+			{
+				MousePackets.queueClickPacket();
+				WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId(), boost.getItemId(), boost.getIndex());
+			}
+			else
+			{
+				MousePackets.queueClickPacket();
+				WidgetPackets.queueWidgetAction(boost, "Drink");
+			}
 			//boost.interact(9, MenuAction.CC_OP_LOW_PRIORITY.getId(), boost.getSlot(), 983043);
 			toaManager.print("Drinking/eating " + boost.getName());
 			return true;

@@ -38,9 +38,11 @@ public class CheckCharges extends Task
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event){
+	public void onGameTick(GameTick event)
+	{
 		Widget itemWidget = Static.getClient().getWidget(10616869);
-		if(WidgetUtil.isVisible(itemWidget)){
+		if (WidgetUtil.isVisible(itemWidget))
+		{
 			widgetOpened = true;
 		}
 	}
@@ -96,7 +98,8 @@ public class CheckCharges extends Task
 			if (InventoryUtil.contains(ItemID.TOXIC_BLOWPIPE))
 			{
 				Widget bp = InventoryUtil.getFirst(ItemID.TOXIC_BLOWPIPE);
-				if(bp != null){
+				if (bp != null)
+				{
 					MousePackets.queueClickPacket();
 					WidgetPackets.queueWidgetAction(bp, "Check");
 				}
@@ -105,7 +108,8 @@ public class CheckCharges extends Task
 			else if (Equipment.search().withId(ItemID.TOXIC_BLOWPIPE).first().orElse(null) != null)
 			{
 				Widget bp = Equipment.search().withId(ItemID.TOXIC_BLOWPIPE).first().orElse(null);
-				if(bp != null){
+				if (bp != null)
+				{
 					MousePackets.queueClickPacket();
 					WidgetPackets.queueWidgetAction(bp, "Check");
 				}
@@ -122,7 +126,8 @@ public class CheckCharges extends Task
 				if (InventoryUtil.contains(i))
 				{
 					Widget sang = InventoryUtil.getFirst(i);
-					if(sang != null){
+					if (sang != null)
+					{
 						MousePackets.queueClickPacket();
 						WidgetPackets.queueWidgetAction(sang, "Check");
 						widgetOpened = false;
@@ -131,7 +136,8 @@ public class CheckCharges extends Task
 				else if (Equipment.search().withId(i).first().orElse(null) != null)
 				{
 					Widget sang = Equipment.search().withId(i).first().orElse(null);
-					if(sang != null){
+					if (sang != null)
+					{
 						MousePackets.queueClickPacket();
 						WidgetPackets.queueWidgetAction(sang, "Check");
 						widgetOpened = false;

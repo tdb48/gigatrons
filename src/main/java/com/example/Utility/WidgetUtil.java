@@ -18,7 +18,7 @@ public class WidgetUtil
 		}
 		for (String widgetAction : widget.getActions())
 		{
-			if (widgetAction.equalsIgnoreCase(action.toLowerCase()))
+			if (widgetAction != null && widgetAction.equalsIgnoreCase(action.toLowerCase()))
 			{
 				return true;
 			}

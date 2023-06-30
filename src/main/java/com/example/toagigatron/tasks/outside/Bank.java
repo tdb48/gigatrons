@@ -20,6 +20,7 @@ import net.runelite.api.widgets.Widget;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import net.runelite.client.game.ItemManager;
 
 @TaskDescriptor(
 	name = "Banking junk",
@@ -28,6 +29,9 @@ import java.util.ArrayList;
 public class Bank extends StagedTask
 {
 	GameTickManager gameTickManager;
+
+	@Inject
+	ItemManager itemManager;
 	@Inject
 	public Bank(ToaManager toaManager, GameTickManager gameTickManager)
 	{
@@ -54,7 +58,8 @@ public class Bank extends StagedTask
 		{
 			return false;
 		}
-		if(gameTickManager.isTickWaiting()){
+		if (gameTickManager.isTickWaiting())
+		{
 			return false;
 		}
 		if (BankUtil.isOpen())
@@ -121,6 +126,10 @@ public class Bank extends StagedTask
 			}
 			else
 			{
+				for (int i : toaManager.withdrawNecessaryItems())
+				{
+					System.out.println("Withdrawing " + itemManager.getItemComposition(i).getName());
+				}
 				toaManager.print("Withdrawing necessary items");
 				toaManager.withdraw(toaManager.withdrawNecessaryItems());
 				return true;
