@@ -39,11 +39,8 @@ import com.example.toagigatron.model.setup.MageSetup;
 import com.example.toagigatron.model.setup.MeleeSetup;
 import com.example.toagigatron.model.setup.RangeSetup;
 import com.google.inject.Singleton;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 
@@ -753,12 +750,25 @@ public class ToaManager
 				{
 					Prayer p = prayWithId(i);
 					Prayers.toggle(p);
+
+					int slot = 0;
+					ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
+					if(invent != null){
+						for(int j = 0 ; j < 28; j++){
+							if(Objects.requireNonNull(invent.getItem(j)).getId() == item.getItemId()){
+								System.out.println("Item found at slot -> " + j);
+								slot = j;
+								break;
+							}
+						}
+					}
+
 					if (WidgetUtil.hasAction(item, "Wield"))
 					{
 						if (Bank.isOpen())
 						{
 							MousePackets.queueClickPacket();
-							WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), item.getIndex());
+							WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), slot);
 						}
 						else
 						{
@@ -773,7 +783,7 @@ public class ToaManager
 						if (Bank.isOpen())
 						{
 							MousePackets.queueClickPacket();
-							WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), item.getIndex());
+							WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), slot);
 						}
 						else
 						{
@@ -792,12 +802,23 @@ public class ToaManager
 			Widget item = Inventory.search().withId(cape).first().orElse(null);
 			if (item != null)
 			{
+				int slot = 0;
+				ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
+				if(invent != null){
+					for(int j = 0 ; j < 28; j++){
+						if(Objects.requireNonNull(invent.getItem(j)).getId() == item.getItemId()){
+							System.out.println("Item found at slot -> " + j);
+							slot = j;
+							break;
+						}
+					}
+				}
 				if (WidgetUtil.hasAction(item, "Wear"))
 				{
 					if (Bank.isOpen())
 					{
 						MousePackets.queueClickPacket();
-						WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), item.getIndex());
+						WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), slot);
 					}
 					else
 					{
@@ -819,10 +840,21 @@ public class ToaManager
 			{
 				return;
 			}
+			int slot = 0;
+			ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
+			if(invent != null){
+				for(int j = 0 ; j < 28; j++){
+					if(Objects.requireNonNull(invent.getItem(j)).getId() == item.getItemId()){
+						System.out.println("Item found at slot -> " + j);
+						slot = j;
+						break;
+					}
+				}
+			}
 			if (Bank.isOpen())
 			{
 				MousePackets.queueClickPacket();
-				WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), item.getIndex());
+				WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), slot);
 				counter++;
 			}
 			else

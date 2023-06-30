@@ -53,10 +53,11 @@ public class BankUtil
 			if (WidgetUtil.isVisible(tabContainer) && !isTabOpen(index))
 			{
 				Widget tab = tabContainer.getChild(10 + index);
+
 				if (WidgetUtil.isVisible(tab))
 				{
 					MousePackets.queueClickPacket();
-					if (index == 10)
+					if (10+index == 10)
 					{
 						WidgetPackets.queueWidgetAction(tab, "View all items");
 					}
