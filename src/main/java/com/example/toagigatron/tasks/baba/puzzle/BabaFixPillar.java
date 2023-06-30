@@ -1,15 +1,20 @@
 package com.example.toagigatron.tasks.baba.puzzle;
 
+import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.EthanApiPlugin.EthanApiPlugin;
+import com.example.Packets.MousePackets;
+import com.example.Packets.ObjectPackets;
+import com.example.Utility.Walker;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
-import com.example.toagigatron.model.StagedTask;
 import com.example.toagigatron.model.constants.Stage;
+import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import net.runelite.api.coords.WorldPoint;
-import net.unethicalite.api.items.Inventory;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 @TaskDescriptor(
 	name = "Baba fix pillar",
@@ -46,25 +51,26 @@ public class BabaFixPillar extends StagedTask
 //		}
 		if(toaManager.baba.puzzleSpecialTickTimer > 10
 				&& client.getLocalPlayer().isInteracting()
+				&& client.getLocalPlayer().getInteracting().getName() != null
 				&& client.getLocalPlayer().getInteracting().getName().equalsIgnoreCase("baboon shaman")){
 			toaManager.print("Returning false in fix pillar cause im attacking a shaman and have ticks to spare");
 			return false;
 		}
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
-		if (toaManager.baba.targetPillarTiles.contains(playerPoint) && Inventory.contains("Hammer"))
+		if (toaManager.baba.targetPillarTiles.contains(playerPoint) && Inventory.getItemAmount("Hammer") > 0)
 		{
 			toaManager.print("Repairing pillar");
-			toaManager.baba.targetPillar.interact("Repair");
+			MousePackets.queueClickPacket();
+			ObjectPackets.queueObjectAction(toaManager.baba.targetPillar, false, "Repair");
 			gameTickManager.setTickWait(1);
 		}
 		else
 		{
-			toaManager.baba.specialPath = com.example.toagigatron.model.pathing.Movement.getAvoidancePath(toaManager.baba.targetPillarTiles.get(1), toaManager.baba.toaCollisionMap, toaManager.baba.getTrueBabaRoom(), toaManager.baba.poisonTiles, new ArrayList<>(),false);
-			toaManager.stepAlong(toaManager.baba.specialPath);
-
-			//toaManager.baba.specialPath = Movement.getPath(toaManager.baba.targetPillarTiles.get(0), toaManager.baba.toaCollisionMap);
-			//toaManager.stepAlong(toaManager.baba.specialPath);
-			//toaManager.print("Walking to pillar tile at " + toaManager.baba.targetPillarTiles.get(0));
+			HashSet<WorldPoint> dangerTiles = new HashSet<>();
+			dangerTiles.addAll(toaManager.baba.explosionTiles);
+			dangerTiles.addAll(toaManager.baba.poisonTiles);
+			toaManager.baba.specialPath = EthanApiPlugin.pathToGoal(toaManager.baba.targetPillarTiles.get(1), dangerTiles);
+			Walker.stepAlong(toaManager.baba.specialPath);
 		}
 		return true;
 	}

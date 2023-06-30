@@ -1,15 +1,21 @@
 package com.example.toagigatron.tasks.baba.puzzle;
 
+import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.EthanApiPlugin.EthanApiPlugin;
+import com.example.Packets.MousePackets;
+import com.example.Packets.WidgetPackets;
+import com.example.Utility.Walker;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
-import com.example.toagigatron.model.StagedTask;
 import com.example.toagigatron.model.constants.Stage;
+import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import net.runelite.api.coords.WorldPoint;
-import net.unethicalite.api.items.Inventory;
+import net.runelite.api.widgets.Widget;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 @TaskDescriptor(
 	name = "Baba fix vent",
@@ -49,16 +55,24 @@ public class BabaFixVent extends StagedTask
 			return false;
 		}
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
-		if (toaManager.baba.targetVent.getWorldLocation().equals(playerPoint) && Inventory.contains("Neutralising potion"))
+		if (toaManager.baba.targetVent.getWorldLocation().equals(playerPoint) && Inventory.getItemAmount("Neutralising potion") > 0)
 		{
 			toaManager.print("Fixing vent");
-			Inventory.getFirst("Neutralising potion").interact("Pour");
-			gameTickManager.setTickWait(1);
+			Widget potion = Inventory.search().withName("Neutralising potion").first().orElse(null);
+			if(potion != null){
+				MousePackets.queueClickPacket();
+				WidgetPackets.queueWidgetAction(potion, "Pour");
+				gameTickManager.setTickWait(1);
+			}
+
 		}
 		else
 		{
-			toaManager.baba.specialPath = com.example.toagigatron.model.pathing.Movement.getAvoidancePath(toaManager.baba.targetVent.getWorldLocation(), toaManager.baba.toaCollisionMap,toaManager.baba.getTrueBabaRoom(),toaManager.baba.poisonTiles, new ArrayList<>(),false);
-			toaManager.stepAlong(toaManager.baba.specialPath);
+			HashSet<WorldPoint> dangerTiles = new HashSet<>();
+			dangerTiles.addAll(toaManager.baba.explosionTiles);
+			dangerTiles.addAll(toaManager.baba.poisonTiles);
+			toaManager.baba.specialPath = EthanApiPlugin.pathToGoal(toaManager.baba.targetVent.getWorldLocation(), dangerTiles);
+			Walker.stepAlong(toaManager.baba.specialPath);
 
 //			toaManager.baba.specialPath = Movement.getPath(toaManager.baba.targetVent.getWorldLocation(), toaManager.baba.toaCollisionMap);
 //			toaManager.stepAlong(toaManager.baba.specialPath);

@@ -8,6 +8,7 @@ import com.example.Packets.WidgetPackets;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import org.jocl.CL;
 
 import javax.inject.Singleton;
 import java.util.List;
@@ -104,6 +105,23 @@ public class BankUtil
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(bankItem, "Withdraw-1");
 		}
+	}
+
+	public static void depositInventory(){
+		Widget widget = client.getWidget(WidgetInfo.BANK_DEPOSIT_INVENTORY);
+		if(widget != null){
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(widget, "Deposit Inventory");
+		}
+	}
+
+	public static void depositEquipment() {
+		Widget widget = client.getWidget(WidgetInfo.BANK_DEPOSIT_EQUIPMENT);
+		if (widget != null) {
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(widget, "Deposit worn items");
+		}
+
 	}
 
 	public static void depositAll(int id)

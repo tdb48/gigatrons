@@ -108,6 +108,25 @@ public class Dialog {
         canvas.dispatchEvent(released);
     }
 
+    public static void type(String text, boolean sendEnter)
+    {
+        char[] chars = text.toCharArray();
+        for (char c : chars)
+        {
+            type(c);
+        }
+
+        if (sendEnter)
+        {
+            sendEnter();
+        }
+    }
+
+    public static void sendEnter()
+    {
+        type((char) KeyEvent.VK_ENTER);
+    }
+
     public static boolean sleep(long ms)
     {
         if (EthanApiPlugin.getClient().isClientThread())

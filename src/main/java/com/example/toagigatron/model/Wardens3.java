@@ -86,7 +86,7 @@ public class Wardens3
 	}
 
 	@Subscribe
-	public void onHitSplat(HitsplatApplied hitsplatApplied)
+	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
 	{
 		if (client.getLocalPlayer().getAnimation() == ToaConstants.BGS_SPEC_ANIMATION
 			&& warden != null
@@ -241,7 +241,7 @@ public class Wardens3
 	}
 
 	@Subscribe
-	public void onGraphicObjectCreated(GraphicsObjectCreated graphicsObjectCreated)
+	public void onGraphicsObjectCreated(GraphicsObjectCreated graphicsObjectCreated)
 	{
 		GraphicsObject g = graphicsObjectCreated.getGraphicsObject();
 		WorldPoint lightningTile = WorldPoint.fromLocal(client, g.getLocation());

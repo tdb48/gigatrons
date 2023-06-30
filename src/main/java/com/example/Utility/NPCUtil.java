@@ -5,12 +5,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import net.runelite.api.Client;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
 public class NPCUtil
 {
+	static Client client = Static.getClient();
+	public static boolean hasAction(NPC npc, String action){
+		NPCComposition comp = client.getNpcDefinition(npc.getId());
+		for(String s : comp.getActions()){
+			if(s.equals(action)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static NPC findFirst(String name)
 	{
 		return NPCs.search().nameContains(name).result().get(0);

@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
@@ -30,9 +31,8 @@ public class Static
 	@Getter
 	private static ClientThread clientThread;
 
-	@Inject
 	@Getter
-	private static Client client;
+	static Client client = RuneLite.getInjector().getInstance(Client.class);
 
 	@Inject
 	@Getter

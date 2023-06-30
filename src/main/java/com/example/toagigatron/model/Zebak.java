@@ -151,7 +151,7 @@ public class Zebak
 	}
 
 	@Subscribe
-	public void onNPCSpawned(NpcSpawned npcSpawned)
+	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
 		if (Objects.requireNonNull(npc.getName()).equalsIgnoreCase("wave"))
@@ -173,7 +173,7 @@ public class Zebak
 	}
 
 	@Subscribe
-	public void onNPCDespawned(NpcDespawned npcDespawned)
+	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
 		wavesOne.remove(npc);
@@ -930,7 +930,7 @@ public class Zebak
 	}
 
 	@Subscribe
-	public void onHitSplat(HitsplatApplied hitsplatApplied)
+	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
 	{
 		if (hitsplatApplied.getActor().equals(zebakBoss)
 			&& client.getLocalPlayer().getAnimation() == ToaConstants.BGS_SPEC_ANIMATION
@@ -942,7 +942,7 @@ public class Zebak
 	}
 
 	@Subscribe
-	public void onGameObjectDespawn(GameObjectDespawned gameObjectDespawned)
+	public void onGameObjectDespawned(GameObjectDespawned gameObjectDespawned)
 	{
 		WorldPoint refPoint = gameObjectDespawned.getGameObject().getWorldLocation();
 		LocalPoint localRefPoint = gameObjectDespawned.getGameObject().getLocalLocation();
@@ -957,7 +957,7 @@ public class Zebak
 	}
 
 	@Subscribe
-	public void onGameObjectSpawn(GameObjectSpawned gameObjectSpawned)
+	public void onGameObjectSpawned(GameObjectSpawned gameObjectSpawned)
 	{
 		WorldPoint refPoint = gameObjectSpawned.getGameObject().getWorldLocation();
 		LocalPoint localRefPoint = gameObjectSpawned.getGameObject().getLocalLocation();

@@ -1,5 +1,6 @@
 package com.example.toagigatron.model.constants;
 
+import com.example.Utility.Prayer;
 import com.example.toagigatron.model.setup.mage.MageWeapon;
 import com.example.toagigatron.model.setup.melee.MeleeWeapon;
 import com.example.toagigatron.model.setup.range.RangeWeapon;
@@ -7,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.ItemID;
-import net.runelite.api.Prayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 

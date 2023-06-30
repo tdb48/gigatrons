@@ -2,16 +2,32 @@ package com.example.Utility;
 
 import com.example.Packets.MousePackets;
 import com.example.Packets.MovementPackets;
+import com.example.Packets.WidgetPackets;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 
 import java.util.Comparator;
 
 @Slf4j
 public class Movement
 {
+
+	public static boolean isRunEnabled() {
+		return Static.getClient().getVarpValue(173) == 1;
+	}
+	public static void toggleRun() {
+		Widget widget = Static.getClient().getWidget(WidgetInfo.MINIMAP_TOGGLE_RUN_ORB);
+		if (widget != null) {
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(widget, "Toggle Run");
+		}
+
+	}
+
 	public static int getRunEnergy() {
 		return Static.getClient().getEnergy() / 100;
 	}

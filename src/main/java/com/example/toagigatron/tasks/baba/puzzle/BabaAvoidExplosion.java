@@ -1,15 +1,16 @@
 package com.example.toagigatron.tasks.baba.puzzle;
 
+import com.example.Utility.Movement;
+import com.example.Utility.Reachable;
+import com.example.Utility.WorldAreas;
 import com.example.toagigatron.manager.ToaManager;
-import com.example.toagigatron.model.StagedTask;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
+import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import net.runelite.api.GameObject;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-import net.unethicalite.api.movement.Movement;
-import net.unethicalite.api.movement.Reachable;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -42,7 +43,7 @@ public class BabaAvoidExplosion extends StagedTask
 			toaManager.print("No need to dodge explosion");
 			return false;
 		}
-		WorldArea dodgeArea = new WorldArea(playerPoint.dx(-2).dy(-2), playerPoint.dx(3).dy(3));
+		WorldArea dodgeArea = WorldAreas.createArea(playerPoint.dx(-2).dy(-2), playerPoint.dx(3).dy(3));
 		WorldPoint targetPoint = safeTile(dodgeArea.toWorldPointList());
 		if (targetPoint != null)
 		{

@@ -183,7 +183,7 @@ public class Kephri
 	}
 
 	@Subscribe
-	public void NPCSpawned(NpcSpawned npcSpawned)
+	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		if (npcSpawned.getNpc().getName().toLowerCase().contains("arcane scarab"))
 		{
@@ -286,7 +286,7 @@ public class Kephri
 	}
 
 	@Subscribe
-	public void onGraphicsObject(GraphicsObjectCreated graphicsObject)
+	public void onGraphicsObjectCreated(GraphicsObjectCreated graphicsObject)
 	{
 		GraphicsObject object = graphicsObject.getGraphicsObject();
 		if (object.getId() == ToaConstants.KEPHRI_BALL || object.getId() == ToaConstants.KEPHRI_KAMIKAZE)
@@ -311,7 +311,7 @@ public class Kephri
 	}
 
 	@Subscribe
-	public void onChatMessageReceived(ChatMessage chatMessage)
+	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE || chatMessage.getType() == ChatMessageType.SPAM || chatMessage.getType() == ChatMessageType.CONSOLE || chatMessage.getType() == ChatMessageType.ENGINE)
 		{

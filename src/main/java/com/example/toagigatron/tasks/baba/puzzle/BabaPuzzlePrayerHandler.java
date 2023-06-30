@@ -1,18 +1,16 @@
 package com.example.toagigatron.tasks.baba.puzzle;
 
+import com.example.Utility.*;
 import com.example.toagigatron.manager.ToaManager;
-import com.example.toagigatron.model.StagedTask;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.WeaponMap;
+import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
-import net.runelite.api.*;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.NPC;
 import net.runelite.api.widgets.Widget;
-import net.unethicalite.api.entities.NPCs;
-import net.unethicalite.api.game.Combat;
-import net.unethicalite.api.widgets.Prayers;
-import net.unethicalite.api.widgets.Widgets;
-import net.unethicalite.client.Static;
-
 import javax.inject.Inject;
 import java.util.List;
 
@@ -36,14 +34,14 @@ public class BabaPuzzlePrayerHandler extends StagedTask
 			{
 				if (meleeCheck)
 				{
-					if (n.distanceTo(client.getLocalPlayer().getWorldLocation()) <= 1)
+					if (n.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 1)
 					{
 						count++;
 					}
 				}
 				else
 				{
-					if (n.distanceTo(client.getLocalPlayer().getWorldLocation()) <= 5)
+					if (n.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 5)
 					{
 						count++;
 					}
@@ -57,7 +55,7 @@ public class BabaPuzzlePrayerHandler extends StagedTask
 				{
 					if (meleeCheck)
 					{
-						if (n.distanceTo(client.getLocalPlayer().getWorldLocation()) <= 1)
+						if (n.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 1)
 						{
 							count = count + .5;
 						}
@@ -71,10 +69,10 @@ public class BabaPuzzlePrayerHandler extends StagedTask
 	public List<Prayer> getPrayers()
 	{
 		Prayer defensive;
-		List<NPC> allRangers = NPCs.getAll("Baboon Thrower");
-		List<NPC> allMagers = NPCs.getAll("Baboon Mage");
-		List<NPC> allMelees = NPCs.getAll("Baboon Brawler");
-		List<NPC> allThralls = NPCs.getAll("Baboon Thrall");
+		List<NPC> allRangers = NPCUtil.findAll("Baboon Thrower");
+		List<NPC> allMagers = NPCUtil.findAll("Baboon Mage");
+		List<NPC> allMelees = NPCUtil.findAll("Baboon Brawler");
+		List<NPC> allThralls = NPCUtil.findAll("Baboon Thrall");
 		int interactingRanger = interactingCount(allRangers, null, false);
 		int interactingMager = interactingCount(allMagers, null, false);
 		int interactingMelee = interactingCount(allMelees, allThralls, true);
@@ -163,7 +161,7 @@ public class BabaPuzzlePrayerHandler extends StagedTask
 				}
 			}
 
-			Widget atk = Widgets.get(Combat.getAttackStyle().getWidgetInfo());
+			Widget atk = client.getWidget(Combat.getAttackStyle().getWidgetInfo());
 			if (atk != null)
 			{
 				String[] actions = atk.getActions();

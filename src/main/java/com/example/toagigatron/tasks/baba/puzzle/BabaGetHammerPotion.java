@@ -1,15 +1,21 @@
 package com.example.toagigatron.tasks.baba.puzzle;
 
+import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.EthanApiPlugin.Collections.TileObjects;
+import com.example.Packets.MousePackets;
+import com.example.Packets.ObjectPackets;
+import com.example.Packets.WidgetPackets;
+import com.example.Utility.InventoryUtil;
 import com.example.toagigatron.manager.ToaManager;
-import com.example.toagigatron.model.StagedTask;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
+import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import net.runelite.api.GameObject;
 import net.runelite.api.Item;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.queries.GameObjectQuery;
-import net.unethicalite.api.items.Inventory;
+import net.runelite.api.widgets.Widget;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -28,20 +34,21 @@ public class BabaGetHammerPotion extends StagedTask
 
 	public boolean execute()
 	{
-		GameObject exit = new GameObjectQuery().idEquals(ToaConstants.BABA_PUZZLE_EXIT).result(client).first();
+		TileObject exit = TileObjects.search().withId(ToaConstants.BABA_PUZZLE_EXIT).first().orElse(null);
 		if (!toaManager.baba.isPuzzleActive() || exit == null)
 		{
 			return false;
 		}
-		if (Inventory.contains("Hammer") && Inventory.contains("Neutralising potion"))
+		if (InventoryUtil.contains("Hammer") && InventoryUtil.contains("Neutralising potion"))
 		{
 			int offhand = toaManager.meleeSetup.offhand;
-			if (Inventory.isFull() && !Inventory.contains(offhand))
+			if (InventoryUtil.isFull() && !InventoryUtil.contains(offhand))
 			{
-				ArrayList<Item> restores = (ArrayList<Item>) Inventory.getAll("Super restore(4)");
+				ArrayList<Widget> restores = InventoryUtil.getAll("Super restore(4)");
 				if (!restores.isEmpty())
 				{
-					restores.get(0).interact("Drop");
+					MousePackets.queueClickPacket();
+					WidgetPackets.queueWidgetAction(restores.get(0), "Drop");
 					toaManager.print("Dropping restore because inv stuck somehow");
 					return true;
 				}
@@ -51,8 +58,8 @@ public class BabaGetHammerPotion extends StagedTask
 				return false;
 			}
 		}
-		GameObject hammers = new GameObjectQuery().idEquals(ToaConstants.BABA_CRATE_HAMMERS).result(client).nearestTo(exit);
-		GameObject potions = new GameObjectQuery().idEquals(ToaConstants.BABA_CRATE_POTIONS).result(client).nearestTo(exit);
+		TileObject hammers = TileObjects.search().withId(ToaConstants.BABA_CRATE_HAMMERS).first().orElse(null);
+		TileObject potions = TileObjects.search().withId(ToaConstants.BABA_CRATE_POTIONS).first().orElse(null);
 
 		if (hammers == null || potions == null)
 		{
@@ -64,35 +71,39 @@ public class BabaGetHammerPotion extends StagedTask
 		}
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
 		// Drop 2 brews to get a hammer
-		if (!Inventory.contains("Hammer"))
+		if (!InventoryUtil.contains("Hammer"))
 		{
-			if (playerPoint.distanceTo(hammers) > 6 || Inventory.getFreeSlots() >= 2)
+			if (playerPoint.distanceTo(hammers.getWorldLocation()) > 6 || Inventory.getEmptySlots() >= 2)
 			{
-				hammers.interact("Take");
+				MousePackets.queueClickPacket();
+				ObjectPackets.queueObjectAction(hammers, false, "Take");
 				toaManager.print("Taking hammers");
 				return true;
 			}
-			ArrayList<Item> restores = (ArrayList<Item>) Inventory.getAll("Super restore(4)");
+			ArrayList<Widget> restores = InventoryUtil.getAll("Super restore(4)");
 			if (!restores.isEmpty())
 			{
-				restores.get(0).interact("Drop");
+				MousePackets.queueClickPacket();
+				WidgetPackets.queueWidgetAction(restores.get(0), "Drop");
 				toaManager.print("Dropping restores for hammer");
 				return true;
 			}
 		}
 		// Drop 1 restore to get a potion
-		else if (!Inventory.contains("Neutralising potion"))
+		else if (!InventoryUtil.contains("Neutralising potion"))
 		{
-			if (playerPoint.distanceTo(potions) > 6 || Inventory.getFreeSlots() >= 2)
+			if (playerPoint.distanceTo(potions.getWorldLocation()) > 6 || Inventory.getEmptySlots() >= 2)
 			{
-				potions.interact("Take");
+				MousePackets.queueClickPacket();
+				ObjectPackets.queueObjectAction(hammers, false, "Take");
 				toaManager.print("Taking potions");
 				return true;
 			}
-			ArrayList<Item> restores = (ArrayList<Item>) Inventory.getAll("Super restore(4)");
+			ArrayList<Widget> restores = InventoryUtil.getAll("Super restore(4)");
 			if (!restores.isEmpty())
 			{
-				restores.get(0).interact("Drop");
+				MousePackets.queueClickPacket();
+				WidgetPackets.queueWidgetAction(restores.get(0), "Drop");
 				toaManager.print("Dropping restores for neutral pot");
 				return true;
 			}

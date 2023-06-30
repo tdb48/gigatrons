@@ -100,10 +100,11 @@ public class Baba
 	public boolean touchedPrePathTile = false;
 
 	public List<WorldPoint> attackPath = new ArrayList<>();
-
+	public List<WorldPoint> specialPath = new ArrayList<>();
 	public void resetVariables()
 	{
 		attackPath = new ArrayList<>();
+		specialPath = new ArrayList<>();
 		currentSpecial = BabaPuzzleSpecial.NULL;
 		babaPuzzleRoom = new ArrayList<>();
 		babaBossRoom = new ArrayList<>();
@@ -146,7 +147,7 @@ public class Baba
 	}
 
 	@Subscribe
-	public void onHitSplat(HitsplatApplied hitsplatApplied)
+	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
 	{
 		if (hitsplatApplied.getActor().equals(babaBoss)
 			&& client.getLocalPlayer().getAnimation() == ToaConstants.BGS_SPEC_ANIMATION)
@@ -159,7 +160,7 @@ public class Baba
 	}
 
 	@Subscribe
-	public void onProjectileSpawned(ProjectileMoved projectileSpawned)
+	public void onProjectileMoved(ProjectileMoved projectileSpawned)
 	{
 		Projectile p = projectileSpawned.getProjectile();
 		if (p.getId() == ToaConstants.BABA_SARCOPHAGUS_ATTACK_PROJECTILE_ID)
@@ -211,7 +212,7 @@ public class Baba
 
 
 	@Subscribe
-	public void onGraphicsCreated(GraphicsObjectCreated graphicsObjectCreated)
+	public void onGraphicsObjectCreated(GraphicsObjectCreated graphicsObjectCreated)
 	{
 		if (graphicsObjectCreated.getGraphicsObject().getId() != ToaConstants.BABA_SHOCKWAVE_CENTER && graphicsObjectCreated.getGraphicsObject().getId() != ToaConstants.BABA_ROCKFALL_SHADOW)
 		{
@@ -249,7 +250,7 @@ public class Baba
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged gameStateChanged)
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (!gameStateChanged.getGameState().equals(GameState.LOADING))
 		{
@@ -275,7 +276,7 @@ public class Baba
 	}
 
 	@Subscribe
-	public void onNPCDespawn(NpcDespawned npcDespawned)
+	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC deadBoulder = npcDespawned.getNpc();
 		if (deadBoulder.getId() == ToaConstants.WEAK_BOULDER)
@@ -285,7 +286,7 @@ public class Baba
 	}
 
 	@Subscribe
-	public void onNPCSpawned(NpcSpawned npcSpawned)
+	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npcThatSpawned = npcSpawned.getNpc();
 		if (npcThatSpawned.getId() == ToaConstants.WEAK_BOULDER)
@@ -310,7 +311,7 @@ public class Baba
 		}
 		shouldTripleBrew = shouldTripleBrew();
 
-		babaBoss = NPCs.search().nameContains("Ba-Ba").result().get(0);
+		babaBoss = NPCs.search().nameContains("Ba-Ba").first().orElse(null);
 		if (babaEntry != null)
 		{
 			blockTiles = new ArrayList<>();
@@ -685,7 +686,7 @@ public class Baba
 	}
 
 	@Subscribe
-	public void onChatMessageReceived(ChatMessage chatMessage)
+	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE || chatMessage.getType() == ChatMessageType.SPAM || chatMessage.getType() == ChatMessageType.CONSOLE || chatMessage.getType() == ChatMessageType.ENGINE)
 		{

@@ -356,7 +356,7 @@ public class Akkha
 
 
 	@Subscribe
-	public void onGraphicObjectCreated(GraphicsObjectCreated graphicsObjectCreated)
+	public void onGraphicsObjectCreated(GraphicsObjectCreated graphicsObjectCreated)
 	{
 
 		ArrayList<NPC> shadows = (ArrayList<NPC>) NPCUtil.findAll(ToaConstants.SHADOW_AKKHA);

@@ -329,6 +329,47 @@ public class ToaManager
 		}
 	}
 
+	public ArrayList<Widget> getAllUnnecessaryItems()
+	{
+		ArrayList<Widget> unNecessaryItems = (ArrayList<Widget>) Inventory.search().result();
+		if (!isPrePotted())
+		{
+			unNecessaryItems.removeIf(n -> n.getId() == Consumables.PREPOT_SCB);
+			unNecessaryItems.removeIf(n -> n.getId() == Consumables.PREPOT_ANGLER);
+			unNecessaryItems.removeIf(n -> n.getId() == Consumables.PREPOT_SATURATED_HEART);
+			unNecessaryItems.removeIf(n -> n.getId() == Consumables.PREPOT_RANGE);
+			unNecessaryItems.removeIf(n -> n.getId() == Consumables.PREPOT_STAM);
+			unNecessaryItems.removeIf(n -> n.getId() == Consumables.PREPOT_ANTI);
+		}
+		else
+		{
+			unNecessaryItems.removeIf(n -> Consumables.getNecessaryPotions.contains(n.getId()));
+		}
+		unNecessaryItems.removeIf(n -> getAllNecessaryItems().contains(n.getId()));
+		return unNecessaryItems;
+	}
+	public void disableOverheadsIfEnabled()
+	{
+		for (Prayer p : ToaConstants.OVERHEAD_PRAYERS)
+		{
+			if (Prayers.isEnabled(p))
+			{
+				Prayers.toggle(p);
+			}
+		}
+	}
+
+	public void disableOffensiveIfEnabled()
+	{
+		for (Prayer p : ToaConstants.OFFENSIVE_PRAYERS)
+		{
+			if (Prayers.isEnabled(p))
+			{
+				Prayers.toggle(p);
+			}
+		}
+	}
+
 	public List<WorldPoint> findClosestPotentialTiles(
 		WorldPoint currTile, WorldPoint targetTile, List<WorldPoint> tiles,
 		List<Integer> gameObjAvoidIds, List<Integer> groundObjectAvoidIds,
@@ -680,18 +721,18 @@ public class ToaManager
 		wardens12.bagOpened = true;
 	}
 
-	public void bank(ArrayList<Item> items)
+	public void bank(ArrayList<Widget> items)
 	{
 		int swaps = (int) (3 + (Math.abs(random.nextGaussian() * 1.5)));
 		int counter = 0;
-		for (Item item : items)
+		for (Widget item : items)
 		{
 			if (counter == swaps)
 			{
 				return;
 			}
 			print("Banking " + itemManager.getItemComposition(item.getId()).getName());
-			BankUtil.depositAll(item.getId());
+			BankUtil.depositAll(item.getItemId());
 			counter++;
 		}
 	}

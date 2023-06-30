@@ -94,7 +94,7 @@ public class ChargesTracker
 	}
 
 	@Subscribe
-	public void onGameObjectSpawn(GameObjectSpawned gameObjectSpawned)
+	public void onGameObjectSpawned(GameObjectSpawned gameObjectSpawned)
 	{
 		GameObject g = gameObjectSpawned.getGameObject();
 		if (g.getId() == ToaConstants.GROUPING_OBELISK)
@@ -105,7 +105,7 @@ public class ChargesTracker
 	}
 
 	@Subscribe
-	public void onChatMessageReceived(ChatMessage chatMessage)
+	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE || chatMessage.getType() == ChatMessageType.SPAM || chatMessage.getType() == ChatMessageType.CONSOLE || chatMessage.getType() == ChatMessageType.ENGINE)
 		{

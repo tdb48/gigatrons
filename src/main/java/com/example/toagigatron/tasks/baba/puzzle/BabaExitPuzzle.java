@@ -1,16 +1,23 @@
 package com.example.toagigatron.tasks.baba.puzzle;
 
+import com.example.EthanApiPlugin.Collections.ETileItem;
+import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.EthanApiPlugin.Collections.TileItems;
+import com.example.EthanApiPlugin.Collections.TileObjects;
+import com.example.Packets.MousePackets;
+import com.example.Packets.ObjectPackets;
+import com.example.Packets.TileItemPackets;
+import com.example.Utility.Reachable;
+import com.example.Utility.TileItemUtil;
+import com.example.Utility.Tiles;
 import com.example.toagigatron.manager.ToaManager;
-import com.example.toagigatron.model.StagedTask;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
+import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import net.runelite.api.GameObject;
 import net.runelite.api.TileItem;
-import net.runelite.api.queries.GameObjectQuery;
-import net.unethicalite.api.entities.TileItems;
-import net.unethicalite.api.items.Inventory;
-import net.unethicalite.api.movement.Reachable;
+import net.runelite.api.TileObject;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -38,17 +45,20 @@ public class BabaExitPuzzle extends StagedTask
 			toaManager.print("Switching to melee gear");
 			toaManager.swap(toaManager.meleeSetup.getAllItems());
 		}
-		GameObject exit = new GameObjectQuery().idEquals(ToaConstants.BABA_PUZZLE_EXIT).result(client).first();
-		ArrayList<TileItem> tileItems = (ArrayList<TileItem>) TileItems.getAll("Saradomin brew(4)", "Super restore(4)");
-		if (!tileItems.isEmpty() && !Inventory.isFull())
+		TileObject exit = TileObjects.search().withId(ToaConstants.BABA_PUZZLE_EXIT).first().orElse(null);
+		ArrayList<ETileItem> tileItems = TileItemUtil.getAllETileItems("Saradomin brew(4)", "Super restore(4)");
+		if (!tileItems.isEmpty() && Inventory.getEmptySlots() != 0)
 		{
-			tileItems.get(0).interact("Take");
+			MousePackets.queueClickPacket();
+			TileItemPackets.queueTileItemAction(tileItems.get(0), false);
 			return true;
 		}
-		else if (exit != null && Reachable.isInteractable(exit))
+		else if (exit != null && Reachable.isWalkable(exit.getWorldLocation().dx(-1)))
 		{
 			toaManager.print("Exiting baba puzzle");
-			exit.interact("Quick-Enter");
+
+			MousePackets.queueClickPacket();
+			ObjectPackets.queueObjectAction(exit, false,"Quick-Enter");
 			return true;
 		}
 

@@ -11,6 +11,9 @@ import com.example.toagigatron.overlay.ConsumablesTrackerInfobox;
 import com.example.toagigatron.overlay.ToaGigatronInfoBox;
 import com.example.toagigatron.overlay.ToaGigatronOverlay;
 import com.example.toagigatron.taskformat.TaskManager;
+import com.example.toagigatron.tasks.*;
+import com.example.toagigatron.tasks.baba.BabaConsumables;
+import com.example.toagigatron.tasks.baba.puzzle.*;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -63,15 +66,37 @@ public class ToaGigatronPlugin extends Plugin {
     public boolean stopPlugin = false;
     public boolean finishRaid = false;
 
-    //TODO - add the overlays and ToaManager
     @Provides
     ToaGigatronConfig provideConfig(ConfigManager configManager)
     {
         return configManager.getConfig(ToaGigatronConfig.class);
     }
+    protected Class<?>[] tasks() {
+        return new Class[]{
+                BabaPuzzlePrayerHandler.class,
+                BabaFixPillar.class,
+                BabaFixVent.class,
+                BabaAvoidExplosion.class,
+                BabaMoveOffPoison.class,
+                BabaAttackMonkey.class,
+                BabaEnterPuzzle.class,
+                BabaGetHammerPotion.class,
+                BabaConsumables.class,
+                BabaExitPuzzle.class,
+                ProgressStage.class,
+                CheckCharges.class,
+                DisablePrayers.class,
+                DropVial.class,
+                LeaveBossRoom.class,
+                ProgressStage.class,
+                RefillSupplies.class,
+                TakeOffGear.class,
+                ToggleRun.class
+        };
+    }
 
     @Override
-    protected void startUp() throws Exception
+    protected void startUp()
     {
         finishRaid = false;
         stopPlugin = false;
@@ -79,9 +104,30 @@ public class ToaGigatronPlugin extends Plugin {
         overlayManager.add(toaGigatronInfoBox);
         overlayManager.add(toaGigatronOverlay);
         overlayManager.add(consumablesTrackerInfobox);
+        Class<?>[] tasks = this.tasks();
+        this.manager.registerTasks(this.getInjector(), tasks);
+        this.manager.start();
+
+        resetAllModels();
+
+        this.gameTickManager.register();
+        this.toaManager.register();
+//        this.toaManager.chargesTracker.register();
+//        this.toaManager.chargesTracker.register();
+//        this.toaManager.kephri.register();
+        this.toaManager.baba.register();
+//        this.toaManager.akkha.register();
+        this.toaManager.overall.register();
+//        this.toaManager.zebak.register();
+//        this.toaManager.wardens12.register();
+//        this.toaManager.wardens3.register();
+//        this.toaManager.inside.register();
+//        this.toaManager.outside.register();
+//        this.toaManager.consumableTracker.register();
+//        this.toaManager.overall.fullReset();
     }
     @Override
-    protected void shutDown() throws Exception
+    protected void shutDown()
     {
         finishRaid = false;
         stopPlugin = false;
@@ -89,14 +135,33 @@ public class ToaGigatronPlugin extends Plugin {
         overlayManager.remove(toaGigatronInfoBox);
         overlayManager.remove(toaGigatronOverlay);
         overlayManager.remove(consumablesTrackerInfobox);
+        this.manager.stop();
+
+        resetAllModels();
+
+//        this.toaManager.wardens12.unregister();
+//        this.toaManager.wardens3.unregister();
+//        this.toaManager.kephri.unregister();
+        this.toaManager.baba.unregister();
+//        this.toaManager.chargesTracker.reset();
+//        this.toaManager.chargesTracker.unregister();
+//        this.toaManager.akkha.unregister();
+        this.toaManager.overall.unregister();
+        this.toaManager.unregister();
+        this.gameTickManager.unregister();
+//        this.toaManager.zebak.unregister();
+//        this.toaManager.inside.unregister();
+//        this.toaManager.outside.unregister();
+//        this.toaManager.consumableTracker.unregister();
+//        this.toaManager.overall.fullReset();
     }
     public void resetAllModels()
     {
-//        this.toaManager.overall.reset();
+       this.toaManager.overall.reset();
         this.toaManager.initialiseSetups();
 //        this.toaManager.zebak.resetVariables();
 //        this.toaManager.kephri.resetVariables();
-//        this.toaManager.baba.resetVariables();
+        this.toaManager.baba.resetVariables();
 //        this.toaManager.akkha.resetVariables();
 //        this.toaManager.inside.resetVariables();
 //        this.toaManager.outside.resetVariables();
@@ -105,7 +170,7 @@ public class ToaGigatronPlugin extends Plugin {
     }
 
 	@Subscribe
-	public void onConfigChange(ConfigChanged configChanged)
+	public void onConfigChanged(ConfigChanged configChanged)
 	{
 		this.toaManager.initialiseSetups();
 	}
@@ -125,7 +190,7 @@ public class ToaGigatronPlugin extends Plugin {
     }
 
     @Subscribe
-    public void onGameStateChange(GameStateChanged event){
+    public void onGameStateChanged(GameStateChanged event){
         if (event.getGameState().equals(GameState.LOADING)
                 || event.getGameState().equals(GameState.LOGIN_SCREEN))
         {

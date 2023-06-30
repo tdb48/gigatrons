@@ -122,20 +122,20 @@ public class WardensP3PrayerHandler extends StagedTask
 		return false;
 	}
 
-	@Subscribe
-	public void onProjectileSpawned(ProjectileSpawned spawned)
-	{
-		Projectile projectile = spawned.getProjectile();
-		if (projectile.getId() == 2181)
-		{
-			this.defensive = Prayer.PROTECT_FROM_MAGIC;
-		}
-		else if (ToaConstants.ZEBAK_RANGED_PROJECTILE_IDS.contains(spawned.getProjectile().getId()))
-		{
-			this.defensive = Prayer.PROTECT_FROM_MISSILES;
-		}
-
-	}
+//	@Subscribe
+//	public void onProjectileSpawned(ProjectileSpawned spawned)
+//	{
+//		Projectile projectile = spawned.getProjectile();
+//		if (projectile.getId() == 2181)
+//		{
+//			this.defensive = Prayer.PROTECT_FROM_MAGIC;
+//		}
+//		else if (ToaConstants.ZEBAK_RANGED_PROJECTILE_IDS.contains(spawned.getProjectile().getId()))
+//		{
+//			this.defensive = Prayer.PROTECT_FROM_MISSILES;
+//		}
+//
+//	}
 
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned evt)

@@ -17,8 +17,7 @@ public class Prayers
 
 	public static boolean isEnabled(Prayer prayer)
 	{
-		return
-				Static.getClient().getVarbitValue(prayer.getVarbit()) == 1;
+		return Static.getClient().getVarbitValue(prayer.getVarbit()) == 1;
 	}
 
 	public static void toggle(Prayer prayer)

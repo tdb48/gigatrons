@@ -115,7 +115,7 @@ public class Wardens12
 	}
 
 	@Subscribe
-	public void onNPCDespawn(NpcDespawned npcDespawned)
+	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		if (npcDespawned.getNpc().getName().equals("Core"))
 		{
@@ -272,7 +272,7 @@ public class Wardens12
 	}
 
 	@Subscribe
-	public void onGraphicObjectCreated(GraphicsObjectCreated graphicsObjectCreated)
+	public void onGraphicsObjectCreated(GraphicsObjectCreated graphicsObjectCreated)
 	{
 		GraphicsObject g = graphicsObjectCreated.getGraphicsObject();
 		if (g.getId() == ToaConstants.WARDENS_P2_WINDMILL && windMillTick == 0)
@@ -536,7 +536,7 @@ public class Wardens12
 	}
 
 	@Subscribe
-	public void onHitSplat(HitsplatApplied hitsplatApplied)
+	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
 	{
 		if (hitsplatApplied.getActor().equals(obelisk) && toaManager.hasGearEquipped(toaManager.meleeSetup.getAllItemsBgs()))
 		{

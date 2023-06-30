@@ -45,45 +45,45 @@ public class AkkhaAttackBossOrbs extends StagedTask
 			Combat.toggleSpec();
 		}
 		NPC akkha = NPCUtil.findNearest(ToaConstants.FINAL_AKKHA);
+//
+//		// If standing on dangerous tile, or not next to akkha, step along next to boss
+//		if (toaManager.akkha.targetPoint != null && (!playerPoint.equals(toaManager.akkha.targetPoint) || toaManager.akkha.orbTiles.contains(playerPoint)))
+//		{
+//			toaManager.print("Found tile at " + toaManager.worldPointStringVerbose(toaManager.akkha.targetPoint));
+//			toaManager.akkha.finalPhasePath = Movement.getPath(toaManager.akkha.targetPoint, toaManager.akkha.toaCollisionMap);
+//			if (toaManager.akkha.finalPhasePath.isEmpty())
+//			{
+//				toaManager.print("Akkha final path is empty somehow");
+//			}
+//			else
+//			{
+//				toaManager.print("Akkha path is not empty, size -> " + toaManager.akkha.finalPhasePath.size());
+//				int count = 1;
+//				for (WorldPoint wp : toaManager.akkha.finalPhasePath)
+//				{
+//					System.out.println("Tile " + count + ": " + toaManager.worldPointString(wp));
+//					count++;
+//				}
+//			}
+//			//toaManager.print("Before step along old");
+//			System.out.println("Before step along old");
+//			toaManager.stepAlongOld(toaManager.akkha.finalPhasePath);
+//			//toaManager.print("After step along old");
+//			System.out.println("After step along old");
+//			return true;
+//		}
 
-		// If standing on dangerous tile, or not next to akkha, step along next to boss
-		if (toaManager.akkha.targetPoint != null && (!playerPoint.equals(toaManager.akkha.targetPoint) || toaManager.akkha.orbTiles.contains(playerPoint)))
-		{
-			toaManager.print("Found tile at " + toaManager.worldPointStringVerbose(toaManager.akkha.targetPoint));
-			toaManager.akkha.finalPhasePath = Movement.getPath(toaManager.akkha.targetPoint, toaManager.akkha.toaCollisionMap);
-			if (toaManager.akkha.finalPhasePath.isEmpty())
-			{
-				toaManager.print("Akkha final path is empty somehow");
-			}
-			else
-			{
-				toaManager.print("Akkha path is not empty, size -> " + toaManager.akkha.finalPhasePath.size());
-				int count = 1;
-				for (WorldPoint wp : toaManager.akkha.finalPhasePath)
-				{
-					System.out.println("Tile " + count + ": " + toaManager.worldPointString(wp));
-					count++;
-				}
-			}
-			//toaManager.print("Before step along old");
-			System.out.println("Before step along old");
-			toaManager.stepAlongOld(toaManager.akkha.finalPhasePath);
-			//toaManager.print("After step along old");
-			System.out.println("After step along old");
-			return true;
-		}
-
-		// Return if already attacking akkha
-		if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().equals(akkha))
-		{
-			toaManager.print("already attacking");
-			return false;
-		}
-		else
-		{
-			toaManager.print("attacking last akkha");
-			akkha.interact("Attack");
-		}
+//		// Return if already attacking akkha
+//		if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().equals(akkha))
+//		{
+//			toaManager.print("already attacking");
+//			return false;
+//		}
+//		else
+//		{
+//			toaManager.print("attacking last akkha");
+//			akkha.interact("Attack");
+//		}
 
 		return true;
 	}
