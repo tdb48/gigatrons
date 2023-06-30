@@ -13,7 +13,21 @@ import com.example.toagigatron.overlay.ToaGigatronOverlay;
 import com.example.toagigatron.taskformat.TaskManager;
 import com.example.toagigatron.tasks.*;
 import com.example.toagigatron.tasks.baba.BabaConsumables;
+import com.example.toagigatron.tasks.baba.boss.BabaAttackBoss;
+import com.example.toagigatron.tasks.baba.boss.BabaDodgeSpecial;
+import com.example.toagigatron.tasks.baba.boss.BabaEnterBoss;
+import com.example.toagigatron.tasks.baba.boss.BabaHitBoulder;
+import com.example.toagigatron.tasks.baba.boss.BabaPrayerHandler;
 import com.example.toagigatron.tasks.baba.puzzle.*;
+import com.example.toagigatron.tasks.outside.Bank;
+import com.example.toagigatron.tasks.outside.ClaimDeath;
+import com.example.toagigatron.tasks.outside.ClaimLootOutside;
+import com.example.toagigatron.tasks.outside.CreateParty;
+import com.example.toagigatron.tasks.outside.EnterRaid;
+import com.example.toagigatron.tasks.outside.GetSupplies;
+import com.example.toagigatron.tasks.outside.PickupPet;
+import com.example.toagigatron.tasks.outside.Prepot;
+import com.example.toagigatron.tasks.outside.RechargeItems;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -73,25 +87,40 @@ public class ToaGigatronPlugin extends Plugin {
     }
     protected Class<?>[] tasks() {
         return new Class[]{
-                BabaPuzzlePrayerHandler.class,
-                BabaFixPillar.class,
-                BabaFixVent.class,
-                BabaAvoidExplosion.class,
-                BabaMoveOffPoison.class,
-                BabaAttackMonkey.class,
-                BabaEnterPuzzle.class,
-                BabaGetHammerPotion.class,
-                BabaConsumables.class,
-                BabaExitPuzzle.class,
-                ProgressStage.class,
-                CheckCharges.class,
-                DisablePrayers.class,
-                DropVial.class,
-                LeaveBossRoom.class,
-                ProgressStage.class,
-                RefillSupplies.class,
-                TakeOffGear.class,
-                ToggleRun.class
+			BabaPuzzlePrayerHandler.class,
+			BabaFixPillar.class,
+			BabaFixVent.class,
+			BabaAvoidExplosion.class,
+			BabaMoveOffPoison.class,
+			BabaAttackMonkey.class,
+			BabaEnterPuzzle.class,
+			BabaGetHammerPotion.class,
+			BabaConsumables.class,
+			BabaExitPuzzle.class,
+			ProgressStage.class,
+			CheckCharges.class,
+			DisablePrayers.class,
+			DropVial.class,
+			LeaveBossRoom.class,
+			ProgressStage.class,
+			RefillSupplies.class,
+			TakeOffGear.class,
+			ToggleRun.class,
+			Bank.class,
+			ClaimDeath.class,
+			ClaimLootOutside.class,
+			CreateParty.class,
+			EnterRaid.class,
+			GetSupplies.class,
+			PickupPet.class,
+			Prepot.class,
+			RechargeItems.class,
+			BabaAttackBoss.class,
+			BabaAttackMonkey.class,
+			BabaDodgeSpecial.class,
+			BabaEnterBoss.class,
+			BabaHitBoulder.class,
+			BabaPrayerHandler.class
         };
     }
 
@@ -121,9 +150,9 @@ public class ToaGigatronPlugin extends Plugin {
 //        this.toaManager.wardens12.register();
 //        this.toaManager.wardens3.register();
 //        this.toaManager.inside.register();
-//        this.toaManager.outside.register();
-//        this.toaManager.consumableTracker.register();
-//        this.toaManager.overall.fullReset();
+        this.toaManager.outside.register();
+        this.toaManager.consumableTracker.register();
+        this.toaManager.overall.fullReset();
     }
     @Override
     protected void shutDown()
@@ -150,9 +179,9 @@ public class ToaGigatronPlugin extends Plugin {
         this.gameTickManager.unregister();
 //        this.toaManager.zebak.unregister();
 //        this.toaManager.inside.unregister();
-//        this.toaManager.outside.unregister();
-//        this.toaManager.consumableTracker.unregister();
-//        this.toaManager.overall.fullReset();
+        this.toaManager.outside.unregister();
+        this.toaManager.consumableTracker.unregister();
+        this.toaManager.overall.fullReset();
     }
     public void resetAllModels()
     {
@@ -162,8 +191,8 @@ public class ToaGigatronPlugin extends Plugin {
 //        this.toaManager.kephri.resetVariables();
         this.toaManager.baba.resetVariables();
 //        this.toaManager.akkha.resetVariables();
-//        this.toaManager.inside.resetVariables();
-//        this.toaManager.outside.resetVariables();
+        this.toaManager.inside.resetVariables();
+        this.toaManager.outside.resetVariables();
 //        this.toaManager.wardens12.resetVariables();
 //        this.toaManager.wardens3.resetVariables();
     }
