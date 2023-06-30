@@ -334,18 +334,18 @@ public class ToaManager
 		ArrayList<Widget> unNecessaryItems = (ArrayList<Widget>) Inventory.search().result();
 		if (!isPrePotted())
 		{
-			unNecessaryItems.removeIf(n -> n.getId() == Consumables.PREPOT_SCB);
-			unNecessaryItems.removeIf(n -> n.getId() == Consumables.PREPOT_ANGLER);
-			unNecessaryItems.removeIf(n -> n.getId() == Consumables.PREPOT_SATURATED_HEART);
-			unNecessaryItems.removeIf(n -> n.getId() == Consumables.PREPOT_RANGE);
-			unNecessaryItems.removeIf(n -> n.getId() == Consumables.PREPOT_STAM);
-			unNecessaryItems.removeIf(n -> n.getId() == Consumables.PREPOT_ANTI);
+			unNecessaryItems.removeIf(n -> n.getItemId() == Consumables.PREPOT_SCB);
+			unNecessaryItems.removeIf(n -> n.getItemId() == Consumables.PREPOT_ANGLER);
+			unNecessaryItems.removeIf(n -> n.getItemId() == Consumables.PREPOT_SATURATED_HEART);
+			unNecessaryItems.removeIf(n -> n.getItemId() == Consumables.PREPOT_RANGE);
+			unNecessaryItems.removeIf(n -> n.getItemId() == Consumables.PREPOT_STAM);
+			unNecessaryItems.removeIf(n -> n.getItemId() == Consumables.PREPOT_ANTI);
 		}
 		else
 		{
-			unNecessaryItems.removeIf(n -> Consumables.getNecessaryPotions.contains(n.getId()));
+			unNecessaryItems.removeIf(n -> Consumables.getNecessaryPotions.contains(n.getItemId()));
 		}
-		unNecessaryItems.removeIf(n -> getAllNecessaryItems().contains(n.getId()));
+		unNecessaryItems.removeIf(n -> getAllNecessaryItems().contains(n.getItemId()));
 		return unNecessaryItems;
 	}
 	public void disableOverheadsIfEnabled()
