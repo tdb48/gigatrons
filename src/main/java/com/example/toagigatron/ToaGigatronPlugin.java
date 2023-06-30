@@ -112,8 +112,7 @@ public class ToaGigatronPlugin extends Plugin {
 
         this.gameTickManager.register();
         this.toaManager.register();
-//        this.toaManager.chargesTracker.register();
-//        this.toaManager.chargesTracker.register();
+        this.toaManager.chargesTracker.register();
 //        this.toaManager.kephri.register();
         this.toaManager.baba.register();
 //        this.toaManager.akkha.register();
@@ -143,8 +142,8 @@ public class ToaGigatronPlugin extends Plugin {
 //        this.toaManager.wardens3.unregister();
 //        this.toaManager.kephri.unregister();
         this.toaManager.baba.unregister();
-//        this.toaManager.chargesTracker.reset();
-//        this.toaManager.chargesTracker.unregister();
+        this.toaManager.chargesTracker.reset();
+        this.toaManager.chargesTracker.unregister();
 //        this.toaManager.akkha.unregister();
         this.toaManager.overall.unregister();
         this.toaManager.unregister();
