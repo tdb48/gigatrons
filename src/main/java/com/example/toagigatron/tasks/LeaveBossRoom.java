@@ -79,7 +79,7 @@ public class LeaveBossRoom extends Task
 	}
 
 	@Subscribe
-	public void onNPCSpawned(NpcSpawned npcSpawned)
+	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC spawned = npcSpawned.getNpc();
 		if (spawned.getName() != null && spawned.getName().equalsIgnoreCase("osmumten"))
