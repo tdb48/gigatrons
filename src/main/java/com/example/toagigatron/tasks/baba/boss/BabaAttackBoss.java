@@ -1,20 +1,32 @@
 package com.example.toagigatron.tasks.baba.boss;
 
+import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.Packets.MousePackets;
+import com.example.Packets.MovementPackets;
+import com.example.Packets.NPCPackets;
+import com.example.Packets.ObjectPackets;
+import com.example.Packets.WidgetPackets;
+import com.example.Utility.Combat;
+import com.example.Utility.InventoryUtil;
+import com.example.Utility.Movement;
+import com.example.Utility.NPCUtil;
+import com.example.Utility.ObjectUtil;
+import com.example.Utility.Reachable;
+import com.example.Utility.Static;
+import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
-import com.example.toagigatron.model.StagedTask;
 import com.example.toagigatron.model.constants.Consumables;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
+import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import net.runelite.api.Item;
 import net.runelite.api.NPC;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
-import net.unethicalite.api.entities.NPCs;
-import net.unethicalite.api.game.Combat;
-import net.unethicalite.api.items.Inventory;
 
 import javax.inject.Inject;
+import net.runelite.api.widgets.Widget;
 
 @TaskDescriptor(
 	name = "Baba attack boss",
@@ -28,19 +40,21 @@ public class BabaAttackBoss extends StagedTask
 		super(toaManager, Stage.BABA_BOSS);
 	}
 
-	private boolean somethingHappening(){
+	private boolean somethingHappening()
+	{
 		return toaManager.baba.rockfallTick > 0 ||
-				toaManager.baba.ceilingTick > 0 ||
-				toaManager.baba.shockwaveTick > 0 ||
-				toaManager.baba.closeToProccing();
+			toaManager.baba.ceilingTick > 0 ||
+			toaManager.baba.shockwaveTick > 0 ||
+			toaManager.baba.closeToProccing();
 	}
+
 	public boolean execute()
 	{
-		NPC weakBoulder = NPCs.getNearest(ToaConstants.WEAK_BOULDER);
+		NPC weakBoulder = NPCUtil.findNearest(ToaConstants.WEAK_BOULDER);
 		if (toaManager.baba.babaBoss == null
 			|| (!toaManager.isNextToNpc(toaManager.baba.babaBoss) &&
-				somethingHappening() &&
-				client.getVarbitValue(Varbits.BOSS_HEALTH_CURRENT) < client.getVarbitValue(Varbits.BOSS_HEALTH_MAXIMUM))
+			somethingHappening() &&
+			client.getVarbitValue(Varbits.BOSS_HEALTH_CURRENT) < client.getVarbitValue(Varbits.BOSS_HEALTH_MAXIMUM))
 			|| weakBoulder != null)
 		{
 			return false;
@@ -79,12 +93,13 @@ public class BabaAttackBoss extends StagedTask
 		if (Combat.getSpecEnergy() >= 50 && toaManager.baba.bgsHit < 15)
 		{
 			int offhand = toaManager.meleeSetup.offhand;
-			Item brewToDrop = Consumables.getBrew();
-			if (Inventory.isFull() && !Inventory.contains(offhand))
+			Widget brewToDrop = Consumables.getBrew();
+			if (Inventory.getEmptySlots() == 0 && !InventoryUtil.contains(offhand))
 			{
 				if (brewToDrop != null)
 				{
-					brewToDrop.interact("Drop");
+					MousePackets.queueClickPacket();
+					WidgetPackets.queueWidgetAction(brewToDrop, "Drop");
 					toaManager.print("Dropping low dose brew to make space");
 					return true;
 				}
@@ -104,7 +119,8 @@ public class BabaAttackBoss extends StagedTask
 			{
 				return false;
 			}
-			toaManager.baba.babaBoss.interact("Attack");
+			MousePackets.queueClickPacket();
+			NPCPackets.queueNPCAction(toaManager.baba.babaBoss,"Attack");
 			return true;
 		}
 
@@ -124,7 +140,8 @@ public class BabaAttackBoss extends StagedTask
 		{
 			return false;
 		}
-		toaManager.baba.babaBoss.interact("Attack");
+		MousePackets.queueClickPacket();
+		NPCPackets.queueNPCAction(toaManager.baba.babaBoss,"Attack");
 		return true;
 	}
 }

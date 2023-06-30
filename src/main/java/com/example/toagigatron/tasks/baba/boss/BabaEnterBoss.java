@@ -1,19 +1,30 @@
 package com.example.toagigatron.tasks.baba.boss;
 
+import com.example.Packets.MousePackets;
+import com.example.Packets.MovementPackets;
+import com.example.Packets.NPCPackets;
+import com.example.Packets.ObjectPackets;
+import com.example.Packets.WidgetPackets;
+import com.example.Utility.Movement;
+import com.example.Utility.ObjectUtil;
+import com.example.Utility.Prayers;
+import com.example.Utility.Reachable;
+import com.example.Utility.Static;
+import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
-import com.example.toagigatron.model.StagedTask;
 import com.example.toagigatron.model.constants.Consumables;
 import com.example.toagigatron.model.constants.Stage;
+import com.example.toagigatron.model.constants.ToaConstants;
+import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import net.runelite.api.Item;
-import net.unethicalite.api.movement.Reachable;
-import net.unethicalite.api.widgets.Prayers;
 
 import javax.inject.Inject;
+import net.runelite.api.widgets.Widget;
 
 @TaskDescriptor(
-		name = "Baba enter boss",
-		priority = 1
+	name = "Baba enter boss",
+	priority = 1
 )
 public class BabaEnterBoss extends StagedTask
 {
@@ -29,17 +40,19 @@ public class BabaEnterBoss extends StagedTask
 		{
 			return false;
 		}
-		Item prayerRestore = Consumables.getRestore();
+		Widget prayerRestore = Consumables.getRestore();
 		if (Prayers.getPoints() <= 50 && prayerRestore != null)
 		{
 			toaManager.print("Drinking restore");
-			prayerRestore.interact("Drink");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(prayerRestore, "Drink");
 		}
 		if (!toaManager.hasGearEquipped(toaManager.meleeSetup.getAllItemsBgs()))
 		{
 			toaManager.swap(toaManager.meleeSetup.getAllItemsBgs());
 		}
-		toaManager.baba.babaEntry.interact("Quick-Use");
+		MousePackets.queueClickPacket();
+		ObjectPackets.queueObjectAction(toaManager.baba.babaEntry, false, "Quick-Use");
 		return true;
 	}
 }

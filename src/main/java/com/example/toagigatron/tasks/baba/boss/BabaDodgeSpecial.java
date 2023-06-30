@@ -1,18 +1,28 @@
 package com.example.toagigatron.tasks.baba.boss;
 
+import com.example.EthanApiPlugin.EthanApiPlugin;
+import com.example.Packets.MousePackets;
+import com.example.Packets.MovementPackets;
+import com.example.Packets.NPCPackets;
+import com.example.Packets.ObjectPackets;
+import com.example.Utility.Movement;
+import com.example.Utility.NPCUtil;
+import com.example.Utility.ObjectUtil;
+import com.example.Utility.Reachable;
+import com.example.Utility.Static;
+import com.example.Utility.Walker;
+import com.example.Utility.WorldAreas;
+import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
-import com.example.toagigatron.model.StagedTask;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
+import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import com.google.inject.Inject;
+import java.util.HashSet;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-import net.unethicalite.api.entities.NPCs;
-import net.unethicalite.api.movement.Movement;
-import net.unethicalite.api.movement.Reachable;
-import net.unethicalite.api.movement.pathfinder.Walker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +42,7 @@ public class BabaDodgeSpecial extends StagedTask
 	public boolean execute()
 	{
 		toaManager.baba.attackPath = null;
-		NPC weakBoulder = NPCs.getNearest(n ->
-			n.getId() == ToaConstants.WEAK_BOULDER);
+		NPC weakBoulder = NPCUtil.findNearest(ToaConstants.WEAK_BOULDER);
 		if (weakBoulder != null)
 		{
 			return false;
@@ -61,7 +70,8 @@ public class BabaDodgeSpecial extends StagedTask
 				toaManager.print("We are already standing on a safe tile.");
 				return false;
 			}
-			toaManager.baba.attackPath = Movement.getPath(List.of(playerPoint), safeTile, toaManager.baba.toaCollisionMap);
+			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.baba.badTiles);
+			toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(safeTile, dangerTiles);
 			Walker.stepAlong(toaManager.baba.attackPath);
 			toaManager.print("22222Boss is proccing - running out of gap");
 			return true;
@@ -72,11 +82,11 @@ public class BabaDodgeSpecial extends StagedTask
 		{
 			return false;
 		}
-		WorldPoint refPoint = toaManager.baba.babaBoss.getWorldArea().getCenter();
+		WorldPoint refPoint = WorldAreas.getCenter(toaManager.baba.babaBoss.getWorldArea());
 		WorldPoint southWest = refPoint.dx(-3).dy(-3);
 		WorldPoint northEast = refPoint.dx(4).dy(4);
-		ArrayList<WorldPoint> babaMeleeTiles = (ArrayList<WorldPoint>) new WorldArea(southWest, northEast).toWorldPointList();
-		WorldPoint reference = toaManager.baba.babaBoss.getWorldArea().getCenter();
+		ArrayList<WorldPoint> babaMeleeTiles = (ArrayList<WorldPoint>) WorldAreas.createArea(southWest, northEast).toWorldPointList();
+		WorldPoint reference = WorldAreas.getCenter(toaManager.baba.babaBoss.getWorldArea());
 		babaMeleeTiles.removeIf(n -> toaManager.isDiagonalOf(n, reference));
 		babaMeleeTiles.removeAll(toaManager.baba.badTiles);
 		babaMeleeTiles.removeIf(n -> !Reachable.isWalkable(n));
@@ -90,8 +100,8 @@ public class BabaDodgeSpecial extends StagedTask
 			{
 				return false;
 			}
-			toaManager.print("In danger, moving to melee tile " + toaManager.worldPointString(safeTile));
-			toaManager.baba.attackPath = Movement.getPath(List.of(playerPoint), safeTile, toaManager.baba.toaCollisionMap);
+			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.baba.badTiles);
+			toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(safeTile, dangerTiles);
 			Walker.stepAlong(toaManager.baba.attackPath);
 		}
 		else
@@ -106,7 +116,8 @@ public class BabaDodgeSpecial extends StagedTask
 				return false;
 			}
 			toaManager.print("In danger, moving to " + toaManager.worldPointString(safeTile));
-			toaManager.baba.attackPath = Movement.getPath(List.of(playerPoint), safeTile, toaManager.baba.toaCollisionMap);
+			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.baba.badTiles);
+			toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(safeTile, dangerTiles);
 			Walker.stepAlong(toaManager.baba.attackPath);
 		}
 		return true;

@@ -1,16 +1,25 @@
 package com.example.toagigatron.tasks.baba.boss;
 
+import com.example.EthanApiPlugin.EthanApiPlugin;
+import com.example.Packets.MousePackets;
+import com.example.Packets.MovementPackets;
+import com.example.Packets.NPCPackets;
+import com.example.Packets.ObjectPackets;
+import com.example.Utility.Movement;
+import com.example.Utility.NPCUtil;
+import com.example.Utility.ObjectUtil;
+import com.example.Utility.Reachable;
+import com.example.Utility.Static;
+import com.example.Utility.Walker;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
-import com.example.toagigatron.model.StagedTask;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
+import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import java.util.HashSet;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-import net.unethicalite.api.entities.NPCs;
-import net.unethicalite.api.movement.Movement;
-import net.unethicalite.api.movement.pathfinder.Walker;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -38,8 +47,7 @@ public class BabaHitBoulder extends StagedTask
 		}
 
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
-		NPC weakBoulder = NPCs.getNearest(n ->
-			n.getId() == ToaConstants.WEAK_BOULDER);
+		NPC weakBoulder = NPCUtil.findNearest(ToaConstants.WEAK_BOULDER);
 		if (weakBoulder == null
 			&& (toaManager.baba.bouldersKilled == 7
 			|| toaManager.baba.bouldersKilled == 14))
@@ -71,20 +79,22 @@ public class BabaHitBoulder extends StagedTask
 		if (!toaManager.baba.touchedPrePathTile)
 		{
 			toaManager.print("Prepathing");
-			toaManager.baba.attackPath = Movement.getPath(List.of(playerPoint), toaManager.baba.prePathTile, toaManager.baba.toaCollisionMap);
+			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.baba.badTiles);
+			toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(toaManager.baba.prePathTile, dangerTiles);
 			Walker.stepAlong(toaManager.baba.attackPath);
-//			Movement.walk(toaManager.baba.prePathTile);
 			return true;
 		}
 
 		if (weakBoulder != null && !gameTickManager.isAttackWaiting() && weakBoulder.getHealthRatio() == -1)
 		{
-			weakBoulder.interact("Attack");
+			MousePackets.queueClickPacket();
+			NPCPackets.queueNPCAction(weakBoulder, "Attack");
 			return true;
 		}
 		else if (weakBoulder != null && !gameTickManager.isAttackWaiting() && toaManager.baba.babaBossRowSafe.contains(playerPoint))
 		{
-			weakBoulder.interact("Attack");
+			MousePackets.queueClickPacket();
+			NPCPackets.queueNPCAction(weakBoulder, "Attack");
 			return true;
 		}
 		else if (weakBoulder != null && !toaManager.baba.babaBossRowSafe.contains(playerPoint))
@@ -96,7 +106,8 @@ public class BabaHitBoulder extends StagedTask
 			}
 			//			Movement.walk(toaManager.baba.safeTile);
 			toaManager.print("Walking to " + toaManager.worldPointString(toaManager.baba.safeTile));
-			toaManager.baba.attackPath = Movement.getPath(List.of(playerPoint), toaManager.baba.safeTile, toaManager.baba.toaCollisionMap);
+			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.baba.badTiles);
+			toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(toaManager.baba.safeTile, dangerTiles);
 			Walker.stepAlong(toaManager.baba.attackPath);
 			return true;
 		}

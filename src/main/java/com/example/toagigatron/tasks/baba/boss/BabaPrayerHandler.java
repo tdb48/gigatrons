@@ -1,18 +1,30 @@
 package com.example.toagigatron.tasks.baba.boss;
 
+import com.example.Packets.MousePackets;
+import com.example.Packets.MovementPackets;
+import com.example.Packets.NPCPackets;
+import com.example.Packets.ObjectPackets;
+import com.example.Utility.Combat;
+import com.example.Utility.Movement;
+import com.example.Utility.NPCUtil;
+import com.example.Utility.ObjectUtil;
+import com.example.Utility.Prayer;
+import com.example.Utility.Prayers;
+import com.example.Utility.Reachable;
+import com.example.Utility.Static;
+import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
-import com.example.toagigatron.model.StagedTask;
 import com.example.toagigatron.model.constants.Stage;
+import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.model.constants.WeaponMap;
+import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import com.google.inject.Inject;
-import net.runelite.api.*;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.NPC;
 import net.runelite.api.widgets.Widget;
-import net.unethicalite.api.entities.NPCs;
-import net.unethicalite.api.game.Combat;
-import net.unethicalite.api.widgets.Prayers;
-import net.unethicalite.api.widgets.Widgets;
-import net.unethicalite.client.Static;
 
 import java.util.List;
 
@@ -29,8 +41,7 @@ public class BabaPrayerHandler extends StagedTask
 
 	public boolean execute()
 	{
-		NPC baba = NPCs.getNearest("Ba-Ba");
-		if (baba == null || Prayers.getPoints() == 0)
+		if (toaManager.baba.babaBoss == null || Prayers.getPoints() == 0)
 		{
 			if (Prayers.anyActive())
 			{
@@ -63,7 +74,7 @@ public class BabaPrayerHandler extends StagedTask
 
 	public List<Prayer> getPrayers()
 	{
-		NPC baba = NPCs.getNearest("Ba-Ba");
+		NPC baba = toaManager.baba.babaBoss;
 		return baba != null && baba.getId() == 11780 ? List.of(this.getOffensive()) : List.of(Prayer.PROTECT_FROM_MELEE, this.getOffensive());
 	}
 
@@ -91,7 +102,7 @@ public class BabaPrayerHandler extends StagedTask
 				}
 			}
 
-			Widget atk = Widgets.get(Combat.getAttackStyle().getWidgetInfo());
+			Widget atk = client.getWidget(Combat.getAttackStyle().getWidgetInfo());
 			if (atk != null)
 			{
 				String[] actions = atk.getActions();
