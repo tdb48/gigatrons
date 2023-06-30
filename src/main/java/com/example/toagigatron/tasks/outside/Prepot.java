@@ -21,6 +21,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
 import javax.inject.Inject;
+import java.util.Objects;
 
 @TaskDescriptor(
 	name = "Prepotting",
@@ -138,10 +139,21 @@ public class Prepot extends StagedTask
 		else
 		{
 			Widget boost = InventoryUtil.getFirst(item);
-			if (Bank.isOpen())
+			int slot = 0;
+			ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
+			if(invent != null){
+				for(int i = 0 ; i < 28; i++){
+					if(Objects.requireNonNull(invent.getItem(i)).getId() == boost.getItemId()){
+						System.out.println("Item found at slot -> " + i);
+						slot = i;
+						break;
+					}
+				}
+			}
+			if (Bank.isOpen() && boost != null)
 			{
 				MousePackets.queueClickPacket();
-				WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId(), boost.getItemId(), boost.getIndex());
+				WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId(), boost.getItemId(),slot);
 			}
 			else
 			{

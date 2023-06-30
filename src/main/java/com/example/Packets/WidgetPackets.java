@@ -49,7 +49,6 @@ public class WidgetPackets {
     @SneakyThrows
     public static void queueWidgetAction(Widget widget, String... actionlist) {
         if (widget == null) {
-            System.out.println("call to queueWidgetAction with null widget");
             return;
         }
         List<String> actions = Arrays.stream(widget.getActions()).collect(Collectors.toList());

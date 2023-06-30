@@ -13,11 +13,6 @@ import com.example.toagigatron.overlay.ToaGigatronOverlay;
 import com.example.toagigatron.taskformat.TaskManager;
 import com.example.toagigatron.tasks.*;
 import com.example.toagigatron.tasks.baba.BabaConsumables;
-import com.example.toagigatron.tasks.baba.boss.BabaAttackBoss;
-import com.example.toagigatron.tasks.baba.boss.BabaDodgeSpecial;
-import com.example.toagigatron.tasks.baba.boss.BabaEnterBoss;
-import com.example.toagigatron.tasks.baba.boss.BabaHitBoulder;
-import com.example.toagigatron.tasks.baba.boss.BabaPrayerHandler;
 import com.example.toagigatron.tasks.baba.puzzle.*;
 import com.example.toagigatron.tasks.outside.Bank;
 import com.example.toagigatron.tasks.outside.ClaimDeath;
@@ -87,40 +82,35 @@ public class ToaGigatronPlugin extends Plugin {
     }
     protected Class<?>[] tasks() {
         return new Class[]{
-			BabaPuzzlePrayerHandler.class,
-			BabaFixPillar.class,
-			BabaFixVent.class,
-			BabaAvoidExplosion.class,
-			BabaMoveOffPoison.class,
-			BabaAttackMonkey.class,
-			BabaEnterPuzzle.class,
-			BabaGetHammerPotion.class,
-			BabaConsumables.class,
-			BabaExitPuzzle.class,
+//			BabaPuzzlePrayerHandler.class,
+//			BabaFixPillar.class,
+//			BabaFixVent.class,
+//			BabaAvoidExplosion.class,
+//			BabaMoveOffPoison.class,
+//			BabaAttackMonkey.class,
+//			BabaEnterPuzzle.class,
+//			BabaGetHammerPotion.class,
+//			BabaConsumables.class,
+//			BabaExitPuzzle.class,
 			ProgressStage.class,
 			CheckCharges.class,
-			DisablePrayers.class,
-			DropVial.class,
-			LeaveBossRoom.class,
-			ProgressStage.class,
-			RefillSupplies.class,
-			TakeOffGear.class,
-			ToggleRun.class,
-			Bank.class,
-			ClaimDeath.class,
-			ClaimLootOutside.class,
-			CreateParty.class,
-			EnterRaid.class,
-			GetSupplies.class,
-			PickupPet.class,
+//			DisablePrayers.class,
+//			DropVial.class,
+//			LeaveBossRoom.class,
+//			ProgressStage.class,
+//			RefillSupplies.class,
+//			TakeOffGear.class,
+//			ToggleRun.class,
+//			Bank.class,
+//			ClaimDeath.class,
+//			ClaimLootOutside.class,
+//			CreateParty.class,
+//			EnterRaid.class,
+//			GetSupplies.class,
+//			PickupPet.class,
 			Prepot.class,
-			RechargeItems.class,
-			BabaAttackBoss.class,
-			BabaAttackMonkey.class,
-			BabaDodgeSpecial.class,
-			BabaEnterBoss.class,
-			BabaHitBoulder.class,
-			BabaPrayerHandler.class
+//			RechargeItems.class,
+//			BabaAttackMonkey.class,
         };
     }
 
