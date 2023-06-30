@@ -1,15 +1,8 @@
 package com.example.toagigatron.tasks.zebak.puzzle;
 
-import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
-import com.example.Packets.NPCPackets;
-import com.example.Packets.ObjectPackets;
-import com.example.Utility.Combat;
-import com.example.Utility.Dialog;
-import com.example.Utility.Movement;
-import com.example.Utility.ObjectUtil;
-import com.example.Utility.Reachable;
-import com.example.Utility.Static;
+import com.example.EthanApiPlugin.Collections.Widgets;
+import com.example.Packets.*;
+import com.example.Utility.*;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
@@ -18,6 +11,7 @@ import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import javax.inject.Inject;
 import net.runelite.api.GameObject;
+import net.runelite.api.widgets.Widget;
 
 @TaskDescriptor(
 	name = "Entering puzzle Zebak",
@@ -38,8 +32,8 @@ public class EnterPuzzleZebak extends StagedTask
 	public boolean execute()
 	{
 		GameObject entrance = ObjectUtil.getNearestGameObject(ToaConstants.ZEBAK_PUZZLE_ENTRANCE);
-		GameObject barrier = ObjectUtil.getNearestGameObject((ToaConstants.BARRIER);
-		GameObject tree = ObjectUtil.getNearestGameObject((ToaConstants.ZEBAK_TREE_GAME_OBJECT);
+		GameObject barrier = ObjectUtil.getNearestGameObject((ToaConstants.BARRIER));
+		GameObject tree = ObjectUtil.getNearestGameObject((ToaConstants.ZEBAK_TREE_GAME_OBJECT));
 		if (barrier == null
 			|| tree == null
 			|| entrance == null
@@ -49,9 +43,11 @@ public class EnterPuzzleZebak extends StagedTask
 		{
 			return false;
 		}
-		if (Dialog.hasOption("Yes."))
+		//Widgets.search().withTextContains("Yes.")
+		if (!Widgets.search().withTextContains("Yes.").empty())
 		{
-			Dialog.chooseOption("Yes.");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueResumePause(14352385, 1);
 		}
 		else
 		{
