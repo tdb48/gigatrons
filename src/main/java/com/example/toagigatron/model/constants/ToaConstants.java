@@ -248,20 +248,22 @@ public class ToaConstants
 	 */
 	public static final int BABA_PHANTOM_ROCKTHROW_ANIMATION_ID = 9743;
 	public static final int WARDEN_P2_SKULL_PROJECTILE_ID = 2225;
-	public static final ArrayList<Integer> WARDEN_P2_IDS = (ArrayList<Integer>) List.of(
+	public static final List<Integer> WARDEN_P2_IDS = List.of(
 		WARDENS_P2_ACTIVE_RANGE_MELEE,
 		WARDENS_P2_ACTIVE_MAGE_MELEE,
 		WARDENS_P2_DOWNED);
 	public static final List<Integer> ZEBAK_PHANTOM_RANGED_PROJECTILE_IDS = List.of(2176, 2181, 2177);
 	public static final List<Integer> ZEBAK_PHANTOM_MAGIC_PROJECTILE_IDS = List.of(2178, 2187, 2179);
-	public static final List<Integer> WEAPONS = List.of(
-		RangeWeapon.BLOWPIPE.itemId,
-		RangeWeapon.TWISTED_BOW.itemId,
-		MeleeWeapon.FANG.itemId,
-		MeleeWeapon.FANG_KIT.itemId,
-		MageWeapon.SANG.itemId,
-		MageWeapon.SWAMP.itemId,
-		MageWeapon.SHADOW.itemId);
+
+	public static List<Integer> WEAPONS =
+		List.of(
+			RangeWeapon.BLOWPIPE.itemId,
+			RangeWeapon.TWISTED_BOW.itemId,
+			MeleeWeapon.FANG.itemId,
+			MeleeWeapon.FANG_KIT.itemId,
+			MageWeapon.SANG.itemId,
+			MageWeapon.SWAMP.itemId,
+			MageWeapon.SHADOW.itemId);
 
 
 	/////////////////////////////////////////////////////////////////
