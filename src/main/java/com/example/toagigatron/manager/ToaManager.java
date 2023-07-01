@@ -5,6 +5,7 @@ import com.example.EthanApiPlugin.Collections.BankInventory;
 import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.EthanApiPlugin.Collections.EquipmentItemWidget;
 import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
 import com.example.Packets.WidgetPackets;
@@ -736,6 +737,12 @@ public class ToaManager
 			BankUtil.depositAll(item.getItemId());
 			counter++;
 		}
+	}
+
+	public void sendIntValue(int amount){
+		EthanApiPlugin.getClient().setVarcStrValue(359,Integer.toString(amount));
+		EthanApiPlugin.getClient().setVarcIntValue(5,7);
+		EthanApiPlugin.getClient().runScript(681);
 	}
 
 	public void swap(ArrayList<Integer> gearList)

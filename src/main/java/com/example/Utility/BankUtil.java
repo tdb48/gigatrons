@@ -172,7 +172,6 @@ public class BankUtil
 		return Bank.search().nameContains(name).first().orElseThrow().getItemQuantity();
 	}
 
-
 	public static int getInventoryQuantity(int id)
 	{
 		if (BankInventory.search().withId(id).result().size() == 0)
@@ -194,15 +193,5 @@ public class BankUtil
 	public static void close(){
 		EthanApiPlugin.invoke(-1, -1, 26, -1, -1, "", "", -1, -1);
 	}
-
-//	public Widget close()
-//	{
-//		Widget exitBank = Objects.requireNonNull(client.getWidget(786434)).getChild(11);
-//		if (exitBank != null && !exitBank.isHidden() && !exitBank.isSelfHidden())
-//		{
-//			return null;
-//		}
-//		return exitBank;
-//	}
 
 }

@@ -1,6 +1,7 @@
 package com.example.toagigatron.tasks.outside;
 
 
+import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.EthanApiPlugin.Collections.TileObjects;
 import com.example.Packets.MousePackets;
@@ -64,13 +65,14 @@ public class RechargeItems extends StagedTask
 			return false;
 		}
 		// Only support sang for now
-		Widget rechargeWidget = client.getWidget(162, 41);
-		if (rechargeWidget != null && !rechargeWidget.isHidden())
-		{
-			Dialog.type(String.valueOf(99999), true);
-			toaManager.print("Entering sang charge");
-			return true;
-		}
+//		Widget rechargeWidget = client.getWidget(162, 41);
+//		if (rechargeWidget != null && !rechargeWidget.isHidden())
+//		{
+//			toaManager.sendIntValue(99999);
+//			//Dialog.type(String.valueOf(99999), true);
+//			toaManager.print("Entering sang charge");
+//			return true;
+//		}
 		// Don't run if you don't need to recharge anything
 
 		// Use scales on pipe
@@ -79,6 +81,10 @@ public class RechargeItems extends StagedTask
 			&& InventoryUtil.contains(ToaConstants.blowpipe))
 		{
 			toaManager.print("refiill bp");
+			if(BankUtil.isOpen()){
+				toaManager.print("Bank is open, closing to recharge");
+				BankUtil.close();
+			}
 			Widget blowieP = InventoryUtil.getFirst(ToaConstants.blowpipe);
 			if(blowieP != null){
 				MousePackets.queueClickPacket();
@@ -94,6 +100,10 @@ public class RechargeItems extends StagedTask
 			&& InventoryUtil.contains(ToaConstants.blowpipe))
 		{
 			toaManager.print("recharg bp");
+			if(BankUtil.isOpen()){
+				toaManager.print("Bank is open, closing to recharge");
+				BankUtil.close();
+			}
 			Widget blowieP = InventoryUtil.getFirst(ToaConstants.blowpipe);
 			if(blowieP != null){
 				MousePackets.queueClickPacket();
@@ -110,8 +120,27 @@ public class RechargeItems extends StagedTask
 			&& InventoryUtil.contains(MageWeapon.SANG.itemId))
 		{
 			toaManager.print("charge mage");
+			if(BankUtil.isOpen()){
+				toaManager.print("Bank is open, closing to recharge");
+				BankUtil.close();
+			}
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetOnWidget(InventoryUtil.getFirst(brune), InventoryUtil.getFirst(MageWeapon.SANG.itemId));
+			toaManager.sendIntValue(99999);
+			for (MageWeapon mageWeapon : MageWeapon.values())
+			{
+				int i = mageWeapon.itemId;
+				if (InventoryUtil.contains(i))
+				{
+					Widget sang = InventoryUtil.getFirst(i);
+					if (sang != null)
+					{
+						MousePackets.queueClickPacket();
+						WidgetPackets.queueWidgetAction(sang, "Check");
+					}
+				}
+			}
+
 //			toaManager.itemOnItemPacket(Inventory.getFirst(brune),Inventory.getFirst(MageWeapon.SANG.itemId));
 			//Inventory.getFirst(brune).useOn(Inventory.getFirst(MageWeapon.SANG.itemId));
 			return true;

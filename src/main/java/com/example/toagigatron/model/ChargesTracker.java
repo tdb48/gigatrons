@@ -1,6 +1,7 @@
 package com.example.toagigatron.model;
 
 import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.EthanApiPlugin.Collections.Widgets;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Dart;
 import com.example.toagigatron.model.constants.ToaConstants;
@@ -9,6 +10,8 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.PluginManager;
@@ -165,6 +168,9 @@ public class ChargesTracker
 				String charges = chargesPart.split(" ")[0];
 				System.out.println("Found amount of mage charges: " + charges);
 				mageCharges = Integer.parseInt(charges);
+			}
+			if(message.contains("staff is already fully charged")){
+				mageCharges = 20000;
 			}
 		}
 	}
