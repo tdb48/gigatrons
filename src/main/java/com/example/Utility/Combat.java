@@ -20,7 +20,8 @@ public class Combat
 		return Skills.getLevel(Skill.HITPOINTS) - Skills.getBoostedLevel(Skill.HITPOINTS);
 	}
 
-	public static int getCurrentHealth() {
+	public static int getCurrentHealth()
+	{
 		return Skills.getBoostedLevel(Skill.HITPOINTS);
 	}
 
@@ -54,36 +55,42 @@ public class Combat
 		WidgetPackets.queueWidgetActionPacket(1, SPEC_ORB_ID, -1, -1);
 	}
 
-	public static AttackStyle getAttackStyle() {
+	public static AttackStyle getAttackStyle()
+	{
 		return Combat.AttackStyle.fromIndex(Static.getClient().getVarpValue(43));
 	}
 
-	public static enum AttackStyle {
+	public static enum AttackStyle
+	{
 		FIRST(0, WidgetInfo.COMBAT_STYLE_ONE),
 		SECOND(1, WidgetInfo.COMBAT_STYLE_TWO),
 		THIRD(2, WidgetInfo.COMBAT_STYLE_THREE),
 		FOURTH(3, WidgetInfo.COMBAT_STYLE_FOUR),
 		SPELLS(4, WidgetInfo.COMBAT_SPELL_BOX),
 		SPELLS_DEFENSIVE(4, WidgetInfo.COMBAT_DEFENSIVE_SPELL_BOX),
-		UNKNOWN(-1, (WidgetInfo)null);
+		UNKNOWN(-1, (WidgetInfo) null);
 
 		private final int index;
 		private final WidgetInfo widgetInfo;
 
-		private AttackStyle(int index, WidgetInfo widgetInfo) {
+		private AttackStyle(int index, WidgetInfo widgetInfo)
+		{
 			this.index = index;
 			this.widgetInfo = widgetInfo;
 		}
 
-		public int getIndex() {
+		public int getIndex()
+		{
 			return this.index;
 		}
 
-		public WidgetInfo getWidgetInfo() {
+		public WidgetInfo getWidgetInfo()
+		{
 			return this.widgetInfo;
 		}
 
-		public static AttackStyle fromIndex(int index) {
+		public static AttackStyle fromIndex(int index)
+		{
 			return (AttackStyle) Arrays.stream(values()).filter((x) -> {
 				return x.index == index;
 			}).findFirst().orElse(UNKNOWN);
