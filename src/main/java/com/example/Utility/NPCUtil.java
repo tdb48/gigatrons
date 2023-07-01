@@ -32,7 +32,7 @@ public class NPCUtil
 
 	public static NPC findNearest(int id)
 	{
-		return NPCs.search().withId(id).nearestToPlayer().filter(x -> x.getHealthRatio() != 0).orElse(null);
+		return NPCs.search().withId(id).alive().nearestToPlayer().orElse(null);
 	}
 
 	public static NPC findNearest(int... id)
@@ -40,13 +40,13 @@ public class NPCUtil
 		List<Integer> arrayList = Arrays.stream(id)
 			.boxed()
 			.collect(Collectors.toList());
-		return NPCs.search().idInList(arrayList).nearestToPlayer().filter(x -> x.getHealthRatio() != 0).orElse(null);
+		return NPCs.search().idInList(arrayList).filter(x -> x.getHealthRatio() != 0).nearestToPlayer().orElse(null);
 	}
 	public static NPC findNearest(String... name)
 	{
 		List<String> arrayList = Arrays.stream(name)
 				.collect(Collectors.toList());
-		return NPCs.search().alive().nearestToPlayer().filter(x -> arrayList.contains(x.getName())).orElse(null);
+		return NPCs.search().alive().filter(x -> arrayList.contains(x.getName())).nearestToPlayer().orElse(null);
 	}
 
 	public static List<NPC> findAll(int... id)
@@ -76,7 +76,7 @@ public class NPCUtil
 
 	public static NPC findNearest(String name)
 	{
-		return NPCs.search().withName(name).nearestToPlayer().filter(x -> x.getHealthRatio() != 0).orElse(null);
+		return NPCs.search().withName(name).alive().nearestToPlayer().orElse(null);
 	}
 
 	public static NPC findAt(LocalPoint localPoint, int id)
