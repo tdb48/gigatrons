@@ -19,13 +19,13 @@ import com.example.toagigatron.taskformat.TaskDescriptor;
 import net.runelite.api.*;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-
 import javax.inject.Inject;
 import java.util.Objects;
 
 @TaskDescriptor(
 	name = "Prepotting",
-	priority = 20
+	priority = 20,
+		blocking = true
 )
 public class Prepot extends StagedTask
 {

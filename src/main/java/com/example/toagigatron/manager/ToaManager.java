@@ -750,8 +750,11 @@ public class ToaManager
 				Widget item = Inventory.search().withId(i).first().orElse(null);
 				if (item != null)
 				{
-					Prayer p = prayWithId(i);
-					Prayers.toggle(p);
+					if(!stage.equals(Stage.OUTSIDE) && !stage.equals(Stage.OUTSIDE_TOA) && !stage.equals(Stage.GRAND_EXCHANGE)){
+						Prayer p = prayWithId(i);
+						Prayers.toggle(p);
+					}
+
 
 					int slot = 0;
 					ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());

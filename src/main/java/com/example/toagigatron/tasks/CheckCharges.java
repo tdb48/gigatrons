@@ -1,8 +1,10 @@
 package com.example.toagigatron.tasks;
 
+import com.example.EthanApiPlugin.Collections.Bank;
 import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.Packets.MousePackets;
 import com.example.Packets.WidgetPackets;
+import com.example.Utility.BankUtil;
 import com.example.Utility.InventoryUtil;
 import com.example.Utility.Static;
 import com.example.Utility.WidgetUtil;
@@ -95,6 +97,9 @@ public class CheckCharges extends Task
 		if (toaManager.chargesTracker.blowpipeDarts == -1
 			|| toaManager.chargesTracker.blowpipeScales == -1)
 		{
+			if(Bank.isOpen()){
+				BankUtil.close();
+			}
 			if (InventoryUtil.contains(ItemID.TOXIC_BLOWPIPE))
 			{
 				Widget bp = InventoryUtil.getFirst(ItemID.TOXIC_BLOWPIPE);
@@ -120,6 +125,9 @@ public class CheckCharges extends Task
 		}
 		if (toaManager.chargesTracker.mageCharges == -1 || widgetOpened)
 		{
+			if(Bank.isOpen()){
+				BankUtil.close();
+			}
 			for (MageWeapon mageWeapon : MageWeapon.values())
 			{
 				int i = mageWeapon.itemId;

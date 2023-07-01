@@ -21,7 +21,8 @@ import net.runelite.client.game.ItemManager;
 
 @TaskDescriptor(
 	name = "Banking junk",
-	priority = 5
+	priority = 25,
+		blocking = true
 )
 public class Bank extends StagedTask
 {
@@ -81,6 +82,7 @@ public class Bank extends StagedTask
 			&& toaManager.hasItem(toaManager.meleeSetup.getAllItems()))
 		{
 			toaManager.print("Equipping melee gear");
+			System.out.println("Equipping melee gear");
 			toaManager.swap(toaManager.meleeSetup.getAllItems());
 		}
 		if (!junk.isEmpty())
