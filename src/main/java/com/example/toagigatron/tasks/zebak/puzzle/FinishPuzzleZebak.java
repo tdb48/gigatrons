@@ -59,7 +59,7 @@ public class FinishPuzzleZebak extends StagedTask
 	}
 
 	@Subscribe
-	public void chatMessageReceived(ChatMessage chatMessage)
+	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE || chatMessage.getType() == ChatMessageType.SPAM || chatMessage.getType() == ChatMessageType.CONSOLE || chatMessage.getType() == ChatMessageType.ENGINE)
 		{

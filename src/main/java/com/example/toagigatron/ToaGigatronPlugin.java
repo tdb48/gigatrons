@@ -12,11 +12,19 @@ import com.example.toagigatron.overlay.ToaGigatronInfoBox;
 import com.example.toagigatron.overlay.ToaGigatronOverlay;
 import com.example.toagigatron.taskformat.TaskManager;
 import com.example.toagigatron.tasks.*;
+import com.example.toagigatron.tasks.akkha.boss.*;
 import com.example.toagigatron.tasks.akkha.puzzle.AkkhaEnterPuzzle;
 import com.example.toagigatron.tasks.akkha.puzzle.AkkhaExitPuzzle;
 import com.example.toagigatron.tasks.akkha.puzzle.AkkhaSolvePuzzle;
 import com.example.toagigatron.tasks.baba.BabaConsumables;
+import com.example.toagigatron.tasks.baba.boss.*;
 import com.example.toagigatron.tasks.baba.puzzle.*;
+import com.example.toagigatron.tasks.inside.ClaimLoot;
+import com.example.toagigatron.tasks.inside.ClaimSupplies;
+import com.example.toagigatron.tasks.inside.EnterPath;
+import com.example.toagigatron.tasks.inside.Resign;
+import com.example.toagigatron.tasks.kephri.boss.*;
+import com.example.toagigatron.tasks.kephri.puzzle.*;
 import com.example.toagigatron.tasks.outside.Bank;
 import com.example.toagigatron.tasks.outside.ClaimDeath;
 import com.example.toagigatron.tasks.outside.ClaimLootOutside;
@@ -26,6 +34,12 @@ import com.example.toagigatron.tasks.outside.GetSupplies;
 import com.example.toagigatron.tasks.outside.PickupPet;
 import com.example.toagigatron.tasks.outside.Prepot;
 import com.example.toagigatron.tasks.outside.RechargeItems;
+import com.example.toagigatron.tasks.wardens.wardensp1.*;
+import com.example.toagigatron.tasks.wardens.wardensp2.*;
+import com.example.toagigatron.tasks.wardens.wardensp3.*;
+import com.example.toagigatron.tasks.zebak.puzzle.EnterPuzzleZebak;
+import com.example.toagigatron.tasks.zebak.puzzle.FinishPuzzleZebak;
+import com.example.toagigatron.tasks.zebak.puzzle.SolvePuzzleZebak;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -85,45 +99,94 @@ public class ToaGigatronPlugin extends Plugin {
     }
     protected Class<?>[] tasks() {
         return new Class[]{
-			BabaPuzzlePrayerHandler.class,
-			BabaFixPillar.class,
-			BabaFixVent.class,
-			BabaAvoidExplosion.class,
-			BabaMoveOffPoison.class,
-			BabaAttackMonkey.class,
-			BabaEnterPuzzle.class,
-			BabaGetHammerPotion.class,
-			BabaConsumables.class,
-			BabaExitPuzzle.class,
-			ProgressStage.class,
-			CheckCharges.class,
-//			DisablePrayers.class,
-//			DropVial.class,
-//			LeaveBossRoom.class,
-//			RefillSupplies.class,
-			TakeOffGear.class,
-//			ToggleRun.class,
-			Bank.class,
-			ClaimDeath.class,
-			ClaimLootOutside.class,
-			CreateParty.class,
-			EnterRaid.class,
-			GetSupplies.class,
-			PickupPet.class,
-			Prepot.class,
-			RechargeItems.class,
-//			BabaAttackMonkey.class,
+                ProgressStage.class,
+                EnterPuzzleKephri.class,
+                FinishPuzzleKephri.class,
+                SolveLightPuzzle.class,
+                SolveMemoryPuzzle.class,
+                SolveMathPuzzle.class,
+                SolvePillarPuzzle.class,
+                CreateParty.class,
+                EnterRaid.class,
+                EnterPath.class,
+                SwitchPuzzleKephri.class,
+                EnterPuzzleZebak.class,
+                SolvePuzzleZebak.class,
+                FinishPuzzleZebak.class,
+                SolveFinalPuzzle.class,
+                KephriPrayerHandler.class,
+                ToggleRun.class,
+                KephriEnterRoom.class,
+                KephriConsumables.class,
+                LeaveBossRoom.class,
+                BabaPuzzlePrayerHandler.class,
+                KephriDodgeDung.class,
+                KephriAttackBoss.class,
+                BabaFixPillar.class,
+                BabaFixVent.class,
+                BabaAvoidExplosion.class,
+                BabaMoveOffPoison.class,
+                BabaAttackMonkey.class,
+                AkkhaPrayerHandler.class,
+                AkkhaDodgeMemory.class,
+                BabaEnterPuzzle.class,
+                BabaGetHammerPotion.class,
+                BabaConsumables.class,
+                BabaExitPuzzle.class,
+                BabaHitBoulder.class,
+                AkkhaAttackDemi.class,
+                AkkhaAttackBoss.class,
+                AkkhaEnterBoss.class,
+                AkkhaAttackBossOrbs.class,
+                AkkhaConsumables.class,
+                BabaEnterBoss.class,
+                BabaPrayerHandler.class,
+                BabaDodgeSpecial.class,
+                BabaAttackBoss.class,
+                BabaAttackBossMonkey.class,
+                ClaimSupplies.class,
                 AkkhaEnterPuzzle.class,
                 AkkhaExitPuzzle.class,
-                AkkhaSolvePuzzle.class
+                AkkhaSolvePuzzle.class,
+                Prepot.class,
+                Bank.class,
+                GetSupplies.class,
+                ClaimDeath.class,
+                DisablePrayers.class,
+                StartBoss.class,
+                ClaimLoot.class,
+                PickupPet.class,
+                WardensP1PrayerHandler.class,
+                SolveOrbUfo.class,
+                AttackObelisk.class,
+                WardensP2PrayerHandler.class,
+                AttackCore.class,
+                AttackWardensP2.class,
+                RefillSupplies.class,
+                WardensP2DodgeSpecial.class,
+                AttackWardensP3.class,
+                LeaveBoss.class,
+                WardenP3SkullSkip.class,
+                WardenP3DodgeFloor.class,
+                WardensP3Enrage.class,
+                WardensP3PrayerHandler.class,
+                DropVial.class,
+                WardenP1Consumables.class,
+                WardenP23Consumables.class,
+                CheckCharges.class,
+                RechargeItems.class,
+                Resign.class,
+                TakeOffGear.class,
+                ClaimLootOutside.class,
+                KephriAttackDemi.class
         };
     }
 
     @Override
-    protected void startUp()
-    {
+    protected void startUp() throws Exception {
         finishRaid = false;
         stopPlugin = false;
+        super.startUp();
         startState();
         overlayManager.add(toaGigatronInfoBox);
         overlayManager.add(toaGigatronOverlay);
@@ -137,34 +200,34 @@ public class ToaGigatronPlugin extends Plugin {
         this.gameTickManager.register();
         this.toaManager.register();
         this.toaManager.chargesTracker.register();
-//        this.toaManager.kephri.register();
+        this.toaManager.kephri.register();
         this.toaManager.baba.register();
         this.toaManager.akkha.register();
         this.toaManager.overall.register();
-//        this.toaManager.zebak.register();
-//        this.toaManager.wardens12.register();
-//        this.toaManager.wardens3.register();
-//        this.toaManager.inside.register();
+        this.toaManager.zebak.register();
+        this.toaManager.wardens12.register();
+        this.toaManager.wardens3.register();
+        this.toaManager.inside.register();
         this.toaManager.outside.register();
         this.toaManager.consumableTracker.register();
         this.toaManager.overall.fullReset();
     }
     @Override
-    protected void shutDown()
-    {
+    protected void shutDown() throws Exception {
         finishRaid = false;
         stopPlugin = false;
-        stopState();
         overlayManager.remove(toaGigatronInfoBox);
         overlayManager.remove(toaGigatronOverlay);
         overlayManager.remove(consumablesTrackerInfobox);
         this.manager.stop();
+        super.shutDown();
+        stopState();
 
         resetAllModels();
 
-//        this.toaManager.wardens12.unregister();
-//        this.toaManager.wardens3.unregister();
-//        this.toaManager.kephri.unregister();
+        this.toaManager.wardens12.unregister();
+        this.toaManager.wardens3.unregister();
+        this.toaManager.kephri.unregister();
         this.toaManager.baba.unregister();
         this.toaManager.chargesTracker.reset();
         this.toaManager.chargesTracker.unregister();
@@ -172,8 +235,8 @@ public class ToaGigatronPlugin extends Plugin {
         this.toaManager.overall.unregister();
         this.toaManager.unregister();
         this.gameTickManager.unregister();
-//        this.toaManager.zebak.unregister();
-//        this.toaManager.inside.unregister();
+        this.toaManager.zebak.unregister();
+        this.toaManager.inside.unregister();
         this.toaManager.outside.unregister();
         this.toaManager.consumableTracker.unregister();
         this.toaManager.overall.fullReset();
@@ -182,14 +245,14 @@ public class ToaGigatronPlugin extends Plugin {
     {
        this.toaManager.overall.reset();
         this.toaManager.initialiseSetups();
-//        this.toaManager.zebak.resetVariables();
-//        this.toaManager.kephri.resetVariables();
+        this.toaManager.zebak.resetVariables();
+        this.toaManager.kephri.resetVariables();
         this.toaManager.baba.resetVariables();
         this.toaManager.akkha.resetVariables();
         this.toaManager.inside.resetVariables();
         this.toaManager.outside.resetVariables();
-//        this.toaManager.wardens12.resetVariables();
-//        this.toaManager.wardens3.resetVariables();
+        this.toaManager.wardens12.resetVariables();
+        this.toaManager.wardens3.resetVariables();
     }
 
 	@Subscribe

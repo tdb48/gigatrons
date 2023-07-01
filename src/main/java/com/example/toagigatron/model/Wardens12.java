@@ -106,7 +106,7 @@ public class Wardens12
 	}
 
 	@Subscribe
-	public void onNPCSpawn(NpcSpawned npcSpawned)
+	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		if (npcSpawned.getNpc().getName().equals("Core"))
 		{

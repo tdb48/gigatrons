@@ -92,6 +92,7 @@ public class ToaManager
 	public Baba baba;
 	@Inject
 	public Akkha akkha;
+	@Inject
 	public Wardens12 wardens12;
 	@Inject
 	public ChargesTracker chargesTracker;

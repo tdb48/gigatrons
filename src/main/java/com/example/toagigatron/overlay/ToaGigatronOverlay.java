@@ -252,7 +252,7 @@ public class ToaGigatronOverlay extends Overlay
 //		drawPoints(plugin.toaManager.wardens12.windmillTiles, graphics2D, Color.RED);
 //		drawPoints(plugin.toaManager.wardens12.prisonTiles, graphics2D, Color.RED);
 //		drawPoints(plugin.toaManager.wardens3.enrageArea, graphics2D, Color.ORANGE);
-//		drawPoints(plugin.toaManager.baba.sarcophagusProjectilesTiles, graphics2D, Color.green);
+		drawPoints(plugin.toaManager.baba.sarcophagusProjectilesTiles, graphics2D, Color.green);
 //
 //		if (plugin.toaManager.getStage() == Stage.WARDENS_P2)
 //		{
@@ -409,19 +409,19 @@ public class ToaGigatronOverlay extends Overlay
 //			}
 //		}
 //
-//		if (!plugin.toaManager.baba.targetPillarTiles.isEmpty())
-//		{
-//			for (WorldPoint wp : plugin.toaManager.baba.targetPillarTiles)
-//			{
-//				LocalPoint lp3 = LocalPoint.fromWorld(client, wp);
-//				assert lp3 != null;
-//				Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
-//				if (poly3 != null)
-//				{
-//					OverlayUtil.renderPolygon(graphics2D, poly3, Color.ORANGE, new Color(0, 0, 0, 5), stroke2);
-//				}
-//			}
-//		}
+		if (!plugin.toaManager.baba.targetPillarTiles.isEmpty())
+		{
+			for (WorldPoint wp : plugin.toaManager.baba.targetPillarTiles)
+			{
+				LocalPoint lp3 = LocalPoint.fromWorld(client, wp);
+				assert lp3 != null;
+				Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
+				if (poly3 != null)
+				{
+					OverlayUtil.renderPolygon(graphics2D, poly3, Color.ORANGE, new Color(0, 0, 0, 5), stroke2);
+				}
+			}
+		}
 //
 //		if (plugin.toaManager.kephri.currentRow != null)
 //		{
@@ -560,39 +560,39 @@ public class ToaGigatronOverlay extends Overlay
 			}
 		}
 //
-//		if (plugin.toaManager.baba.bananaTiles != null)
-//		{
-//			for (WorldPoint wp : plugin.toaManager.baba.bananaTiles)
-//			{
-//				drawTile(graphics2D, wp, Color.YELLOW, 1, 100, 100);
-//			}
-//		}
-//
-//		if (plugin.toaManager.baba.badTiles != null)
-//		{
-//			for (WorldPoint wp : plugin.toaManager.baba.badTiles)
-//			{
-//				drawTile(graphics2D, wp, Color.RED, 2, 0, 50);
-//			}
-//		}
-//
-//		if (plugin.toaManager.baba.blockTiles != null)
-//		{
-//			for (WorldPoint wp : plugin.toaManager.baba.blockTiles)
-//			{
-//				drawTile(graphics2D, wp, Color.ORANGE, 1, 0, 50);
-//			}
-//		}
-//
-//
-////		if (plugin.toaManager.baba.babaBossRowSafe != null)
-////		{
-////			for (WorldPoint wp : plugin.toaManager.baba.babaBossRowSafe.toWorldPointList())
-////			{
-////				drawTile(graphics2D, wp, Color.pink, 1, 255, 10);
-////			}
-////		}
-//
+		if (plugin.toaManager.baba.bananaTiles != null)
+		{
+			for (WorldPoint wp : plugin.toaManager.baba.bananaTiles)
+			{
+				drawTile(graphics2D, wp, Color.YELLOW, 1, 100, 100);
+			}
+		}
+
+		if (plugin.toaManager.baba.badTiles != null)
+		{
+			for (WorldPoint wp : plugin.toaManager.baba.badTiles)
+			{
+				drawTile(graphics2D, wp, Color.RED, 2, 0, 50);
+			}
+		}
+
+		if (plugin.toaManager.baba.blockTiles != null)
+		{
+			for (WorldPoint wp : plugin.toaManager.baba.blockTiles)
+			{
+				drawTile(graphics2D, wp, Color.ORANGE, 1, 0, 50);
+			}
+		}
+
+
+		if (plugin.toaManager.baba.babaBossRowSafe != null)
+		{
+			for (WorldPoint wp : plugin.toaManager.baba.babaBossRowSafe.toWorldPointList())
+			{
+				drawTile(graphics2D, wp, Color.pink, 1, 255, 10);
+			}
+		}
+
 		if (plugin.toaManager.baba.attackPath != null)
 		{
 			for (WorldPoint wp : plugin.toaManager.baba.attackPath)
@@ -600,19 +600,19 @@ public class ToaGigatronOverlay extends Overlay
 				drawTile(graphics2D, wp, Color.MAGENTA, 1, 50, 50);
 			}
 		}
-//
-//		if (plugin.toaManager.baba.safeTile != null)
-//		{
-//			WorldPoint ref2 = plugin.toaManager.baba.safeTile;
-//			LocalPoint lp2 = LocalPoint.fromWorld(client, ref2);
-//			assert lp2 != null;
-//			Polygon poly2 = Perspective.getCanvasTileAreaPoly(client, lp2, 1);
-//			if (poly2 != null)
-//			{
-//				OverlayUtil.renderPolygon(graphics2D, poly2, Color.CYAN, new Color(0, 0, 0, 5), stroke);
-//			}
-//		}
-//
+
+		if (plugin.toaManager.baba.safeTile != null)
+		{
+			WorldPoint ref2 = plugin.toaManager.baba.safeTile;
+			LocalPoint lp2 = LocalPoint.fromWorld(client, ref2);
+			assert lp2 != null;
+			Polygon poly2 = Perspective.getCanvasTileAreaPoly(client, lp2, 1);
+			if (poly2 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly2, Color.CYAN, new Color(0, 0, 0, 5), stroke);
+			}
+		}
+
 ////		if (plugin.toaManager.baba.babaBossRoom != null)
 ////		{
 ////			for (WorldPoint wp : plugin.toaManager.baba.babaBossRoom)
@@ -621,22 +621,22 @@ public class ToaGigatronOverlay extends Overlay
 ////			}
 ////		}
 //
-//		if (!plugin.toaManager.baba.shockwaveTiles.isEmpty())
-//		{
-//			for (WorldPoint wp : plugin.toaManager.baba.shockwaveTiles)
-//			{
-//				drawTile(graphics2D, wp, Color.orange, 1, 255, 10);
-//			}
-//		}
-//
-//		if (!plugin.toaManager.baba.rockfallTiles.isEmpty())
-//		{
-//			for (WorldPoint wp : plugin.toaManager.baba.rockfallTiles)
-//			{
-//				drawTile(graphics2D, wp, Color.BLUE, 1, 255, 10);
-//			}
-//		}
-//
+		if (!plugin.toaManager.baba.shockwaveTiles.isEmpty())
+		{
+			for (WorldPoint wp : plugin.toaManager.baba.shockwaveTiles)
+			{
+				drawTile(graphics2D, wp, Color.orange, 1, 255, 10);
+			}
+		}
+
+		if (!plugin.toaManager.baba.rockfallTiles.isEmpty())
+		{
+			for (WorldPoint wp : plugin.toaManager.baba.rockfallTiles)
+			{
+				drawTile(graphics2D, wp, Color.BLUE, 1, 255, 10);
+			}
+		}
+
 //		if (plugin.toaManager.akkha.orbTiles != null)
 //		{
 //			for (WorldPoint wp : plugin.toaManager.akkha.orbTiles)

@@ -253,7 +253,7 @@ public class Wardens3
 	}
 
 	@Subscribe
-	public void onNPCSpawn(NpcSpawned npcSpawned)
+	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
 		if (npc.getName().equalsIgnoreCase("energy siphon"))
