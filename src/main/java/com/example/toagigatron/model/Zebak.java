@@ -1,4 +1,4 @@
- package com.example.toagigatron.model;
+package com.example.toagigatron.model;
 
 
 import com.example.EthanApiPlugin.Collections.Equipment;
@@ -15,6 +15,7 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.model.puzzlemodel.ZebakWaterfallRoom;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -91,9 +92,11 @@ public class Zebak
 	public ArrayList<WorldPoint> allWalkableRoomTiles = new ArrayList<>();
 	public ArrayList<WorldPoint> allWalkableRoomTilesIncludingChompZone = new ArrayList<>();
 	public ArrayList<WorldPoint> zebakEastTiles = new ArrayList<>();
+	public List<WorldPoint> path = new ArrayList<>();
 
 	public void resetVariables()
 	{
+		path.clear();
 		northEastZebakPuzzle = null;
 		northWestZebakPuzzle = null;
 		southEastZebakPuzzle = null;
@@ -268,7 +271,10 @@ public class Zebak
 			WorldArea blowpipeArea = WorldAreas.createArea(southWest, northEast);
 			blowpipeTiles = (ArrayList<WorldPoint>) blowpipeArea.toWorldPointList();
 		}
-		manuallyTrimZebakRoom(allRoomTiles, WorldAreas.getCenter(zebakBoss.getWorldArea()));
+		if (zebakBoss != null)
+		{
+			manuallyTrimZebakRoom(allRoomTiles, WorldAreas.getCenter(zebakBoss.getWorldArea()));
+		}
 		if (allRoomTiles.size() > 0)
 		{
 			allWalkableRoomTiles.clear();
@@ -296,6 +302,13 @@ public class Zebak
 		generateSafeWaves();
 	}
 
+	public ArrayList<WorldPoint> getChompZone()
+	{
+		ArrayList<WorldPoint> chompZone = allRoomTiles;
+		chompZone.removeIf(n -> n.distanceTo(zebakBoss.getWorldArea()) != 1);
+		return chompZone;
+	}
+
 	public void generateSafeWaves()
 	{
 		wavesOneSafe = null;
@@ -312,17 +325,29 @@ public class Zebak
 		GameObject exit = ObjectUtil.getNearestGameObject(ToaConstants.ZEBAK_PUZZLE_EXIT);
 		if (exit == null)
 		{
+			toaManager.print("No exit");
 			return false;
 		}
 		if (Reachable.isWalkable(exit.getWorldLocation().dx(3)))
 		{
+			toaManager.print("exit reachable");
 			return false;
 		}
+
 		GameObject entrance = ObjectUtil.getNearestGameObject(ToaConstants.ZEBAK_PUZZLE_ENTRANCE);
 		if (entrance == null)
 		{
+			toaManager.print("entrance null");
 			return false;
 		}
+		GameObject barrier = ObjectUtil.getNearestGameObject((ToaConstants.BARRIER));
+		if (client.getLocalPlayer().getWorldLocation().distanceTo(ObjectUtil.getWorldArea(barrier)) <= 1
+			&& client.getLocalPlayer().getWorldLocation().getX() <= barrier.getWorldLocation().getX())
+		{
+			toaManager.print("our check is working");
+			return true;
+		}
+		toaManager.print("entrance is blocked");
 		return !Reachable.isWalkable(entrance.getWorldLocation().dx(-2));
 	}
 
