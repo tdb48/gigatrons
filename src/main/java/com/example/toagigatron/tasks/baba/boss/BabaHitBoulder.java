@@ -2,14 +2,8 @@ package com.example.toagigatron.tasks.baba.boss;
 
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
 import com.example.Packets.NPCPackets;
-import com.example.Packets.ObjectPackets;
-import com.example.Utility.Movement;
 import com.example.Utility.NPCUtil;
-import com.example.Utility.ObjectUtil;
-import com.example.Utility.Reachable;
-import com.example.Utility.Static;
 import com.example.Utility.Walker;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
@@ -17,12 +11,10 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
-import java.util.HashSet;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-
 import javax.inject.Inject;
-import java.util.List;
+import java.util.HashSet;
 
 @TaskDescriptor(
 	name = "Baba hit boulder",
@@ -47,7 +39,7 @@ public class BabaHitBoulder extends StagedTask
 		}
 
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
-		NPC weakBoulder = NPCUtil.findNearest(ToaConstants.WEAK_BOULDER);
+		NPC weakBoulder =  NPCUtil.findNearest(ToaConstants.WEAK_BOULDER);
 		if (weakBoulder == null
 			&& (toaManager.baba.bouldersKilled == 7
 			|| toaManager.baba.bouldersKilled == 14))

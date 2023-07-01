@@ -1,31 +1,21 @@
 package com.example.toagigatron.tasks.baba.boss;
 
+
 import com.example.EthanApiPlugin.EthanApiPlugin;
-import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
-import com.example.Packets.NPCPackets;
-import com.example.Packets.ObjectPackets;
-import com.example.Utility.Movement;
 import com.example.Utility.NPCUtil;
-import com.example.Utility.ObjectUtil;
 import com.example.Utility.Reachable;
-import com.example.Utility.Static;
 import com.example.Utility.Walker;
 import com.example.Utility.WorldAreas;
-import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import com.google.inject.Inject;
-import java.util.HashSet;
 import net.runelite.api.NPC;
-import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 @TaskDescriptor(
 	name = "Baba dodge special",
@@ -100,6 +90,7 @@ public class BabaDodgeSpecial extends StagedTask
 			{
 				return false;
 			}
+			toaManager.print("In danger, moving to melee tile " + toaManager.worldPointString(safeTile));
 			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.baba.badTiles);
 			toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(safeTile, dangerTiles);
 			Walker.stepAlong(toaManager.baba.attackPath);
