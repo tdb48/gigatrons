@@ -58,6 +58,8 @@ public class Akkha
 	public ArrayList<WorldPoint> orbTiles = new ArrayList<>();
 	public ArrayList<WorldPoint> orbThirdTiles = new ArrayList<>();
 	public ArrayList<WorldPoint> akkhaOrbTiles = new ArrayList<>();
+
+	public ArrayList<WorldPoint> finalPhasePath = new ArrayList<>();
 	public WorldPoint targetPoint = null;
 
 	//TESTING PUZZLE CODE
@@ -76,6 +78,7 @@ public class Akkha
 
 	public void resetVariables()
 	{
+		finalPhasePath = new ArrayList<>();
 		activeShadows.clear();
 		neQuadrant = null;
 		nwQuadrant = null;

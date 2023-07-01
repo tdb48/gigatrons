@@ -738,6 +738,22 @@ public class ToaManager
 			counter++;
 		}
 	}
+	public GameObject findClosestGameObject(ArrayList<GameObject> gameObjects)
+	{
+		GameObject returnObj = null;
+		int distance = Integer.MAX_VALUE;
+		WorldPoint playerLoc = client.getLocalPlayer().getWorldLocation();
+		for (GameObject gameObject : gameObjects)
+		{
+			WorldPoint wp = gameObject.getWorldLocation();
+			if (wp.distanceTo(playerLoc) <= distance)
+			{
+				returnObj = gameObject;
+				distance = wp.distanceTo(playerLoc);
+			}
+		}
+		return returnObj;
+	}
 
 	public void sendIntValue(int amount){
 		EthanApiPlugin.getClient().setVarcStrValue(359,Integer.toString(amount));

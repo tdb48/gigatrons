@@ -19,6 +19,14 @@ public class TileItemUtil {
         return  returnList;
     }
 
+    public static ArrayList<ETileItem> getAllETileItems(int[] ids){
+        ArrayList<ETileItem> returnList = new ArrayList<>();
+        for(int id : ids){
+            returnList.addAll(TileItems.search().withId(id).result());
+        }
+        return  returnList;
+    }
+
     public static ArrayList<ETileItem> getAllETileItems(String... name){
         ArrayList<ETileItem> returnList = new ArrayList<>();
         for(String s : name){

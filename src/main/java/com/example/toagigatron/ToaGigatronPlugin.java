@@ -12,6 +12,9 @@ import com.example.toagigatron.overlay.ToaGigatronInfoBox;
 import com.example.toagigatron.overlay.ToaGigatronOverlay;
 import com.example.toagigatron.taskformat.TaskManager;
 import com.example.toagigatron.tasks.*;
+import com.example.toagigatron.tasks.akkha.puzzle.AkkhaEnterPuzzle;
+import com.example.toagigatron.tasks.akkha.puzzle.AkkhaExitPuzzle;
+import com.example.toagigatron.tasks.akkha.puzzle.AkkhaSolvePuzzle;
 import com.example.toagigatron.tasks.baba.BabaConsumables;
 import com.example.toagigatron.tasks.baba.puzzle.*;
 import com.example.toagigatron.tasks.outside.Bank;
@@ -110,6 +113,9 @@ public class ToaGigatronPlugin extends Plugin {
 			Prepot.class,
 			RechargeItems.class,
 //			BabaAttackMonkey.class,
+                AkkhaEnterPuzzle.class,
+                AkkhaExitPuzzle.class,
+                AkkhaSolvePuzzle.class
         };
     }
 
@@ -133,7 +139,7 @@ public class ToaGigatronPlugin extends Plugin {
         this.toaManager.chargesTracker.register();
 //        this.toaManager.kephri.register();
         this.toaManager.baba.register();
-//        this.toaManager.akkha.register();
+        this.toaManager.akkha.register();
         this.toaManager.overall.register();
 //        this.toaManager.zebak.register();
 //        this.toaManager.wardens12.register();
@@ -162,7 +168,7 @@ public class ToaGigatronPlugin extends Plugin {
         this.toaManager.baba.unregister();
         this.toaManager.chargesTracker.reset();
         this.toaManager.chargesTracker.unregister();
-//        this.toaManager.akkha.unregister();
+        this.toaManager.akkha.unregister();
         this.toaManager.overall.unregister();
         this.toaManager.unregister();
         this.gameTickManager.unregister();
@@ -179,7 +185,7 @@ public class ToaGigatronPlugin extends Plugin {
 //        this.toaManager.zebak.resetVariables();
 //        this.toaManager.kephri.resetVariables();
         this.toaManager.baba.resetVariables();
-//        this.toaManager.akkha.resetVariables();
+        this.toaManager.akkha.resetVariables();
         this.toaManager.inside.resetVariables();
         this.toaManager.outside.resetVariables();
 //        this.toaManager.wardens12.resetVariables();
