@@ -966,10 +966,24 @@ public class ToaManager
 				}
 			}
 		}
+	}
 
-
-
-
+	public boolean containsObjectZebak(GameObject[] objects)
+	{
+		for (GameObject object : objects)
+		{
+			if (object != null)
+			{
+				for (int i : ToaConstants.ZEBAK_POISON_GAME_OBJECT)
+				{
+					if (object.getId() == i)
+					{
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	public boolean isAdrenalineActive()
