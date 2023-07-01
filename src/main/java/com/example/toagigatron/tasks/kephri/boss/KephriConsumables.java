@@ -1,15 +1,10 @@
 package com.example.toagigatron.tasks.kephri.boss;
 
-import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
-import com.example.Packets.NPCPackets;
-import com.example.Packets.ObjectPackets;
-import com.example.Utility.Movement;
-import com.example.Utility.ObjectUtil;
-import com.example.Utility.Reachable;
-import com.example.Utility.Static;
+import com.example.Packets.*;
+import com.example.Utility.*;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
+import com.example.toagigatron.model.constants.Consumables;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
@@ -19,6 +14,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
+import net.runelite.api.widgets.Widget;
 
 @TaskDescriptor(
 	name = "Kephri consumables",
@@ -69,25 +65,26 @@ public class KephriConsumables extends StagedTask
 
 		//Combat
 		int[] potentialCombat = Consumables.COMBAT.stream().mapToInt(i -> i).toArray();
-		Item combatPotion = Inventory.getFirst(potentialCombat);
+		Widget combatPotion = InventoryUtil.getFirst(potentialCombat);
 		int scbDoseCount = combatPotion != null ? getDoseCount(combatPotion.getId()) : -1;
 
 		// Poison
 		int[] potentialAnti = Consumables.ANTI.stream().mapToInt(i -> i).toArray();
-		Item poisonPotion = Inventory.getFirst(potentialAnti);
+		Widget poisonPotion = InventoryUtil.getFirst(potentialAnti);
 
 		//Stamina
 		int[] potentialStamina = Consumables.STAM.stream().mapToInt(i -> i).toArray();
-		Item staminaPotion = Inventory.getFirst(potentialStamina);
+		Widget staminaPotion = InventoryUtil.getFirst(potentialStamina);
 
-		Item healingPotion = Consumables.getBrew();
-		Item sanfewPotion = Consumables.getSanfew();
-		Item restorePotion = Consumables.getRestore();
+		Widget healingPotion = Consumables.getBrew();
+		Widget sanfewPotion = Consumables.getSanfew();
+		Widget restorePotion = Consumables.getRestore();
 
 		if (Prayers.getPoints() <= 50 && sanfewPotion != null)
 		{
 			toaManager.print("Drinking sanfew");
-			sanfewPotion.interact("Drink");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(sanfewPotion, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -95,7 +92,8 @@ public class KephriConsumables extends StagedTask
 		if ((Prayers.getPoints() <= 5 || client.getBoostedSkillLevel(Skill.STRENGTH) < client.getRealSkillLevel(Skill.STRENGTH)) && restorePotion != null)
 		{
 			toaManager.print("Drinking restore");
-			restorePotion.interact("Drink");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(restorePotion, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -104,7 +102,8 @@ public class KephriConsumables extends StagedTask
 		if (Combat.isPoisoned() && poisonPotion != null)
 		{
 			toaManager.print("Drinking anti");
-			poisonPotion.interact("Drink");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(poisonPotion, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -113,7 +112,8 @@ public class KephriConsumables extends StagedTask
 		if (client.getBoostedSkillLevel(Skill.HITPOINTS) <= 40 && healingPotion != null)
 		{
 			toaManager.print("Drinking brew");
-			healingPotion.interact("Drink");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(healingPotion, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -122,7 +122,8 @@ public class KephriConsumables extends StagedTask
 		if (Movement.getRunEnergy() <= 10 && staminaPotion != null)
 		{
 			toaManager.print("Drinking brew");
-			staminaPotion.interact("Drink");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(staminaPotion, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -131,7 +132,8 @@ public class KephriConsumables extends StagedTask
 		if (client.getBoostedSkillLevel(Skill.STRENGTH) <= (client.getRealSkillLevel(Skill.STRENGTH) + determineDrinkAtLevel(scbDoseCount)) && combatPotion != null)
 		{
 			toaManager.print("Drinking scb");
-			combatPotion.interact("Drink");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(combatPotion, "Drink");
 			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;

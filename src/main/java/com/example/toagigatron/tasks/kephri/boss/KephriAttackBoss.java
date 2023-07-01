@@ -1,28 +1,24 @@
 package com.example.toagigatron.tasks.kephri.boss;
 
-import com.example.EthanApiPlugin.Collections.NPCs;
+import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
 import com.example.Packets.NPCPackets;
-import com.example.Packets.ObjectPackets;
-import com.example.Utility.Movement;
-import com.example.Utility.NPCUtil;
-import com.example.Utility.ObjectUtil;
-import com.example.Utility.Reachable;
-import com.example.Utility.Static;
+import com.example.Utility.*;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
+import com.example.toagigatron.model.bossmodel.KephriDungRow;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Varbits;
-import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 
 @TaskDescriptor(
@@ -48,15 +44,16 @@ public class KephriAttackBoss extends StagedTask
 //			&& (n.getName().equals("Spitting Scarab")
 //			|| n.getName().equals("Arcane Scarab")
 //			|| n.getName().equals("Soldier Scarab")));
-		NPC demi = NPCs.search().withName("Spitting Scarab")
+		NPC demi = NPCUtil.findNearest("Spitting Scarab", "Arcane Scarab", "Soldier Scarab");
 
 //			(n -> n.getHealthRatio() != 0
 //			&& (n.getName().equals("Spitting Scarab")
 //			|| n.getName().equals("Arcane Scarab")
 //			|| n.getName().equals("Soldier Scarab")));
 
+		//todo make sure this stream thing works properly
 		if (toaManager.kephri.kephri == null
-			|| !toaManager.kephri.kephri.hasAction("Attack")
+			|| Arrays.stream(client.getNpcDefinition(toaManager.kephri.kephri.getId()).getActions()).noneMatch(x -> x.equals("Attack"))
 			|| toaManager.kephri.kephriRoom == null
 			|| !toaManager.kephri.kephriRoom.contains(playerPoint)
 			|| resetGhost != null
@@ -134,7 +131,9 @@ public class KephriAttackBoss extends StagedTask
 				toaManager.print("We are lost in the sauce in kephri attack boss");
 				return false;
 			}
-			toaManager.kephri.kephriPath = Movement.getPath(List.of(playerPoint), dodgeTile, toaManager.baba.toaCollisionMap);
+			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.kephri.bombTiles);
+			toaManager.kephri.kephriPath = EthanApiPlugin.pathToGoal(dodgeTile, dangerTiles);
+
 			if (toaManager.kephri.kephriPath.isEmpty())
 			{
 				toaManager.print("Empty path?");
@@ -199,7 +198,8 @@ public class KephriAttackBoss extends StagedTask
 		if (client.getLocalPlayer().getInteracting() == null)
 		{
 			toaManager.print("Attacking kephri");
-			toaManager.kephri.kephri.interact("Attack");
+			MousePackets.queueClickPacket();
+			NPCPackets.queueNPCAction(toaManager.kephri.kephri, "Attack");
 			return true;
 		}
 		return false;
@@ -210,7 +210,7 @@ public class KephriAttackBoss extends StagedTask
 		WorldPoint southWest = playerPoint.dx(-2).dy(-2);
 		WorldPoint northEast = playerPoint.dx(3).dy(3);
 		// 5x5 around player
-		ArrayList<WorldPoint> areaAroundPlayer = (ArrayList<WorldPoint>) new WorldArea(southWest, northEast).toWorldPointList();
+		ArrayList<WorldPoint> areaAroundPlayer = (ArrayList<WorldPoint>) WorldAreas.createArea(southWest, northEast).toWorldPointList();
 		areaAroundPlayer.removeIf(n -> !Reachable.isWalkable(n));
 		areaAroundPlayer.removeAll(toaManager.kephri.bombTiles);
 		if (areaAroundPlayer.contains(playerPoint))
@@ -218,10 +218,11 @@ public class KephriAttackBoss extends StagedTask
 			// If the playerpoint is a safetile, return that
 			return playerPoint;
 		}
-		TilePath testPath;
+		ArrayList<WorldPoint> testPath;
+		HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.kephri.bombTiles);
 		for (WorldPoint worldPoint : areaAroundPlayer)
 		{
-			testPath = Movement.getPath(List.of(playerPoint), worldPoint, toaManager.baba.toaCollisionMap);
+			testPath = EthanApiPlugin.pathToGoal(worldPoint, dangerTiles);
 			if (testPath.size() <= 3)
 			{
 				return worldPoint;
@@ -246,7 +247,8 @@ public class KephriAttackBoss extends StagedTask
 
 	private boolean shouldWeSpec()
 	{
-		if (!Equipment.contains(ItemID.OSMUMTENS_FANG) || Combat.isSpecEnabled())
+
+		if (Equipment.search().withId(ItemID.OSMUMTENS_FANG).empty()|| Combat.isSpecEnabled())
 		{
 			return false;
 		}

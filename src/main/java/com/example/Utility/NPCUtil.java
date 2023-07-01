@@ -42,6 +42,12 @@ public class NPCUtil
 			.collect(Collectors.toList());
 		return NPCs.search().idInList(arrayList).nearestToPlayer().filter(x -> x.getHealthRatio() != 0).orElse(null);
 	}
+	public static NPC findNearest(String... name)
+	{
+		List<String> arrayList = Arrays.stream(name)
+				.collect(Collectors.toList());
+		return NPCs.search().alive().nearestToPlayer().filter(x -> arrayList.contains(x.getName())).orElse(null);
+	}
 
 	public static List<NPC> findAll(int... id)
 	{

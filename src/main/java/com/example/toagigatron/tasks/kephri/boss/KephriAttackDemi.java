@@ -1,25 +1,23 @@
 package com.example.toagigatron.tasks.kephri.boss;
 
+import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
 import com.example.Packets.NPCPackets;
-import com.example.Packets.ObjectPackets;
-import com.example.Utility.Movement;
-import com.example.Utility.ObjectUtil;
-import com.example.Utility.Reachable;
-import com.example.Utility.Static;
+import com.example.Utility.*;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
+import com.example.toagigatron.model.bossmodel.KephriDungRow;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 
 @TaskDescriptor(
@@ -40,22 +38,20 @@ public class KephriAttackDemi extends StagedTask
 	public boolean execute()
 	{
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
-		NPC demi = NPCs.getNearest("Spitting Scarab", "Arcane Scarab", "Soldier Scarab");
-		NPC resetGhost = NPCs.getNearest(ToaConstants.OSMUMTEN,ToaConstants.SCABARAS);
+		NPC demi = NPCUtil.findNearest("Spitting Scarab", "Arcane Scarab", "Soldier Scarab");
+		NPC resetGhost = NPCUtil.findNearest(ToaConstants.OSMUMTEN,ToaConstants.SCABARAS);
 		if (toaManager.kephri.kephriRoom == null
 			|| toaManager.kephri.kephri == null
 			|| resetGhost != null
 			|| !toaManager.kephri.kephriRoom.contains(playerPoint)
-			|| (demi == null && toaManager.kephri.kephri.hasAction("Attack"))
+			|| (demi == null && Arrays.asList(client.getNpcDefinition(toaManager.kephri.kephri.getId()).getActions()).contains("Attack"))
 			|| toaManager.kephri.dungGraphicTick > 0
 			|| Static.getClient().getLocalPlayer().getGraphic() == ToaConstants.DUNG_GRAPHIC_START)
 		{
 			return false;
 		}
 		WorldPoint safeBombTile = safeBombTile(playerPoint);
-		NPC arcane = NPCs.getNearest(n ->
-			n.getName().equals("Arcane Scarab")
-				&& n.getHealthRatio() != 0);
+		NPC arcane = NPCUtil.findNearest("Arcane Scarab");
 		if (arcane != null)
 		{
 			WorldPoint closestSafeTile = getClosestSafeTile(getTilesAroundScarab(arcane));
@@ -77,20 +73,19 @@ public class KephriAttackDemi extends StagedTask
 			{
 				if (Combat.getSpecEnergy() >= 25
 					&& !Combat.isSpecEnabled()
-					&& Equipment.contains(ItemID.OSMUMTENS_FANG))
+					&& !Equipment.search().withId(ItemID.OSMUMTENS_FANG).empty())
 				{
 					Combat.toggleSpec();
 				}
 				toaManager.print("Attacking Arcane Scarab");
-				arcane.interact("Attack");
+				MousePackets.queueClickPacket();
+				NPCPackets.queueNPCAction(arcane, "Attack");
 				return true;
 			}
 			return false;
 		}
 
-		NPC spitting = NPCs.getNearest(n ->
-			n.getName().equals("Spitting Scarab")
-				&& n.getHealthRatio() != 0);
+		NPC spitting = NPCUtil.findNearest("Spitting Scarab");
 		if (spitting != null)
 		{
 			WorldPoint closestSafeTile = getClosestSafeTile(getTilesAroundScarab(spitting));
@@ -111,25 +106,24 @@ public class KephriAttackDemi extends StagedTask
 			{
 				if (Combat.getSpecEnergy() >= 95
 					&& !Combat.isSpecEnabled()
-					&& Equipment.contains(ItemID.OSMUMTENS_FANG))
+					&& !Equipment.search().withId(ItemID.OSMUMTENS_FANG).empty())
 				{
 					Combat.toggleSpec();
 				}
 				toaManager.print("Attacking Spitting Scarab");
-				spitting.interact("Attack");
+				MousePackets.queueClickPacket();
+				NPCPackets.queueNPCAction(spitting, "Attack");
 				return true;
 			}
 		}
 
 		WorldPoint startTile = getStartTile();
-		NPC soldier = NPCs.getNearest(n ->
-			n.getName().equals("Soldier Scarab")
-				&& n.getHealthRatio() != 0);
+		NPC soldier = NPCUtil.findNearest("Soldier Scarab");
 		if (soldier != null)
 		{
 			if (Combat.getSpecEnergy() >= 25
 				&& !Combat.isSpecEnabled()
-				&& Equipment.contains(ItemID.OSMUMTENS_FANG))
+				&& !Equipment.search().withId(ItemID.OSMUMTENS_FANG).empty())
 			{
 				Combat.toggleSpec();
 			}
@@ -154,7 +148,8 @@ public class KephriAttackDemi extends StagedTask
 			if (!gameTickManager.isAttackWaiting())
 			{
 				toaManager.print("Attacking soldier scarab");
-				soldier.interact("Attack");
+				MousePackets.queueClickPacket();
+				NPCPackets.queueNPCAction(soldier, "Attack");
 				return true;
 			}
 		}
@@ -182,7 +177,7 @@ public class KephriAttackDemi extends StagedTask
 		WorldPoint southWest = playerPoint.dx(-2).dy(-2);
 		WorldPoint northEast = playerPoint.dx(3).dy(3);
 		// 5x5 around player
-		ArrayList<WorldPoint> areaAroundPlayer = (ArrayList<WorldPoint>) new WorldArea(southWest, northEast).toWorldPointList();
+		ArrayList<WorldPoint> areaAroundPlayer = (ArrayList<WorldPoint>) WorldAreas.createArea(southWest, northEast).toWorldPointList();
 		areaAroundPlayer.removeIf(n -> !Reachable.isWalkable(n));
 		areaAroundPlayer.removeAll(toaManager.kephri.bombTiles);
 		if (areaAroundPlayer.contains(playerPoint))
@@ -190,10 +185,11 @@ public class KephriAttackDemi extends StagedTask
 			// If the playerpoint is a safetile, return that
 			return playerPoint;
 		}
-		TilePath testPath;
+		ArrayList<WorldPoint> testPath;
+		HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.kephri.bombTiles);
 		for (WorldPoint worldPoint : areaAroundPlayer)
 		{
-			testPath = Movement.getPath(List.of(playerPoint), worldPoint, toaManager.baba.toaCollisionMap);
+			testPath = EthanApiPlugin.pathToGoal(worldPoint, dangerTiles);
 			if (testPath.size() <= 3)
 			{
 				return worldPoint;
@@ -226,10 +222,10 @@ public class KephriAttackDemi extends StagedTask
 		{
 			return returnList;
 		}
-		WorldPoint centerOfScarab = scarab.getWorldArea().getCenter();
+		WorldPoint centerOfScarab = WorldAreas.getCenter(scarab.getWorldArea());
 		WorldPoint southWest = centerOfScarab.dx(-2).dy(-2);
 		WorldPoint northEast = centerOfScarab.dx(3).dy(3);
-		returnList = (ArrayList<WorldPoint>) new WorldArea(southWest, northEast).toWorldPointList();
+		returnList = (ArrayList<WorldPoint>) WorldAreas.createArea(southWest, northEast).toWorldPointList();
 		returnList.removeAll(scarab.getWorldArea().toWorldPointList());
 		returnList.removeIf(n -> toaManager.isDiagonalOf(n, centerOfScarab));
 		returnList.removeAll(toaManager.kephri.bombTiles);

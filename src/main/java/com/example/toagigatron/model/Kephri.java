@@ -95,9 +95,12 @@ public class Kephri
 
 	public int previousKephriAnimation = 0;
 
+	public List<WorldPoint> kephriPath = new ArrayList<>();
+
 
 	public void resetVariables()
 	{
+		kephriPath = new ArrayList<>();
 		memory_tiles = new ArrayList<>();
 		memory_completed_tiles = new ArrayList<>();
 		activeObelisks = 0;
