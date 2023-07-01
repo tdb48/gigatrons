@@ -35,7 +35,6 @@ public class BabaEnterPuzzle extends StagedTask
 	{
 		if (toaManager.baba.isPuzzleActive())
 		{
-			System.out.println("here");
 			return false;
 		}
 		//Combat
@@ -52,10 +51,8 @@ public class BabaEnterPuzzle extends StagedTask
 		TileObject exit = TileObjects.search().withId(ToaConstants.BABA_PUZZLE_EXIT).first().orElse(null);
 		if (exit != null && Reachable.isWalkable(exit.getWorldLocation().dx(-1)))
 		{
-			System.out.println("Returning false in exit");
 			return false;
 		}
-		System.out.println("here");
 		TileObject entry = TileObjects.search().withId(ToaConstants.BARRIER).first().orElse(null);
 		if (entry != null)
 		{

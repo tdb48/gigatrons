@@ -37,7 +37,7 @@ public class BabaMoveOffPoison extends StagedTask
 	public boolean execute()
 	{
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
-		TileObject poison = TileObjects.search().withId(ToaConstants.BABA_PUZZLE_POISON).first().orElse(null);
+		TileObject poison = TileObjects.search().withId(ToaConstants.BABA_PUZZLE_POISON).atLocation(playerPoint).first().orElse(null);
 		if (poison == null)
 		{
 			return false;

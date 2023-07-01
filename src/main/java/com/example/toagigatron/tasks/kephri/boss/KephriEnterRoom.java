@@ -1,22 +1,19 @@
 package com.example.toagigatron.tasks.kephri.boss;
 
 
+import com.example.EthanApiPlugin.Collections.TileObjects;
 import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
-import com.example.Packets.NPCPackets;
 import com.example.Packets.ObjectPackets;
-import com.example.Utility.Movement;
-import com.example.Utility.ObjectUtil;
 import com.example.Utility.Reachable;
 import com.example.Utility.Static;
-import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import javax.inject.Inject;
-import net.runelite.api.GameObject;
+import net.runelite.api.TileObject;
+
 @TaskDescriptor(
         name = "Kephri enter",
         priority = 10
@@ -40,11 +37,13 @@ public class KephriEnterRoom extends StagedTask
             toaManager.swap(toaManager.meleeSetup.getAllItems());
             return true;
         }
-        GameObject entry = new GameObjectQuery().idEquals(ToaConstants.KEPHRI_BOSS_ENTRY).result(client).first();
-        if (entry != null && Reachable.isInteractable(entry))
+        TileObject entry = TileObjects.search().withId(ToaConstants.KEPHRI_BOSS_ENTRY).first().orElse(null);
+        //todo check this world point is accurate
+        if (entry != null && Reachable.isWalkable(entry.getWorldLocation().dx(-1)))
         {
             toaManager.print("Entering boss fight");
-            entry.interact("Quick-Use");
+            MousePackets.queueClickPacket();
+            ObjectPackets.queueObjectAction(entry, false,"Quick-Use");
             return true;
         }
 

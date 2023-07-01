@@ -503,7 +503,7 @@ public class ToaManager
 		ArrayList<Integer> returnList = new ArrayList<>();
 		for (EquipmentItemWidget widget : items)
 		{
-			System.out.println("printing item id : "  +widget.getEquipmentItemId());
+			//System.out.println("printing item id : "  +widget.getEquipmentItemId());
 			returnList.add(widget.getEquipmentItemId());
 		}
 		return returnList;
@@ -615,6 +615,8 @@ public class ToaManager
 	{
 		int swaps = (int) (3 + (Math.abs(random.nextGaussian() * 1.5)));
 		int counter = 0;
+
+		//System.out.println("Items size -> " + items.size());
 		for (int item : items)
 		{
 			if (counter == swaps)
@@ -755,8 +757,13 @@ public class ToaManager
 					ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
 					if(invent != null){
 						for(int j = 0 ; j < 28; j++){
-							if(Objects.requireNonNull(invent.getItem(j)).getId() == item.getItemId()){
-								System.out.println("Item found at slot -> " + j);
+							Item inventoryItem = invent.getItem(j);
+							if(inventoryItem == null){
+								continue;
+							}
+							//System.out.println("Item id -> " + item.getItemId());
+							if(inventoryItem.getId() == item.getItemId()){
+								//System.out.println("Item found at slot -> " + j);
 								slot = j;
 								break;
 							}
@@ -806,8 +813,14 @@ public class ToaManager
 				ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
 				if(invent != null){
 					for(int j = 0 ; j < 28; j++){
-						if(Objects.requireNonNull(invent.getItem(j)).getId() == item.getItemId()){
-							System.out.println("Item found at slot -> " + j);
+						Item inventoryItem = invent.getItem(j);
+						if(inventoryItem == null){
+							//System.out.println("Inventory item is null somehow?");
+							continue;
+						}
+						//System.out.println("Item id -> " + item.getItemId());
+						if(inventoryItem.getId() == item.getItemId()){
+							//System.out.println("Item found at slot -> " + j);
 							slot = j;
 							break;
 						}
@@ -831,48 +844,105 @@ public class ToaManager
 			}
 		}
 
-
 		int[] gear = gearList.stream().mapToInt(i -> i).toArray();
 		List<Integer> gearAsList = Arrays.stream(gear).boxed().collect(Collectors.toList());
-		for (Widget item : BankInventory.search().idInList(gearAsList).result())
-		{
-			if (counter == swaps)
+		if(BankUtil.isOpen()){
+			for (Widget item : BankInventory.search().idInList(gearAsList).result())
 			{
-				return;
-			}
-			int slot = 0;
-			ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
-			if(invent != null){
-				for(int j = 0 ; j < 28; j++){
-					if(Objects.requireNonNull(invent.getItem(j)).getId() == item.getItemId()){
-						System.out.println("Item found at slot -> " + j);
-						slot = j;
-						break;
+				if (counter == swaps)
+				{
+					return;
+				}
+				int slot = 0;
+				ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
+				if(invent != null){
+					for(int j = 0 ; j < 28; j++){
+						Item inventoryItem = invent.getItem(j);
+						if(inventoryItem == null){
+							//System.out.println("Inventory item is null somehow?");
+							continue;
+						}
+						//System.out.println("Item id -> " + item.getItemId());
+						if(inventoryItem.getId() == item.getItemId()){
+							//System.out.println("Item found at slot -> " + j);
+							slot = j;
+							break;
+						}
+					}
+				}
+				if (Bank.isOpen())
+				{
+					MousePackets.queueClickPacket();
+					WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), slot);
+					counter++;
+				}
+				else
+				{
+					if (WidgetUtil.hasAction(item, "Wield"))
+					{
+						MousePackets.queueClickPacket();
+						WidgetPackets.queueWidgetAction(item, "Wield");
+						counter++;
+					}
+					else if (WidgetUtil.hasAction(item, "Wear"))
+					{
+						MousePackets.queueClickPacket();
+						WidgetPackets.queueWidgetAction(item, "Wear");
+						counter++;
 					}
 				}
 			}
-			if (Bank.isOpen())
+		} else {
+			for (Widget item : Inventory.search().idInList(gearAsList).result())
 			{
-				MousePackets.queueClickPacket();
-				WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), slot);
-				counter++;
-			}
-			else
-			{
-				if (WidgetUtil.hasAction(item, "Wield"))
+				if (counter == swaps)
+				{
+					return;
+				}
+				int slot = 0;
+				ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
+				if(invent != null){
+					for(int j = 0 ; j < 28; j++){
+						Item inventoryItem = invent.getItem(j);
+						if(inventoryItem == null){
+							//System.out.println("Inventory item is null somehow?");
+							continue;
+						}
+						//System.out.println("Item id -> " + item.getItemId());
+						if(inventoryItem.getId() == item.getItemId()){
+							//System.out.println("Item found at slot -> " + j);
+							slot = j;
+							break;
+						}
+					}
+				}
+				if (Bank.isOpen())
 				{
 					MousePackets.queueClickPacket();
-					WidgetPackets.queueWidgetAction(item, "Wield");
+					WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), slot);
 					counter++;
 				}
-				else if (WidgetUtil.hasAction(item, "Wear"))
+				else
 				{
-					MousePackets.queueClickPacket();
-					WidgetPackets.queueWidgetAction(item, "Wear");
-					counter++;
+					if (WidgetUtil.hasAction(item, "Wield"))
+					{
+						MousePackets.queueClickPacket();
+						WidgetPackets.queueWidgetAction(item, "Wield");
+						counter++;
+					}
+					else if (WidgetUtil.hasAction(item, "Wear"))
+					{
+						MousePackets.queueClickPacket();
+						WidgetPackets.queueWidgetAction(item, "Wear");
+						counter++;
+					}
 				}
 			}
 		}
+
+
+
+
 	}
 
 	public boolean isAdrenalineActive()
@@ -897,8 +967,11 @@ public class ToaManager
 	{
 		items.removeIf(n -> n == 0 || n == -1);
 		ArrayList<Widget> playerItems = (ArrayList<Widget>) Inventory.search().result();
-		playerItems.addAll(Equipment.search().result());
 		ArrayList<Integer> returnList = itemsToIntegers(playerItems);
+		for(EquipmentItemWidget w : Equipment.search().result()){
+			returnList.add(w.getEquipmentItemId());
+		}
+
 		for (int i : items)
 		{
 			if (!returnList.contains(i))

@@ -289,30 +289,30 @@ public class ConsumableTracker
 			if(oldItem == null && newItem == null)
 			{
 				//inventory.set(i, null);
-				System.out.println("BOTH NULL who cares");
+				//System.out.println("BOTH NULL who cares");
 			}
 			//Both items are not null so we may be adding a new item via sipping a potion or swapping gear, if not then items are unchanged
 			else if(oldItem != null && newItem != null){
 				if(!oldItem.equals(newItem)){
 					inventoryChanged(oldItem.getId(), false);
 					inventoryChanged(newItem.getId(), true);
-					System.out.println("Old item was -> " + oldItem + ", new item is -> " + newItem);
+					//System.out.println("Old item was -> " + oldItem + ", new item is -> " + newItem);
 					inventory.set(i, newItem);
 				} else {
-					System.out.println("Unchanged items at these slots");
+					//System.out.println("Unchanged items at these slots");
 				}
 			}
 			//Old item is null empty inv space) new item is not - adding an item
 			else if(oldItem == null){
 				inventoryChanged(newItem.getId(), true);
 				inventory.set(i, newItem);
-				System.out.println("Old item is null, new item is -> " + newItem);
+				//System.out.println("Old item is null, new item is -> " + newItem);
 			}
 			//Old item is not null new item is null - removing an item
 			else {
 				inventoryChanged(oldItem.getId(), false);
 				inventory.set(i, null);
-				System.out.println("Old item was -> " + oldItem + ", new item is null");
+				//System.out.println("Old item was -> " + oldItem + ", new item is null");
 			}
 		}
 	}
@@ -328,19 +328,19 @@ public class ConsumableTracker
 			{
 				//Handle adding doses to our inventory
 				updateInventoryDoses(id, true);
-				System.out.println("Updating inventory doses after looting something off the ground");
+				//System.out.println("Updating inventory doses after looting something off the ground");
 			}
 			else
 			{
 				if (justDrank)
 				{
 					justDrank = false;
-					System.out.println("Item added to bag and we drank,updating inventory doses: " + name);
+					//System.out.println("Item added to bag and we drank,updating inventory doses: " + name);
 					updateInventoryDoses(id, true);
 				}
 				else
 				{
-					System.out.println("Item added to bag and we did not just drink or loot an item: " + name);
+					//System.out.println("Item added to bag and we did not just drink or loot an item: " + name);
 					//this must have come from our bag so decrement the count in bag and add it to count in inventory
 					updateBagDoses(id, false);
 					updateInventoryDoses(id, true);
@@ -494,7 +494,7 @@ public class ConsumableTracker
 		//Not a raid pot we do not care
 		if (!Consumables.isRaidPotion(id))
 		{
-			System.out.println("Not a raid potion, returning");
+			//.println("Not a raid potion, returning");
 			return;
 		}
 		String name = itemManager.getItemComposition(id).getName();
@@ -502,7 +502,7 @@ public class ConsumableTracker
 		//Scarab
 		if (Consumables.SCARAB.contains(id))
 		{
-			System.out.println("Found a scarab.");
+			//System.out.println("Found a scarab.");
 			if (addition)
 			{
 				bagScarabDoses += determineDoses(name);
@@ -511,13 +511,13 @@ public class ConsumableTracker
 			{
 				if (justWithdrew)
 				{
-					System.out.println("Just withdrew, determining scarab doses");
+					//System.out.println("Just withdrew, determining scarab doses");
 					bagScarabDoses -= determineDoses(name);
 					justWithdrew = false;
 				}
 				else
 				{
-					System.out.println("Did not withdraw, determining doses");
+					//System.out.println("Did not withdraw, determining doses");
 					bagScarabDoses -= determineDosesResupply(previousChange, id);
 				}
 
@@ -526,7 +526,7 @@ public class ConsumableTracker
 		//Tears
 		if (Consumables.RAID_RESTORE.contains(id))
 		{
-			System.out.println("Its a raid restore");
+		//	System.out.println("Its a raid restore");
 			if (addition)
 			{
 				bagRaidRestoreDoses += determineDoses(name);
@@ -535,13 +535,13 @@ public class ConsumableTracker
 			{
 				if (justWithdrew)
 				{
-					System.out.println("Just withdrew, determining doses");
+					//System.out.println("Just withdrew, determining doses");
 					bagRaidRestoreDoses -= determineDoses(name);
 					justWithdrew = false;
 				}
 				else
 				{
-					System.out.println("Did not withdraw, determining doses");
+					//System.out.println("Did not withdraw, determining doses");
 					bagRaidRestoreDoses -= determineDosesResupply(previousChange, id);
 				}
 
@@ -550,7 +550,7 @@ public class ConsumableTracker
 		//Nectar
 		else if (Consumables.RAID_BREW.contains(id))
 		{
-			System.out.println("Its a raid brew");
+			//System.out.println("Its a raid brew");
 			if (addition)
 			{
 				bagRaidBrewDoses += determineDoses(name);
@@ -559,13 +559,13 @@ public class ConsumableTracker
 			{
 				if (justWithdrew)
 				{
-					System.out.println("Just withdrew, determining doses");
+					//System.out.println("Just withdrew, determining doses");
 					bagRaidBrewDoses -= determineDoses(name);
 					justWithdrew = false;
 				}
 				else
 				{
-					System.out.println("Did not withdraw, determining doses");
+					//System.out.println("Did not withdraw, determining doses");
 					bagRaidBrewDoses -= determineDosesResupply(previousChange, id);
 				}
 
@@ -574,7 +574,7 @@ public class ConsumableTracker
 		//Salt
 		else if (Consumables.SALT.contains(id))
 		{
-			System.out.println("Its a salt");
+			//System.out.println("Its a salt");
 			if (addition)
 			{
 				bagSaltDoses += determineDoses(name);
@@ -583,13 +583,13 @@ public class ConsumableTracker
 			{
 				if (justWithdrew)
 				{
-					System.out.println("Just withdrew, determining doses");
+					//System.out.println("Just withdrew, determining doses");
 					bagSaltDoses -= determineDoses(name);
 					justWithdrew = false;
 				}
 				else
 				{
-					System.out.println("Did not withdraw, determining doses");
+					//System.out.println("Did not withdraw, determining doses");
 					bagSaltDoses -= determineDosesResupply(previousChange, id);
 				}
 
@@ -598,7 +598,7 @@ public class ConsumableTracker
 		//Adrenaline
 		else if (Consumables.SPEC.contains(id))
 		{
-			System.out.println("Its an adrenaline ");
+			//System.out.println("Its an adrenaline ");
 			if (addition)
 			{
 				bagAdrenalineDoses += determineDoses(name);
@@ -607,13 +607,13 @@ public class ConsumableTracker
 			{
 				if (justWithdrew)
 				{
-					System.out.println("Just withdrew, determining doses");
+					//System.out.println("Just withdrew, determining doses");
 					bagAdrenalineDoses -= determineDoses(name);
 					justWithdrew = false;
 				}
 				else
 				{
-					System.out.println("Did not withdraw, determining doses");
+					//System.out.println("Did not withdraw, determining doses");
 					bagAdrenalineDoses -= determineDosesResupply(previousChange, id);
 				}
 
@@ -622,7 +622,7 @@ public class ConsumableTracker
 		//Ambrosia
 		else if (Consumables.AMBROSIA.contains(id))
 		{
-			System.out.println("Its an ambrosia");
+			//System.out.println("Its an ambrosia");
 			if (addition)
 			{
 				bagAmbrosiaDoses += determineDoses(name);
@@ -631,13 +631,13 @@ public class ConsumableTracker
 			{
 				if (justWithdrew)
 				{
-					System.out.println("Just withdrew, determining doses");
+					//System.out.println("Just withdrew, determining doses");
 					bagAmbrosiaDoses -= determineDoses(name);
 					justWithdrew = false;
 				}
 				else
 				{
-					System.out.println("Did not withdraw, determining doses");
+					//System.out.println("Did not withdraw, determining doses");
 					bagAmbrosiaDoses -= determineDosesResupply(previousChange, id);
 				}
 
@@ -743,14 +743,14 @@ public class ConsumableTracker
 		{
 			return 0;
 		}
-		System.out.println("Item removed: " + itemManager.getItemComposition(idRemoved).getName() + "\n" +
-			"Item added: " + itemManager.getItemComposition(idAdded).getName());
+		//System.out.println("Item removed: " + itemManager.getItemComposition(idRemoved).getName() + "\n" +
+			//"Item added: " + itemManager.getItemComposition(idAdded).getName());
 		int doseDiff = dose2 - dose1;
 		if (doseDiff <= 0)
 		{
-			System.out.println("Something went wrong in dose calc for items: \n" +
-				itemManager.getItemComposition(idRemoved).getName() + "\n" +
-				itemManager.getItemComposition(idAdded).getName());
+			//System.out.println("Something went wrong in dose calc for items: \n" +
+			//	itemManager.getItemComposition(idRemoved).getName() + "\n" +
+			//	itemManager.getItemComposition(idAdded).getName());
 		}
 		return dose2 - dose1;
 	}

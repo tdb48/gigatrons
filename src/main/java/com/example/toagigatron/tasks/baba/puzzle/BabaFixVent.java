@@ -4,6 +4,7 @@ import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
 import com.example.Packets.WidgetPackets;
+import com.example.Utility.InventoryUtil;
 import com.example.Utility.Walker;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
@@ -50,15 +51,16 @@ public class BabaFixVent extends StagedTask
 //		}
 		if(toaManager.baba.puzzleSpecialTickTimer > 10
 				&& client.getLocalPlayer().isInteracting()
+				&& client.getLocalPlayer().getInteracting().getName() != null
 				&& client.getLocalPlayer().getInteracting().getName().equalsIgnoreCase("baboon shaman")){
 			toaManager.print("Returning false in fix vent cause im attacking a shaman and have ticks to spare");
 			return false;
 		}
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
-		if (toaManager.baba.targetVent.getWorldLocation().equals(playerPoint) && Inventory.getItemAmount("Neutralising potion") > 0)
+		if (toaManager.baba.targetVent.getWorldLocation().equals(playerPoint) && InventoryUtil.contains("Neutralising potion"))
 		{
 			toaManager.print("Fixing vent");
-			Widget potion = Inventory.search().withName("Neutralising potion").first().orElse(null);
+			Widget potion = Inventory.search().nameContains("Neutralising potion").first().orElse(null);
 			if(potion != null){
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(potion, "Pour");

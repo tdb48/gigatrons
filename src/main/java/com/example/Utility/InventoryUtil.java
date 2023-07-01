@@ -18,7 +18,7 @@ public class InventoryUtil {
         return null;
     }
     public static Widget getFirst(String name){
-        return Widgets.search().withName(name).first().orElse(null);
+        return Widgets.search().nameContains(name).first().orElse(null);
     }
 
     public static Widget getFirst(int id){
@@ -37,7 +37,7 @@ public class InventoryUtil {
         return false;
     }
     public static boolean contains(String name){
-        return Inventory.getItemAmount(name) > 0;
+        return !Inventory.search().nameContains(name).empty();
     }
 
     public static boolean isFull(){
@@ -47,7 +47,7 @@ public class InventoryUtil {
     public static ArrayList<Widget> getAll(String... name){
         ArrayList<Widget> returnList = new ArrayList<>();
         for(String s : name){
-            returnList.addAll(Inventory.search().withName(s).result());
+            returnList.addAll(Inventory.search().nameContains(s).result());
         }
         return returnList;
     }

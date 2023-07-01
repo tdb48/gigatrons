@@ -109,16 +109,18 @@ public class TaskManager
             TaskDescriptor descriptor = this.descriptorHashMap.get(task);
             if (descriptor.client() || !task.run())
             {
-               System.out.println("Not running task -> " + descriptor.name());
+               //System.out.println("Not running task -> " + descriptor.name());
                 continue;
             }
 
             this.currentTask = task;
-            System.out.println("Current task -> " + descriptor.name());
+            //System.out.println("Current task -> " + descriptor.name());
             if (!descriptor.blocking())
             {
+                //System.out.println("Task is not blocking, continuing to next task.");
                 continue;
             }
+            //System.out.println("Task IS blocking, ending the task loop here until next game tick.");
             break;
         }
     }

@@ -6,6 +6,7 @@ import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Packets.WidgetPackets;
 import com.example.Utility.InventoryUtil;
+import com.example.Utility.Reachable;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
@@ -44,6 +45,7 @@ public class BabaGetHammerPotion extends StagedTask
 			int offhand = toaManager.meleeSetup.offhand;
 			if (InventoryUtil.isFull() && !InventoryUtil.contains(offhand))
 			{
+				System.out.println("Invent is full? " + (InventoryUtil.isFull()) + " Empty space -> " + Inventory.getEmptySlots());
 				ArrayList<Widget> restores = InventoryUtil.getAll("Super restore(4)");
 				if (!restores.isEmpty())
 				{
@@ -58,8 +60,8 @@ public class BabaGetHammerPotion extends StagedTask
 				return false;
 			}
 		}
-		TileObject hammers = TileObjects.search().withId(ToaConstants.BABA_CRATE_HAMMERS).first().orElse(null);
-		TileObject potions = TileObjects.search().withId(ToaConstants.BABA_CRATE_POTIONS).first().orElse(null);
+		TileObject hammers = TileObjects.search().withId(ToaConstants.BABA_CRATE_HAMMERS).filter(x -> Reachable.isWalkable(x.getWorldLocation().dy(1))).first().orElse(null);
+		TileObject potions = TileObjects.search().withId(ToaConstants.BABA_CRATE_POTIONS).filter(x -> Reachable.isWalkable(x.getWorldLocation().dy(-1))).first().orElse(null);
 
 		if (hammers == null || potions == null)
 		{
@@ -95,7 +97,7 @@ public class BabaGetHammerPotion extends StagedTask
 			if (playerPoint.distanceTo(potions.getWorldLocation()) > 6 || Inventory.getEmptySlots() >= 2)
 			{
 				MousePackets.queueClickPacket();
-				ObjectPackets.queueObjectAction(hammers, false, "Take");
+				ObjectPackets.queueObjectAction(potions, false, "Take");
 				toaManager.print("Taking potions");
 				return true;
 			}

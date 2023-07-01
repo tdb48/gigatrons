@@ -144,7 +144,7 @@ public class Prepot extends StagedTask
 			if(invent != null){
 				for(int i = 0 ; i < 28; i++){
 					if(Objects.requireNonNull(invent.getItem(i)).getId() == boost.getItemId()){
-						System.out.println("Item found at slot -> " + i);
+						//System.out.println("Item found at slot -> " + i);
 						slot = i;
 						break;
 					}

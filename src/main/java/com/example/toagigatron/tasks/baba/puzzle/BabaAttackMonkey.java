@@ -52,7 +52,32 @@ public class BabaAttackMonkey extends StagedTask
 			{
 				if (client.getLocalPlayer().getInteracting() instanceof NPC)
 				{
-					lastAttackedIndex = ((NPC) client.getLocalPlayer().getInteracting()).getIndex();
+					int remainingCycles = projectile.getRemainingCycles();
+					int distance = client.getLocalPlayer().getWorldLocation().distanceTo(client.getLocalPlayer().getInteracting().getWorldLocation());
+//					System.out.println("Distance -> " + distance + "  Cycles remaining -> " + projectile.getRemainingCycles());
+//					System.out.println("Setting lastattackedindex to -> " + ((NPC) client.getLocalPlayer().getInteracting()).getIndex());
+//					System.out.println("Remaining cycles -> " + projectile.getRemainingCycles());
+					if(distance == 1 && remainingCycles == 37){
+						System.out.println("Distance 1 remaining cycles 37");
+						lastAttackedIndex = ((NPC) client.getLocalPlayer().getInteracting()).getIndex();
+					}
+					else if(distance == 2 && remainingCycles == 42){
+						System.out.println("Distance 1 remaining cycles 42");
+						lastAttackedIndex = ((NPC) client.getLocalPlayer().getInteracting()).getIndex();
+					}
+					else if(distance == 3 && remainingCycles == 47){
+						System.out.println("Distance 1 remaining cycles 47");
+						lastAttackedIndex = ((NPC) client.getLocalPlayer().getInteracting()).getIndex();
+					}
+					else if(distance == 4 && remainingCycles == 52){
+						System.out.println("Distance 1 remaining cycles 52");
+						lastAttackedIndex = ((NPC) client.getLocalPlayer().getInteracting()).getIndex();
+					}
+					else if(distance == 5 && remainingCycles == 57){
+						System.out.println("Distance 1 remaining cycles 57");
+						lastAttackedIndex = ((NPC) client.getLocalPlayer().getInteracting()).getIndex();
+					}
+
 				}
 			}
 		}
@@ -61,7 +86,7 @@ public class BabaAttackMonkey extends StagedTask
 	public boolean execute()
 	{
 		toaManager.baba.attackPath = null;
-		if (Inventory.getItemAmount("Hammer") == 0 || Inventory.getItemAmount("Neutralising potion") == 0 || gameTickManager.isTickWaiting())
+		if (!InventoryUtil.contains("Hammer") || !InventoryUtil.contains("Neutralising potion") || gameTickManager.isTickWaiting())
 		{
 			return false;
 		}
@@ -72,14 +97,14 @@ public class BabaAttackMonkey extends StagedTask
 		}
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
 
-		NPC shaman = NPCs.search().nearestToPlayer().filter(n ->
+		NPC shaman = NPCs.search().filter(n ->
 				n.getHealthRatio() != 0
 				&& n.getWorldLocation().distanceTo(playerPoint) > 0
 				&& n.getWorldLocation().distanceTo(playerPoint) <= 10
 				&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
-				&& n.getName() != null && n.getName().equals("Baboon shaman")).orElse(null);
+				&& n.getName() != null && n.getName().equals("Baboon Shaman")).nearestToPlayer().orElse(null);
 
-		NPC nearestOther = NPCs.search().nearestToPlayer().filter(n ->
+		NPC nearestOther = NPCs.search().filter(n ->
 				n.getHealthRatio() != 0
 						&& n.getWorldLocation().distanceTo(playerPoint) > 0
 						&& n.getWorldLocation().distanceTo(playerPoint) <= 10
@@ -87,15 +112,16 @@ public class BabaAttackMonkey extends StagedTask
 						&& n.getName() != null
 						&& (n.getName().equals("Baboon Thrower")
 						|| n.getName().equals("Baboon Mage")
-						|| n.getName().equals("Baboon Brawler"))).orElse(null);
+						|| n.getName().equals("Baboon Brawler"))).nearestToPlayer().orElse(null);
 
-		NPC thrall = NPCs.search().nearestToPlayer().filter(n ->
+		NPC thrall = NPCs.search().filter(n ->
 				n.getHealthRatio() != 0
+						&& n.getIndex() != lastAttackedIndex
 						&& n.getWorldLocation().distanceTo(playerPoint) > 0
 						&& n.getWorldLocation().distanceTo(playerPoint) <= 10
 						&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
 						&& n.getName() != null
-						&& n.getName().equals("Baboon Thrall")).orElse(null);
+						&& n.getName().equals("Baboon Thrall")).nearestToPlayer().orElse(null);
 
 		ArrayList<NPC> allThralls = (ArrayList<NPC>) NPCs.search().filter(n ->
 				n.getHealthRatio() != 0
@@ -105,38 +131,39 @@ public class BabaAttackMonkey extends StagedTask
 						&& n.getName() != null
 						&& n.getName().equals("Baboon Thrall")).result();
 
-		NPC stinker = NPCs.search().nearestToPlayer().filter(n ->
+		System.out.println("All thralls size -> " + allThralls.size());
+		NPC stinker = NPCs.search().filter(n ->
 				n.getHealthRatio() != 0
 						&& n.getWorldLocation().distanceTo(playerPoint) > 0
 						&& n.getWorldLocation().distanceTo(playerPoint) <= 10
 						&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
 						&& n.getName() != null
-						&& n.getName().equals("Cursed Baboon")).orElse(null);
+						&& n.getName().equals("Cursed Baboon")).nearestToPlayer().orElse(null);
 
-		NPC ranger = NPCs.search().nearestToPlayer().filter(n ->
+		NPC ranger = NPCs.search().filter(n ->
 				n.getHealthRatio() != 0
 						&& n.getWorldLocation().distanceTo(playerPoint) > 0
 						&& n.getWorldLocation().distanceTo(playerPoint) <= 10
 						&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
 						&& n.getName() != null
-						&& n.getName().equals("Baboon Thrower")).orElse(null);
+						&& n.getName().equals("Baboon Thrower")).nearestToPlayer().orElse(null);
 
-		NPC brawler = NPCs.search().nearestToPlayer().filter(n ->
+		NPC brawler = NPCs.search().filter(n ->
 				n.getHealthRatio() != 0
 						&& n.getWorldLocation().distanceTo(playerPoint) > 0
 						&& n.getWorldLocation().distanceTo(playerPoint) <= 10
 						&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
 						&& n.getName() != null
-						&& n.getName().equals("Baboon Brawler")).orElse(null);
+						&& n.getName().equals("Baboon Brawler")).nearestToPlayer().orElse(null);
 
 
-		NPC magician = NPCs.search().nearestToPlayer().filter(n ->
+		NPC magician = NPCs.search().filter(n ->
 				n.getHealthRatio() != 0
 						&& n.getWorldLocation().distanceTo(playerPoint) > 0
 						&& n.getWorldLocation().distanceTo(playerPoint) <= 10
 						&& client.getLocalPlayer().getWorldArea().hasLineOfSightTo(client, n.getWorldLocation())
 						&& n.getName() != null
-						&& n.getName().equals("Baboon Mage")).orElse(null);
+						&& n.getName().equals("Baboon Mage")).nearestToPlayer().orElse(null);
 
 
 		// Fail safe in the case that we end up with only 1 thrall left and it happens to be the index integer
@@ -152,51 +179,66 @@ public class BabaAttackMonkey extends StagedTask
 			{
 				Combat.toggleSpec();
 			}
+			System.out.println("Returning attack shaman at top");
 			return attackWithRange(playerPoint, shaman, false);
 		}
 
 		else if (!Prayers.isEnabled(Prayer.PROTECT_FROM_MELEE)
 			&& allThralls.size() >= 2
+				&& thrall != null
 			&& toaManager.hasGearEquipped(toaManager.rangeSetup.getAllItemsBp()))
 		{
+			System.out.println("Returning attack with range thralls at top, thrall index: " + thrall.getIndex() + " prev index: " + lastAttackedIndex);
 			return attackWithRange(playerPoint, thrall, false);
 		}
 
 		else if (stinker != null && ranger == null)
 		{
+			System.out.println("Returning attack with mage vs stinker");
 			return attackWithMage(playerPoint, stinker, true);
 		}
 		else if (ranger != null && brawler != null)
 		{
+			System.out.println("Returning attack with melee vs ranger");
 			return attackWithMelee(playerPoint, ranger);
 		}
 		else if(Prayers.isEnabled(Prayer.PROTECT_FROM_MAGIC)
 				&& magician != null){
+			System.out.println("Returning attack with range vs magician");
 			return attackWithRange(playerPoint,magician,false);
 		}
 		else if (nearestOther != null)
 		{
-			if (nearestOther.getName().equals("Baboon Thrower"))
-			{
-				return attackWithMelee(playerPoint, nearestOther);
+			if(nearestOther.getName() != null){
+				if (nearestOther.getName().equals("Baboon Thrower"))
+				{
+					System.out.println("thrower nearest other");
+					return attackWithMelee(playerPoint, nearestOther);
+				}
+				else if (nearestOther.getName().equals("Baboon Brawler"))
+				{
+					System.out.println("brawler nearest other");
+					return attackWithMage(playerPoint, nearestOther, false);
+				}
+				else if (nearestOther.getName().equals("Baboon Mage"))
+				{
+					System.out.println("mage nearest other");
+					return attackWithRange(playerPoint, nearestOther, false);
+				}
 			}
-			else if (nearestOther.getName().equals("Baboon Brawler"))
-			{
-				return attackWithMage(playerPoint, nearestOther, false);
-			}
-			else if (nearestOther.getName().equals("Baboon Mage"))
-			{
-				return attackWithRange(playerPoint, nearestOther, false);
-			}
+
 		}
 
 		else if (thrall != null)
 		{
+			System.out.println("Thrall down bottom");
+			System.out.println("Thrall index: " + thrall.getIndex() + " prev index: " + lastAttackedIndex);
 			return attackWithRange(playerPoint, thrall, false);
 		}
 
 		else if (Game.isIdle())
 		{
+			System.out.println("Game is idle? how is everything else null?");
 			WorldPoint breakTile = toaManager.findClosestTile(breakLoSPoints());
 			if (breakTile != null && !playerPoint.equals(breakTile))
 			{
@@ -281,8 +323,11 @@ public class BabaAttackMonkey extends StagedTask
 		{
 			toaManager.swap(toaManager.meleeSetup.getAllItems());
 		}
-		if (playerPoint.distanceTo(targetNPC.getWorldLocation()) > 1 && safeTile != null)
+		if (safeTile != null && (playerPoint.distanceTo(targetNPC.getWorldLocation()) > 1 || (playerPoint.distanceTo(targetNPC.getWorldLocation()) == 1 && isCornerTile(targetNPC.getWorldLocation(), playerPoint))))
 		{
+			if(isCornerTile(targetNPC.getWorldLocation(), playerPoint)){
+				System.out.println("Is corner tile, pathing to not corner tile.");
+			}
 			HashSet<WorldPoint> dangerTiles = new HashSet<>();
 			dangerTiles.addAll(toaManager.baba.explosionTiles);
 			dangerTiles.addAll(toaManager.baba.poisonTiles);

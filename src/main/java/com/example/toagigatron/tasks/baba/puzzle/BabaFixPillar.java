@@ -4,6 +4,7 @@ import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
+import com.example.Utility.InventoryUtil;
 import com.example.Utility.Walker;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
@@ -57,7 +58,7 @@ public class BabaFixPillar extends StagedTask
 			return false;
 		}
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
-		if (toaManager.baba.targetPillarTiles.contains(playerPoint) && Inventory.getItemAmount("Hammer") > 0)
+		if (toaManager.baba.targetPillarTiles.contains(playerPoint) && InventoryUtil.contains("Hammer"))
 		{
 			toaManager.print("Repairing pillar");
 			MousePackets.queueClickPacket();

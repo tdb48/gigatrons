@@ -244,7 +244,7 @@ public class ToaGigatronOverlay extends Overlay
 ////			}
 ////		}
 //
-//		drawPoints(plugin.toaManager.baba.explosionTiles, graphics2D);
+		drawPoints(plugin.toaManager.baba.explosionTiles, graphics2D);
 //		if (plugin.toaManager.wardens12.warden != null)
 //		{
 //			drawWorldArea(plugin.toaManager.wardens12.warden.getWorldArea().getCenter(), graphics2D, Color.BLUE, 13);
@@ -552,13 +552,13 @@ public class ToaGigatronOverlay extends Overlay
 ////			}
 ////		}
 //
-//		if (plugin.toaManager.baba.specialPath != null)
-//		{
-//			for (WorldPoint wp : plugin.toaManager.baba.specialPath)
-//			{
-//				drawTile(graphics2D, wp, Color.RED, 1, 255, 10);
-//			}
-//		}
+		if (plugin.toaManager.baba.specialPath != null)
+		{
+			for (WorldPoint wp : plugin.toaManager.baba.specialPath)
+			{
+				drawTile(graphics2D, wp, Color.RED, 1, 255, 10);
+			}
+		}
 //
 //		if (plugin.toaManager.baba.bananaTiles != null)
 //		{
@@ -593,13 +593,13 @@ public class ToaGigatronOverlay extends Overlay
 ////			}
 ////		}
 //
-//		if (plugin.toaManager.baba.attackPath != null)
-//		{
-//			for (WorldPoint wp : plugin.toaManager.baba.attackPath)
-//			{
-//				drawTile(graphics2D, wp, Color.MAGENTA, 1, 50, 50);
-//			}
-//		}
+		if (plugin.toaManager.baba.attackPath != null)
+		{
+			for (WorldPoint wp : plugin.toaManager.baba.attackPath)
+			{
+				drawTile(graphics2D, wp, Color.MAGENTA, 1, 50, 50);
+			}
+		}
 //
 //		if (plugin.toaManager.baba.safeTile != null)
 //		{

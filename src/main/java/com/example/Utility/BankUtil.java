@@ -164,11 +164,11 @@ public class BankUtil
 
 	public static int getQuantity(String name)
 	{
-		if (Bank.search().withName(name).result().size() == 0)
+		if (Bank.search().nameContains(name).result().size() == 0)
 		{
 			return 0;
 		}
-		return Bank.search().withName(name).first().orElseThrow().getItemQuantity();
+		return Bank.search().nameContains(name).first().orElseThrow().getItemQuantity();
 	}
 
 	public static int getInventoryQuantity(int id)
@@ -182,11 +182,11 @@ public class BankUtil
 
 	public static int getInventoryQuantity(String name)
 	{
-		if (BankInventory.search().withName(name).result().size() == 0)
+		if (BankInventory.search().nameContains(name).result().size() == 0)
 		{
 			return 0;
 		}
-		return BankInventory.search().withName(name).first().orElseThrow().getItemQuantity();
+		return BankInventory.search().nameContains(name).first().orElseThrow().getItemQuantity();
 	}
 
 	public Widget close()
