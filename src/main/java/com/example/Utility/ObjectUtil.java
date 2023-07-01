@@ -17,6 +17,15 @@ import net.runelite.api.coords.WorldPoint;
 
 public class ObjectUtil
 {
+
+	public static boolean hasAction(GameObject obj, String action){
+		for(String s : client.getObjectDefinition(obj.getId()).getActions()){
+			if(s.equalsIgnoreCase(action)){
+				return true;
+			}
+		}
+		return false;
+	}
 	public static GameObject getObject(int id)
 	{
 		TileObject tileObject = TileObjects.search().withId(id).first().orElse(null);
