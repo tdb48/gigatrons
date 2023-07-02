@@ -16,21 +16,27 @@ import java.util.Comparator;
 public class Movement
 {
 
-	public static boolean isRunEnabled() {
+	public static boolean isRunEnabled()
+	{
 		return Static.getClient().getVarpValue(173) == 1;
 	}
-	public static void toggleRun() {
+
+	public static void toggleRun()
+	{
 		Widget widget = Static.getClient().getWidget(WidgetInfo.MINIMAP_TOGGLE_RUN_ORB);
-		if (widget != null) {
+		if (widget != null)
+		{
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(widget, "Toggle Run");
 		}
 
 	}
 
-	public static int getRunEnergy() {
+	public static int getRunEnergy()
+	{
 		return Static.getClient().getEnergy() / 100;
 	}
+
 	public static void walk(WorldPoint worldPoint)
 	{
 		Client client = Static.getClient();
@@ -38,7 +44,7 @@ public class Movement
 		if (local != null)
 		{
 			WorldPoint walkPoint = worldPoint;
-			LocalPoint walkPointLocal = LocalPoint.fromWorld(client, worldPoint.getX(), worldPoint.getY());
+			LocalPoint walkPointLocal = LocalPoint.fromWorld(client, worldPoint);
 			if (walkPointLocal == null)
 			{
 				System.out.println("Null localpoint in walk method");
