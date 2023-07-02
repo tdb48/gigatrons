@@ -82,6 +82,10 @@ public class ToaGigatronInfoBox extends OverlayPanel
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("Phase: ").right(plugin.toaManager.kephri.kephriPhase + "").build());
 		}
+		if (plugin.toaManager.getStage() == Stage.WARDENS_P3)
+		{
+			panelComponent.getChildren().add(LineComponent.builder().left("Skull tick: ").right(plugin.toaManager.wardens3.skullTick + "").build());
+		}
 		if (plugin.toaManager.akkha.puzzle != null && plugin.toaManager.getStage() == Stage.AKKHA_PUZZLE && !plugin.toaManager.akkha.puzzle.layoutName.isEmpty())
 		{
 			String layout = plugin.toaManager.akkha.puzzle.layoutName;
