@@ -13,7 +13,6 @@ public class Combat
 	private static final int VENOM_THRESHOLD = 1000000;
 	private static final int SPEC_VARP = 301;
 	private static final int SPEC_ENERGY_VARP = 300;
-	private static final int SPEC_ORB_ID = WidgetInfoExtended.MINIMAP_SPEC_CLICKBOX.getPackedId();
 
 	public static int getMissingHealth()
 	{
@@ -52,7 +51,7 @@ public class Combat
 			return;
 		}
 		MousePackets.queueClickPacket();
-		WidgetPackets.queueWidgetActionPacket(1, SPEC_ORB_ID, -1, -1);
+		WidgetPackets.queueWidgetActionPacket(1, 38862884, -1, -1);
 	}
 
 	public static AttackStyle getAttackStyle()
