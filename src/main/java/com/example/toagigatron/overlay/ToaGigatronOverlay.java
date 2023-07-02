@@ -1,5 +1,6 @@
 package com.example.toagigatron.overlay;
 
+import com.example.Utility.WorldAreas;
 import com.example.toagigatron.ToaGigatronConfig;
 import com.example.toagigatron.ToaGigatronPlugin;
 import com.google.common.base.Strings;
@@ -43,71 +44,71 @@ public class ToaGigatronOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics2D)
 	{
-//		if(client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null){
-//			Point textLocation = client.getLocalPlayer().getCanvasTextLocation(graphics2D,
-//					plugin.toaManager.p == null ? plugin.toaManager.gameTickManager.attackWait + "  |  " + "0   " :
-//					plugin.toaManager.gameTickManager.attackWait + "  |  " + plugin.toaManager.p.getRemainingCycles() + "   ",
-//					185);
-//			if (textLocation != null) {
-//				renderTextLocation(graphics2D, plugin.toaManager.p == null ? plugin.toaManager.gameTickManager.attackWait + "  |  " + "0   " :
-//						plugin.toaManager.gameTickManager.attackWait + "  |  " + plugin.toaManager.p.getRemainingCycles() + "   ", 14, Font.BOLD, Color.CYAN, textLocation);
-//			}
-//		}
+		if(client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null){
+			Point textLocation = client.getLocalPlayer().getCanvasTextLocation(graphics2D,
+					plugin.toaManager.p == null ? plugin.toaManager.gameTickManager.attackWait + "  |  " + "0   " :
+					plugin.toaManager.gameTickManager.attackWait + "  |  " + plugin.toaManager.p.getRemainingCycles() + "   ",
+					185);
+			if (textLocation != null) {
+				renderTextLocation(graphics2D, plugin.toaManager.p == null ? plugin.toaManager.gameTickManager.attackWait + "  |  " + "0   " :
+						plugin.toaManager.gameTickManager.attackWait + "  |  " + plugin.toaManager.p.getRemainingCycles() + "   ", 14, Font.BOLD, Color.CYAN, textLocation);
+			}
+		}
 
 
 
-//		if (plugin.toaManager.kephri.firstKephriPuzzle != null)
-//		{
-//			LocalPoint lp = LocalPoint.fromWorld(client, plugin.toaManager.kephri.firstKephriPuzzle.roomArea.getCenter());
-//			assert lp != null;
-//			Polygon poly = Perspective.getCanvasTileAreaPoly(client, lp, 7);
-//			if (poly != null)
-//			{
-//				if (plugin.toaManager.kephri.firstKephriPuzzle.solved)
-//				{
-//					OverlayUtil.renderPolygon(graphics2D, poly, Color.GREEN, new Color(0, 0, 0, 5), stroke);
-//				}
-//				else
-//				{
-//					OverlayUtil.renderPolygon(graphics2D, poly, Color.RED, new Color(0, 0, 0, 5), stroke);
-//				}
-//			}
-//		}
-//
-//		if (plugin.toaManager.kephri.secondKephriPuzzle != null)
-//		{
-//			LocalPoint lp2 = LocalPoint.fromWorld(client, plugin.toaManager.kephri.secondKephriPuzzle.roomArea.getCenter());
-//			assert lp2 != null;
-//			Polygon poly2 = Perspective.getCanvasTileAreaPoly(client, lp2, 7);
-//			if (poly2 != null)
-//			{
-//				if (plugin.toaManager.kephri.secondKephriPuzzle.solved)
-//				{
-//					OverlayUtil.renderPolygon(graphics2D, poly2, Color.GREEN, new Color(0, 0, 0, 5), stroke);
-//				}
-//				else
-//				{
-//					OverlayUtil.renderPolygon(graphics2D, poly2, Color.RED, new Color(0, 0, 0, 5), stroke);
-//				}
-//			}
-//		}
-//		if (plugin.toaManager.kephri.finalKephriPuzzle != null)
-//		{
-//			LocalPoint lp3 = LocalPoint.fromWorld(client, plugin.toaManager.kephri.finalKephriPuzzle.roomArea.getCenter());
-//			assert lp3 != null;
-//			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 7);
-//			if (poly3 != null)
-//			{
-//				if (plugin.toaManager.kephri.finalKephriPuzzle.solved)
-//				{
-//					OverlayUtil.renderPolygon(graphics2D, poly3, Color.GREEN, new Color(0, 0, 0, 5), stroke);
-//				}
-//				else
-//				{
-//					OverlayUtil.renderPolygon(graphics2D, poly3, Color.RED, new Color(0, 0, 0, 5), stroke);
-//				}
-//			}
-//		}
+		if (plugin.toaManager.kephri.firstKephriPuzzle != null)
+		{
+			LocalPoint lp = LocalPoint.fromWorld(client, WorldAreas.getCenter(plugin.toaManager.kephri.firstKephriPuzzle.roomArea));
+			assert lp != null;
+			Polygon poly = Perspective.getCanvasTileAreaPoly(client, lp, 7);
+			if (poly != null)
+			{
+				if (plugin.toaManager.kephri.firstKephriPuzzle.solved)
+				{
+					OverlayUtil.renderPolygon(graphics2D, poly, Color.GREEN, new Color(0, 0, 0, 5), stroke);
+				}
+				else
+				{
+					OverlayUtil.renderPolygon(graphics2D, poly, Color.RED, new Color(0, 0, 0, 5), stroke);
+				}
+			}
+		}
+
+		if (plugin.toaManager.kephri.secondKephriPuzzle != null)
+		{
+			LocalPoint lp2 = LocalPoint.fromWorld(client, WorldAreas.getCenter(plugin.toaManager.kephri.secondKephriPuzzle.roomArea));
+			assert lp2 != null;
+			Polygon poly2 = Perspective.getCanvasTileAreaPoly(client, lp2, 7);
+			if (poly2 != null)
+			{
+				if (plugin.toaManager.kephri.secondKephriPuzzle.solved)
+				{
+					OverlayUtil.renderPolygon(graphics2D, poly2, Color.GREEN, new Color(0, 0, 0, 5), stroke);
+				}
+				else
+				{
+					OverlayUtil.renderPolygon(graphics2D, poly2, Color.RED, new Color(0, 0, 0, 5), stroke);
+				}
+			}
+		}
+		if (plugin.toaManager.kephri.finalKephriPuzzle != null)
+		{
+			LocalPoint lp3 = LocalPoint.fromWorld(client, WorldAreas.getCenter(plugin.toaManager.kephri.finalKephriPuzzle.roomArea));
+			assert lp3 != null;
+			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 7);
+			if (poly3 != null)
+			{
+				if (plugin.toaManager.kephri.finalKephriPuzzle.solved)
+				{
+					OverlayUtil.renderPolygon(graphics2D, poly3, Color.GREEN, new Color(0, 0, 0, 5), stroke);
+				}
+				else
+				{
+					OverlayUtil.renderPolygon(graphics2D, poly3, Color.RED, new Color(0, 0, 0, 5), stroke);
+				}
+			}
+		}
 //
 ////		if(plugin.toaManager.zebak.allRoomTiles != null){
 ////			for(WorldPoint wp : plugin.toaManager.zebak.allRoomTiles){
