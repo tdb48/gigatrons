@@ -17,7 +17,13 @@ public class NPCUtil
 	static Client client = Static.getClient();
 	public static boolean hasAction(NPC npc, String action){
 		NPCComposition comp = client.getNpcDefinition(npc.getId());
+		if(comp == null || comp.getActions() == null){
+			return false;
+		}
 		for(String s : comp.getActions()){
+			if(s == null){
+				continue;
+			}
 			if(s.equals(action)){
 				return true;
 			}
