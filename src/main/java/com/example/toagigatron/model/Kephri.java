@@ -1,7 +1,10 @@
 package com.example.toagigatron.model;
 
+import com.example.Utility.Movement;
 import com.example.Utility.NPCUtil;
 import com.example.Utility.ObjectUtil;
+import com.example.Utility.Reachable;
+import com.example.Utility.Static;
 import com.example.Utility.WorldAreas;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
@@ -12,6 +15,7 @@ import com.example.toagigatron.model.puzzlemodel.KephriPuzzleRoom;
 import com.example.toagigatron.model.puzzlemodel.KephriTilePuzzle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
@@ -242,6 +246,14 @@ public class Kephri
 		{
 			return;
 		}
+		if (toaManager.getStage().equals(Stage.KEPHRI_PUZZLE) && firstKephriPuzzle == null)
+		{
+			GameObject barrier = ObjectUtil.getNearestGameObject(ToaConstants.BARRIER);
+			if (barrier != null)
+			{
+				toaManager.kephri.generateKephriPuzzleRooms(barrier);
+			}
+		}
 		this.kephri = kephri;
 		if (previousKephriID == -1)
 		{
@@ -267,7 +279,7 @@ public class Kephri
 			WorldPoint centerTile = WorldAreas.getCenter(kephri.getWorldArea());
 			WorldPoint southWest = new WorldPoint(centerTile.getX() - 8, centerTile.getY() - 8, centerTile.getPlane());
 			WorldPoint northEast = new WorldPoint(centerTile.getX() + 9, centerTile.getY() + 9, centerTile.getPlane());
-			kephriRoom = WorldAreas.createArea(southWest,northEast);
+			kephriRoom = WorldAreas.createArea(southWest, northEast);
 		}
 		if (kephriMeleeTiles.isEmpty())
 		{
@@ -275,7 +287,7 @@ public class Kephri
 			WorldPoint centerTile = WorldAreas.getCenter(kephri.getWorldArea());
 			WorldPoint southWest = centerTile.dx(-3).dy(-3);
 			WorldPoint northEast = centerTile.dx(+4).dy(+4);
-			ArrayList<WorldPoint> bigKephriArea = (ArrayList<WorldPoint>) WorldAreas.createArea(southWest,northEast).toWorldPointList();
+			ArrayList<WorldPoint> bigKephriArea = (ArrayList<WorldPoint>) WorldAreas.createArea(southWest, northEast).toWorldPointList();
 			bigKephriArea.removeIf(kephriArea::contains);
 			for (WorldPoint wp : bigKephriArea)
 			{
@@ -354,9 +366,13 @@ public class Kephri
 
 	public void generateKephriPuzzleRooms(GameObject barrier)
 	{
-		GameObject ancientButton = ObjectUtil.getNearestGameObject(ToaConstants.KEPHRI_ANCIENT_BUTTON);
-		GameObject ancientTablet = ObjectUtil.getNearestGameObject(ToaConstants.KEPHRI_ANCIENT_TABLET);
-		GameObject pillar = ObjectUtil.getNearestGameObject(ToaConstants.ZEBAK_ROAR_ROCK);
+		if (barrier == null)
+		{
+			return;
+		}
+		GameObject ancientButton = ObjectUtil.getObject(45338);
+		GameObject ancientTablet = ObjectUtil.getObject(45339);
+		GameObject pillar = ObjectUtil.getObject(43876);
 		WorldPoint referencePoint = barrier.getWorldLocation();
 		if (ancientButton == null || ancientTablet == null || pillar == null)
 		{
@@ -396,7 +412,7 @@ public class Kephri
 				}
 			}
 			//First room is memory
-			else if (ObjectUtil.distanceTo(ancientButton, WorldAreas.getCenter(room)) < 6)
+			else if (Objects.requireNonNull(ObjectUtil.getWorldArea(ancientButton)).distanceTo(WorldAreas.getCenter(room)) < 6)
 			{
 				if (i == 0)
 				{
@@ -408,7 +424,7 @@ public class Kephri
 				}
 			}
 			//First room is math
-			else if (ObjectUtil.distanceTo(ancientTablet, WorldAreas.getCenter(room)) < 6)
+			else if (Objects.requireNonNull(ObjectUtil.getWorldArea(ancientTablet)).distanceTo(WorldAreas.getCenter(room)) < 6)
 			{
 				if (i == 0)
 				{
