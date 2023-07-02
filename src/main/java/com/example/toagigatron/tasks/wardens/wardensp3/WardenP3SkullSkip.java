@@ -50,20 +50,20 @@ public class WardenP3SkullSkip extends StagedTask
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
 		if (skullTick == dodgeTick())
 		{
-//			toaManager.print("Dodging to " + toaManager.worldPointString(toaManager.wardens3.primarySafeTile));
+			toaManager.print("Dodging to " + toaManager.worldPointString(toaManager.wardens3.primarySafeTile));
 			Movement.walk(toaManager.wardens3.primarySafeTile);
 			return true;
 		}
 		if (skullTick > 0 && skullTick < dodgeTick() && !playerPoint.equals(safeTile()))
 		{
-//			toaManager.print("Setting up skulls to tile " + toaManager.worldPointString(safeTile()));
+			toaManager.print("Setting up skulls to tile " + toaManager.worldPointString(safeTile()));
 			Movement.walk(safeTile());
 			return true;
 		}
 		if (skullTick > (dodgeTick() + 10) && toaManager.wardens3.warden != null
 		&& toaManager.wardens3.warden.getAnimation() == 9682)
 		{
-//			toaManager.print("else statement dodging baba boulder (?) to " + toaManager.worldPointString(safeTile()));
+			toaManager.print("else statement dodging baba boulder (?) to " + toaManager.worldPointString(safeTile()));
 			Movement.walk(safeTile());
 			return true;
 		}

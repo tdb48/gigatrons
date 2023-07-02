@@ -6,6 +6,7 @@ import com.example.Packets.NPCPackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Utility.Combat;
 import com.example.Utility.Movement;
+import com.example.Utility.NPCUtil;
 import com.example.Utility.ObjectUtil;
 import com.example.Utility.Reachable;
 import com.example.Utility.Static;
@@ -57,13 +58,16 @@ public class AttackWardensP3 extends StagedTask
 		{
 			return false;
 		}
-		if (toaManager.wardens3.warden != null)
+		if (toaManager.wardens3.warden != null
+			&& NPCUtil.hasAction(toaManager.wardens3.warden, "Attack"))
 		{
-			if (!toaManager.hasGearEquipped(gearSet) || (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().equals(toaManager.wardens3.warden)))
+			if (!toaManager.hasGearEquipped(gearSet)
+				|| (client.getLocalPlayer().getInteracting() != null
+				&& client.getLocalPlayer().getInteracting().equals(toaManager.wardens3.warden)))
 			{
 				return false;
 			}
-//			toaManager.print("Attacking warden");
+			toaManager.print("Attacking warden");
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(toaManager.wardens3.warden, "Attack");
 			return true;

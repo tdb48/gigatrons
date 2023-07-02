@@ -61,7 +61,7 @@ public class WardenP3DodgeFloor extends StagedTask
 			{
 				return false;
 			}
-//			toaManager.print("Walking to NP EARLY, tick(" + tileTick + ")");
+			toaManager.print("Walking to NP EARLY, tick(" + tileTick + ")");
 			Movement.walk(nextPrimaryTile);
 			return true;
 		}
@@ -77,7 +77,7 @@ public class WardenP3DodgeFloor extends StagedTask
 //				toaManager.print("Next Primary tile null somehow.");
 //				return false;
 //			}
-//			toaManager.print("Walking to NP, tick(" + tileTick + ")");
+			toaManager.print("Walking to NP, tick(" + tileTick + ")");
 //			toaManager.print("Walking");
 			Movement.walk(nextPrimaryTile);
 			return true;
@@ -89,7 +89,7 @@ public class WardenP3DodgeFloor extends StagedTask
 			{
 				return false;
 			}
-//			toaManager.print("AT START: Walking to P, tick(" + tileTick + ")");
+			toaManager.print("AT START: Walking to P, tick(" + tileTick + ")");
 //			toaManager.print("Walking");
 			Movement.walk(primaryTile);
 			return true;
@@ -99,7 +99,7 @@ public class WardenP3DodgeFloor extends StagedTask
 			&& !playerPoint.equals(nextPrimaryTile)
 			&& (toaManager.wardens3.babaBombs.size() == 0 || !toaManager.wardens3.babaBombs.containsKey(primaryTile)))
 		{
-//			toaManager.print("Walking to P, tick(" + tileTick + ")");
+			toaManager.print("Walking to P, tick(" + tileTick + ")");
 //			toaManager.print("Walking");
 			Movement.walk(primaryTile);
 			return true;
@@ -109,7 +109,7 @@ public class WardenP3DodgeFloor extends StagedTask
 			&& !playerPoint.equals(nextPrimaryTile)
 				&& (toaManager.wardens3.babaBombs.size() == 0 || !toaManager.wardens3.babaBombs.containsKey(primaryTile)))
 		{
-//			toaManager.print("Walking to P, tick(" + tileTick + ")");
+			toaManager.print("Walking to P, tick(" + tileTick + ")");
 //			toaManager.print("Walking");
 			Movement.walk(primaryTile);
 			return true;

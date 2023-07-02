@@ -49,7 +49,7 @@ public class WardensP3Enrage extends StagedTask
 		ArrayList<Integer> gearSet = gearSet();
 		if (!toaManager.hasGearEquipped(gearSet))
 		{
-//			toaManager.print("Equipping gear");
+			toaManager.print("Equipping gear");
 			toaManager.swap(gearSet);
 		}
 		if (!Combat.isSpecEnabled() && Combat.getSpecEnergy() >= bgsSpecRequired() && toaManager.hasGearEquipped(gearSet))
@@ -65,7 +65,7 @@ public class WardensP3Enrage extends StagedTask
 			WorldPoint safeTile = optimalTile();
 			if (safeTile != null && !playerPoint.equals(safeTile))
 			{
-//				toaManager.print("Found optimal tile at " + toaManager.worldPointString(safeTile));
+				toaManager.print("Found optimal tile at " + toaManager.worldPointString(safeTile));
 //				toaManager.print("Walking enrage");
 				Movement.walk(safeTile);
 				return true;
@@ -86,7 +86,7 @@ public class WardensP3Enrage extends StagedTask
 			&& toaManager.hasEquipped(ItemID.TOXIC_BLOWPIPE))
 //		Equipment.contains(ItemID.TOXIC_BLOWPIPE))
 		{
-//			toaManager.print("Enabling bp spec");
+			toaManager.print("Enabling bp spec");
 			Combat.toggleSpec();
 		}
 		if (!gameTickManager.isAttackWaiting()) //&& client.getLocalDestinationLocation() == null

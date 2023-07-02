@@ -166,7 +166,7 @@ public class Wardens3
 			babaTick--;
 		}
 		skullTick++;
-		warden = NPCs.search().withName("Tumeken's Warden").withAction("Attack").first().orElse(null);
+		warden = NPCs.search().nameContains("Tumeken's Warden").first().orElse(null);
 		if (warden != null && warden.getAnimation() == ToaConstants.WARDENS_P3_ENRAGED_ANIMATION_ID)
 		{
 			enrage = true;
@@ -256,7 +256,8 @@ public class Wardens3
 	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
-		if (npc.getName().equalsIgnoreCase("energy siphon"))
+		if (npc.getName() != null
+			&& npc.getName().equalsIgnoreCase("energy siphon"))
 		{
 			stayOnGreen = true;
 			skullTick = 0;
