@@ -43,6 +43,19 @@ public class ToaGigatronOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics2D)
 	{
+//		if(client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null){
+//			Point textLocation = client.getLocalPlayer().getCanvasTextLocation(graphics2D,
+//					plugin.toaManager.p == null ? plugin.toaManager.gameTickManager.attackWait + "  |  " + "0   " :
+//					plugin.toaManager.gameTickManager.attackWait + "  |  " + plugin.toaManager.p.getRemainingCycles() + "   ",
+//					185);
+//			if (textLocation != null) {
+//				renderTextLocation(graphics2D, plugin.toaManager.p == null ? plugin.toaManager.gameTickManager.attackWait + "  |  " + "0   " :
+//						plugin.toaManager.gameTickManager.attackWait + "  |  " + plugin.toaManager.p.getRemainingCycles() + "   ", 14, Font.BOLD, Color.CYAN, textLocation);
+//			}
+//		}
+
+
+
 //		if (plugin.toaManager.kephri.firstKephriPuzzle != null)
 //		{
 //			LocalPoint lp = LocalPoint.fromWorld(client, plugin.toaManager.kephri.firstKephriPuzzle.roomArea.getCenter());
@@ -613,14 +626,14 @@ public class ToaGigatronOverlay extends Overlay
 			}
 		}
 
-////		if (plugin.toaManager.baba.babaBossRoom != null)
-////		{
-////			for (WorldPoint wp : plugin.toaManager.baba.babaBossRoom)
-////			{
-////				drawTile(graphics2D, wp, Color.orange, 1, 255, 10);
-////			}
-////		}
-//
+//		if (plugin.toaManager.baba.babaBossRoom != null)
+//		{
+//			for (WorldPoint wp : plugin.toaManager.baba.babaBossRoom)
+//			{
+//				drawTile(graphics2D, wp, Color.orange, 1, 255, 10);
+//			}
+//		}
+
 		if (!plugin.toaManager.baba.shockwaveTiles.isEmpty())
 		{
 			for (WorldPoint wp : plugin.toaManager.baba.shockwaveTiles)
