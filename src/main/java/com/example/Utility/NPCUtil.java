@@ -1,9 +1,12 @@
 package com.example.Utility;
 
 import com.example.EthanApiPlugin.Collections.NPCs;
+import com.example.EthanApiPlugin.Collections.query.NPCQuery;
+import static com.example.EthanApiPlugin.Collections.query.NPCQuery.getNPCComposition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import net.runelite.api.Client;
@@ -15,16 +18,22 @@ import net.runelite.api.coords.WorldPoint;
 public class NPCUtil
 {
 	static Client client = Static.getClient();
-	public static boolean hasAction(NPC npc, String action){
+
+	public static boolean hasAction(NPC npc, String action)
+	{
 		NPCComposition comp = client.getNpcDefinition(npc.getId());
-		if(comp == null || comp.getActions() == null){
+		if (comp == null || comp.getActions() == null)
+		{
 			return false;
 		}
-		for(String s : comp.getActions()){
-			if(s == null){
+		for (String s : comp.getActions())
+		{
+			if (s == null)
+			{
 				continue;
 			}
-			if(s.equals(action)){
+			if (s.equals(action))
+			{
 				return true;
 			}
 		}
@@ -48,10 +57,11 @@ public class NPCUtil
 			.collect(Collectors.toList());
 		return NPCs.search().idInList(arrayList).filter(x -> x.getHealthRatio() != 0).nearestToPlayer().orElse(null);
 	}
+
 	public static NPC findNearest(String... name)
 	{
 		List<String> arrayList = Arrays.stream(name)
-				.collect(Collectors.toList());
+			.collect(Collectors.toList());
 		return NPCs.search().alive().filter(x -> arrayList.contains(x.getName())).nearestToPlayer().orElse(null);
 	}
 
