@@ -1,7 +1,11 @@
 package com.example.toagigatron.tasks.akkha.boss;
 
+import com.example.EthanApiPlugin.EthanApiPlugin;
+import com.example.Packets.MousePackets;
+import com.example.Packets.NPCPackets;
 import com.example.Utility.Combat;
 import com.example.Utility.NPCUtil;
+import com.example.Utility.Walker;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
@@ -10,6 +14,7 @@ import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import javax.inject.Inject;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
@@ -28,7 +33,9 @@ public class AkkhaAttackBossOrbs extends StagedTask
 
 	public boolean execute()
 	{
-		if (toaManager.akkha.isNotInBossRoom() || toaManager.akkha.akkhaBoss == null || toaManager.akkha.akkhaBoss.getId() != ToaConstants.FINAL_AKKHA)
+		if (toaManager.akkha.isNotInBossRoom()
+			|| toaManager.akkha.akkhaBoss == null
+			|| toaManager.akkha.akkhaBoss.getId() != ToaConstants.FINAL_AKKHA)
 		{
 			return false;
 		}
@@ -45,45 +52,41 @@ public class AkkhaAttackBossOrbs extends StagedTask
 			Combat.toggleSpec();
 		}
 		NPC akkha = NPCUtil.findNearest(ToaConstants.FINAL_AKKHA);
-//
-//		// If standing on dangerous tile, or not next to akkha, step along next to boss
-//		if (toaManager.akkha.targetPoint != null && (!playerPoint.equals(toaManager.akkha.targetPoint) || toaManager.akkha.orbTiles.contains(playerPoint)))
-//		{
-//			toaManager.print("Found tile at " + toaManager.worldPointStringVerbose(toaManager.akkha.targetPoint));
-//			toaManager.akkha.finalPhasePath = Movement.getPath(toaManager.akkha.targetPoint, toaManager.akkha.toaCollisionMap);
-//			if (toaManager.akkha.finalPhasePath.isEmpty())
-//			{
-//				toaManager.print("Akkha final path is empty somehow");
-//			}
-//			else
-//			{
-//				toaManager.print("Akkha path is not empty, size -> " + toaManager.akkha.finalPhasePath.size());
-//				int count = 1;
-//				for (WorldPoint wp : toaManager.akkha.finalPhasePath)
-//				{
-//					System.out.println("Tile " + count + ": " + toaManager.worldPointString(wp));
-//					count++;
-//				}
-//			}
-//			//toaManager.print("Before step along old");
-//			System.out.println("Before step along old");
-//			toaManager.stepAlongOld(toaManager.akkha.finalPhasePath);
-//			//toaManager.print("After step along old");
-//			System.out.println("After step along old");
-//			return true;
-//		}
+		if (toaManager.akkha.targetPoint != null && (!playerPoint.equals(toaManager.akkha.targetPoint) || toaManager.akkha.orbTiles.contains(playerPoint)))
+		{
+			toaManager.print("Found tile at " + toaManager.worldPointStringVerbose(toaManager.akkha.targetPoint));
+			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.akkha.orbTiles);
+			toaManager.akkha.finalPhasePath = EthanApiPlugin.pathToGoal(toaManager.akkha.targetPoint, dangerTiles);
+			if (toaManager.akkha.finalPhasePath.isEmpty())
+			{
+				toaManager.print("Akkha final path is empty somehow");
+			}
+			else
+			{
+				toaManager.print("Akkha path is not empty, size -> " + toaManager.akkha.finalPhasePath.size());
+				int count = 1;
+				for (WorldPoint wp : toaManager.akkha.finalPhasePath)
+				{
+					System.out.println("Tile " + count + ": " + toaManager.worldPointString(wp));
+					count++;
+				}
+			}
+			Walker.stepAlong(toaManager.akkha.finalPhasePath);
+			return true;
+		}
 
-//		// Return if already attacking akkha
-//		if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().equals(akkha))
-//		{
-//			toaManager.print("already attacking");
-//			return false;
-//		}
-//		else
-//		{
-//			toaManager.print("attacking last akkha");
-//			akkha.interact("Attack");
-//		}
+		// Return if already attacking akkha
+		if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().equals(akkha))
+		{
+			toaManager.print("already attacking");
+			return false;
+		}
+		else
+		{
+			toaManager.print("attacking last akkha");
+			MousePackets.queueClickPacket();
+			NPCPackets.queueNPCAction(akkha, "Attack");
+		}
 
 		return true;
 	}
