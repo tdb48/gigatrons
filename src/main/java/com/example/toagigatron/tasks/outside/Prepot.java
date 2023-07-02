@@ -84,15 +84,15 @@ public class Prepot extends StagedTask
 			BankUtil.openMainTab();
 			return true;
 		}
-		if (!toaManager.isAntiVenomed())
-		{
-			toaManager.print("anti prepot");
-			return executePrePot(Consumables.PREPOT_ANTI);
-		}
 		if (!toaManager.isBoosted(Skill.HITPOINTS))
 		{
 			toaManager.print("Angler prepot");
 			return executePrePot(Consumables.PREPOT_ANGLER);
+		}
+		if (!toaManager.isAntiVenomed())
+		{
+			toaManager.print("anti prepot");
+			return executePrePot(Consumables.PREPOT_ANTI);
 		}
 		if (!toaManager.isBoosted(Skill.STRENGTH))
 		{
