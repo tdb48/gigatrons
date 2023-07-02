@@ -108,8 +108,10 @@ public class Wardens12
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
-		if (npcSpawned.getNpc().getName().equals("Core"))
+		if (npcSpawned.getNpc().getName() != null
+			&& npcSpawned.getNpc().getName().contains("Core"))
 		{
+			toaManager.print("Core spawned");
 			coreTick = getCoreTick();
 		}
 	}
@@ -117,7 +119,8 @@ public class Wardens12
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
-		if (npcDespawned.getNpc().getName().equals("Core"))
+		if (npcDespawned.getNpc().getName() != null
+			&& npcDespawned.getNpc().getName().equals("Core"))
 		{
 			coreTick = 0;
 		}
@@ -324,12 +327,12 @@ public class Wardens12
 		{
 			toaManager.print("Core tick is " + coreTick);
 		}
-		obelisk = NPCs.search().withName("Obelisk").withAction("Attack").first().orElse(null);
-		warden = NPCs.search().idInList(ToaConstants.WARDEN_P2_IDS).withAction("Attack").first().orElse(null);
-//			NPCUtil.findNearest(
-//			ToaConstants.WARDENS_P2_ACTIVE_RANGE_MELEE,
-//			ToaConstants.WARDENS_P2_ACTIVE_MAGE_MELEE,
-//			ToaConstants.WARDENS_P2_DOWNED);
+		obelisk = NPCs.search().nameContains("Obelisk").withAction("Attack").first().orElse(null);
+		warden = NPCs.search().idInList(ToaConstants.WARDEN_P2_IDS).first().orElse(null);
+		if (obeliskObject == null)
+		{
+			obeliskObject = ObjectUtil.getNearestGameObject(ToaConstants.WARDEN_OBELISK);
+		}
 		if (obeliskTile == null)
 		{
 			obeliskTile = obeliskTile();

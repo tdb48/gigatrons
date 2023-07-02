@@ -35,13 +35,18 @@ public class SolveOrbUfo extends StagedTask
 
 	public boolean execute()
 	{
+		if (toaManager.wardens12.warden != null && toaManager.wardens12.warden.getHealthRatio() == 0)
+		{
+			return false;
+		}
 		GameObject yellowUFO = ObjectUtil.getNearestGameObject(ToaConstants.YELLOW_UFO);
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
 		// Step to a tile thats safe if theres red ufos out
 		if (yellowUFO != null)
 		{
 			WorldPoint redTile = toaManager.wardens12.dodgeUFO();
-			if(redTile == null){
+			if (redTile == null)
+			{
 				toaManager.print("redTilee is somehow null");
 				return false;
 			}
@@ -61,7 +66,8 @@ public class SolveOrbUfo extends StagedTask
 		if (toaManager.wardens12.orbsTanked < 7)
 		{
 			WorldPoint blockTile = toaManager.wardens12.blockTile();
-			if(blockTile == null){
+			if (blockTile == null)
+			{
 				toaManager.print("Block tile is somehow null");
 				return false;
 			}
@@ -77,7 +83,8 @@ public class SolveOrbUfo extends StagedTask
 		else
 		{
 			WorldPoint defaultTile = toaManager.wardens12.defaultTile();
-			if(defaultTile == null){
+			if (defaultTile == null)
+			{
 				toaManager.print("Default tile is somehow null");
 				return false;
 			}
