@@ -20,6 +20,9 @@ public class Walker
 
 	public static void stepAlong(List<WorldPoint> path)
 	{
+		if(path == null || path.isEmpty()){
+			return;
+		}
 		List<WorldPoint> reachablePath = reachablePath(path);
 		if (reachablePath.isEmpty())
 		{
