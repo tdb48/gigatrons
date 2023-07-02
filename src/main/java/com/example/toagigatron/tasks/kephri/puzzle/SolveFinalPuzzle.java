@@ -69,7 +69,7 @@ public class SolveFinalPuzzle extends StagedTask
 		}
 		TileObject flippedTile = null;
 		TileObject targetTile = null;
-
+		toaManager.print("final puzzle");
 		for (KephriTilePuzzle kephriTilePuzzle : toaManager.kephri.kephriTilePuzzles)
 		{
 			TileObject tempFlippedTile = ObjectUtil.getNearestTileObject(kephriTilePuzzle.flipped);
@@ -105,7 +105,7 @@ public class SolveFinalPuzzle extends StagedTask
 
 		if (targetTile != null)
 		{
-//			toaManager.print("Flipping unflipped tile at " + targetTile.getWorldLocation().toString());
+			toaManager.print("Flipping unflipped tile at " + targetTile.getWorldLocation().toString());
 			MousePackets.queueClickPacket();
 			ObjectPackets.queueObjectAction(targetTile, false, "Activate");
 		}

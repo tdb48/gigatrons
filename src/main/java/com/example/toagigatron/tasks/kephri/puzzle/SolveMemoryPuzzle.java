@@ -53,6 +53,8 @@ public class SolveMemoryPuzzle extends StagedTask
 			//toaManager.print("Puzzleroom type is not memory");
 			return false;
 		}
+		toaManager.print("solve memory");
+
 		GameObject button = ObjectUtil.getNearestGameObject(ToaConstants.KEPHRI_ANCIENT_BUTTON);
 
 
@@ -62,7 +64,7 @@ public class SolveMemoryPuzzle extends StagedTask
 		// }
 		if (button == null)
 		{
-//			toaManager.print("Button is null");
+			toaManager.print("Button is null");
 			return false;
 		}
 		//Need to push the button as we have no tiles in our list
@@ -75,22 +77,27 @@ public class SolveMemoryPuzzle extends StagedTask
 		}
 		else if (toaManager.kephri.memory_tiles.size() != 5)
 		{
-			//toaManager.print("Somehow less than 5 memory tiles");
+			toaManager.print("Somehow less than 5 memory tiles");
 			return false;
 		}
 		else if (toaManager.kephri.memory_completed_tiles.size() == 5)
 		{
-			//toaManager.print("Puzzle completed, moving on");
+			toaManager.print("Puzzle completed, moving on");
 			return true;
 		}
 		else
 		{
 			//Local player location and the location of the 4 tiles to be used as intermediate locations between memory tiles
 			WorldPoint playerWorldLoc = client.getLocalPlayer().getWorldLocation();
-			WorldPoint northSafeTile = new WorldPoint(button.getX() + 4, button.getY() - 1, button.getPlane());
-			WorldPoint southSafeTile = new WorldPoint(button.getX() + 4, button.getY() - 3, button.getPlane());
-			WorldPoint eastSafeTile = new WorldPoint(button.getX() + 5, button.getY() - 2, button.getPlane());
-			WorldPoint westSafeTile = new WorldPoint(button.getX() + 3, button.getY() - 2, button.getPlane());
+			WorldPoint northSafeTile = new WorldPoint(button.getWorldLocation().getX() + 4, button.getWorldLocation().getY() - 1, button.getWorldLocation().getPlane());
+			WorldPoint southSafeTile = new WorldPoint(button.getWorldLocation().getX() + 4, button.getWorldLocation().getY() - 3, button.getWorldLocation().getPlane());
+			WorldPoint eastSafeTile = new WorldPoint(button.getWorldLocation().getX() + 5, button.getWorldLocation().getY() - 2, button.getWorldLocation().getPlane());
+			WorldPoint westSafeTile = new WorldPoint(button.getWorldLocation().getX() + 3, button.getWorldLocation().getY() - 2, button.getWorldLocation().getPlane());
+//			WorldPoint startTile = WorldPoint.fromLocalInstance(client, ancientTablet.getLocalLocation()).dy(-1);
+//			WorldPoint northSafeTile = WorldPoint.fromLocalInstance(client, button.getLocalLocation()).dx(4).dy(-1);
+//			WorldPoint southSafeTile = WorldPoint.fromLocalInstance(client, button.getLocalLocation()).dx(4).dy(-3);
+//			WorldPoint eastSafeTile = WorldPoint.fromLocalInstance(client, button.getLocalLocation()).dx(5).dy(-2);
+//			WorldPoint westSafeTile = WorldPoint.fromLocalInstance(client, button.getLocalLocation()).dx(3).dy(-2);
 			ArrayList<WorldPoint> safeTiles = new ArrayList<>(List.of(northSafeTile, eastSafeTile, westSafeTile, southSafeTile));
 
 			WorldPoint nextMemoryTileLoc = null;
@@ -106,7 +113,7 @@ public class SolveMemoryPuzzle extends StagedTask
 			}
 			if (nextMemoryTileLoc == null)
 			{
-				//toaManager.print("Next memory tile is null");
+				toaManager.print("Next memory tile is null");
 				return false;
 			}
 
@@ -115,14 +122,14 @@ public class SolveMemoryPuzzle extends StagedTask
 			if (!standingOnTile(safeTiles, playerWorldLoc) && !standingOnTile(generateMemoryTileLocs(toaManager.kephri.memory_tiles), playerWorldLoc))
 			{
 				Movement.walk(westSafeTile);
-				//toaManager.print("Moving to west safe tile (start tile)");
+				toaManager.print("Moving to west safe tile (start tile)");
 				return false;
 			}
 			//standing on a safe tile and distance to next memory tile is 1 meaning we can safely walk to it
 			else if (standingOnTile(safeTiles, playerWorldLoc) && playerWorldLoc.distanceTo(nextMemoryTileLoc) == 1)
 			{
 				Movement.walk(nextMemoryTileLoc);
-				//toaManager.print("Moving to next memory tile");
+				toaManager.print("Moving to next memory tile");
 				toaManager.kephri.memory_completed_tiles.add(nextMemoryTileObject);
 				return false;
 			}
@@ -132,11 +139,11 @@ public class SolveMemoryPuzzle extends StagedTask
 				if (nextSafeTile != null)
 				{
 					Movement.walk(nextSafeTile);
-					//toaManager.print("Moving to closer safe tile");
+					toaManager.print("Moving to closer safe tile");
 				}
 				else
 				{
-					//toaManager.print("Next safe tile is somehow null");
+					toaManager.print("Next safe tile is somehow null");
 				}
 				return false;
 			}//else if player on memory tile, move to nearest safe tile, or to next memory tile if its within 1 tile distance
@@ -145,7 +152,7 @@ public class SolveMemoryPuzzle extends StagedTask
 				if (playerWorldLoc.distanceTo(nextMemoryTileLoc) == 1)
 				{
 					Movement.walk(nextMemoryTileLoc);
-					//toaManager.print("Moving to next memory tile");
+					toaManager.print("Moving to next memory tile");
 					toaManager.kephri.memory_completed_tiles.add(nextMemoryTileObject);
 				}
 				else
@@ -154,11 +161,11 @@ public class SolveMemoryPuzzle extends StagedTask
 					if (nextSafeTile != null)
 					{
 						Movement.walk(nextSafeTile);
-						//toaManager.print("Moving to closer safe tile");
+						toaManager.print("Moving to closer safe tile");
 					}
 					else
 					{
-						//toaManager.print("Next safe tile is somehow null");
+						toaManager.print("Next safe tile is somehow null");
 					}
 				}
 				return false;

@@ -49,30 +49,33 @@ public class SolveMathPuzzle extends StagedTask
 		{
 			return false;
 		}
-		GameObject ancientTablet = ObjectUtil.getNearestGameObject(ToaConstants.KEPHRI_ANCIENT_TABLET);
+		GameObject ancientTablet = ObjectUtil.getObject(ToaConstants.KEPHRI_ANCIENT_TABLET);
 		if (ancientTablet == null)
 		{
 			return false;
 		}
+		toaManager.print("solve math");
 		//if maths solution tile size == 0, need to read the tablet
 		if (toaManager.kephri.maths_solution_tiles.size() == 0)
 		{
 			//if player is not on start tile, move to start tile
-			WorldPoint startTile = new WorldPoint(ancientTablet.getX(), ancientTablet.getY() - 1, client.getPlane());
+			WorldPoint startTile = new WorldPoint(ancientTablet.getWorldLocation().getX(), ancientTablet.getWorldLocation().getY() - 1, client.getPlane());
 			if (!client.getLocalPlayer().getWorldLocation().equals(startTile))
 			{
+				toaManager.print("Moving to start tile " + toaManager.worldPointString(startTile));
 				Movement.walk(startTile);
-				return false;
+				return true;
 			}
 			//press tablet
+			toaManager.print("Inspecting tablet");
 			MousePackets.queueClickPacket();
 			ObjectPackets.queueObjectAction(ancientTablet, false, "Inspect");
-			return false;
+			return true;
 		}
 		//if player is on solution tile, add solution tile to completed tiles
 		if (stoodOnTile(toaManager.kephri.maths_solution_tiles, client.getLocalPlayer().getWorldLocation()))
 		{
-//			toaManager.print("On solution tile, adding to completed list");
+			toaManager.print("On solution tile, adding to completed list");
 			toaManager.kephri.maths_solution_tiles_completed.add(client.getLocalPlayer().getWorldLocation());
 		}
 		//Still more solution tiles to stand on
@@ -81,11 +84,11 @@ public class SolveMathPuzzle extends StagedTask
 			WorldPoint nextTile = getNextTile(toaManager.kephri.maths_solution_tiles, toaManager.kephri.maths_solution_tiles_completed);
 			if (nextTile == null)
 			{
-//				toaManager.print("Next  tile is somehow null");
+				toaManager.print("Next  tile is somehow null");
 				return false;
 			}
 			Movement.walk(nextTile);
-			return false;
+			return true;
 		}
 		else
 		{

@@ -44,10 +44,15 @@ public class SwitchPuzzleKephri extends StagedTask
 		WallObject passage = ObjectUtil.getWallObject(ToaConstants.PASSAGE_KEPHRI);
 		GameObject platform = ObjectUtil.getObject(ToaConstants.PLATFORM_KEPHRI);
 		WorldPoint refPoint = Static.getClient().getLocalPlayer().getWorldLocation();
-		if (toaManager.kephri.finalKephriPuzzle == null || toaManager.kephri.finalKephriPuzzle.solved || platform == null || passage == null)
+		if (toaManager.kephri.finalKephriPuzzle == null
+			|| toaManager.kephri.finalKephriPuzzle.solved
+			|| platform == null
+			|| passage == null)
 		{
 			return false;
 		}
+		toaManager.print("switch puzzle");
+
 		if (client.getLocalPlayer().getAnimation() == ToaConstants.CRAWLING_IN_TUNNEL_KEPHRI_PUZZLE
 			|| client.getLocalPlayer().getAnimation() == ToaConstants.JUMPING_OVER_PLATFORM_KEPHRI_PUZZLE)
 		{
@@ -55,13 +60,13 @@ public class SwitchPuzzleKephri extends StagedTask
 		}
 		if (toaManager.kephri.currentKephriPuzzle.index == 1 && refPoint.getY() < passage.getWorldLocation().getY())
 		{
-			//toaManager.print("Crawling through " + passage.getWorldLocation());
+			toaManager.print("Crawling through " + passage.getWorldLocation());
 			MousePackets.queueClickPacket();
 			ObjectPackets.queueObjectAction(passage, false, "Crawl-through");
 		}
 		else if (toaManager.kephri.currentKephriPuzzle.index == 2 && refPoint.getY() > passage.getWorldLocation().getY() && !toaManager.kephri.currentKephriPuzzle.roomArea.contains(refPoint))
 		{
-			//toaManager.print("Jump-to " + platform.getWorldLocation());
+			toaManager.print("Jump-to " + platform.getWorldLocation());
 			MousePackets.queueClickPacket();
 			ObjectPackets.queueObjectAction(platform, false, "Jump-to");
 		}

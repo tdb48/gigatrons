@@ -56,6 +56,8 @@ public class SolvePillarPuzzle extends StagedTask
 		{
 			return false;
 		}
+		toaManager.print("solve pillar");
+
 		if (client.getLocalPlayer().getAnimation() == -1)
 		{
 			toaManager.kephri.attemptedPillars.clear();
@@ -79,12 +81,12 @@ public class SolvePillarPuzzle extends StagedTask
 						WorldPoint newTile = findSafeTile();
 						if (newTile != null)
 						{
-							//toaManager.print("New tile -> " + newTile);
+							toaManager.print("New tile -> " + newTile);
 							Movement.walk(newTile);
 						}
 						else
 						{
-							//toaManager.print("New tile is null");
+							toaManager.print("New tile is null");
 						}
 						return false;
 					}
@@ -127,13 +129,13 @@ public class SolvePillarPuzzle extends StagedTask
 //						&& Reachable.isInteractable(n)
 					)
 					{
-						//toaManager.print("obelisk not in current order and not been attempted yet");
+						toaManager.print("obelisk not in current order and not been attempted yet");
 						MousePackets.queueClickPacket();
 						NPCPackets.queueNPCAction(n, "Hit");
 						NPC hitPillar = NPCUtil.findAt (n.getLocalLocation(), ToaConstants.OBELISK_ID_INACTIVE);
 						if (hitPillar != null)
 						{
-							//toaManager.print("Pillar i hit was wrong, adding to attempted list");
+							toaManager.print("Pillar i hit was wrong, adding to attempted list");
 							toaManager.kephri.attemptedPillars.add(n);
 						}
 						return false;

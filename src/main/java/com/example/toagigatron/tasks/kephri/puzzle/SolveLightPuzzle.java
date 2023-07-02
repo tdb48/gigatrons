@@ -69,6 +69,7 @@ public class SolveLightPuzzle extends StagedTask
 		{
 			return false;
 		}
+		toaManager.print("light puzzle");
 		WorldPoint centerTile = WorldAreas.getCenter(toaManager.kephri.currentKephriPuzzle.roomArea);
 		WorldPoint playerPoint = Static.getClient().getLocalPlayer().getWorldLocation();
 		LocalPoint dest = client.getLocalDestinationLocation();
@@ -84,17 +85,17 @@ public class SolveLightPuzzle extends StagedTask
 		}
 		if (dest != null && toaManager.kephri.flips.contains(dest) && !playerLocalPoint.equals(dest))
 		{
-			//toaManager.print("Returning false as im moving toward a red tile.");
+			toaManager.print("Returning false as im moving toward a red tile.");
 			return false;
 		}
 		else if (!toaManager.kephri.currentKephriPuzzle.roomArea.contains(playerPoint) || playerPoint.equals(centerTile))
 		{
-			//toaManager.print("Stepping on solve");
+			toaManager.print("Stepping on solve");
 			Movement.walk(WorldPoint.fromLocal(Static.getClient(), toaManager.kephri.flips.get(0)));
 		}
 		else
 		{
-			//toaManager.print("Stepping back");
+			toaManager.print("Stepping back");
 			Movement.walk(centerTile);
 		}
 		return true;

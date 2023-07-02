@@ -18,6 +18,7 @@ import com.example.toagigatron.taskformat.TaskDescriptor;
 import javax.inject.Inject;
 import net.runelite.api.GameObject;
 import net.runelite.api.coords.WorldPoint;
+
 @TaskDescriptor(
 	name = "Entering puzzle kephri",
 	priority = 1,
@@ -37,17 +38,20 @@ public class EnterPuzzleKephri extends StagedTask
 	public boolean execute()
 	{
 		GameObject barrier = ObjectUtil.getNearestGameObject(ToaConstants.BARRIER);
-		if(barrier == null){
+		if (barrier == null)
+		{
 //			toaManager.print("Returning false in enter kephri as barrier is null");
 			return false;
 		}
 		WorldPoint barrierTile = barrier.getWorldLocation().dx(-1);
-		if(!Reachable.isWalkable(barrierTile)){
+		if (!Reachable.isWalkable(barrierTile))
+		{
 //			toaManager.print("Returning false as we must be past the door because the barrier tile is not walkable");
 			return false;
 		}
 		WorldPoint playerPoint = Static.getClient().getLocalPlayer().getWorldLocation();
-		if(client.getSelectedSceneTile() == null && !playerPoint.equals(barrierTile)){
+		if (client.getSelectedSceneTile() == null && !playerPoint.equals(barrierTile))
+		{
 			Movement.walk(barrierTile);
 			toaManager.print("Walking to barrier tile at -> " + toaManager.worldPointString(barrierTile));
 			return true;
@@ -56,7 +60,7 @@ public class EnterPuzzleKephri extends StagedTask
 		toaManager.print("Attempting to enter kephri puzzle");
 		toaManager.print("Puzzle is -> " + toaManager.kephri.firstKephriPuzzle.roomType.name());
 		MousePackets.queueClickPacket();
-		ObjectPackets.queueObjectAction(barrier,false,"Quick-Pass");
+		ObjectPackets.queueObjectAction(barrier, false, "Quick-Pass");
 		return true;
 	}
 }
