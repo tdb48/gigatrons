@@ -22,9 +22,10 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
 @TaskDescriptor(
-	priority = 100,
+	priority = 999,
 	name = "Check charges",
-	register = true
+	register = true,
+	blocking = true
 )
 public class CheckCharges extends Task
 {
@@ -94,10 +95,12 @@ public class CheckCharges extends Task
 			toaManager.chargesTracker.blowpipeDarts = 0;
 			toaManager.chargesTracker.dartType = Dart.DRAGON;
 		}
+		boolean returnValue = false;
 		if (toaManager.chargesTracker.blowpipeDarts == -1
 			|| toaManager.chargesTracker.blowpipeScales == -1)
 		{
-			if(Bank.isOpen()){
+			if (Bank.isOpen())
+			{
 				BankUtil.close();
 			}
 			if (InventoryUtil.contains(ItemID.TOXIC_BLOWPIPE))
@@ -121,11 +124,12 @@ public class CheckCharges extends Task
 			}
 			// dont change this print message, can't have 'charges' in it
 			toaManager.print("Checking blowpipe charge");
-			return true;
+			returnValue = true;
 		}
 		if (toaManager.chargesTracker.mageCharges == -1 || widgetOpened)
 		{
-			if(Bank.isOpen()){
+			if (Bank.isOpen())
+			{
 				BankUtil.close();
 			}
 			for (MageWeapon mageWeapon : MageWeapon.values())
@@ -154,8 +158,8 @@ public class CheckCharges extends Task
 			}
 			// dont change this print message, can't have 'charges' in it
 			toaManager.print("Checking mage weapon charge");
-			return true;
+			returnValue = true;
 		}
-		return false;
+		return returnValue;
 	}
 }
