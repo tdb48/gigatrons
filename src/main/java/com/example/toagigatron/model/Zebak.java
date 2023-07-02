@@ -157,17 +157,15 @@ public class Zebak
 	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
-		if (Objects.requireNonNull(npc.getName()).equalsIgnoreCase("wave"))
+		if (npc.getName() != null && npc.getName().toLowerCase().contains("wave"))
 		{
 			if (wavesOne.size() < (toaManager.getRoomLevel() > 1 ? 19 : 18))
 			{
-				System.out.println("Waves one spawned");
 				wavesSolved = false;
 				wavesOne.add(npc);
 			}
 			else if (wavesTwo.size() < (toaManager.getRoomLevel() > 1 ? 19 : 18))
 			{
-				System.out.println("Waves two spawned");
 				wavesTwo.add(npc);
 			}
 			else if (wavesThree.size() < (toaManager.getRoomLevel() > 1 ? 19 : 18))
@@ -206,9 +204,11 @@ public class Zebak
 		}
 		for (NPC wave : NPCs.search().nameContains("Wave").result())
 		{
+//			System.out.println("A WAVE SPAWNED!!!");
 			// Going south
 			if (wave.getOrientation() == 0)
 			{
+//				System.out.println("south wave spawned!!!");
 				waves.add(wave.getWorldLocation().dy(-1));
 				waves.add(wave.getWorldLocation().dy(1));
 				waves.add(wave.getWorldLocation().dy(2));
@@ -221,6 +221,7 @@ public class Zebak
 			// Going north
 			else
 			{
+//				System.out.println("north wave spawned!!!");
 				waves.add(wave.getWorldLocation().dy(1));
 				waves.add(wave.getWorldLocation().dy(-1));
 				waves.add(wave.getWorldLocation().dy(-2));
@@ -306,7 +307,7 @@ public class Zebak
 
 	public ArrayList<WorldPoint> getChompZone()
 	{
-		ArrayList<WorldPoint> chompZone = allRoomTiles;
+		ArrayList<WorldPoint> chompZone = new ArrayList<>(allRoomTiles);
 		chompZone.removeIf(n -> n.distanceTo(zebakBoss.getWorldArea()) != 1);
 		return chompZone;
 	}
@@ -317,6 +318,8 @@ public class Zebak
 		wavesTwoSafe = null;
 		wavesThreeSafe = null;
 		boolean levelTwoZebak = toaManager.getRoomLevel() > 1;
+//		System.out.println("LEVELTWOZEBAK -> " + levelTwoZebak);
+//		System.out.println("LEVELTWOZEBAK ROOM LEVEL -> " + toaManager.getRoomLevel());
 		wavesOneSafe = generateSafeWaves(levelTwoZebak, wavesOne);
 		wavesTwoSafe = generateSafeWaves(levelTwoZebak, wavesTwo);
 		wavesThreeSafe = generateSafeWaves(levelTwoZebak, wavesThree);
@@ -698,7 +701,7 @@ public class Zebak
 		}
 		else
 		{
-			toaManager.print("SOMETHING WRONG IN GET SAFE ROAR TILE");
+			//toaManager.print("SOMETHING WRONG IN GET SAFE ROAR TILE");
 		}
 		return null;
 	}
@@ -975,8 +978,15 @@ public class Zebak
 		LocalPoint localRefPoint = gameObjectDespawned.getGameObject().getLocalLocation();
 		if (ToaConstants.ZEBAK_POISON_GAME_OBJECT.contains(gameObjectDespawned.getGameObject().getId()))
 		{
-			poisonTiles.remove(localRefPoint);
+			if(poisonTiles.contains(localRefPoint)){
+				System.out.println("Removing dead poison tile");
+				poisonTiles.remove(localRefPoint);
+			} else {
+				System.out.println("Localpoint bug in poison tiles, attempting to remove via worldpoint conversion instead.");
+				poisonTiles.removeIf(x -> WorldPoint.fromLocal(client, x).equals(refPoint));
+			}
 		}
+
 		if (gameObjectDespawned.getGameObject().getId() == ToaConstants.ZEBAK_ROAR_ROCK)
 		{
 			rockTiles.remove(localRefPoint);

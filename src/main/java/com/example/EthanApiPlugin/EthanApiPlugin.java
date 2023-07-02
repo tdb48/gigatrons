@@ -19,6 +19,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.WildcardMatcher;
 
@@ -39,6 +40,7 @@ import static net.runelite.api.Varbits.QUICK_PRAYER;
 )
 public class EthanApiPlugin extends Plugin {
 
+    static ClientUI clientUI = RuneLite.getInjector().getInstance(ClientUI.class);
     static Client client = RuneLite.getInjector().getInstance(Client.class);
     static PluginManager pluginManager = RuneLite.getInjector().getInstance(PluginManager.class);
     static ItemManager itemManager = RuneLite.getInjector().getInstance(ItemManager.class);
@@ -85,7 +87,14 @@ public class EthanApiPlugin extends Plugin {
     public static boolean loggedIn() {
         return client.getGameState() == GameState.LOGGED_IN;
     }
+    public static boolean inRegion(int regionID){
+        List<Integer> mapRegions = Arrays.stream(client.getMapRegions()).boxed().collect(Collectors.toList());
+        return mapRegions.contains(regionID);
+    }
 
+    public static WorldPoint playerPosition(){
+        return client.getLocalPlayer().getWorldLocation();
+    }
     public static SkullIcon getSkullIcon(Player player) {
         Field skullField = null;
         try {
@@ -227,9 +236,9 @@ public class EthanApiPlugin extends Plugin {
     public static List<WorldPoint> reachableTiles() {
         HashSet<Tile> retPoints = new HashSet<>();
         Tile[][] tiles = client.getScene().getTiles()[client.getPlane()];
+        int[][] flags = client.getCollisionMaps()[client.getPlane()].getFlags();
         Tile firstPoint = tiles[client.getLocalPlayer().getWorldLocation().getX() - client.getBaseX()][client.getLocalPlayer().getWorldLocation().getY() - client.getBaseY()];
         Queue<Tile> queue = new LinkedList<>();
-        int[][] flags = client.getCollisionMaps()[client.getPlane()].getFlags();
         queue.add(firstPoint);
         while (!queue.isEmpty()) {
             Tile tile = queue.poll();
@@ -576,14 +585,17 @@ public class EthanApiPlugin extends Plugin {
     public static Client getClient() {
         return client;
     }
+    public static ClientUI getClientUI() {
+        return clientUI;
+    }
 
     public static ArrayList<WorldPoint> pathToGoal(WorldPoint goal, HashSet<WorldPoint> dangerous) {
 
-        LinkedHashMap<WorldPoint, List<WorldPoint>> paths = new LinkedHashMap<>();
+        ArrayList<List<WorldPoint>> paths = new ArrayList<>();
+        paths.add(List.of(client.getLocalPlayer().getWorldLocation()));
         HashSet<WorldPoint> walkableTiles = new HashSet<>(reachableTiles());
         HashSet<WorldPoint> impassibleTiles = new HashSet<>(EthanApiPlugin.sceneWorldPoints());
         impassibleTiles.removeIf(walkableTiles::contains);
-        paths.put(client.getLocalPlayer().getWorldLocation(), List.of(client.getLocalPlayer().getWorldLocation()));
         HashSet<WorldPoint> goalSet = new HashSet<>();
         goalSet.add(goal);
         return pathToGoal(goalSet, paths, impassibleTiles, dangerous, new HashSet<>(reachableTiles()), new HashSet<>());
@@ -591,26 +603,26 @@ public class EthanApiPlugin extends Plugin {
 
     public static ArrayList<WorldPoint> pathToGoal(HashSet<WorldPoint> goalSet, HashSet<WorldPoint> dangerous) {
 
-        LinkedHashMap<WorldPoint, List<WorldPoint>> paths = new LinkedHashMap<>();
+        ArrayList<List<WorldPoint>> paths = new ArrayList<>();
+        paths.add(List.of(client.getLocalPlayer().getWorldLocation()));
         HashSet<WorldPoint> walkableTiles = new HashSet<>(reachableTiles());
         HashSet<WorldPoint> impassibleTiles = new HashSet<>(EthanApiPlugin.sceneWorldPoints());
         impassibleTiles.removeIf(walkableTiles::contains);
-        paths.put(client.getLocalPlayer().getWorldLocation(), List.of(client.getLocalPlayer().getWorldLocation()));
         return pathToGoal(goalSet, paths, impassibleTiles, dangerous, new HashSet<>(reachableTiles()), new HashSet<>());
     }
 
     public static ArrayList<WorldPoint> pathToGoal(WorldPoint goal, HashSet<WorldPoint> dangerous, HashSet<WorldPoint> impassible) {
 
-        LinkedHashMap<WorldPoint, List<WorldPoint>> paths = new LinkedHashMap<>();
-        paths.put(client.getLocalPlayer().getWorldLocation(), List.of(client.getLocalPlayer().getWorldLocation()));
+        ArrayList<List<WorldPoint>> paths = new ArrayList<>();
+        paths.add(List.of(client.getLocalPlayer().getWorldLocation()));
         HashSet<WorldPoint> goalSet = new HashSet<>();
         goalSet.add(goal);
         return pathToGoal(goalSet, paths, impassible, dangerous, new HashSet<>(reachableTiles()), new HashSet<>());
     }
 
     public static ArrayList<WorldPoint> pathToGoal(WorldPoint goal, HashSet<WorldPoint> walkable, HashSet<WorldPoint> dangerous, HashSet<WorldPoint> impassible) {
-        LinkedHashMap<WorldPoint, List<WorldPoint>> paths = new LinkedHashMap<>();
-        paths.put(client.getLocalPlayer().getWorldLocation(), List.of(client.getLocalPlayer().getWorldLocation()));
+        ArrayList<List<WorldPoint>> paths = new ArrayList<>();
+        paths.add(List.of(client.getLocalPlayer().getWorldLocation()));
         HashSet<WorldPoint> goalSet = new HashSet<>();
         goalSet.add(goal);
         return pathToGoal(goalSet, paths, impassible, dangerous, walkable, new HashSet<>());
@@ -619,25 +631,27 @@ public class EthanApiPlugin extends Plugin {
 
     //this method paths locally aka within the current scene. It is not a fully fledged worldwalker
     @SneakyThrows
-    public static ArrayList<WorldPoint> pathToGoal(HashSet<WorldPoint> goal, LinkedHashMap<WorldPoint, List<WorldPoint>> paths,
+    public static ArrayList<WorldPoint> pathToGoal(HashSet<WorldPoint> goal, ArrayList<List<WorldPoint>> paths,
                                                    HashSet<WorldPoint> impassible, HashSet<WorldPoint> dangerous,
                                                    HashSet<WorldPoint> walkable, HashSet<WorldPoint> walked) {
-        LinkedHashMap<WorldPoint, List<WorldPoint>> paths2 = new LinkedHashMap<>(paths);
+        Queue<List<WorldPoint>> queue = new LinkedList<>(paths);
+        ArrayDeque<Node> nodeQueue = new ArrayDeque<>();
         if (Collections.disjoint(walkable, goal)) {
             return null;
         }
-        for (Map.Entry<WorldPoint, List<WorldPoint>> worldPointListEntry : paths.entrySet()) {
-            //			int counter = 1;
+        while (!queue.isEmpty()) {
+            List<WorldPoint> path = queue.poll();
             for (int[] direction : directionsMap) {
                 int x = direction[0];
                 int y = direction[1];
                 if (x == 0 && y == 0) {
                     continue;
                 }
-
-                // ORIGINAL LINE (DY USES X, DX USES Y?
-                // WorldPoint point = worldPointListEntry.getKey().dy(x).dx(y);
-                WorldPoint point = worldPointListEntry.getKey().dy(y).dx(x);
+                if (path.size() == 0) {
+                    continue;
+                }
+                WorldPoint point = path.get(path.size() - 1).dy(y).dx(x);
+                WorldPoint originalPoint = path.get(path.size() - 1);
                 if (!walkable.contains(point) || impassible.contains(point) || dangerous.contains(point)) {
 //                        						System.out.println("rejecting 1");
                     continue;
@@ -649,25 +663,25 @@ public class EthanApiPlugin extends Plugin {
                 //far movements
                 //Far West
                 if (x == -2 && y == 0) {
-                    if (farWObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                    if (farWObstructed(originalPoint, impassible, walkable)) {
                         continue;
                     }
                 }
                 //Far East
                 if (x == 2 && y == 0) {
-                    if (farEObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                    if (farEObstructed(originalPoint, impassible, walkable)) {
                         continue;
                     }
                 }
                 //Far South
                 if (x == 0 && y == -2) {
-                    if (farSObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                    if (farSObstructed(originalPoint, impassible, walkable)) {
                         continue;
                     }
                 }
                 //Far North
                 if (x == 0 && y == 2) {
-                    if (farNObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                    if (farNObstructed(originalPoint, impassible, walkable)) {
                         continue;
                     }
                 }
@@ -676,49 +690,49 @@ public class EthanApiPlugin extends Plugin {
                 if (Math.abs(x) + Math.abs(y) == 3) {
                     //North east
                     if (x == 1 && y == 2) {
-                        if (northEastLObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (northEastLObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
                     }
                     //East north
                     if (x == 2 && y == 1) {
-                        if (eastNorthLObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (eastNorthLObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
                     }
                     //East south
                     if (x == 2 && y == -1) {
-                        if (eastSouthLObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (eastSouthLObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
                     }
                     //South east
                     if (x == 1 && y == -2) {
-                        if (southEastLObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (southEastLObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
                     }
                     //South west
                     if (x == -1 && y == -2) {
-                        if (southWestLObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (southWestLObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
                     }
                     //West south
                     if (x == -2 && y == -1) {
-                        if (westSouthLObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (westSouthLObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
                     }
                     //West north
                     if (x == -2 && y == 1) {
-                        if (westNorthLObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (westNorthLObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
                     }
                     //North west
                     if (x == -1 && y == 2) {
-                        if (northWestLObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (northWestLObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
                     }
@@ -727,26 +741,26 @@ public class EthanApiPlugin extends Plugin {
 
                     //diagonal SE
                     if (x == 1 && y == -1) {
-                        if (seObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (seObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
 
                     }
                     //diagonal NE
                     if (x == 1 && y == 1) {
-                        if (neObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (neObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
                     }
                     //diagonal NW
                     if (x == -1 && y == 1) {
-                        if (nwObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (nwObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
                     }
                     //diagonal SW
                     if (x == -1 && y == -1) {
-                        if (swObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (swObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
                     }
@@ -755,30 +769,30 @@ public class EthanApiPlugin extends Plugin {
 
                     //Diagonal SW
                     if (x == -2 && y == -2) {
-                        if (farSWObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (farSWObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
                     }
                     //Diagonal NW
                     if (x == -2 && y == 2) {
-                        if (farNWObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (farNWObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
                     }
                     //Diagonal SE
                     if (x == 2 && y == -2) {
-                        if (farSEObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (farSEObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
                     }
                     //Diagonal NE
                     if (x == 2 && y == 2) {
-                        if (farNEObstructed(worldPointListEntry.getKey(), impassible, walkable)) {
+                        if (farNEObstructed(originalPoint, impassible, walkable)) {
                             continue;
                         }
                     }
                 }
-                ArrayList<WorldPoint> newPath = new ArrayList<>(worldPointListEntry.getValue());
+                ArrayList<WorldPoint> newPath = new ArrayList<>(path);
                 //					System.out.println("adding: "+counter);
                 //					counter++;
                 newPath.add(point);
@@ -786,16 +800,10 @@ public class EthanApiPlugin extends Plugin {
                 if (goal.contains(point)) {
                     return newPath;
                 }
-                paths2.put(point, newPath);
+                queue.add(newPath);
             }
-            paths2.put(worldPointListEntry.getKey(), null);
         }
-        paths2.entrySet().removeIf(x -> x.getValue() == null);
-        if (paths2.isEmpty()) {
-            System.out.println("path not possible");
-            return null;
-        }
-        return pathToGoal(goal, paths2, impassible, dangerous, walkable, walked);
+        return null;
     }
 
 //    	@SneakyThrows
@@ -1161,6 +1169,7 @@ public class EthanApiPlugin extends Plugin {
         eventBus.register(RuneLite.getInjector().getInstance(TileObjects.class));
         eventBus.register(RuneLite.getInjector().getInstance(Players.class));
         eventBus.register(RuneLite.getInjector().getInstance(Equipment.class));
-        eventBus.register(RuneLite.getInjector().getInstance(DepositBox.class));
+		eventBus.register(RuneLite.getInjector().getInstance(DepositBox.class));
+		eventBus.register(RuneLite.getInjector().getInstance(ShopInventory.class));
     }
 }

@@ -241,6 +241,8 @@ public class ZebakAttack extends StagedTask
 			}
 			else if (!playerPoint.equals(bestTile))
 			{
+				toaManager.print("WALKING BACK INTO ZEBAK ATTACK RANGE");
+				System.out.println("WALKING BACK INTO ZEBAK ATTACK RANGE");
 				toaManager.print("Walking into range");
 				Walker.stepAlong(toaManager.zebak.path);
 				return true;

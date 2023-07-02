@@ -33,6 +33,13 @@ public class ItemQuery {
         return this;
     }
 
+    public ItemQuery withSet(Set<Integer> ids) {
+        items = items.stream()
+                .filter(item -> ids.contains(item.getItemId()))
+                .collect(Collectors.toList());
+        return this;
+    }
+
     public ItemQuery withId(int id) {
         items = items.stream().filter(item -> item.getItemId() == id).collect(Collectors.toList());
         return this;
@@ -59,6 +66,15 @@ public class ItemQuery {
 
     public ItemQuery idInList(List<Integer> ids) {
         items = items.stream().filter(item -> ids.contains(item.getItemId())).collect(Collectors.toList());
+        return this;
+    }
+    
+    public ItemQuery nameInList(List<String> names) {
+        items = items.stream()
+                .filter(item -> names.stream()
+                        .map(String::toLowerCase)
+                        .anyMatch(name -> Text.removeTags(item.getName()).equalsIgnoreCase(name)))
+                .collect(Collectors.toList());
         return this;
     }
 

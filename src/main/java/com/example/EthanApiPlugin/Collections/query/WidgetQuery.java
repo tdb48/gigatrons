@@ -19,7 +19,7 @@ public class WidgetQuery {
     }
 
     public WidgetQuery withAction(String action) {
-        widgets = widgets.stream().filter(widget -> widget.getActions() != null && Arrays.asList(widget.getActions()).contains(action)).collect(java.util.stream.Collectors.toList());
+        widgets = widgets.stream().filter(widget -> widget.getActions() != null && Arrays.asList(widget.getActions()).contains(action)).collect(Collectors.toList());
         return this;
     }
 
@@ -28,17 +28,17 @@ public class WidgetQuery {
     }
 
     public WidgetQuery hiddenState(boolean hidden) {
-        widgets = widgets.stream().filter(widget -> widget.isHidden() == hidden).collect(java.util.stream.Collectors.toList());
+        widgets = widgets.stream().filter(widget -> widget.isHidden() == hidden).collect(Collectors.toList());
         return this;
     }
 
     public WidgetQuery withId(int id) {
-        widgets = widgets.stream().filter(widget -> widget.getId() == id).collect(java.util.stream.Collectors.toList());
+        widgets = widgets.stream().filter(widget -> widget.getId() == id).collect(Collectors.toList());
         return this;
     }
 
     public WidgetQuery withItemId(int itemId) {
-        widgets = widgets.stream().filter(widget -> widget.getItemId() == itemId).collect(java.util.stream.Collectors.toList());
+        widgets = widgets.stream().filter(widget -> widget.getItemId() == itemId).collect(Collectors.toList());
         return this;
     }
 

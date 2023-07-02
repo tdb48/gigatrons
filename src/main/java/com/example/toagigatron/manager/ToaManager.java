@@ -231,19 +231,19 @@ public class ToaManager
 		return overall.saltInTicks;
 	}
 
-	public void reAttack(NPC npc)
-	{
-		if (npc != null)
-		{
-			MousePackets.queueClickPacket();
-			NPCPackets.queueNPCAction(npc, "Attack");
-			print("Re-Attacking " + npc.getName());
-		}
-		else
-		{
-			print("NPC IS NULL IN RE-ATTACK");
-		}
-	}
+//	public void reAttack(NPC npc)
+//	{
+//		if (npc != null)
+//		{
+//			MousePackets.queueClickPacket();
+//			NPCPackets.queueNPCAction(npc, "Attack");
+//			print("Re-Attacking " + npc.getName());
+//		}
+//		else
+//		{
+//			print("NPC IS NULL IN RE-ATTACK");
+//		}
+//	}
 
 	public boolean refill()
 	{
@@ -612,7 +612,9 @@ public class ToaManager
 
 	public void withdrawFromBag(int i)
 	{
-		withdrawFromBag((ArrayList<Integer>) List.of(i));
+		ArrayList<Integer> tempListThing = new ArrayList<>();
+		tempListThing.add(i);
+		withdrawFromBag(tempListThing);
 	}
 
 	public void withdrawFromBag(ArrayList<Integer> list)

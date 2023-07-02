@@ -74,7 +74,7 @@ public class WardenP23Consumables extends StagedTask
 			toaManager.print("Consuming salt");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(salt,"Crush");
-			toaManager.reAttack(playerInteracting);
+			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion(); //TODO Do we need this? Idk if salt pot blocks you
 			return true;
 		}
@@ -83,7 +83,7 @@ public class WardenP23Consumables extends StagedTask
 			toaManager.print("Drinking adrenaline");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(adrenaline,"Drink");
-			toaManager.reAttack(playerInteracting);
+			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
 		}
@@ -95,7 +95,7 @@ public class WardenP23Consumables extends StagedTask
 			toaManager.print("Drinking ambrosia");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(ambrosia,"Drink");
-			toaManager.reAttack(playerInteracting);
+			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
 		}
@@ -107,7 +107,7 @@ public class WardenP23Consumables extends StagedTask
 				toaManager.print("Using scarab");
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(scarab,"Crack");
-				toaManager.reAttack(playerInteracting);
+				//toaManager.reAttack(playerInteracting);
 				gameTickManager.drinkPotion();
 				return true;
 			}
@@ -116,7 +116,7 @@ public class WardenP23Consumables extends StagedTask
 				toaManager.print("Drinking restore");
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(prayerRestore,"Drink");
-				toaManager.reAttack(playerInteracting);
+				//toaManager.reAttack(playerInteracting);
 				gameTickManager.drinkPotion();
 				return true;
 			}
@@ -131,7 +131,7 @@ public class WardenP23Consumables extends StagedTask
 			toaManager.print("Drinking brew on GOD tick");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(healingPotion,"Drink");
-			toaManager.reAttack(playerInteracting);
+			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
 		}
@@ -142,7 +142,7 @@ public class WardenP23Consumables extends StagedTask
 			toaManager.print("Panic brew");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(healingPotion,"Drink");
-			toaManager.reAttack(playerInteracting);
+			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
 		}

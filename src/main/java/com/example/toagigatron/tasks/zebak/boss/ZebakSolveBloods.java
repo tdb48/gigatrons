@@ -36,7 +36,6 @@ public class ZebakSolveBloods extends StagedTask
 		//if (toaManager.zebak.bloods.isEmpty() || !toaManager.zebak.waves.isEmpty() || !toaManager.zebak.safeRockTiles.isEmpty())
 		if (toaManager.zebak.bloods.isEmpty() || !toaManager.zebak.safeRockTiles.isEmpty())
 		{
-			toaManager.print("Return bloods 1");
 			return false;
 		}
 		if (!toaManager.zebak.waves2.isEmpty())
@@ -89,7 +88,7 @@ public class ZebakSolveBloods extends StagedTask
 		ArrayList<WorldPoint> safeTiles = new ArrayList<>();
 		for (WorldPoint wp : area.toWorldPointList())
 		{
-			if (wp.distanceTo(player) > 3)
+			if (wp.distanceTo(player) > 3 || !toaManager.zebak.allWalkableRoomTiles.contains(wp))
 			{
 				continue;
 			}
@@ -131,7 +130,7 @@ public class ZebakSolveBloods extends StagedTask
 		ArrayList<WorldPoint> safeTiles = new ArrayList<>();
 		for (WorldPoint wp : area.toWorldPointList())
 		{
-			if (wp.distanceTo(player) > 3)
+			if (wp.distanceTo(player) > 3 || !toaManager.zebak.allWalkableRoomTiles.contains(wp))
 			{
 				continue;
 			}
@@ -159,7 +158,7 @@ public class ZebakSolveBloods extends StagedTask
 		ArrayList<WorldPoint> safeTiles = new ArrayList<>();
 		for (WorldPoint wp : area.toWorldPointList())
 		{
-			if (wp.distanceTo(player) > 2)
+			if (wp.distanceTo(player) > 2 || !toaManager.zebak.allWalkableRoomTiles.contains(wp))
 			{
 				continue;
 			}

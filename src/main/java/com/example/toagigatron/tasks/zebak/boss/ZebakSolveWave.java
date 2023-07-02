@@ -41,7 +41,7 @@ public class ZebakSolveWave extends StagedTask
 	 */
 	public boolean execute()
 	{
-		NPC wave = NPCUtil.findNearest(ToaConstants.ZEBAK_WAVE);
+		NPC wave = NPCUtil.findNearestNpcAliveOrDead(ToaConstants.ZEBAK_WAVE);
 		if (wave == null || toaManager.zebak.zebakBoss == null)
 		{
 			return false;

@@ -1,5 +1,6 @@
 package com.example.Utility;
 
+import com.example.EthanApiPlugin.Collections.Widgets;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.PacketUtils.WidgetID;
 import com.example.PacketUtils.WidgetInfoExtended;
@@ -18,9 +19,16 @@ public class Dialog {
     {
         return canContinueNPC() || canContinuePlayer() || canContinueDeath()
                 || canSpriteContinue() || canSprite2Continue()
-                || canContinue1() || canContinue2() || canLevelUpContinue();
+                || canContinue1() || canContinue2() || canLevelUpContinue()
+                || canContinueTOAResign() || masterContinueCheck() ;
     }
 
+    public static boolean masterContinueCheck(){
+        return !Widgets.search().withTextContains("Click here to continue").empty();
+    }
+    public static boolean canContinueTOAResign(){
+        return !Widgets.search().withTextContains("You are about to <col=ad2800>abandon the raid</col>. If you do this, you <col=ad2800>will not</col> be<br>able to return to your current run.").empty();
+    }
 
     public static boolean canLevelUpContinue()
     {

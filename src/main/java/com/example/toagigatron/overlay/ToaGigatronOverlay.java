@@ -3,6 +3,7 @@ package com.example.toagigatron.overlay;
 import com.example.Utility.WorldAreas;
 import com.example.toagigatron.ToaGigatronConfig;
 import com.example.toagigatron.ToaGigatronPlugin;
+import com.example.toagigatron.model.bossmodel.KephriDungRow;
 import com.google.common.base.Strings;
 import net.runelite.api.Point;
 import net.runelite.api.*;
@@ -109,32 +110,32 @@ public class ToaGigatronOverlay extends Overlay
 				}
 			}
 		}
+
+//		if(plugin.toaManager.zebak.allRoomTiles != null){
+//			for(WorldPoint wp : plugin.toaManager.zebak.allRoomTiles){
+//				LocalPoint lp = LocalPoint.fromWorld(client, wp);
+//				assert lp != null;
+//				Polygon poly = Perspective.getCanvasTileAreaPoly(client, lp, 1);
+//				if (poly != null)
+//				{
+//					OverlayUtil.renderPolygon(graphics2D, poly, Color.YELLOW, new Color(255, 255, 0, 10), stroke);
 //
-////		if(plugin.toaManager.zebak.allRoomTiles != null){
-////			for(WorldPoint wp : plugin.toaManager.zebak.allRoomTiles){
-////				LocalPoint lp = LocalPoint.fromWorld(client, wp);
-////				assert lp != null;
-////				Polygon poly = Perspective.getCanvasTileAreaPoly(client, lp, 1);
-////				if (poly != null)
-////				{
-////					OverlayUtil.renderPolygon(graphics2D, poly, Color.YELLOW, new Color(255, 255, 0, 10), stroke);
-////
-////				}
-////			}
-////		}
-////
-////		if(plugin.toaManager.zebak.allWalkableRoomTiles != null){
-////			for(WorldPoint wp : plugin.toaManager.zebak.allWalkableRoomTiles){
-////				LocalPoint lp = LocalPoint.fromWorld(client, wp);
-////				assert lp != null;
-////				Polygon poly = Perspective.getCanvasTileAreaPoly(client, lp, 1);
-////				if (poly != null)
-////				{
-////					OverlayUtil.renderPolygon(graphics2D, poly, Color.GREEN, new Color(0, 255, 0, 10), stroke);
-////
-////				}
-////			}
-////		}
+//				}
+//			}
+//		}
+
+//		if(plugin.toaManager.zebak.allWalkableRoomTiles != null){
+//			for(WorldPoint wp : plugin.toaManager.zebak.allWalkableRoomTiles){
+//				LocalPoint lp = LocalPoint.fromWorld(client, wp);
+//				assert lp != null;
+//				Polygon poly = Perspective.getCanvasTileAreaPoly(client, lp, 1);
+//				if (poly != null)
+//				{
+//					OverlayUtil.renderPolygon(graphics2D, poly, Color.GREEN, new Color(0, 255, 0, 10), stroke);
+//
+//				}
+//			}
+//		}
 ////		if(plugin.toaManager.zebak.allWalkableRoomTilesIncludingChompZone != null){
 ////			for(WorldPoint wp : plugin.toaManager.zebak.allWalkableRoomTilesIncludingChompZone){
 ////				LocalPoint lp = LocalPoint.fromWorld(client, wp);
@@ -247,16 +248,16 @@ public class ToaGigatronOverlay extends Overlay
 //				OverlayUtil.renderPolygon(graphics2D, poly3, Color.PINK, new Color(0, 0, 0, 5), stroke);
 //			}
 //		}
-////		if (plugin.toaManager.kephri.kephriRoom != null)
-////		{
-////			LocalPoint lp3 = LocalPoint.fromWorld(client, plugin.toaManager.kephri.kephriRoom.getCenter());
-////			assert lp3 != null;
-////			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 17);
-////			if (poly3 != null)
-////			{
-////				OverlayUtil.renderPolygon(graphics2D, poly3, Color.GREEN, new Color(0, 0, 0, 5), stroke);
-////			}
-////		}
+		if (plugin.toaManager.kephri.kephriRoom != null)
+		{
+			LocalPoint lp3 = LocalPoint.fromWorld(client, WorldAreas.getCenter(plugin.toaManager.kephri.kephriRoom));
+			assert lp3 != null;
+			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 17);
+			if (poly3 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly3, Color.GREEN, new Color(0, 0, 0, 5), stroke);
+			}
+		}
 //
 		drawPoints(plugin.toaManager.baba.explosionTiles, graphics2D);
 //		if (plugin.toaManager.wardens12.warden != null)
@@ -276,6 +277,7 @@ public class ToaGigatronOverlay extends Overlay
 ////		drawPoints(plugin.toaManager.wardens12.tilesInWardenRange, graphics2D);
 //		drawPoints(plugin.toaManager.zebak.poisonWorldPoints, graphics2D);
 		drawPoints(plugin.toaManager.zebak.singleWaves, graphics2D, Color.CYAN);
+//		drawPoints(plugin.toaManager.zebak.waves, graphics2D, Color.CYAN);
 		drawPoints(plugin.toaManager.zebak.bloods, graphics2D, Color.RED);
 		drawLocalPoints(plugin.toaManager.zebak.poisonTiles, graphics2D, new Color(Color.green.getRed(), Color.green.getGreen(), Color.green.getBlue(), 50));
 		drawLocalPoints(plugin.toaManager.zebak.rockTiles, graphics2D, Color.BLUE);
@@ -362,9 +364,12 @@ public class ToaGigatronOverlay extends Overlay
 //
 		if (plugin.toaManager.zebak.path != null)
 		{
+			int index = 1;
 			for (WorldPoint wp : plugin.toaManager.zebak.path)
 			{
-				drawTile(graphics2D, wp, Color.MAGENTA, 1, 150, 100);
+				drawTile(graphics2D, wp, Color.MAGENTA, String.valueOf(index), stroke);
+				index++;
+				//drawTile(graphics2D, wp, Color.MAGENTA, 1, 150, 100);
 			}
 		}
 //
@@ -422,6 +427,15 @@ public class ToaGigatronOverlay extends Overlay
 				OverlayUtil.renderPolygon(graphics2D, poly3, Color.green, new Color(0, 0, 0, 100), stroke);
 			}
 		}
+		if (plugin.toaManager.zebak.hittableJug != null)
+		{
+			LocalPoint lp3 = plugin.toaManager.zebak.hittableJug.getSolveTile();
+			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
+			if (poly3 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly3, Color.YELLOW, new Color(Color.YELLOW.getRed(), Color.YELLOW.getGreen(), Color.YELLOW.getBlue(), 100), stroke);
+			}
+		}
 //
 		if (!plugin.toaManager.baba.targetPillarTiles.isEmpty())
 		{
@@ -437,135 +451,138 @@ public class ToaGigatronOverlay extends Overlay
 			}
 		}
 //
-//		if (plugin.toaManager.kephri.currentRow != null)
+		if (plugin.toaManager.kephri.currentRow != null)
+		{
+			WorldPoint ref = plugin.toaManager.kephri.currentRow.startPoint;
+			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
+			assert lp3 != null;
+			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
+			if (poly3 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly3, Color.GREEN, new Color(Color.GREEN.getRed(), Color.GREEN.getGreen(), Color.GREEN.getBlue(), 50), stroke);
+			}
+		}
+
+		if (plugin.toaManager.kephri.currentRow != null)
+		{
+			WorldPoint ref = plugin.toaManager.kephri.currentRow.endPoint;
+			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
+			assert lp3 != null;
+			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
+			if (poly3 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly3, Color.BLACK, new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), 50), stroke);
+			}
+		}
+		if (plugin.toaManager.kephri.currentRow != null)
+		{
+			WorldPoint ref = plugin.toaManager.kephri.currentRow.middlePoint;
+			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
+			assert lp3 != null;
+			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
+			if (poly3 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly3, Color.PINK, new Color(Color.PINK.getRed(), Color.PINK.getGreen(), Color.PINK	.getBlue(), 100), stroke);
+			}
+		}
+		if (plugin.toaManager.kephri.currentRow != null)
+		{
+			WorldPoint ref = plugin.toaManager.kephri.currentRow.prePathPoint;
+			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
+			assert lp3 != null;
+			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
+			if (poly3 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly3, Color.BLUE, new Color(Color.BLUE.getRed(), Color.BLUE.getGreen(), Color.BLUE.getBlue(), 50), stroke);
+			}
+		}
+
+		if (plugin.toaManager.kephri.previousRow != null)
+		{
+			WorldPoint ref = plugin.toaManager.kephri.previousRow.startPoint;
+			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
+			assert lp3 != null;
+			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
+			if (poly3 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly3, Color.RED, new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 50), stroke);
+			}
+		}
+
+		if (plugin.toaManager.kephri.previousRow != null)
+		{
+			WorldPoint ref = plugin.toaManager.kephri.previousRow.endPoint;
+			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
+			assert lp3 != null;
+			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
+			if (poly3 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly3, Color.RED, new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 50), stroke);
+			}
+		}
+		if (plugin.toaManager.kephri.previousRow != null)
+		{
+			WorldPoint ref = plugin.toaManager.kephri.previousRow.middlePoint;
+			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
+			assert lp3 != null;
+			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
+			if (poly3 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly3, Color.RED, new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 50), stroke);
+			}
+		}
+		if (plugin.toaManager.kephri.previousRow != null)
+		{
+			WorldPoint ref = plugin.toaManager.kephri.previousRow.prePathPoint;
+			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
+			assert lp3 != null;
+			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
+			if (poly3 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly3, Color.RED, new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 50), stroke);
+			}
+		}
+
+//		if (plugin.toaManager.kephri.kephriDungRows != null)
 //		{
-//			WorldPoint ref = plugin.toaManager.kephri.currentRow.startPoint;
-//			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
-//			assert lp3 != null;
-//			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
-//			if (poly3 != null)
+//			for (KephriDungRow row : plugin.toaManager.kephri.kephriDungRows)
 //			{
-//				OverlayUtil.renderPolygon(graphics2D, poly3, Color.ORANGE, new Color(0, 0, 0, 5), stroke2);
-//			}
-//		}
+//				WorldPoint ref = row.startPoint;
+//				WorldPoint ref2 = row.endPoint;
+//				WorldPoint ref3 = row.prePathPoint;
+//				WorldPoint ref4 = row.middlePoint;
+//				LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
+//				LocalPoint lp4 = LocalPoint.fromWorld(client, ref2);
+//				LocalPoint lp5 = LocalPoint.fromWorld(client, ref3);
+//				LocalPoint lp6 = LocalPoint.fromWorld(client, ref4);
+//				assert lp3 != null;
+//				Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
+//				if (poly3 != null)
+//				{
+//					OverlayUtil.renderPolygon(graphics2D, poly3, Color.RED, new Color(0, 0, 0, 5), stroke2);
+//				}
+//				assert lp4 != null;
+//				Polygon poly4 = Perspective.getCanvasTileAreaPoly(client, lp4, 1);
+//				if (poly4 != null)
+//				{
+//					OverlayUtil.renderPolygon(graphics2D, poly4, Color.YELLOW, new Color(0, 0, 0, 5), stroke2);
+//				}
+//				assert lp5 != null;
+//				Polygon poly6 = Perspective.getCanvasTileAreaPoly(client, lp5, 1);
+//				if (poly6 != null)
+//				{
+//					OverlayUtil.renderPolygon(graphics2D, poly6, Color.GREEN, new Color(0, 0, 0, 5), stroke2);
+//				}
+//				assert lp6 != null;
+//				Polygon poly7 = Perspective.getCanvasTileAreaPoly(client, lp6, 1);
+//				if (poly7 != null)
+//				{
+//					OverlayUtil.renderPolygon(graphics2D, poly7, Color.PINK, new Color(0, 0, 0, 5), stroke2);
+//				}
 //
-//		if (plugin.toaManager.kephri.currentRow != null)
-//		{
-//			WorldPoint ref = plugin.toaManager.kephri.currentRow.endPoint;
-//			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
-//			assert lp3 != null;
-//			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
-//			if (poly3 != null)
-//			{
-//				OverlayUtil.renderPolygon(graphics2D, poly3, Color.ORANGE, new Color(0, 0, 0, 5), stroke2);
 //			}
 //		}
-//		if (plugin.toaManager.kephri.currentRow != null)
-//		{
-//			WorldPoint ref = plugin.toaManager.kephri.currentRow.middlePoint;
-//			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
-//			assert lp3 != null;
-//			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
-//			if (poly3 != null)
-//			{
-//				OverlayUtil.renderPolygon(graphics2D, poly3, Color.GREEN, new Color(0, 0, 0, 5), stroke2);
-//			}
-//		}
-//		if (plugin.toaManager.kephri.currentRow != null)
-//		{
-//			WorldPoint ref = plugin.toaManager.kephri.currentRow.prePathPoint;
-//			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
-//			assert lp3 != null;
-//			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
-//			if (poly3 != null)
-//			{
-//				OverlayUtil.renderPolygon(graphics2D, poly3, Color.YELLOW, new Color(0, 0, 0, 5), stroke2);
-//			}
-//		}
-//
-//		if (plugin.toaManager.kephri.previousRow != null)
-//		{
-//			WorldPoint ref = plugin.toaManager.kephri.previousRow.startPoint;
-//			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
-//			assert lp3 != null;
-//			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
-//			if (poly3 != null)
-//			{
-//				OverlayUtil.renderPolygon(graphics2D, poly3, Color.RED, new Color(0, 0, 0, 5), stroke2);
-//			}
-//		}
-//
-//		if (plugin.toaManager.kephri.previousRow != null)
-//		{
-//			WorldPoint ref = plugin.toaManager.kephri.previousRow.endPoint;
-//			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
-//			assert lp3 != null;
-//			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
-//			if (poly3 != null)
-//			{
-//				OverlayUtil.renderPolygon(graphics2D, poly3, Color.RED, new Color(0, 0, 0, 5), stroke2);
-//			}
-//		}
-//		if (plugin.toaManager.kephri.previousRow != null)
-//		{
-//			WorldPoint ref = plugin.toaManager.kephri.previousRow.middlePoint;
-//			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
-//			assert lp3 != null;
-//			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
-//			if (poly3 != null)
-//			{
-//				OverlayUtil.renderPolygon(graphics2D, poly3, Color.RED, new Color(0, 0, 0, 5), stroke2);
-//			}
-//		}
-//		if (plugin.toaManager.kephri.previousRow != null)
-//		{
-//			WorldPoint ref = plugin.toaManager.kephri.previousRow.prePathPoint;
-//			LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
-//			assert lp3 != null;
-//			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
-//			if (poly3 != null)
-//			{
-//				OverlayUtil.renderPolygon(graphics2D, poly3, Color.RED, new Color(0, 0, 0, 5), stroke2);
-//			}
-//		}
-//
-////		if (plugin.toaManager.kephri.kephriDungRows != null)
-////		{
-////			for (KephriDungRow row : plugin.toaManager.kephri.kephriDungRows)
-////			{
-////				WorldPoint ref = row.startPoint;
-////				WorldPoint ref2 = row.endPoint;
-////				WorldPoint ref3 = row.prePathPoint;
-////				WorldPoint ref4 = row.middlePoint;
-////				LocalPoint lp3 = LocalPoint.fromWorld(client, ref);
-////				LocalPoint lp4 = LocalPoint.fromWorld(client, ref2);
-////				LocalPoint lp5 = LocalPoint.fromWorld(client, ref3);
-////				LocalPoint lp6 = LocalPoint.fromWorld(client, ref4);
-////				assert lp3 != null;
-////				Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
-////				if (poly3 != null)
-////				{
-////					OverlayUtil.renderPolygon(graphics2D, poly3, Color.RED, new Color(0, 0, 0, 5), stroke2);
-////				}
-////				Polygon poly4 = Perspective.getCanvasTileAreaPoly(client, lp4, 1);
-////				if (poly4 != null)
-////				{
-////					OverlayUtil.renderPolygon(graphics2D, poly4, Color.YELLOW, new Color(0, 0, 0, 5), stroke2);
-////				}
-////				Polygon poly6 = Perspective.getCanvasTileAreaPoly(client, lp5, 1);
-////				if (poly6 != null)
-////				{
-////					OverlayUtil.renderPolygon(graphics2D, poly6, Color.GREEN, new Color(0, 0, 0, 5), stroke2);
-////				}
-////				Polygon poly7 = Perspective.getCanvasTileAreaPoly(client, lp6, 1);
-////				if (poly7 != null)
-////				{
-////					OverlayUtil.renderPolygon(graphics2D, poly7, Color.PINK, new Color(0, 0, 0, 5), stroke2);
-////				}
-////
-////			}
-////		}
-//
+
 		if (plugin.toaManager.baba.specialPath != null)
 		{
 			for (WorldPoint wp : plugin.toaManager.baba.specialPath)
@@ -573,7 +590,7 @@ public class ToaGigatronOverlay extends Overlay
 				drawTile(graphics2D, wp, Color.RED, 1, 255, 10);
 			}
 		}
-//
+
 		if (plugin.toaManager.baba.bananaTiles != null)
 		{
 			for (WorldPoint wp : plugin.toaManager.baba.bananaTiles)
@@ -667,39 +684,52 @@ public class ToaGigatronOverlay extends Overlay
 			}
 		}
 
-//		if (plugin.toaManager.akkha.nextQuadrant != null)
-//		{
-//			WorldPoint ref2 = plugin.toaManager.akkha.nextQuadrant.centerTile;
-//			LocalPoint lp2 = LocalPoint.fromWorld(client, ref2);
-//			assert lp2 != null;
-//			Polygon poly2 = Perspective.getCanvasTileAreaPoly(client, lp2, 1);
-//			if (poly2 != null)
-//			{
-//				OverlayUtil.renderPolygon(graphics2D, poly2, Color.RED, new Color(0, 0, 0, 5), stroke);
-//			}
-//		}
+		if (plugin.toaManager.akkha.nextQuadrant != null)
+		{
+			WorldPoint ref2 = plugin.toaManager.akkha.nextQuadrant.centerTile;
+			LocalPoint lp2 = LocalPoint.fromWorld(client, ref2);
+			assert lp2 != null;
+			Polygon poly2 = Perspective.getCanvasTileAreaPoly(client, lp2, 1);
+			if (poly2 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly2, Color.RED, new Color(0, 0, 0, 5), stroke);
+			}
+		}
 
-//		if (plugin.toaManager.akkha.safeQuadrant != null)
-//		{
-//			WorldPoint ref2 = plugin.toaManager.akkha.safeQuadrant.memoryTile;
-//			LocalPoint lp2 = LocalPoint.fromWorld(client, ref2);
-//			assert lp2 != null;
-//			Polygon poly2 = Perspective.getCanvasTileAreaPoly(client, lp2, 1);
-//			if (poly2 != null)
-//			{
-//				OverlayUtil.renderPolygon(graphics2D, poly2, Color.CYAN, new Color(0, 0, 0, 5), stroke);
-//			}
-//		}
+		if (plugin.toaManager.akkha.safeQuadrant != null)
+		{
+			WorldPoint ref2 = plugin.toaManager.akkha.safeQuadrant.memoryTile;
+			LocalPoint lp2 = LocalPoint.fromWorld(client, ref2);
+			assert lp2 != null;
+			Polygon poly2 = Perspective.getCanvasTileAreaPoly(client, lp2, 1);
+			if (poly2 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly2, Color.CYAN, new Color(0, 0, 0, 5), stroke);
+			}
+		}
 
-//		if(plugin.toaManager.kephri.dungGraphicTick > 0){
-//			LocalPoint lp2 = client.getLocalPlayer().getLocalLocation();
-//			assert lp2 != null;
-//			Polygon poly2 = Perspective.getCanvasTileAreaPoly(client, lp2, 1);
-//			if (poly2 != null)
-//			{
-//				OverlayUtil.renderPolygon(graphics2D, poly2, Color.CYAN, new Color(Color.CYAN.getRed(), Color.cyan.getGreen(), Color.cyan.getBlue(), 15), stroke);
-//			}
-//		}
+
+		if(client.getLocalDestinationLocation() != null && client.getLocalDestinationLocation().isInScene()){
+			LocalPoint lp = client.getLocalDestinationLocation();
+			assert lp != null;
+			Polygon poly = Perspective.getCanvasTileAreaPoly(client, lp, 1);
+			if(poly != null){
+				OverlayUtil.renderPolygon(graphics2D, poly, Color.RED, new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 75), stroke);
+			}
+		}
+		if(plugin.toaManager.kephri.dungGraphicTick > 0){
+			LocalPoint lp2 = client.getLocalPlayer().getLocalLocation();
+			assert lp2 != null;
+			Polygon poly2 = Perspective.getCanvasTileAreaPoly(client, lp2, 1);
+			if (poly2 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly2, Color.CYAN, new Color(Color.CYAN.getRed(), Color.cyan.getGreen(), Color.cyan.getBlue(), 15), stroke);
+			}
+			Point textLocation = client.getLocalPlayer().getCanvasTextLocation(graphics2D, String.valueOf(plugin.toaManager.kephri.dungGraphicTick), 185);
+			if(textLocation != null){
+				renderTextLocation(graphics2D, String.valueOf(plugin.toaManager.kephri.dungGraphicTick), 14, Font.BOLD, Color.CYAN, textLocation);
+			}
+		}
 		if (!plugin.toaManager.akkha.memoryTiles.isEmpty())
 		{
 			WorldPoint ref2 = plugin.toaManager.akkha.memoryTiles.get(0);

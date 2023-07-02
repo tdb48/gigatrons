@@ -49,7 +49,7 @@ public class RefillSupplies extends StagedTask
 		if (toaManager.refill())
 		{
 			if(toaManager.getStage() != Stage.WARDENS_P3){
-				toaManager.reAttack(playerInteracting);
+				//toaManager.reAttack(playerInteracting);
 			}
 			toaManager.print("Refilling supplies");
 			return true;

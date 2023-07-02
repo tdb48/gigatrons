@@ -73,11 +73,11 @@ public class ZebakSolveRoar extends StagedTask
 		{
 			return false;
 		}
-		NPC wave = NPCUtil.findNearest(ToaConstants.ZEBAK_WAVE);
-		if (wave != null)
-		{
-			return false;
-		}
+//		NPC wave = NPCUtil.findNearestNpcAliveOrDead(ToaConstants.ZEBAK_WAVE);
+//		if (wave != null)
+//		{
+//			return false;
+//		}
 
 		// Step 1. Walk to safe tile
 		if (!isProjectileInTheAir() && toaManager.zebak.isRoarSolved() && closestSafeTile != null && !playerWorldPoint.equals(closestSafeTile))
@@ -99,11 +99,11 @@ public class ZebakSolveRoar extends StagedTask
 				dangerTiles.addAll(toaManager.zebak.bloods);
 				dangerTiles.addAll(toaManager.zebak.getChompZone());
 				toaManager.zebak.path = EthanApiPlugin.pathToGoal(closestSafeTile, dangerTiles);
-				if (toaManager.zebak.path == null || toaManager.zebak.path.isEmpty())
+				if (toaManager.zebak.path == null)
 				{
 					toaManager.zebak.getChompZone().forEach(dangerTiles::remove);
 					toaManager.zebak.path = EthanApiPlugin.pathToGoal(closestSafeTile, dangerTiles);
-					if (toaManager.zebak.path == null || toaManager.zebak.path.isEmpty())
+					if (toaManager.zebak.path == null)
 					{
 						toaManager.zebak.poisonWorldPoints.forEach(dangerTiles::remove);
 						toaManager.zebak.path = EthanApiPlugin.pathToGoal(closestSafeTile, dangerTiles);
@@ -115,6 +115,7 @@ public class ZebakSolveRoar extends StagedTask
 //				{
 //					toaManager.zebak.path = com.example.toagigatron.model.pathing.Movement.getAvoidancePath(closestSafeTile, toaManager.zebak.toaCollisionMap, toaManager.zebak.allWalkableRoomTilesIncludingChompZone, toaManager.zebak.poisonWorldPoints, toaManager.lpToWp(toaManager.zebak.rockTiles), true);
 //				}
+				toaManager.print("Walking to safe tile during roar");
 				Walker.stepAlong(toaManager.zebak.path);
 				return true;
 			}
@@ -140,23 +141,49 @@ public class ZebakSolveRoar extends StagedTask
 			{
 				if (shouldHitJug(lp))
 				{
-					ArrayList<NPC> jug = (ArrayList<NPC>) NPCs.search().withId(ToaConstants.ZEBAK_ROLLING_JUG).filter(n -> n.getLocalLocation().equals(lp)).result();
+					WorldPoint lpConverted = WorldPoint.fromLocal(client, lp);
+					ArrayList<NPC> jug2 = (ArrayList<NPC>) NPCs.search().withId(ToaConstants.ZEBAK_ROLLING_JUG).result();
+					for(NPC n : jug2){
+						System.out.println("Jug Local -> " + n.getLocalLocation());
+						System.out.println("Target jug local -> " + lp);
+						System.out.println("Jug world -> " + WorldPoint.fromLocal(client, n.getLocalLocation()));
+						System.out.println("Target jug world -> " + lpConverted);
+						System.out.println("Jug world instance -> " + WorldPoint.fromLocalInstance(client, n.getLocalLocation()));
+						System.out.println("Target jug world instance -> " + WorldPoint.fromLocalInstance(client, lp));
+						System.out.println("");
+
+					}
+					ArrayList<NPC> jug = (ArrayList<NPC>) NPCs.search().withId(ToaConstants.ZEBAK_ROLLING_JUG).filter(
+							n -> WorldPoint.fromLocal(client, n.getLocalLocation()).equals(lpConverted)
+					).result();
+					NPC jugg = NPCs.search().withId(ToaConstants.ZEBAK_ROLLING_JUG).filter(
+							n -> WorldPoint.fromLocal(client, n.getLocalLocation()).equals(lpConverted)
+					).nearestToPlayer().orElse(null);
+					System.out.println("Jugg is null? " + (jugg == null));
+					System.out.println("NEW JUG SEARCH SIZE -> " + jug.size());
+//					ArrayList<NPC> jug = (ArrayList<NPC>) NPCs.search().withId(ToaConstants.ZEBAK_ROLLING_JUG).filter(
+//							n -> n.getLocalLocation().equals(lp)
+//							).result();
 //					ArrayList<NPC> jug = (ArrayList<NPC>) NPCs.getAll(n ->
 //						n.getId() == ToaConstants.ZEBAK_ROLLING_JUG
 //							&& n.getLocalLocation().equals(lp));
-					if (!jug.isEmpty() && jug.get(0) != null)
+					if (jugg != null)
 					{
-						toaManager.print("Hitting the jug");
+						String action = NPCUtil.hasAction(jugg, "Attack") ? "Attack" : "Hit";
+						toaManager.print("Hitting the jug with action -> " + action);
+						System.out.println("Hitting the jug with action -> " + action);
 						MousePackets.queueClickPacket();
-						NPCPackets.queueNPCAction(jug.get(0), "Attack");
+
+						NPCPackets.queueNPCAction(jugg, action);
 						return true;
 					}
 					else
 					{
-						toaManager.print("is invalid?");
+//						toaManager.print("ROLLING JUGS IS EMPTY WHEN IT SHOULDNT BE!");
+//						System.out.println("ROLLING JUGS IS EMPTY WHEN IT SHOULDNT BE!");
 					}
 				}
-				if (playerPoint.distanceTo(lp) >= 256)
+				if (playerPoint.distanceTo(lp) >= 255)
 				{
 					toaManager.print("Walking into range");
 					WorldPoint southWest = client.getLocalPlayer().getWorldLocation().dx(-2).dy(-2);
@@ -181,14 +208,23 @@ public class ZebakSolveRoar extends StagedTask
 					dangerTiles.addAll(toaManager.zebak.bloods);
 					dangerTiles.addAll(toaManager.zebak.getChompZone());
 					toaManager.zebak.path = EthanApiPlugin.pathToGoal(WorldPoint.fromLocal(client, targetPoint), dangerTiles);
-					if (toaManager.zebak.path == null || toaManager.zebak.path.isEmpty())
+					if(toaManager.zebak.path != null){
+						System.out.println("Path to rolling jug size -> " + toaManager.zebak.path.size());
+					}
+					if (toaManager.zebak.path == null)
 					{
 						toaManager.zebak.getChompZone().forEach(dangerTiles::remove);
 						toaManager.zebak.path = EthanApiPlugin.pathToGoal(WorldPoint.fromLocal(client, targetPoint), dangerTiles);
-						if (toaManager.zebak.path == null || toaManager.zebak.path.isEmpty())
+						if(toaManager.zebak.path != null){
+							System.out.println("Path to rolling jug size 2 -> " + toaManager.zebak.path.size());
+						}
+						if (toaManager.zebak.path == null)
 						{
 							toaManager.zebak.poisonWorldPoints.forEach(dangerTiles::remove);
 							toaManager.zebak.path = EthanApiPlugin.pathToGoal(WorldPoint.fromLocal(client, targetPoint), dangerTiles);
+							if(toaManager.zebak.path != null){
+								System.out.println("Path to rolling jug size 3 -> " + toaManager.zebak.path.size());
+							}
 						}
 					}
 //					toaManager.zebak.path = com.example.toagigatron.model.pathing.Movement.getAvoidancePath(WorldPoint.fromLocal(client, targetPoint), toaManager.zebak.toaCollisionMap, toaManager.zebak.allWalkableRoomTiles, toaManager.zebak.poisonWorldPoints, toaManager.lpToWp(toaManager.zebak.rockTiles), true);
@@ -245,23 +281,28 @@ public class ZebakSolveRoar extends StagedTask
 				}
 			}
 			// Step 4
-			if (!playerPoint.equals(pushOrPullTile))
+			//!playerPoint.equals(pushOrPullTile) &&
+			if (!client.getLocalPlayer().getWorldLocation().equals(pushOrPullWorldPoint))
 			{
 				toaManager.print("Moving to the push or pull tile");
-				WorldPoint tile = WorldPoint.fromLocal(client, pushOrPullTile);
+//				toaManager.print("Pushpulltile -> " + pushOrPullTile + "  playerpoint -> " + playerPoint);
+//				toaManager.print("PPT WORLD -> " + WorldPoint.fromLocal(client, pushOrPullTile) + " Playerpoint World -> " + WorldPoint.fromLocal(client, playerPoint));
+//				System.out.println("Pushpulltile -> " + pushOrPullTile + "  playerpoint -> " + playerPoint);
+//				System.out.println("PPT WORLD -> " + WorldPoint.fromLocal(client, pushOrPullTile)+ " Playerpoint World -> " + WorldPoint.fromLocal(client, playerPoint));
+				//WorldPoint tile = WorldPoint.fromLocal(client, pushOrPullTile);
 
 				HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.zebak.poisonWorldPoints);
 				dangerTiles.addAll(toaManager.zebak.bloods);
 				dangerTiles.addAll(toaManager.zebak.getChompZone());
-				toaManager.zebak.path = EthanApiPlugin.pathToGoal(tile, dangerTiles);
-				if (toaManager.zebak.path == null || toaManager.zebak.path.isEmpty())
+				toaManager.zebak.path = EthanApiPlugin.pathToGoal(pushOrPullWorldPoint, dangerTiles);
+				if (toaManager.zebak.path == null)
 				{
 					toaManager.zebak.getChompZone().forEach(dangerTiles::remove);
-					toaManager.zebak.path = EthanApiPlugin.pathToGoal(tile, dangerTiles);
-					if (toaManager.zebak.path == null || toaManager.zebak.path.isEmpty())
+					toaManager.zebak.path = EthanApiPlugin.pathToGoal(pushOrPullWorldPoint, dangerTiles);
+					if (toaManager.zebak.path == null)
 					{
 						toaManager.zebak.poisonWorldPoints.forEach(dangerTiles::remove);
-						toaManager.zebak.path = EthanApiPlugin.pathToGoal(tile, dangerTiles);
+						toaManager.zebak.path = EthanApiPlugin.pathToGoal(pushOrPullWorldPoint, dangerTiles);
 					}
 				}
 //				toaManager.zebak.path = com.example.toagigatron.model.pathing.Movement.getAvoidancePath(tile, toaManager.zebak.toaCollisionMap, toaManager.zebak.allWalkableRoomTiles, toaManager.zebak.poisonWorldPoints, toaManager.lpToWp(toaManager.zebak.rockTiles), true);
@@ -269,10 +310,14 @@ public class ZebakSolveRoar extends StagedTask
 //					toaManager.zebak.path = com.example.toagigatron.model.pathing.Movement.getAvoidancePath(tile, toaManager.zebak.toaCollisionMap, toaManager.zebak.allWalkableRoomTilesIncludingChompZone, toaManager.zebak.poisonWorldPoints, toaManager.lpToWp(toaManager.zebak.rockTiles), true);
 //				}
 				Walker.stepAlong(toaManager.zebak.path);
-				toaManager.print("Moving to " + toaManager.worldPointString(tile));
+				toaManager.print("Moving to " + toaManager.worldPointString(pushOrPullWorldPoint));
 				return true;
 			}
-
+			toaManager.print("Pushpulltile -> " + pushOrPullTile + "  playerpoint -> " + playerPoint);
+			toaManager.print("PPT WORLD -> " + WorldPoint.fromLocal(client, pushOrPullTile) + " Playerpoint World -> " + WorldPoint.fromLocal(client, playerPoint));
+			System.out.println("Pushpulltile -> " + pushOrPullTile + "  playerpoint -> " + playerPoint);
+			System.out.println("PPT WORLD -> " + WorldPoint.fromLocal(client, pushOrPullTile)+ " Playerpoint World -> " + WorldPoint.fromLocal(client, playerPoint));
+			toaManager.print("There is hittable jug, no splash and no rolling jugs but somehow nothing above is right");
 		}
 		else
 		{
@@ -299,7 +344,7 @@ public class ZebakSolveRoar extends StagedTask
 		ArrayList<WorldPoint> safeTiles = new ArrayList<>();
 		for (WorldPoint wp : area.toWorldPointList())
 		{
-			if (wp.distanceTo(player) > 3)
+			if (wp.distanceTo(player) > 3 || !toaManager.zebak.allWalkableRoomTiles.contains(wp))
 			{
 				continue;
 			}

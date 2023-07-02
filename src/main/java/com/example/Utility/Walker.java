@@ -21,11 +21,13 @@ public class Walker
 	public static void stepAlong(List<WorldPoint> path)
 	{
 		if(path == null || path.isEmpty()){
+			System.out.println("Path paramater is empty!!");
 			return;
 		}
 		List<WorldPoint> reachablePath = reachablePath(path);
 		if (reachablePath.isEmpty())
 		{
+			System.out.println("Reachable path is empty!!");
 			return;
 		}
 		if (reachablePath.size() > 1)
@@ -44,10 +46,10 @@ public class Walker
 		if (local != null)
 		{
 			WorldPoint walkPoint = worldPoint;
-			LocalPoint walkPointLocal = LocalPoint.fromWorld(client, worldPoint.getX(), worldPoint.getY());
+			LocalPoint walkPointLocal = LocalPoint.fromWorld(client, worldPoint);
 			if (walkPointLocal == null)
 			{
-				System.out.println("Local walkpoint is null");
+				System.out.println("Local walkpoint is null in WALKER");
 			}
 			else
 			{
@@ -66,6 +68,7 @@ public class Walker
 					System.out.println("Returning nearest in scene instead -> " + nearestInScene.getWorldLocation());
 					walkPoint = nearestInScene.getWorldLocation();
 				}
+				//System.out.println("Sending movement packet to -> " + walkPoint);
 				MousePackets.queueClickPacket();
 				MovementPackets.queueMovement(walkPoint);
 			}

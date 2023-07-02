@@ -10,7 +10,7 @@ repositories {
     mavenCentral()
 }
 
-def runeLiteVersion = '1.10.5'
+def runeLiteVersion = '1.10.6'
 
 dependencies {
     compileOnly group: 'net.runelite', name: 'client', version: runeLiteVersion
@@ -20,6 +20,8 @@ dependencies {
     testImplementation group: 'net.runelite', name: 'client', version: runeLiteVersion
     testImplementation group: 'net.runelite', name: 'jshell', version: runeLiteVersion
     implementation 'org.json:json:20230227'
+    implementation 'org.roaringbitmap:RoaringBitmap:0.9.44'
+    implementation "io.reactivex.rxjava3:rxjava:3.1.1"
 }
 sourceSets {
 

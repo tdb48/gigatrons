@@ -65,12 +65,13 @@ public class AkkhaAttackBossOrbs extends StagedTask
 			{
 				toaManager.print("Akkha path is not empty, size -> " + toaManager.akkha.finalPhasePath.size());
 				int count = 1;
-				for (WorldPoint wp : toaManager.akkha.finalPhasePath)
-				{
-					System.out.println("Tile " + count + ": " + toaManager.worldPointString(wp));
-					count++;
-				}
+//				for (WorldPoint wp : toaManager.akkha.finalPhasePath)
+//				{
+//					System.out.println("Tile " + count + ": " + toaManager.worldPointString(wp));
+//					count++;
+//				}
 			}
+			toaManager.print("Stepping along final phase path");
 			Walker.stepAlong(toaManager.akkha.finalPhasePath);
 			return true;
 		}

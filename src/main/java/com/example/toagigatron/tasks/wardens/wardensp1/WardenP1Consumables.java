@@ -74,7 +74,7 @@ public class WardenP1Consumables extends StagedTask
 			toaManager.print("Consuming salt");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(salt,"Crush");
-			toaManager.reAttack(playerInteracting);
+			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
 		}
@@ -83,7 +83,7 @@ public class WardenP1Consumables extends StagedTask
 			toaManager.print("Drinking adrenaline");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(adrenaline,"Drink");
-			toaManager.reAttack(playerInteracting);
+			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
 		}
@@ -92,7 +92,7 @@ public class WardenP1Consumables extends StagedTask
 			toaManager.print("Drinking restore");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(prayerRestore,"Drink");
-			toaManager.reAttack(playerInteracting);
+			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
 		}
@@ -103,7 +103,7 @@ public class WardenP1Consumables extends StagedTask
 				toaManager.print("Drinking ambrosia");
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(ambrosia,"Drink");
-				toaManager.reAttack(playerInteracting);
+				//toaManager.reAttack(playerInteracting);
 				return true;
 			}
 
@@ -125,7 +125,7 @@ public class WardenP1Consumables extends StagedTask
 				toaManager.print("Drinking brew on GOD tick");
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(healingPotion,"Drink");
-				toaManager.reAttack(playerInteracting);
+				//toaManager.reAttack(playerInteracting);
 				gameTickManager.drinkPotion();
 				return true;
 			}
@@ -135,7 +135,7 @@ public class WardenP1Consumables extends StagedTask
 				toaManager.print("Panic brew");
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(healingPotion,"Drink");
-				toaManager.reAttack(playerInteracting);
+				//toaManager.reAttack(playerInteracting);
 				gameTickManager.drinkPotion();
 				return true;
 			}

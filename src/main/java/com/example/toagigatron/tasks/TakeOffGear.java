@@ -61,7 +61,7 @@ public class TakeOffGear extends StagedTask
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(offHandd, "Remove");
 			}
-			toaManager.reAttack(interactingPlayer);
+			//toaManager.reAttack(interactingPlayer);
 			return true;
 		}
 
@@ -82,7 +82,7 @@ public class TakeOffGear extends StagedTask
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(booties, "Remove");
 			}
-			toaManager.reAttack(interactingPlayer);
+			//toaManager.reAttack(interactingPlayer);
 			return true;
 		}
 
@@ -95,7 +95,7 @@ public class TakeOffGear extends StagedTask
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(booties, "Remove");
 			}
-			toaManager.reAttack(interactingPlayer);
+			//toaManager.reAttack(interactingPlayer);
 			return true;
 		}
 		return false;

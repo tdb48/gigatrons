@@ -9,11 +9,8 @@ import com.example.Packets.WidgetPackets;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import org.jocl.CL;
-
 import javax.inject.Singleton;
 import java.util.List;
-import java.util.Objects;
 
 @Singleton
 public class BankUtil
