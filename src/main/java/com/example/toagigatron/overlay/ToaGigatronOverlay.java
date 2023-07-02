@@ -651,22 +651,22 @@ public class ToaGigatronOverlay extends Overlay
 			}
 		}
 
-//		if (plugin.toaManager.akkha.orbTiles != null)
-//		{
-//			for (WorldPoint wp : plugin.toaManager.akkha.orbTiles)
-//			{
-//				drawTile(graphics2D, wp, Color.orange, 1, 255, 100);
-//			}
-//		}
-//
-//		if (plugin.toaManager.akkha.akkhaOrbTiles != null)
-//		{
-//			for (WorldPoint wp : plugin.toaManager.akkha.akkhaOrbTiles)
-//			{
-//				drawTile(graphics2D, wp, Color.GREEN, 1, 255, 10);
-//			}
-//		}
-//
+		if (plugin.toaManager.akkha.orbTiles != null)
+		{
+			for (WorldPoint wp : plugin.toaManager.akkha.orbTiles)
+			{
+				drawTile(graphics2D, wp, Color.orange, 1, 255, 100);
+			}
+		}
+
+		if (plugin.toaManager.akkha.akkhaOrbTiles != null)
+		{
+			for (WorldPoint wp : plugin.toaManager.akkha.akkhaOrbTiles)
+			{
+				drawTile(graphics2D, wp, Color.GREEN, 1, 255, 10);
+			}
+		}
+
 //		if (plugin.toaManager.akkha.nextQuadrant != null)
 //		{
 //			WorldPoint ref2 = plugin.toaManager.akkha.nextQuadrant.centerTile;
@@ -678,7 +678,7 @@ public class ToaGigatronOverlay extends Overlay
 //				OverlayUtil.renderPolygon(graphics2D, poly2, Color.RED, new Color(0, 0, 0, 5), stroke);
 //			}
 //		}
-//
+
 //		if (plugin.toaManager.akkha.safeQuadrant != null)
 //		{
 //			WorldPoint ref2 = plugin.toaManager.akkha.safeQuadrant.memoryTile;
@@ -690,7 +690,7 @@ public class ToaGigatronOverlay extends Overlay
 //				OverlayUtil.renderPolygon(graphics2D, poly2, Color.CYAN, new Color(0, 0, 0, 5), stroke);
 //			}
 //		}
-//
+
 //		if(plugin.toaManager.kephri.dungGraphicTick > 0){
 //			LocalPoint lp2 = client.getLocalPlayer().getLocalLocation();
 //			assert lp2 != null;
@@ -700,97 +700,97 @@ public class ToaGigatronOverlay extends Overlay
 //				OverlayUtil.renderPolygon(graphics2D, poly2, Color.CYAN, new Color(Color.CYAN.getRed(), Color.cyan.getGreen(), Color.cyan.getBlue(), 15), stroke);
 //			}
 //		}
-//		if (!plugin.toaManager.akkha.memoryTiles.isEmpty())
-//		{
-//			WorldPoint ref2 = plugin.toaManager.akkha.memoryTiles.get(0);
-//			LocalPoint lp2 = LocalPoint.fromWorld(client, ref2);
-//			assert lp2 != null;
-//			Polygon poly2 = Perspective.getCanvasTileAreaPoly(client, lp2, 1);
-//			if (poly2 != null)
-//			{
-//				OverlayUtil.renderPolygon(graphics2D, poly2, Color.CYAN, new Color(0, 0, 0, 5), stroke);
-//			}
-//		}
+		if (!plugin.toaManager.akkha.memoryTiles.isEmpty())
+		{
+			WorldPoint ref2 = plugin.toaManager.akkha.memoryTiles.get(0);
+			LocalPoint lp2 = LocalPoint.fromWorld(client, ref2);
+			assert lp2 != null;
+			Polygon poly2 = Perspective.getCanvasTileAreaPoly(client, lp2, 1);
+			if (poly2 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly2, Color.CYAN, new Color(0, 0, 0, 5), stroke);
+			}
+		}
 //
-//		if (plugin.toaManager.akkha.finalPhasePath != null && !plugin.toaManager.akkha.finalPhasePath.isEmpty())
-//		{
-//			for (WorldPoint wp : plugin.toaManager.akkha.finalPhasePath)
-//			{
-//				LocalPoint lp2 = LocalPoint.fromWorld(client, wp);
-//				assert lp2 != null;
-//				Polygon poly2 = Perspective.getCanvasTileAreaPoly(client, lp2, 1);
-//				if (poly2 != null)
-//				{
-//					OverlayUtil.renderPolygon(graphics2D, poly2, Color.CYAN, new Color(0, 0, 0, 50), stroke);
-//				}
-//			}
-//
-//		}
-//
-////		if (plugin.toaManager.akkha.puzzle != null)
-////		{
-////			for (AkkhaPuzzleRoomTile roomTile : plugin.toaManager.akkha.puzzle.roomTiles)
-////			{
-////				WorldPoint wp = roomTile.getWorldPoint();
-////				GameObject obj = roomTile.getObject();
-////				Color c = Color.PINK;
-////				if (obj != null && obj.getId() == 45456)
-////				{
-////					c = Color.MAGENTA;
-////				}
-////				if (obj != null && (obj.getId() == 45460 || obj.getId() == 45458))
-////				{
-////					c = Color.RED;
-////				}//45460,45458
-////				if (obj != null && (obj.getId() == 45464 || obj.getId() == 45462))
-////				{
-////					c = Color.ORANGE;
-////				}//45464,45462
-////				if (obj != null && obj.getId() == 45466)
-////				{
-////					c = Color.YELLOW;
-////				}//45464,45462
-////				if (obj != null && obj.getId() == 45455)
-////				{
-////					c = Color.GREEN;
-////				}
-////				if (c == Color.PINK)
-////				{
-//////					drawTile(graphics2D, wp, c, 1, 50, 0);
-////				}
-////				else
-////				{
-////					drawTile(graphics2D, wp, c, 1, 255, 255);
-////				}
-////			}
-////		}
+		if (plugin.toaManager.akkha.finalPhasePath != null && !plugin.toaManager.akkha.finalPhasePath.isEmpty())
+		{
+			for (WorldPoint wp : plugin.toaManager.akkha.finalPhasePath)
+			{
+				LocalPoint lp2 = LocalPoint.fromWorld(client, wp);
+				assert lp2 != null;
+				Polygon poly2 = Perspective.getCanvasTileAreaPoly(client, lp2, 1);
+				if (poly2 != null)
+				{
+					OverlayUtil.renderPolygon(graphics2D, poly2, Color.CYAN, new Color(0, 0, 0, 50), stroke);
+				}
+			}
+
+		}
 //
 //		if (plugin.toaManager.akkha.puzzle != null)
 //		{
-//			if (plugin.toaManager.akkha.puzzle.solution != null && plugin.toaManager.akkha.puzzle.solution.mirrors != null)
+//			for (AkkhaPuzzleRoomTile roomTile : plugin.toaManager.akkha.puzzle.roomTiles)
 //			{
-//				for (WorldPoint wp : plugin.toaManager.akkha.puzzle.solution.wallsToMine)
+//				WorldPoint wp = roomTile.getWorldPoint();
+//				GameObject obj = roomTile.getObject();
+//				Color c = Color.PINK;
+//				if (obj != null && obj.getId() == 45456)
 //				{
-//					drawTile(graphics2D, wp, Color.pink, 1, 255, 100);
+//					c = Color.MAGENTA;
 //				}
-//				for (GameObject wp : plugin.toaManager.akkha.puzzle.solution.getWrongMirrors())
+//				if (obj != null && (obj.getId() == 45460 || obj.getId() == 45458))
 //				{
-//					drawTile(graphics2D, wp.getWorldLocation(), Color.RED, 1, 255, 100);
+//					c = Color.RED;
+//				}//45460,45458
+//				if (obj != null && (obj.getId() == 45464 || obj.getId() == 45462))
+//				{
+//					c = Color.ORANGE;
+//				}//45464,45462
+//				if (obj != null && obj.getId() == 45466)
+//				{
+//					c = Color.YELLOW;
+//				}//45464,45462
+//				if (obj != null && obj.getId() == 45455)
+//				{
+//					c = Color.GREEN;
 //				}
-//				for (GameObject wp : plugin.toaManager.akkha.puzzle.solution.getCorrectMirrors())
+//				if (c == Color.PINK)
 //				{
-//					drawTile(graphics2D, wp.getWorldLocation(), Color.GREEN, 1, 255, 100);
+////					drawTile(graphics2D, wp, c, 1, 50, 0);
 //				}
-//				for (WorldPoint wp : plugin.toaManager.akkha.puzzle.solution.getPlaceMirrors())
+//				else
 //				{
-//					drawTile(graphics2D, wp, Color.BLUE, 1, 255, 100);
-//				}
-//				if (plugin.toaManager.akkha.puzzle.solution.mineTile != null)
-//				{
-//					drawTile(graphics2D, plugin.toaManager.akkha.puzzle.solution.mineTile, Color.orange, 1, 255, 100);
+//					drawTile(graphics2D, wp, c, 1, 255, 255);
 //				}
 //			}
 //		}
+
+		if (plugin.toaManager.akkha.puzzle != null)
+		{
+			if (plugin.toaManager.akkha.puzzle.solution != null && plugin.toaManager.akkha.puzzle.solution.mirrors != null)
+			{
+				for (WorldPoint wp : plugin.toaManager.akkha.puzzle.solution.wallsToMine)
+				{
+					drawTile(graphics2D, wp, Color.pink, 1, 255, 100);
+				}
+				for (GameObject wp : plugin.toaManager.akkha.puzzle.solution.getWrongMirrors())
+				{
+					drawTile(graphics2D, wp.getWorldLocation(), Color.RED, 1, 255, 100);
+				}
+				for (GameObject wp : plugin.toaManager.akkha.puzzle.solution.getCorrectMirrors())
+				{
+					drawTile(graphics2D, wp.getWorldLocation(), Color.GREEN, 1, 255, 100);
+				}
+				for (WorldPoint wp : plugin.toaManager.akkha.puzzle.solution.getPlaceMirrors())
+				{
+					drawTile(graphics2D, wp, Color.BLUE, 1, 255, 100);
+				}
+				if (plugin.toaManager.akkha.puzzle.solution.mineTile != null)
+				{
+					drawTile(graphics2D, plugin.toaManager.akkha.puzzle.solution.mineTile, Color.orange, 1, 255, 100);
+				}
+			}
+		}
 //
 //		if (plugin.toaManager.fullBlockTiles.size() > 0)
 //		{
