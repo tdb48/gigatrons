@@ -4,6 +4,8 @@ import com.example.Utility.WorldAreas;
 import com.example.toagigatron.ToaGigatronConfig;
 import com.example.toagigatron.ToaGigatronPlugin;
 import com.example.toagigatron.model.bossmodel.KephriDungRow;
+import com.example.toagigatron.model.constants.Stage;
+import com.example.toagigatron.model.constants.ToaConstants;
 import com.google.common.base.Strings;
 import net.runelite.api.Point;
 import net.runelite.api.*;
@@ -266,7 +268,7 @@ public class ToaGigatronOverlay extends Overlay
 //		}
 //		drawPoints(plugin.toaManager.wardens12.windmillTiles, graphics2D, Color.RED);
 //		drawPoints(plugin.toaManager.wardens12.prisonTiles, graphics2D, Color.RED);
-//		drawPoints(plugin.toaManager.wardens3.enrageArea, graphics2D, Color.ORANGE);
+		drawPoints(plugin.toaManager.wardens3.enrageArea, graphics2D, Color.ORANGE);
 		drawPoints(plugin.toaManager.baba.sarcophagusProjectilesTiles, graphics2D, Color.green);
 //
 //		if (plugin.toaManager.getStage() == Stage.WARDENS_P2)
@@ -839,58 +841,58 @@ public class ToaGigatronOverlay extends Overlay
 //			}
 //		}
 //
-//		if (plugin.toaManager.wardens3.babaBombs.size() > 0)
-//		{
-//			for (Map.Entry<WorldPoint, Integer> entry : plugin.toaManager.wardens3.babaBombs.entrySet())
-//			{
-//				if (entry.getValue() > 0)
-//				{
-//					drawTile(graphics2D, entry.getKey(), Color.CYAN, String.valueOf(entry.getValue()), stroke);
-//				}
-//			}
-//		}
-//		if (plugin.toaManager.getStage() == Stage.WARDENS_P3 && plugin.toaManager.wardens3.lightning.size() > 0)
-//		{
-//			for (Map.Entry<WorldPoint, Integer> entry : plugin.toaManager.wardens3.lightning.entrySet())
-//			{
-//				if (entry.getValue() > 0)
-//				{
-//					drawTile(graphics2D, entry.getKey(), Color.RED, String.valueOf(entry.getValue()), stroke);
-//				}
-//				else
-//				{
-//					for (GraphicsObject obj : client.getGraphicsObjects())
-//					{
-//						if (obj.getId() == ToaConstants.NEW_LIGHTNING_GRAPHICS_OBJECT_ID)
-//						{
-//							WorldPoint wp = new WorldPoint(obj.getLocation().getX(), obj.getLocation().getY(), client.getPlane());
-//							if (wp == entry.getKey())
-//							{
-//								obj.setFinished(true);
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
-//		if (plugin.toaManager.wardens3.primarySafeTile != null)
-//		{
-//			drawTile(graphics2D, plugin.toaManager.wardens3.primarySafeTile, Color.GREEN, "P", stroke);
-//		}
-//		if (plugin.toaManager.wardens3.secondarySafeTile != null)
-//		{
-//			drawTile(graphics2D, plugin.toaManager.wardens3.secondarySafeTile, Color.CYAN, "S", stroke);
-//			drawTile(graphics2D, plugin.toaManager.wardens3.secondarySafeTile.dy(1), Color.YELLOW, String.valueOf(plugin.toaManager.wardens3.tileFlipTickCounter), stroke);
-//
-//		}
-//		if (plugin.toaManager.wardens3.nextPrimarySafeTile != null)
-//		{
-//			drawTile(graphics2D, plugin.toaManager.wardens3.nextPrimarySafeTile, Color.RED, "N P", stroke);
-//		}
-//		if (plugin.toaManager.wardens3.nextSecondarySafeTile != null)
-//		{
-//			drawTile(graphics2D, plugin.toaManager.wardens3.nextSecondarySafeTile, Color.BLUE, "N S", stroke);
-//		}
+		if (plugin.toaManager.wardens3.babaBombs.size() > 0)
+		{
+			for (Map.Entry<WorldPoint, Integer> entry : plugin.toaManager.wardens3.babaBombs.entrySet())
+			{
+				if (entry.getValue() > 0)
+				{
+					drawTile(graphics2D, entry.getKey(), Color.CYAN, String.valueOf(entry.getValue()), stroke);
+				}
+			}
+		}
+		if (plugin.toaManager.getStage() == Stage.WARDENS_P3 && plugin.toaManager.wardens3.lightning.size() > 0)
+		{
+			for (Map.Entry<WorldPoint, Integer> entry : plugin.toaManager.wardens3.lightning.entrySet())
+			{
+				if (entry.getValue() > 0)
+				{
+					drawTile(graphics2D, entry.getKey(), Color.RED, String.valueOf(entry.getValue()), stroke);
+				}
+				else
+				{
+					for (GraphicsObject obj : client.getGraphicsObjects())
+					{
+						if (obj.getId() == ToaConstants.NEW_LIGHTNING_GRAPHICS_OBJECT_ID)
+						{
+							WorldPoint wp = new WorldPoint(obj.getLocation().getX(), obj.getLocation().getY(), client.getPlane());
+							if (wp == entry.getKey())
+							{
+								obj.setFinished(true);
+							}
+						}
+					}
+				}
+			}
+		}
+		if (plugin.toaManager.wardens3.primarySafeTile != null)
+		{
+			drawTile(graphics2D, plugin.toaManager.wardens3.primarySafeTile, Color.GREEN, "P", stroke);
+		}
+		if (plugin.toaManager.wardens3.secondarySafeTile != null)
+		{
+			drawTile(graphics2D, plugin.toaManager.wardens3.secondarySafeTile, Color.CYAN, "S", stroke);
+			drawTile(graphics2D, plugin.toaManager.wardens3.secondarySafeTile.dy(1), Color.YELLOW, String.valueOf(plugin.toaManager.wardens3.tileFlipTickCounter), stroke);
+
+		}
+		if (plugin.toaManager.wardens3.nextPrimarySafeTile != null)
+		{
+			drawTile(graphics2D, plugin.toaManager.wardens3.nextPrimarySafeTile, Color.RED, "N P", stroke);
+		}
+		if (plugin.toaManager.wardens3.nextSecondarySafeTile != null)
+		{
+			drawTile(graphics2D, plugin.toaManager.wardens3.nextSecondarySafeTile, Color.BLUE, "N S", stroke);
+		}
 //		Point kephriTextLoc = null;
 //		if (plugin.toaManager.kephri.kephri != null)
 //		{
