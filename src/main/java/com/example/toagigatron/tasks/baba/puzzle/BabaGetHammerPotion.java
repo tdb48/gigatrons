@@ -33,6 +33,8 @@ public class BabaGetHammerPotion extends StagedTask
 		super(toaManager, Stage.BABA_PUZZLE);
 	}
 
+	//todo - for some reason it thinks our invent is full and we dont have our offhand in it when it isnt (rare spawn).
+	// Not a big deal but it drops an extra restore when it doesnt need to sometimes which is wasteful
 	public boolean execute()
 	{
 		TileObject exit = TileObjects.search().withId(ToaConstants.BABA_PUZZLE_EXIT).first().orElse(null);
@@ -45,6 +47,11 @@ public class BabaGetHammerPotion extends StagedTask
 			int offhand = toaManager.meleeSetup.offhand;
 			if (InventoryUtil.isFull() && !InventoryUtil.contains(offhand))
 			{
+				System.out.println("OFFHAND ID -> " + offhand);
+				toaManager.print("````````````````");
+				toaManager.print("OPFFHAND ID -> " + offhand);
+				toaManager.print("OPFFHAND ID -> " + offhand);
+				toaManager.print("OPFFHAND ID -> " + offhand);
 				System.out.println("Invent is full? " + (InventoryUtil.isFull()) + " Empty space -> " + Inventory.getEmptySlots());
 				ArrayList<Widget> restores = InventoryUtil.getAll("Super restore(4)");
 				if (!restores.isEmpty())

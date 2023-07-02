@@ -553,14 +553,16 @@ public class Baba
 		WorldPoint returnLoc = null;
 		ArrayList<WorldPoint> candidates = new ArrayList<>();
 		WorldPoint playerLoc = client.getLocalPlayer().getWorldLocation();
-		for (WorldPoint wp : babaBossRoom)
+		for (WorldPoint wp : toaManager.baba.babaBossRoom)
 		{
 			if (wp.distanceTo(playerLoc) == 2)
 			{
 				if (wp.distanceTo(boulder) < distance
-					&& blockTiles.contains(wp)
-					&& sarcophagusProjectilesTiles.contains(wp)
-					&& bananaTiles.contains(wp))
+					&& !toaManager.baba.blockTiles.contains(wp)
+					&& !toaManager.baba.sarcophagusProjectilesTiles.contains(wp)
+					&& !toaManager.baba.bananaTiles.contains(wp)
+					&& !toaManager.baba.bananaTiles.contains(wp.dx(-1))
+					&& !toaManager.baba.bananaTiles.contains(wp.dx(-2)))
 				{
 					distance = wp.distanceTo(boulder);
 					candidates = new ArrayList<>();
@@ -575,9 +577,9 @@ public class Baba
 		distance = Integer.MAX_VALUE;
 		for (WorldPoint wp : candidates)
 		{
-			if (wp.distanceTo(babaBossRowSafe) < distance)
+			if (wp.distanceTo(toaManager.baba.babaBossRowSafe) < distance)
 			{
-				distance = wp.distanceTo(babaBossRowSafe);
+				distance = wp.distanceTo(toaManager.baba.babaBossRowSafe);
 				returnLoc = wp;
 			}
 		}
@@ -705,6 +707,7 @@ public class Baba
 				shockwaveTiles.clear();
 				rockfallTiles.clear();
 				rockFromCeiling.clear();
+				badTiles.clear();
 			}
 			if (message.contains("you sense some strange fumes coming from holes in the floor"))
 			{

@@ -31,6 +31,9 @@ public class BabaHitBoulder extends StagedTask
 	@Inject
 	GameTickManager gameTickManager;
 
+	//TODO - Boulders are slow because we are finding a boulder that is dead up the top and attempting to hit it. However our pathing is written to
+	// accomodate this so if we add a alive() check we start running into boulders. Updating pathing to work properly and adding alive() check
+	// would speed up boulders significantly but its not important
 	public boolean execute()
 	{
 		if (toaManager.baba.blockTiles.isEmpty() || toaManager.baba.babaBoss == null)
@@ -39,7 +42,7 @@ public class BabaHitBoulder extends StagedTask
 		}
 
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
-		NPC weakBoulder =  NPCUtil.findNearest(ToaConstants.WEAK_BOULDER);
+		NPC weakBoulder =  NPCUtil.findNearestNpcAliveOrDead(ToaConstants.WEAK_BOULDER);
 		if (weakBoulder == null
 			&& (toaManager.baba.bouldersKilled == 7
 			|| toaManager.baba.bouldersKilled == 14))
@@ -77,6 +80,7 @@ public class BabaHitBoulder extends StagedTask
 			return true;
 		}
 
+
 		if (weakBoulder != null && !gameTickManager.isAttackWaiting() && weakBoulder.getHealthRatio() == -1)
 		{
 			MousePackets.queueClickPacket();
@@ -92,13 +96,16 @@ public class BabaHitBoulder extends StagedTask
 		else if (weakBoulder != null && !toaManager.baba.babaBossRowSafe.contains(playerPoint))
 		{
 			toaManager.baba.safeTile = toaManager.baba.getSafeTile(weakBoulder.getWorldArea());
+			toaManager.print("Safe tile -> " + toaManager.baba.safeTile);
 			if (toaManager.baba.safeTile == null)
 			{
+				toaManager.print("Safe tile is null");
 				return false;
 			}
 			//			Movement.walk(toaManager.baba.safeTile);
 			toaManager.print("Walking to " + toaManager.worldPointString(toaManager.baba.safeTile));
-			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.baba.badTiles);
+			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.baba.bananaTiles);
+			dangerTiles.addAll(toaManager.baba.blockTiles);
 			toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(toaManager.baba.safeTile, dangerTiles);
 			Walker.stepAlong(toaManager.baba.attackPath);
 			return true;

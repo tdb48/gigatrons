@@ -38,6 +38,8 @@ public class BabaAttackBossMonkey extends StagedTask
 		}
 
 		//TODO - Path next to the monkey instead of attacking it so we stop running over bananas
+		// we should be able to attack these while specials are going on under certain circumstances but this is low-med priority
+		// but it would be nice, we take avoidable damage from their thrown rocks
 
 		NPC bossMonkey = NPCs.search().alive().withId(ToaConstants.BABA_BOSS_MONKEY).filter(
 				n -> !toaManager.baba.badTiles.contains(n.getWorldLocation())

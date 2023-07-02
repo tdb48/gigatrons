@@ -15,7 +15,8 @@ import javax.inject.Inject;
 import java.util.List;
 
 @TaskDescriptor(
-		name = "Baba prayers"
+		name = "Baba prayers",
+		priority = 12
 )
 public class BabaPuzzlePrayerHandler extends StagedTask
 {

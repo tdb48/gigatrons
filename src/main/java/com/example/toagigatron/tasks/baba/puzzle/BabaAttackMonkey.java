@@ -45,6 +45,9 @@ public class BabaAttackMonkey extends StagedTask
 	@Subscribe
 	public void onProjectileMoved(ProjectileMoved projectileSpawned)
 	{
+		if(!toaManager.baba.babaPuzzleRoom.contains(client.getLocalPlayer().getWorldLocation())){
+			return;
+		}
 		Projectile projectile = projectileSpawned.getProjectile();
 		if (ToaConstants.DARTS.contains(projectile.getId()))
 		{
@@ -58,23 +61,23 @@ public class BabaAttackMonkey extends StagedTask
 //					System.out.println("Setting lastattackedindex to -> " + ((NPC) client.getLocalPlayer().getInteracting()).getIndex());
 //					System.out.println("Remaining cycles -> " + projectile.getRemainingCycles());
 					if(distance == 1 && remainingCycles == 37){
-						System.out.println("Distance 1 remaining cycles 37");
+						//System.out.println("Distance 1 remaining cycles 37");
 						lastAttackedIndex = ((NPC) client.getLocalPlayer().getInteracting()).getIndex();
 					}
 					else if(distance == 2 && remainingCycles == 42){
-						System.out.println("Distance 1 remaining cycles 42");
+						//System.out.println("Distance 1 remaining cycles 42");
 						lastAttackedIndex = ((NPC) client.getLocalPlayer().getInteracting()).getIndex();
 					}
 					else if(distance == 3 && remainingCycles == 47){
-						System.out.println("Distance 1 remaining cycles 47");
+						//System.out.println("Distance 1 remaining cycles 47");
 						lastAttackedIndex = ((NPC) client.getLocalPlayer().getInteracting()).getIndex();
 					}
 					else if(distance == 4 && remainingCycles == 52){
-						System.out.println("Distance 1 remaining cycles 52");
+						//System.out.println("Distance 1 remaining cycles 52");
 						lastAttackedIndex = ((NPC) client.getLocalPlayer().getInteracting()).getIndex();
 					}
 					else if(distance == 5 && remainingCycles == 57){
-						System.out.println("Distance 1 remaining cycles 57");
+						//System.out.println("Distance 1 remaining cycles 57");
 						lastAttackedIndex = ((NPC) client.getLocalPlayer().getInteracting()).getIndex();
 					}
 
@@ -372,6 +375,8 @@ public class BabaAttackMonkey extends StagedTask
 			toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(safeTile, dangerTiles);
 			Walker.stepAlong(toaManager.baba.attackPath);
 			return true;
+
+
 		}
 		else if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().equals(targetNPC))
 		{

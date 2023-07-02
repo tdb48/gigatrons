@@ -29,6 +29,7 @@ public class BabaDodgeSpecial extends StagedTask
 		super(toaManager, Stage.BABA_BOSS);
 	}
 
+	//todo we can update these to be WAY more efficient now that our pathing works well and we can path through or around specials like shockwave tiles/under boss
 	public boolean execute()
 	{
 		toaManager.baba.attackPath = null;
@@ -49,7 +50,7 @@ public class BabaDodgeSpecial extends StagedTask
 		if (toaManager.baba.hasProcced()
 			&& (toaManager.baba.bouldersKilled == 7 || toaManager.baba.bouldersKilled == 0))
 		{
-			toaManager.print("Boss is proccing - running out of gap");
+			//toaManager.print("Boss is proccing - running out of gap");
 			ArrayList<WorldPoint> safeTiles = new ArrayList<>(toaManager.baba.babaBossRoom);
 			safeTiles.removeAll(toaManager.baba.babaBossRowGap.toWorldPointList());
 			safeTiles.removeIf(n -> !Reachable.isWalkable(n));
@@ -57,13 +58,13 @@ public class BabaDodgeSpecial extends StagedTask
 			WorldPoint safeTile = toaManager.findClosestTile(safeTiles, playerPoint);
 			if (playerPoint.equals(safeTile))
 			{
-				toaManager.print("We are already standing on a safe tile.");
+				//toaManager.print("We are already standing on a safe tile.");
 				return false;
 			}
-			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.baba.badTiles);
+			HashSet<WorldPoint> dangerTiles = new HashSet<>();
 			toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(safeTile, dangerTiles);
 			Walker.stepAlong(toaManager.baba.attackPath);
-			toaManager.print("22222Boss is proccing - running out of gap");
+			//toaManager.print("22222Boss is proccing - running out of gap");
 			return true;
 		}
 
@@ -92,6 +93,7 @@ public class BabaDodgeSpecial extends StagedTask
 			}
 			toaManager.print("In danger, moving to melee tile " + toaManager.worldPointString(safeTile));
 			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.baba.badTiles);
+			dangerTiles.removeIf(x -> toaManager.baba.shockwaveTiles.contains(x));
 			toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(safeTile, dangerTiles);
 			Walker.stepAlong(toaManager.baba.attackPath);
 		}
@@ -107,7 +109,7 @@ public class BabaDodgeSpecial extends StagedTask
 				return false;
 			}
 			toaManager.print("In danger, moving to " + toaManager.worldPointString(safeTile));
-			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.baba.badTiles);
+			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.baba.bananaTiles);
 			toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(safeTile, dangerTiles);
 			Walker.stepAlong(toaManager.baba.attackPath);
 		}

@@ -1,11 +1,13 @@
 package com.example.toagigatron.tasks.baba.boss;
 
+import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.Utility.Combat;
 import com.example.Utility.Prayer;
 import com.example.Utility.Prayers;
 import com.example.Utility.Static;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
+import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.model.constants.WeaponMap;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
@@ -65,7 +67,19 @@ public class BabaPrayerHandler extends StagedTask
 	public List<Prayer> getPrayers()
 	{
 		NPC baba = toaManager.baba.babaBoss;
-		return baba != null && baba.getId() == 11780 ? List.of(this.getOffensive()) : List.of(Prayer.PROTECT_FROM_MELEE, this.getOffensive());
+		if(baba == null){
+			return List.of();
+		}
+		//This is the boulder phase ID i assume?
+		//Pray range overhead while the ranged monkeys are attacking
+		if(baba.getId() == 11780){
+			if(NPCs.search().interactingWith(client.getLocalPlayer()).withId(ToaConstants.BABA_BOSS_MONKEY).alive().empty()){
+				return List.of(this.getOffensive());
+			} else {
+				return List.of(Prayer.PROTECT_FROM_MISSILES, this.getOffensive());
+			}
+		}
+		return List.of(Prayer.PROTECT_FROM_MELEE, this.getOffensive());
 	}
 
 	public Prayer getOffensive()
