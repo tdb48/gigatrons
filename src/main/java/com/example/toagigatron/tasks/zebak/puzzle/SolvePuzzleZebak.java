@@ -75,7 +75,7 @@ public class SolvePuzzleZebak extends StagedTask
 
 	public boolean execute()
 	{
-		ETileItem jugOnFloor = Objects.requireNonNull(TileItems.search().withId(ToaConstants.ZEBAK_GROUND_JUG).nearestToPlayer().orElse(null));
+		ETileItem jugOnFloor = TileItems.search().withId(ToaConstants.ZEBAK_GROUND_JUG).nearestToPlayer().orElse(null);
 		WorldPoint playerPoint = Static.getClient().getLocalPlayer().getWorldLocation();
 		NPC tree = NPCs.search().nameContains("Palm of Resourcefulness").filter(n -> n.getName() != null).first().orElse(null);
 		ZebakWaterfallRoom currentPuzzle = toaManager.zebak.currentZebakPuzzle;
@@ -98,7 +98,7 @@ public class SolvePuzzleZebak extends StagedTask
 			}
 			return false;
 		}
-		if (Inventory.search().withId(ToaConstants.ZEBAK_GROUND_JUG).first().orElse(null) == null)
+		if (Inventory.search().withId(ToaConstants.ZEBAK_GROUND_JUG).first().orElse(null) == null && jugOnFloor != null)
 		{
 			if (Inventory.getEmptySlots() == 0)
 			{

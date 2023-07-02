@@ -292,7 +292,7 @@ public class Zebak
 				}
 				allWalkableRoomTilesIncludingChompZone.add(wp);
 
-				if (wp.distanceTo(zebakBoss.getWorldArea()) > 1)
+				if (zebakBoss != null && zebakBoss.getWorldArea() != null && wp.distanceTo(zebakBoss.getWorldArea()) > 1)
 				{
 					allWalkableRoomTiles.add(wp);
 				}
