@@ -117,11 +117,17 @@ public class ZebakSolveWave extends StagedTask
 		HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.zebak.poisonWorldPoints);
 		dangerTiles.addAll(toaManager.zebak.bloods);
 		dangerTiles.addAll(toaManager.zebak.getChompZone());
+		dangerTiles.addAll(toaManager.zebak.waves);
 		toaManager.zebak.path = EthanApiPlugin.pathToGoal(bestTile, dangerTiles);
 		if (toaManager.zebak.path == null || toaManager.zebak.path.isEmpty())
 		{
 			toaManager.zebak.getChompZone().forEach(dangerTiles::remove);
 			toaManager.zebak.path = EthanApiPlugin.pathToGoal(bestTile, dangerTiles);
+			if (toaManager.zebak.path == null || toaManager.zebak.path.isEmpty())
+			{
+				toaManager.zebak.poisonWorldPoints.forEach(dangerTiles::remove);
+				toaManager.zebak.path = EthanApiPlugin.pathToGoal(bestTile, dangerTiles);
+			}
 		}
 //		toaManager.zebak.path = com.example.toagigatron.model.pathing.Movement.getAvoidancePath(bestTile, toaManager.zebak.toaCollisionMap, toaManager.zebak.allWalkableRoomTiles, toaManager.zebak.poisonWorldPoints, toaManager.lpToWp(toaManager.zebak.rockTiles), true);
 //		if(toaManager.zebak.path.size() == 0){

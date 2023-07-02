@@ -274,17 +274,17 @@ public class ToaGigatronOverlay extends Overlay
 //			drawPoint(plugin.toaManager.wardens12.dodgeTile, graphics2D, Color.BLUE);
 //		}
 ////		drawPoints(plugin.toaManager.wardens12.tilesInWardenRange, graphics2D);
-////		drawPoints(plugin.toaManager.zebak.poisonWorldPoints, graphics2D);
-////		drawPoints(plugin.toaManager.zebak.singleWaves, graphics2D, Color.CYAN);
-////		drawPoints(plugin.toaManager.zebak.bloods, graphics2D, Color.RED);
-////		drawLocalPoints(plugin.toaManager.zebak.poisonTiles, graphics2D, new Color(Color.green.getRed(), Color.green.getGreen(), Color.green.getBlue(), 50));
-////		drawLocalPoints(plugin.toaManager.zebak.rockTiles, graphics2D, Color.BLUE);
-////		drawLocalPoints(plugin.toaManager.zebak.staticJugs, graphics2D, Color.RED);
-////		drawLocalPoints(plugin.toaManager.zebak.rollingJugs, graphics2D, Color.RED);
-////		drawLocalPoints(plugin.toaManager.zebak.safeRockTiles, graphics2D, Color.CYAN);
-//		drawNPCPoints(plugin.toaManager.zebak.wavesOne, graphics2D, Color.CYAN);
-//		drawNPCPoints(plugin.toaManager.zebak.wavesTwo, graphics2D, Color.BLUE);
-//		drawNPCPoints(plugin.toaManager.zebak.wavesThree, graphics2D, Color.GREEN);
+//		drawPoints(plugin.toaManager.zebak.poisonWorldPoints, graphics2D);
+		drawPoints(plugin.toaManager.zebak.singleWaves, graphics2D, Color.CYAN);
+		drawPoints(plugin.toaManager.zebak.bloods, graphics2D, Color.RED);
+		drawLocalPoints(plugin.toaManager.zebak.poisonTiles, graphics2D, new Color(Color.green.getRed(), Color.green.getGreen(), Color.green.getBlue(), 50));
+		drawLocalPoints(plugin.toaManager.zebak.rockTiles, graphics2D, Color.BLUE);
+		drawLocalPoints(plugin.toaManager.zebak.staticJugs, graphics2D, Color.RED);
+		drawLocalPoints(plugin.toaManager.zebak.rollingJugs, graphics2D, Color.RED);
+		drawLocalPoints(plugin.toaManager.zebak.safeRockTiles, graphics2D, Color.CYAN);
+		drawNPCPoints(plugin.toaManager.zebak.wavesOne, graphics2D, Color.CYAN);
+		drawNPCPoints(plugin.toaManager.zebak.wavesTwo, graphics2D, Color.BLUE);
+		drawNPCPoints(plugin.toaManager.zebak.wavesThree, graphics2D, Color.GREEN);
 //		if (plugin.toaManager.akkha != null)
 //		{
 //			if (plugin.toaManager.akkha.safeQuadrant != null)
@@ -360,68 +360,68 @@ public class ToaGigatronOverlay extends Overlay
 //		}
 //
 //
-//		if (plugin.toaManager.zebak.path != null)
-//		{
-//			for (WorldPoint wp : plugin.toaManager.zebak.path)
-//			{
-//				drawTile(graphics2D, wp, Color.MAGENTA, 1, 150, 100);
-//			}
-//		}
+		if (plugin.toaManager.zebak.path != null)
+		{
+			for (WorldPoint wp : plugin.toaManager.zebak.path)
+			{
+				drawTile(graphics2D, wp, Color.MAGENTA, 1, 150, 100);
+			}
+		}
 //
-//		if (plugin.toaManager.zebak.findTheGap(plugin.toaManager.zebak.wavesOne) != null)
-//		{
-//			for (WorldPoint wp : plugin.toaManager.zebak.findTheGap(plugin.toaManager.zebak.wavesOne).toWorldPointList())
-//			{
-//				drawTile(graphics2D, wp, Color.RED, 1, 255, 10);
-//			}
-//		}
-//		if (plugin.toaManager.zebak.findTheGap(plugin.toaManager.zebak.wavesTwo) != null)
-//		{
-//			for (WorldPoint wp : plugin.toaManager.zebak.findTheGap(plugin.toaManager.zebak.wavesTwo).toWorldPointList())
-//			{
-//				drawTile(graphics2D, wp, Color.RED, 1, 255, 10);
-//			}
-//		}
-//		if (plugin.toaManager.zebak.findTheGap(plugin.toaManager.zebak.wavesThree) != null)
-//		{
-//			for (WorldPoint wp : plugin.toaManager.zebak.findTheGap(plugin.toaManager.zebak.wavesThree).toWorldPointList())
-//			{
-//				drawTile(graphics2D, wp, Color.RED, 1, 255, 10);
-//			}
-//		}
-//		if (plugin.toaManager.zebak.wavesOneSafe != null)
-//		{
-//			for (WorldPoint wp : plugin.toaManager.zebak.wavesOneSafe.toWorldPointList())
-//			{
-//				drawTile(graphics2D, wp, Color.pink, 1, 255, 10);
-//			}
-//		}
+		if (plugin.toaManager.zebak.findTheGap(plugin.toaManager.zebak.wavesOne) != null)
+		{
+			for (WorldPoint wp : plugin.toaManager.zebak.findTheGap(plugin.toaManager.zebak.wavesOne).toWorldPointList())
+			{
+				drawTile(graphics2D, wp, Color.RED, 1, 255, 10);
+			}
+		}
+		if (plugin.toaManager.zebak.findTheGap(plugin.toaManager.zebak.wavesTwo) != null)
+		{
+			for (WorldPoint wp : plugin.toaManager.zebak.findTheGap(plugin.toaManager.zebak.wavesTwo).toWorldPointList())
+			{
+				drawTile(graphics2D, wp, Color.RED, 1, 255, 10);
+			}
+		}
+		if (plugin.toaManager.zebak.findTheGap(plugin.toaManager.zebak.wavesThree) != null)
+		{
+			for (WorldPoint wp : plugin.toaManager.zebak.findTheGap(plugin.toaManager.zebak.wavesThree).toWorldPointList())
+			{
+				drawTile(graphics2D, wp, Color.RED, 1, 255, 10);
+			}
+		}
+		if (plugin.toaManager.zebak.wavesOneSafe != null)
+		{
+			for (WorldPoint wp : plugin.toaManager.zebak.wavesOneSafe.toWorldPointList())
+			{
+				drawTile(graphics2D, wp, Color.pink, 1, 255, 10);
+			}
+		}
+
+		if (plugin.toaManager.zebak.wavesTwoSafe != null)
+		{
+			for (WorldPoint wp : plugin.toaManager.zebak.wavesTwoSafe.toWorldPointList())
+			{
+				drawTile(graphics2D, wp, Color.pink, 1, 255, 10);
+			}
+		}
+
+		if (plugin.toaManager.zebak.wavesThreeSafe != null)
+		{
+			for (WorldPoint wp : plugin.toaManager.zebak.wavesThreeSafe.toWorldPointList())
+			{
+				drawTile(graphics2D, wp, Color.pink, 1, 255, 10);
+			}
+		}
 //
-//		if (plugin.toaManager.zebak.wavesTwoSafe != null)
-//		{
-//			for (WorldPoint wp : plugin.toaManager.zebak.wavesTwoSafe.toWorldPointList())
-//			{
-//				drawTile(graphics2D, wp, Color.pink, 1, 255, 10);
-//			}
-//		}
-//
-//		if (plugin.toaManager.zebak.wavesThreeSafe != null)
-//		{
-//			for (WorldPoint wp : plugin.toaManager.zebak.wavesThreeSafe.toWorldPointList())
-//			{
-//				drawTile(graphics2D, wp, Color.pink, 1, 255, 10);
-//			}
-//		}
-//
-//		if (plugin.toaManager.zebak.hittableJug != null)
-//		{
-//			LocalPoint lp3 = plugin.toaManager.zebak.hittableJug.jugTile;
-//			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
-//			if (poly3 != null)
-//			{
-//				OverlayUtil.renderPolygon(graphics2D, poly3, Color.green, new Color(0, 0, 0, 100), stroke);
-//			}
-//		}
+		if (plugin.toaManager.zebak.hittableJug != null)
+		{
+			LocalPoint lp3 = plugin.toaManager.zebak.hittableJug.jugTile;
+			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
+			if (poly3 != null)
+			{
+				OverlayUtil.renderPolygon(graphics2D, poly3, Color.green, new Color(0, 0, 0, 100), stroke);
+			}
+		}
 //
 		if (!plugin.toaManager.baba.targetPillarTiles.isEmpty())
 		{

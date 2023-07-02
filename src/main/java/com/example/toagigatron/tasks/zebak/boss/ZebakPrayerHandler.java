@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -128,17 +129,17 @@ public class ZebakPrayerHandler extends StagedTask
 		return Prayer.PIETY;
 	}
 
-//	@Subscribe
-//	public void onProjectileSpawned(ProjectileSpawned spawned)
-//	{
-//		if (spawned.getProjectile().getId() == 2181)
-//		{
-//			this.defensive = Prayer.PROTECT_FROM_MAGIC;
-//		}
-//		else if (ToaConstants.ZEBAK_RANGED_PROJECTILE_IDS.contains(spawned.getProjectile().getId()))
-//		{
-//			this.defensive = Prayer.PROTECT_FROM_MISSILES;
-//		}
-//
-//	}
+	@Subscribe
+	public void onProjectileMoved(ProjectileMoved projectileMoved)
+	{
+		if (projectileMoved.getProjectile().getId() == 2181)
+		{
+			this.defensive = Prayer.PROTECT_FROM_MAGIC;
+		}
+		else if (ToaConstants.ZEBAK_RANGED_PROJECTILE_IDS.contains(projectileMoved.getProjectile().getId()))
+		{
+			this.defensive = Prayer.PROTECT_FROM_MISSILES;
+		}
+
+	}
 }

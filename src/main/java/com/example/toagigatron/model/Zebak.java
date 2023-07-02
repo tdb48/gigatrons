@@ -96,7 +96,7 @@ public class Zebak
 
 	public void resetVariables()
 	{
-		path.clear();
+		path = new ArrayList<>();
 		northEastZebakPuzzle = null;
 		northWestZebakPuzzle = null;
 		southEastZebakPuzzle = null;
@@ -161,11 +161,13 @@ public class Zebak
 		{
 			if (wavesOne.size() < (toaManager.getRoomLevel() > 1 ? 19 : 18))
 			{
+				System.out.println("Waves one spawned");
 				wavesSolved = false;
 				wavesOne.add(npc);
 			}
 			else if (wavesTwo.size() < (toaManager.getRoomLevel() > 1 ? 19 : 18))
 			{
+				System.out.println("Waves two spawned");
 				wavesTwo.add(npc);
 			}
 			else if (wavesThree.size() < (toaManager.getRoomLevel() > 1 ? 19 : 18))
@@ -202,7 +204,7 @@ public class Zebak
 		{
 			zebakEastTiles.addAll(zebakEastTiles());
 		}
-		for (NPC wave : NPCUtil.findAll("Wave"))
+		for (NPC wave : NPCs.search().nameContains("Wave").result())
 		{
 			// Going south
 			if (wave.getOrientation() == 0)
@@ -233,7 +235,7 @@ public class Zebak
 			waves2.add(wave.getWorldLocation());
 		}
 		bloods.clear();
-		for (NPC blood : NPCs.search().nameContains("blood").filter(n -> n.getHealthRatio() != 0).result())
+		for (NPC blood : NPCs.search().nameContains("Blood").filter(n -> n.getHealthRatio() != 0).result())
 		{
 			bloods.add(blood.getWorldLocation());
 		}

@@ -37,6 +37,14 @@ import com.example.toagigatron.tasks.outside.RechargeItems;
 import com.example.toagigatron.tasks.wardens.wardensp1.*;
 import com.example.toagigatron.tasks.wardens.wardensp2.*;
 import com.example.toagigatron.tasks.wardens.wardensp3.*;
+import com.example.toagigatron.tasks.zebak.boss.ZebakAttack;
+import com.example.toagigatron.tasks.zebak.boss.ZebakConsumables;
+import com.example.toagigatron.tasks.zebak.boss.ZebakEnterRoom;
+import com.example.toagigatron.tasks.zebak.boss.ZebakMoveOffPoison;
+import com.example.toagigatron.tasks.zebak.boss.ZebakPrayerHandler;
+import com.example.toagigatron.tasks.zebak.boss.ZebakSolveBloods;
+import com.example.toagigatron.tasks.zebak.boss.ZebakSolveRoar;
+import com.example.toagigatron.tasks.zebak.boss.ZebakSolveWave;
 import com.example.toagigatron.tasks.zebak.puzzle.EnterPuzzleZebak;
 import com.example.toagigatron.tasks.zebak.puzzle.FinishPuzzleZebak;
 import com.example.toagigatron.tasks.zebak.puzzle.SolvePuzzleZebak;
@@ -178,7 +186,15 @@ public class ToaGigatronPlugin extends Plugin {
                 Resign.class,
                 TakeOffGear.class,
                 ClaimLootOutside.class,
-                KephriAttackDemi.class
+                KephriAttackDemi.class,
+			ZebakAttack.class,
+			ZebakConsumables.class,
+			ZebakEnterRoom.class,
+			ZebakMoveOffPoison.class,
+			ZebakPrayerHandler.class,
+			ZebakSolveWave.class,
+			ZebakSolveBloods.class,
+			ZebakSolveRoar.class,
         };
     }
 

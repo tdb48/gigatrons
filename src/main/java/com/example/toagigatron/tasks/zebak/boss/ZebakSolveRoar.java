@@ -103,9 +103,16 @@ public class ZebakSolveRoar extends StagedTask
 				{
 					toaManager.zebak.getChompZone().forEach(dangerTiles::remove);
 					toaManager.zebak.path = EthanApiPlugin.pathToGoal(closestSafeTile, dangerTiles);
+					if (toaManager.zebak.path == null || toaManager.zebak.path.isEmpty())
+					{
+						toaManager.zebak.poisonWorldPoints.forEach(dangerTiles::remove);
+						toaManager.zebak.path = EthanApiPlugin.pathToGoal(closestSafeTile, dangerTiles);
+					}
 				}
+
 //				toaManager.zebak.path = com.example.toagigatron.model.pathing.Movement.getAvoidancePath(closestSafeTile, toaManager.zebak.toaCollisionMap, toaManager.zebak.allWalkableRoomTiles, toaManager.zebak.poisonWorldPoints, toaManager.lpToWp(toaManager.zebak.rockTiles), true);
-//				if(toaManager.zebak.path.size() == 0){
+//				if (toaManager.zebak.path.size() == 0)
+//				{
 //					toaManager.zebak.path = com.example.toagigatron.model.pathing.Movement.getAvoidancePath(closestSafeTile, toaManager.zebak.toaCollisionMap, toaManager.zebak.allWalkableRoomTilesIncludingChompZone, toaManager.zebak.poisonWorldPoints, toaManager.lpToWp(toaManager.zebak.rockTiles), true);
 //				}
 				Walker.stepAlong(toaManager.zebak.path);
@@ -137,7 +144,7 @@ public class ZebakSolveRoar extends StagedTask
 //					ArrayList<NPC> jug = (ArrayList<NPC>) NPCs.getAll(n ->
 //						n.getId() == ToaConstants.ZEBAK_ROLLING_JUG
 //							&& n.getLocalLocation().equals(lp));
-					if (jug.get(0) != null)
+					if (!jug.isEmpty() && jug.get(0) != null)
 					{
 						toaManager.print("Hitting the jug");
 						MousePackets.queueClickPacket();
@@ -178,6 +185,11 @@ public class ZebakSolveRoar extends StagedTask
 					{
 						toaManager.zebak.getChompZone().forEach(dangerTiles::remove);
 						toaManager.zebak.path = EthanApiPlugin.pathToGoal(WorldPoint.fromLocal(client, targetPoint), dangerTiles);
+						if (toaManager.zebak.path == null || toaManager.zebak.path.isEmpty())
+						{
+							toaManager.zebak.poisonWorldPoints.forEach(dangerTiles::remove);
+							toaManager.zebak.path = EthanApiPlugin.pathToGoal(WorldPoint.fromLocal(client, targetPoint), dangerTiles);
+						}
 					}
 //					toaManager.zebak.path = com.example.toagigatron.model.pathing.Movement.getAvoidancePath(WorldPoint.fromLocal(client, targetPoint), toaManager.zebak.toaCollisionMap, toaManager.zebak.allWalkableRoomTiles, toaManager.zebak.poisonWorldPoints, toaManager.lpToWp(toaManager.zebak.rockTiles), true);
 //					if(toaManager.zebak.path.size() == 0){
@@ -246,6 +258,11 @@ public class ZebakSolveRoar extends StagedTask
 				{
 					toaManager.zebak.getChompZone().forEach(dangerTiles::remove);
 					toaManager.zebak.path = EthanApiPlugin.pathToGoal(tile, dangerTiles);
+					if (toaManager.zebak.path == null || toaManager.zebak.path.isEmpty())
+					{
+						toaManager.zebak.poisonWorldPoints.forEach(dangerTiles::remove);
+						toaManager.zebak.path = EthanApiPlugin.pathToGoal(tile, dangerTiles);
+					}
 				}
 //				toaManager.zebak.path = com.example.toagigatron.model.pathing.Movement.getAvoidancePath(tile, toaManager.zebak.toaCollisionMap, toaManager.zebak.allWalkableRoomTiles, toaManager.zebak.poisonWorldPoints, toaManager.lpToWp(toaManager.zebak.rockTiles), true);
 //				if(toaManager.zebak.path.size() == 0){

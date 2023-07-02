@@ -36,11 +36,14 @@ public class ZebakSolveBloods extends StagedTask
 		//if (toaManager.zebak.bloods.isEmpty() || !toaManager.zebak.waves.isEmpty() || !toaManager.zebak.safeRockTiles.isEmpty())
 		if (toaManager.zebak.bloods.isEmpty() || !toaManager.zebak.safeRockTiles.isEmpty())
 		{
+			toaManager.print("Return bloods 1");
 			return false;
 		}
-		if(!toaManager.zebak.waves2.isEmpty()){
+		if (!toaManager.zebak.waves2.isEmpty())
+		{
 			//Need to add the waves check to ensure player isnt afking in wave tiles while waiting for bloods to get close
-			if (toaManager.zebak.distanceToBlood() <= 1 || toaManager.zebak.waves2.contains(client.getLocalPlayer().getWorldLocation())){
+			if (toaManager.zebak.distanceToBlood() <= 1 || toaManager.zebak.waves2.contains(client.getLocalPlayer().getWorldLocation()))
+			{
 				WorldPoint safeTile = getSafeWaveTile(client.getLocalPlayer().getWorldLocation());
 				if (safeTile == null)
 				{
@@ -50,7 +53,9 @@ public class ZebakSolveBloods extends StagedTask
 				Movement.walk(safeTile);
 				return true;
 			}
-		} else {
+		}
+		else
+		{
 			if (toaManager.zebak.distanceToBlood() <= 1)
 			{
 				WorldPoint safeTile = getSafeTile(client.getLocalPlayer().getWorldLocation());
@@ -75,9 +80,6 @@ public class ZebakSolveBloods extends StagedTask
 				return true;
 			}
 		}
-
-
-
 		return false;
 	}
 
@@ -95,7 +97,7 @@ public class ZebakSolveBloods extends StagedTask
 				&& !toaManager.zebak.poisonWorldPoints.contains(wp)
 				&& wp.distanceTo(toaManager.zebak.zebakBoss.getWorldArea()) <= toaManager.zebak.getAttackDistance()
 				//&& wp.distanceTo(toaManager.zebak.zebakBoss.getWorldArea()) > 1
-					&& !toaManager.zebak.meleeRange(wp)
+				&& !toaManager.zebak.meleeRange(wp)
 				&& Reachable.isWalkable(wp))
 			{
 				safeTiles.add(wp);
@@ -135,7 +137,7 @@ public class ZebakSolveBloods extends StagedTask
 			}
 			if (!toaManager.zebak.bloods.contains(wp)
 				&& !toaManager.zebak.poisonWorldPoints.contains(wp)
-					&& !toaManager.zebak.meleeRange(wp)
+				&& !toaManager.zebak.meleeRange(wp)
 //				&& wp.distanceTo(toaManager.zebak.zebakBoss.getWorldArea()) > 1
 				&& Reachable.isWalkable(wp))
 			{
@@ -162,11 +164,11 @@ public class ZebakSolveBloods extends StagedTask
 				continue;
 			}
 			if (!toaManager.zebak.bloods.contains(wp)
-					&& !toaManager.zebak.poisonWorldPoints.contains(wp)
-					&& !toaManager.zebak.meleeRange(wp)
-					&& !toaManager.zebak.waves2.contains(wp)
-					&& Reachable.isWalkable(wp)
-					&& isVerticalHorizontal(player,wp))
+				&& !toaManager.zebak.poisonWorldPoints.contains(wp)
+				&& !toaManager.zebak.meleeRange(wp)
+				&& !toaManager.zebak.waves2.contains(wp)
+				&& Reachable.isWalkable(wp)
+				&& isVerticalHorizontal(player, wp))
 			{
 				safeTiles.add(wp);
 			}
