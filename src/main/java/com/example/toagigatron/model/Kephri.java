@@ -104,7 +104,6 @@ public class Kephri
 
 	public void resetVariables()
 	{
-		kephriPath = new ArrayList<>();
 		memory_tiles = new ArrayList<>();
 		memory_completed_tiles = new ArrayList<>();
 		activeObelisks = 0;
@@ -133,6 +132,7 @@ public class Kephri
 		kephriPhase = 1;
 		kephriTick = 0;
 		ticksSinceChange = -1;
+		kephriPath = new ArrayList<>();
 		previousKephriAnimation = 0;
 	}
 
@@ -314,15 +314,63 @@ public class Kephri
 			return;
 		}
 		WorldPoint refPoint = WorldPoint.fromLocal(client, object.getLocation());
-		if (refPoint.equals(currentRow.endPoint))
-		{
+		WorldPoint curStart = currentRow.startPoint;
+		WorldPoint curMid = currentRow.middlePoint;
+		WorldPoint curPrePath = currentRow.prePathPoint;
+		WorldPoint curEnd = currentRow.endPoint;
+
+		//refPoint.equals(curStart) || refPoint.equals(curMid) || refPoint.equals(curPrePath) ||
+		if(refPoint.equals(curStart) || refPoint.equals(curMid) || refPoint.equals(curPrePath) ||refPoint.equals(curEnd)){
 			int index = currentRow.index;
 			previousRow = currentRow;
 			if (index + 1 < kephriDungRows.size())
 			{
 				currentRow = kephriDungRows.get(index + 1);
 			}
+		} else {
+			//If we are here it means we got dunged and none of it landed on our end tile so we surmise we are on the wrong row
+			//Need to detect which row is the next row and shift current row to that
+			KephriDungRow potentialRow = findNewRow(refPoint);
+			if(potentialRow != null){
+				currentRow = potentialRow;
+				previousRow = kephriDungRows.get(currentRow.index-1);
+				//toaManager.print("We found new row!! Great success!!");
+			} else {
+				//toaManager.print("We did not find a new row");
+			}
+
 		}
+
+	}
+
+	private KephriDungRow findNewRow(WorldPoint dungPoint){
+		int startIndex = currentRow.index;
+		for(int i = startIndex; i < kephriDungRows.size(); i++){
+			KephriDungRow row = kephriDungRows.get(i);
+			WorldPoint start = row.startPoint;
+			WorldPoint mid = row.middlePoint;
+			WorldPoint prepath = row.prePathPoint;
+			WorldPoint end = row.endPoint;
+			//the dung is on this row, so this cannot be our current row we must set our current row to this row + 1
+			//for sanity lets ensure the next row also contains no dung to be safe.
+			if (dungPoint.equals(start) || dungPoint.equals(mid) || dungPoint.equals(prepath) || dungPoint.equals(end)) {
+				//Potential null pointer here if we somehow use all rows up until the end
+				KephriDungRow potentialRow = kephriDungRows.get(i+1);
+				start = potentialRow.startPoint;
+				mid = potentialRow.middlePoint;
+				prepath = potentialRow.prePathPoint;
+				end = potentialRow.endPoint;
+				//There is no dung on this row this can be our new row.
+				if (!dungPoint.equals(start) && !dungPoint.equals(mid) && !dungPoint.equals(prepath) && !dungPoint.equals(end)){
+				//	toaManager.print("Found new row!");
+					return potentialRow;
+				} else {
+					//toaManager.print("There is dung on the row we want to set to current, moving to next check.");
+				}
+			}
+		}
+		//toaManager.print("No good row found, returning null");
+		return null;
 	}
 
 	@Subscribe

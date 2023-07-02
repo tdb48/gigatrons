@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
 @TaskDescriptor(
@@ -36,24 +37,16 @@ public class KephriAttackBoss extends StagedTask
 	@Inject
 	GameTickManager gameTickManager;
 
+	//todo optimise the under 50hp handling so it doesnt start 6ticking
+	// also check the sidestep/step back logic, i think its wrong
 	public boolean execute()
 	{
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
 		NPC resetGhost = NPCUtil.findNearest(ToaConstants.OSMUMTEN);
-//		NPC demi = NPCs.getNearest(n -> n.getHealthRatio() != 0
-//			&& (n.getName().equals("Spitting Scarab")
-//			|| n.getName().equals("Arcane Scarab")
-//			|| n.getName().equals("Soldier Scarab")));
 		NPC demi = NPCUtil.findNearest("Spitting Scarab", "Arcane Scarab", "Soldier Scarab");
 
-//			(n -> n.getHealthRatio() != 0
-//			&& (n.getName().equals("Spitting Scarab")
-//			|| n.getName().equals("Arcane Scarab")
-//			|| n.getName().equals("Soldier Scarab")));
-
-		//todo make sure this stream thing works properly
 		if (toaManager.kephri.kephri == null
-			|| Arrays.stream(client.getNpcDefinition(toaManager.kephri.kephri.getId()).getActions()).noneMatch(x -> x.equals("Attack"))
+				|| !NPCUtil.hasAction(toaManager.kephri.kephri, "Attack")
 			|| toaManager.kephri.kephriRoom == null
 			|| !toaManager.kephri.kephriRoom.contains(playerPoint)
 			|| resetGhost != null
@@ -134,7 +127,7 @@ public class KephriAttackBoss extends StagedTask
 			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.kephri.bombTiles);
 			toaManager.kephri.kephriPath = EthanApiPlugin.pathToGoal(dodgeTile, dangerTiles);
 
-			if (toaManager.kephri.kephriPath.isEmpty())
+			if (toaManager.kephri.kephriPath == null || toaManager.kephri.kephriPath.isEmpty())
 			{
 				toaManager.print("Empty path?");
 				return false;
@@ -230,20 +223,30 @@ public class KephriAttackBoss extends StagedTask
 		}
 		return null;
 	}
-
-	private boolean onStartRow(WorldPoint playerPoint)
-	{
-		WorldPoint dodgeTile = getSafeTile();
-		KephriDungRow row = getRow(dodgeTile);
-		if (row == null)
-		{
+	private boolean onStartRow(WorldPoint playerPoint){
+		KephriDungRow row = toaManager.kephri.currentRow;
+		if(row == null){
 			return false;
 		}
 		return playerPoint.equals(row.middlePoint) ||
-			playerPoint.equals(row.startPoint) ||
-			playerPoint.equals(row.prePathPoint) ||
-			playerPoint.equals(row.endPoint);
+				playerPoint.equals(row.startPoint) ||
+				playerPoint.equals(row.prePathPoint) ||
+				playerPoint.equals(row.endPoint);
 	}
+
+//	private boolean onStartRow(WorldPoint playerPoint)
+//	{
+//		WorldPoint dodgeTile = getSafeTile();
+//		KephriDungRow row = getRow(dodgeTile);
+//		if (row == null)
+//		{
+//			return false;
+//		}
+//		return playerPoint.equals(row.middlePoint) ||
+//			playerPoint.equals(row.startPoint) ||
+//			playerPoint.equals(row.prePathPoint) ||
+//			playerPoint.equals(row.endPoint);
+//	}
 
 	private boolean shouldWeSpec()
 	{
@@ -270,13 +273,21 @@ public class KephriAttackBoss extends StagedTask
 
 	private WorldPoint getSafeTile()
 	{
-		for (KephriDungRow row : toaManager.kephri.kephriDungRows)
-		{
+		int startIndex = toaManager.kephri.currentRow.index;
+		for(int i = startIndex; i < toaManager.kephri.kephriDungRows.size(); i++){
+			KephriDungRow row = toaManager.kephri.kephriDungRows.get(i);
 			if (Reachable.isWalkable(row.startPoint) && !toaManager.kephri.bombTiles.contains(row.startPoint))
 			{
 				return row.startPoint;
 			}
 		}
+//		for (KephriDungRow row : toaManager.kephri.kephriDungRows)
+//		{
+//			if (Reachable.isWalkable(row.startPoint) && !toaManager.kephri.bombTiles.contains(row.startPoint))
+//			{
+//				return row.startPoint;
+//			}
+//		}
 		return null;
 	}
 
@@ -292,8 +303,9 @@ public class KephriAttackBoss extends StagedTask
 
 	private WorldPoint getStepBackStartTile()
 	{
-		for (KephriDungRow row : toaManager.kephri.kephriDungRows)
-		{
+		int startIndex = toaManager.kephri.currentRow.index;
+		for(int i = startIndex; i < toaManager.kephri.kephriDungRows.size(); i++){
+			KephriDungRow row = toaManager.kephri.kephriDungRows.get(i);
 			if (Reachable.isWalkable(row.middlePoint))
 			{
 				if (!toaManager.kephri.bombTiles.contains(row.middlePoint))
@@ -306,6 +318,20 @@ public class KephriAttackBoss extends StagedTask
 				}
 			}
 		}
+//		for (KephriDungRow row : toaManager.kephri.kephriDungRows)
+//		{
+//			if (Reachable.isWalkable(row.middlePoint))
+//			{
+//				if (!toaManager.kephri.bombTiles.contains(row.middlePoint))
+//				{
+//					return row.middlePoint;
+//				}
+//				else
+//				{
+//					return row.startPoint;
+//				}
+//			}
+//		}
 		return null;
 	}
 
