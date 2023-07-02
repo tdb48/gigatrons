@@ -6,6 +6,7 @@ import com.example.Packets.MovementPackets;
 import com.example.Packets.NPCPackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Utility.Movement;
+import com.example.Utility.NPCUtil;
 import com.example.Utility.ObjectUtil;
 import com.example.Utility.Reachable;
 import com.example.Utility.Static;
@@ -53,9 +54,6 @@ public class AttackWardensP2 extends StagedTask
 		{
 			gearSet = toaManager.rangeSetup.getAllItems();
 		}
-//			toaManager.wardens12.warden.getTransformedComposition().getOverheadIcon().equals(HeadIcon.RANGE_MELEE)
-//				?toaManager.mageSetup.getAllItems()
-//				:toaManager.rangeSetup.getAllItems();
 
 		if (!toaManager.hasGearEquipped(gearSet))
 		{
@@ -68,7 +66,8 @@ public class AttackWardensP2 extends StagedTask
 			return false;
 		}
 		// 9663 is the start up animation
-		if (toaManager.wardens12.warden.getAnimation() != 9663)
+		if (NPCUtil.hasAction(toaManager.wardens12.warden, "Attack")
+			&& toaManager.wardens12.warden.getAnimation() != 9663)
 		{
 			toaManager.print("P2 - Attacking warden");
 			MousePackets.queueClickPacket();

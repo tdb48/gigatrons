@@ -58,7 +58,7 @@ public class AttackCore extends StagedTask
 		}
 		// BGS the core
 		ArrayList<Integer> gearSet;
-		NPC core = NPCs.search().withName("Core").withAction("Attack").first().orElse(null);
+		NPC core = NPCs.search().nameContains("Core").first().orElse(null);
 		if (toaManager.wardens12.coreTick == 1 && core != null)
 		{
 			gearSet = toaManager.meleeSetup.getAllItemsBgs();
