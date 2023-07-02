@@ -117,7 +117,7 @@ public class KephriAttackDemi extends StagedTask
 			}
 		}
 
-		WorldPoint startTile = getStartTile();
+		WorldPoint startTile = toaManager.kephri.currentRow.startPoint;
 		NPC soldier = NPCUtil.findNearest("Soldier Scarab");
 		if (soldier != null)
 		{

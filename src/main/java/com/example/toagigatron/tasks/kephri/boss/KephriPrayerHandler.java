@@ -28,6 +28,7 @@ public class KephriPrayerHandler extends StagedTask
         super(toaManager, Stage.KEPHRI_BOSS);
     }
 
+    //11722, pose anim 9583 when its dead at end, anim -1 g -1
     public List<Prayer> getPrayers()
     {
         NPC scarab = NPCUtil.findNearest("Soldier Scarab");

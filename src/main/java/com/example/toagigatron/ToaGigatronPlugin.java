@@ -183,7 +183,8 @@ public class ToaGigatronPlugin extends Plugin {
     }
 
     @Override
-    protected void startUp() throws Exception {
+    protected void startUp() throws Exception
+    {
         finishRaid = false;
         stopPlugin = false;
         super.startUp();
@@ -199,6 +200,7 @@ public class ToaGigatronPlugin extends Plugin {
 
         this.gameTickManager.register();
         this.toaManager.register();
+        this.toaManager.chargesTracker.reset();
         this.toaManager.chargesTracker.register();
         this.toaManager.kephri.register();
         this.toaManager.baba.register();

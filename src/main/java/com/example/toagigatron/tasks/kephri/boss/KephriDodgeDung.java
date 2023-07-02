@@ -36,12 +36,18 @@ public class KephriDodgeDung extends StagedTask
             Movement.walk(toaManager.kephri.currentRow.startPoint);
             return true;
         }
-        if (!playerPoint.equals(dungPoint))
-        {
-            return false;
+        if(client.getLocalPlayer().getAnimation() == 9799 && client.getLocalPlayer().getPoseAnimation() == 809){
+            toaManager.print("Pose anim -> " + client.getLocalPlayer().getPoseAnimation());
+            toaManager.print("Moving to: " + toaManager.kephri.currentRow.prePathPoint.toString());
+            Movement.walk(toaManager.kephri.currentRow.prePathPoint);
+            return true;
         }
-        toaManager.print("Moving to: " + toaManager.kephri.currentRow.prePathPoint.toString());
-        Movement.walk(toaManager.kephri.currentRow.prePathPoint);
-        return true;
+//        if (!playerPoint.equals(dungPoint))
+//        {
+//            return false;
+//        }
+//        toaManager.print("Moving to: " + toaManager.kephri.currentRow.prePathPoint.toString());
+//        Movement.walk(toaManager.kephri.currentRow.prePathPoint);
+        return false;
     }
 }
