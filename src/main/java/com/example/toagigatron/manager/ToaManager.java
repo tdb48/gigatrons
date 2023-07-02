@@ -50,6 +50,8 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
@@ -303,6 +305,55 @@ public class ToaManager
 //			gameTickManager.attack(2);
 //		}
 //	}
+
+	public Projectile p = null;
+	@Subscribe
+	public void onClientTick(ClientTick event){
+		if(p != null && p.getRemainingCycles() <= 0){
+			p = null;
+		}
+	}
+
+	@Subscribe
+	public void onProjectileMoved(ProjectileMoved event){
+		Projectile projectile = event.getProjectile();
+		if (ToaConstants.DARTS.contains(projectile.getId()))
+		{
+			if(p == null || !p.equals(projectile)){
+				gameTickManager.attack(2);
+				p = projectile;
+			}
+//			if (client.getLocalPlayer().getInteracting() != null)
+//			{
+//				if (client.getLocalPlayer().getInteracting() instanceof NPC)
+//				{
+//					int remainingCycles = projectile.getRemainingCycles();
+//					int distance = client.getLocalPlayer().getWorldLocation().distanceTo(client.getLocalPlayer().getInteracting().getWorldLocation());
+//					if(distance == 1 && remainingCycles == 37){
+//						System.out.println("Distance 1 remaining cycles 37");
+//						gameTickManager.attack(2);
+//					}
+//					else if(distance == 2 && remainingCycles == 42){
+//						System.out.println("Distance 2 remaining cycles 42");
+//						gameTickManager.attack(2);
+//					}
+//					else if(distance == 3 && remainingCycles == 47){
+//						System.out.println("Distance 3 remaining cycles 47");
+//						gameTickManager.attack(2);
+//					}
+//					else if(distance == 4 && remainingCycles == 52){
+//						System.out.println("Distance 4 remaining cycles 52");
+//						gameTickManager.attack(2);
+//					}
+//					else if(distance == 5 && remainingCycles == 57){
+//						System.out.println("Distance 5 remaining cycles 57");
+//						gameTickManager.attack(2);
+//					}
+//
+//				}
+//			}
+		}
+	}
 
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged animationChanged)
