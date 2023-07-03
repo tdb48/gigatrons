@@ -46,7 +46,6 @@ public class ClaimLoot extends StagedTask
 		NPC osmumten = NPCs.search().nameContains("Osmumten").first().orElse(null);
 		if (osmumten == null)
 		{
-			toaManager.print("osmumten is null");
 			return false;
 		}
 		//TODO - Make sure this works (copied from zebak which works)
