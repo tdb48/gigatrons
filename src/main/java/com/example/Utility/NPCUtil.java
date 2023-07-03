@@ -97,6 +97,28 @@ public class NPCUtil
 		}
 		return returnList;
 	}
+	public static List<NPC> findAllDeadOrAlive(String... name)
+	{
+		if(name == null){
+			return List.of();
+		}
+		List<String> nameList = new ArrayList<>();
+		for(String s : name){
+			nameList.add(s.toLowerCase());
+		}
+		List<NPC> returnList = new ArrayList<>();
+		for (NPC npc : Static.getClient().getNpcs())
+		{
+			if(npc.getName() != null){
+				for(String s : nameList){
+					if(npc.getName().toLowerCase().contains(s)){
+						returnList.add(npc);
+					}
+				}
+			}
+		}
+		return returnList;
+	}
 
 	public static NPC findNearest(String name)
 	{

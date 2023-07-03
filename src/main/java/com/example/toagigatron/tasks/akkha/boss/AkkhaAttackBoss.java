@@ -4,6 +4,7 @@ package com.example.toagigatron.tasks.akkha.boss;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
 import com.example.Utility.Movement;
+import com.example.Utility.NPCUtil;
 import com.example.Utility.Reachable;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
@@ -45,7 +46,6 @@ public class AkkhaAttackBoss extends StagedTask
 		{
 			return false;
 		}
-
 //		// toggle spec if wearing melee gear and full spec
 //		if (toaManager.hasGearEquipped(toaManager.meleeSetup.getAllItems()) && Combat.getSpecEnergy() >= 75)
 //		{
@@ -123,9 +123,7 @@ public class AkkhaAttackBoss extends StagedTask
 			return true;
 		}
 		// Return if in melee gear and akkha is not close enough yet
-		//toaManager.akkha.activeShadows.size() > 0
-		//			&&
-		else if (!toaManager.isNextToNpc(toaManager.akkha.akkhaBoss))
+		else if (NPCUtil.findAllDeadOrAlive("shadow").size() > 0 && !toaManager.isNextToNpc(toaManager.akkha.akkhaBoss))
 		{
 			toaManager.print("waiting for akkha to get close");
 			return false;
