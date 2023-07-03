@@ -35,4 +35,17 @@ public class Projectiles
 		return null;
 	}
 
+	public static List<Projectile> getProjectiles(ArrayList<Integer> ids)
+	{
+		ArrayList<Projectile> projectiles = new ArrayList<>();
+		for (Projectile projectile : getAll())
+		{
+			if (ids.contains(projectile.getId()))
+			{
+				projectiles.add(projectile);
+			}
+		}
+		return projectiles;
+	}
+
 }
