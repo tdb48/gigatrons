@@ -9,15 +9,6 @@ public class KephriPuzzleRoom
 	public WorldArea roomArea;
 	public int index;
 
-	public enum RoomType
-	{
-		MATH,
-		MEMORY,
-		PILLAR,
-		LIGHT,
-		FINAL
-	}
-
 	public KephriPuzzleRoom(RoomType roomType, boolean solved, WorldArea roomArea, int index)
 	{
 		this.roomType = roomType;
@@ -39,6 +30,15 @@ public class KephriPuzzleRoom
 			", solved=" + solved +
 			", roomArea=" + roomArea +
 			'}';
+	}
+
+	public enum RoomType
+	{
+		MATH,
+		MEMORY,
+		PILLAR,
+		LIGHT,
+		FINAL
 	}
 
 

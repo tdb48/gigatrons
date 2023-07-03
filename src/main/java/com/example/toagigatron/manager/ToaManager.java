@@ -75,23 +75,18 @@ import net.runelite.client.game.ItemManager;
 @Singleton
 public class ToaManager
 {
+	public final Client client;
+	private final EventBus eventBus;
+	private final ToaGigatronPlugin plugin;
 	@Inject
 	public ConsumableTracker consumableTracker;
 	@Inject
 	public Overall overall;
 	@Inject
-	ItemManager itemManager;
-	@Inject
 	public GameTickManager gameTickManager;
 	@Inject
 	public Random random = new Random();
-	@Inject
-	private ReflectBreakHandler chinBreakHandler;
-	private Stage stage = Stage.NONE;
-	private final EventBus eventBus;
-	public final Client client;
 	public boolean allowedToBreak = false;
-	private final ToaGigatronPlugin plugin;
 	public ToaGigatronConfig config;
 	@Inject
 	public MageSetup mageSetup;
@@ -121,6 +116,12 @@ public class ToaManager
 	public int necessaryAnti = 0;
 	public int necessaryScb = 1;
 	public int necessaryStam = 0;
+	public Projectile p = null;
+	@Inject
+	ItemManager itemManager;
+	@Inject
+	private ReflectBreakHandler chinBreakHandler;
+	private Stage stage = Stage.NONE;
 
 	@Inject
 	public ToaManager(EventBus eventBus, Client client, ToaGigatronConfig config, ToaGigatronPlugin plugin)
@@ -129,6 +130,42 @@ public class ToaManager
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
+	}
+
+	public static boolean isMissingAnyItems(ArrayList<Integer> items)
+	{
+		ArrayList<Widget> playerItems = (ArrayList<Widget>) Inventory.search().result();
+		playerItems.addAll(Equipment.search().result());
+		ArrayList<Integer> returnList = itemsToIntegers(playerItems);
+		for (int i : items)
+		{
+			if (!returnList.contains(i))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static ArrayList<Integer> itemsToIntegers(ArrayList<Widget> items)
+	{
+		ArrayList<Integer> returnList = new ArrayList<>();
+		for (Widget widget : items)
+		{
+			returnList.add(widget.getItemId());
+		}
+		return returnList;
+	}
+
+	public static ArrayList<Integer> equipmentItemsToIntegers(ArrayList<EquipmentItemWidget> items)
+	{
+		ArrayList<Integer> returnList = new ArrayList<>();
+		for (EquipmentItemWidget widget : items)
+		{
+			//System.out.println("printing item id : "  +widget.getEquipmentItemId());
+			returnList.add(widget.getEquipmentItemId());
+		}
+		return returnList;
 	}
 
 	public boolean needsBreak()
@@ -209,39 +246,9 @@ public class ToaManager
 		return Equipment.search().withId(itemId).first().orElse(null) != null;
 	}
 
-	public static boolean isMissingAnyItems(ArrayList<Integer> items)
-	{
-		ArrayList<Widget> playerItems = (ArrayList<Widget>) Inventory.search().result();
-		playerItems.addAll(Equipment.search().result());
-		ArrayList<Integer> returnList = itemsToIntegers(playerItems);
-		for (int i : items)
-		{
-			if (!returnList.contains(i))
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public String worldPointString(WorldPoint wp)
 	{
 		return "(X: " + wp.getX() + ", Y: " + wp.getY() + ") ";
-	}
-
-	public String worldPointStringVerbose(WorldPoint wp)
-	{
-		return "(X: " + wp.getX() + ", Y: " + wp.getY() + ", Z: " + wp.getPlane() + ") ";
-	}
-
-	public boolean isSaltBrewTick()
-	{
-		return getSaltTick() % 25 == 0;
-	}
-
-	public int getSaltTick()
-	{
-		return overall.saltInTicks;
 	}
 
 //	public void reAttack(NPC npc)
@@ -255,6 +262,41 @@ public class ToaManager
 //		else
 //		{
 //			print("NPC IS NULL IN RE-ATTACK");
+//		}
+//	}
+
+	public String worldPointStringVerbose(WorldPoint wp)
+	{
+		return "(X: " + wp.getX() + ", Y: " + wp.getY() + ", Z: " + wp.getPlane() + ") ";
+	}
+
+//	@Subscribe
+//	public void onProjectileSpawned(ProjectileSpawned projectileSpawned)
+//	{
+//		Projectile projectile = projectileSpawned.getProjectile();
+//		if (ToaConstants.DARTS.contains(projectile.getId()))
+//		{
+//			gameTickManager.attack(2);
+//		}
+//	}
+
+	public boolean isSaltBrewTick()
+	{
+		return getSaltTick() % 25 == 0;
+	}
+
+	public int getSaltTick()
+	{
+		return overall.saltInTicks;
+	}
+
+//	@Subscribe
+//	public void onClientTick(ClientTick event)
+//	{
+//		if (p != null && p.getRemainingCycles() <= 0)
+//		{
+//			print("Setting projectile to null " + p.getRemainingCycles());
+//			p = null;
 //		}
 //	}
 
@@ -309,16 +351,6 @@ public class ToaManager
 		return false;
 	}
 
-//	@Subscribe
-//	public void onProjectileSpawned(ProjectileSpawned projectileSpawned)
-//	{
-//		Projectile projectile = projectileSpawned.getProjectile();
-//		if (ToaConstants.DARTS.contains(projectile.getId()))
-//		{
-//			gameTickManager.attack(2);
-//		}
-//	}
-
 	public boolean earlyReachableCheck(WorldPoint wp)
 	{
 		if (wp == null)
@@ -332,18 +364,6 @@ public class ToaManager
 		LocalPoint lp = LocalPoint.fromWorld(client, wp);
 		return lp != null && lp.isInScene();
 	}
-
-	public Projectile p = null;
-
-//	@Subscribe
-//	public void onClientTick(ClientTick event)
-//	{
-//		if (p != null && p.getRemainingCycles() <= 0)
-//		{
-//			print("Setting projectile to null " + p.getRemainingCycles());
-//			p = null;
-//		}
-//	}
 
 	@Subscribe
 	public void onProjectileMoved(ProjectileMoved event)
@@ -574,27 +594,6 @@ public class ToaManager
 		return returnObj;
 	}
 
-	public static ArrayList<Integer> itemsToIntegers(ArrayList<Widget> items)
-	{
-		ArrayList<Integer> returnList = new ArrayList<>();
-		for (Widget widget : items)
-		{
-			returnList.add(widget.getItemId());
-		}
-		return returnList;
-	}
-
-	public static ArrayList<Integer> equipmentItemsToIntegers(ArrayList<EquipmentItemWidget> items)
-	{
-		ArrayList<Integer> returnList = new ArrayList<>();
-		for (EquipmentItemWidget widget : items)
-		{
-			//System.out.println("printing item id : "  +widget.getEquipmentItemId());
-			returnList.add(widget.getEquipmentItemId());
-		}
-		return returnList;
-	}
-
 	public int getRoomLevel()
 	{
 		Widget roomLevel = client.getWidget(481, 45);
@@ -680,7 +679,7 @@ public class ToaManager
 		{
 			if (list.contains(w.getItemId()))
 			{
-				list.remove(list.indexOf(w.getItemId()));
+				list.remove((Integer) w.getItemId());
 				print("Withdrawing " + w.getName());
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(w, "Withdraw-1");

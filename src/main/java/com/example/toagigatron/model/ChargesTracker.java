@@ -17,11 +17,25 @@ import net.runelite.client.plugins.PluginManager;
 
 public class ChargesTracker
 {
+	public static final int minimumScales = 1000;
+	public static final int minimumDarts = 200;
+	public static final int minimumMageCharges = 200;
+	public Dart dartType = null;
+	public int blowpipeDarts = -1;
+	public int blowpipeScales = -1;
+	public int mageCharges = -1;
 	EventBus eventBus;
 	Client client;
-
 	PluginManager pluginManager;
 	ToaManager toaManager;
+	@Inject
+	public ChargesTracker(EventBus eventBus, Client client, PluginManager pluginManager, ToaManager toaManager)
+	{
+		this.eventBus = eventBus;
+		this.client = client;
+		this.pluginManager = pluginManager;
+		this.toaManager = toaManager;
+	}
 
 	public void register()
 	{
@@ -32,23 +46,6 @@ public class ChargesTracker
 	{
 		this.eventBus.unregister(this);
 	}
-
-	@Inject
-	public ChargesTracker(EventBus eventBus, Client client, PluginManager pluginManager, ToaManager toaManager)
-	{
-		this.eventBus = eventBus;
-		this.client = client;
-		this.pluginManager = pluginManager;
-		this.toaManager = toaManager;
-	}
-
-	public Dart dartType = null;
-	public int blowpipeDarts = -1;
-	public int blowpipeScales = -1;
-	public int mageCharges = -1;
-	public static final int minimumScales = 1000;
-	public static final int minimumDarts = 200;
-	public static final int minimumMageCharges = 200;
 
 	public void reset()
 	{

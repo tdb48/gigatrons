@@ -27,17 +27,15 @@ import net.runelite.api.widgets.Widget;
 )
 public class RechargeItems extends StagedTask
 {
+	public static final int scales = ItemID.ZULRAHS_SCALES;
+	public static final int brune = ItemID.BLOOD_RUNE;
 	@Inject
 	ToaGigatronPlugin plugin;
-
 	@Inject
 	public RechargeItems(ToaManager toaManager)
 	{
 		super(toaManager, Stage.OUTSIDE);
 	}
-
-	public static final int scales = ItemID.ZULRAHS_SCALES;
-	public static final int brune = ItemID.BLOOD_RUNE;
 
 	public boolean execute()
 	{

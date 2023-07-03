@@ -21,14 +21,6 @@ import net.runelite.client.plugins.PluginManager;
 
 public class ConsumableTracker
 {
-	@Inject
-	ItemManager itemManager;
-
-	EventBus eventBus;
-	Client client;
-
-	PluginManager pluginManager;
-
 	// TOTAL DOSES
 	public int totalRaidBrewDoses = 0;
 	public int totalRaidRestoreDoses = 0;
@@ -36,44 +28,40 @@ public class ConsumableTracker
 	public int totalAmbrosiaDoses = 0;
 	public int totalAdrenalineDoses = 0;
 	public int totalScarabDoses = 0;
-
-	// SUPPLY POUCH DOSES
-
 	public int bagRaidBrewDoses = 0;
 	public int bagRaidRestoreDoses = 0;
 	public int bagSaltDoses = 0;
 	public int bagAmbrosiaDoses = 0;
+
+	// SUPPLY POUCH DOSES
 	public int bagAdrenalineDoses = 0;
 	public int bagScarabDoses = 0;
-
-	// INVENTORY DOSES
-
 	public int inventoryRaidBrewDoses = 0;
 	public int inventoryRaidRestoreDoses = 0;
 	public int inventorySaltDoses = 0;
 	public int inventoryAmbrosiaDoses = 0;
+
+	// INVENTORY DOSES
 	public int inventoryAdrenalineDoses = 0;
 	public int inventoryScarabDoses = 0;
-
-	// FLOOR DOSES
-
 	public int floorRaidBrewDoses = 0;
 	public int floorRaidRestoreDoses = 0;
 	public int floorSaltDoses = 0;
 	public int floorAmbrosiaDoses = 0;
+
+	// FLOOR DOSES
 	public int floorAdrenalineDoses = 0;
 	public int floorScarabDoses = 0;
-
-	TileItem recentlyDespawned = null;
-
-	boolean justDrank = false;
-
-	int previousChange = -1;
-
-	boolean justWithdrew = false;
-
 	public int scarabTicks = 0;
-
+	@Inject
+	ItemManager itemManager;
+	EventBus eventBus;
+	Client client;
+	PluginManager pluginManager;
+	TileItem recentlyDespawned = null;
+	boolean justDrank = false;
+	int previousChange = -1;
+	boolean justWithdrew = false;
 	List<Item> inventory = new ArrayList<>();
 
 	@Inject

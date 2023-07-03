@@ -22,15 +22,15 @@ import net.runelite.api.widgets.Widget;
 public class AkkhaConsumables extends StagedTask
 {
 	@Inject
+	GameTickManager gameTickManager;
+
+	@Inject
 	public AkkhaConsumables(ToaManager toaManager)
 	{
 		super(toaManager,
 			Stage.AKKHA_BOSS,
 			Stage.AKKHA_PUZZLE);
 	}
-
-	@Inject
-	GameTickManager gameTickManager;
 
 	public boolean execute()
 	{

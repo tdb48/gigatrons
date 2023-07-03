@@ -17,6 +17,7 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class WardenP3DodgeFloor extends StagedTask
 {
+	public int runTick = 2;
 	@Inject
 	GameTickManager gameTickManager;
 
@@ -25,8 +26,6 @@ public class WardenP3DodgeFloor extends StagedTask
 	{
 		super(toaManager, Stage.WARDENS_P3);
 	}
-
-	public int runTick = 2;
 
 	public boolean execute()
 	{

@@ -16,12 +16,6 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class Overall
 {
-	@Inject
-	ToaGigatronPlugin toaGigatronPlugin;
-	@Inject
-	ToaManager toaManager;
-	@Inject
-	EventBus eventBus;
 	public int killCount = 0;
 	public int deaths = 0;
 	public boolean died;
@@ -29,8 +23,13 @@ public class Overall
 	public boolean lootClaimed;
 	public Instant botTimer = Instant.now();
 	public int saltInTicks = 0;
-
 	public int totalResigns = 0;
+	@Inject
+	ToaGigatronPlugin toaGigatronPlugin;
+	@Inject
+	ToaManager toaManager;
+	@Inject
+	EventBus eventBus;
 
 	public void register()
 	{

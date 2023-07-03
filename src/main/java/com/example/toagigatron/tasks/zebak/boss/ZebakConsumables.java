@@ -21,13 +21,13 @@ import net.runelite.api.widgets.Widget;
 public class ZebakConsumables extends StagedTask
 {
 	@Inject
+	GameTickManager gameTickManager;
+
+	@Inject
 	public ZebakConsumables(ToaManager toaManager)
 	{
 		super(toaManager, Stage.ZEBAK_BOSS);
 	}
-
-	@Inject
-	GameTickManager gameTickManager;
 
 	public boolean execute()
 	{

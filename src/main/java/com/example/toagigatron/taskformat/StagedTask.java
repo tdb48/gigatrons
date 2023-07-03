@@ -12,25 +12,18 @@ import net.runelite.api.Client;
 public abstract class StagedTask extends Task
 {
 	protected final ToaManager toaManager;
-	private BooleanSupplier sleepCondition;
 	private final Set<Stage> activations;
-	private int sleepTicks;
-	private int incrementSleepTicks;
 	@Inject
 	protected Client client;
+	private BooleanSupplier sleepCondition;
+	private int sleepTicks;
+	private int incrementSleepTicks;
 
 	@Inject
 	public StagedTask(ToaManager toaManager, Stage... activate)
 	{
 		this.toaManager = toaManager;
 		this.activations = new HashSet<>(Arrays.asList(activate));
-	}
-
-	public void sleepWhile(int ticks, BooleanSupplier sleepCondition)
-	{
-		this.sleepTicks = ticks;
-		this.sleepCondition = sleepCondition;
-		this.incrementSleepTicks = ticks;
 	}
 
 	public boolean activated()
@@ -64,6 +57,13 @@ public abstract class StagedTask extends Task
 		{
 			return false;
 		}
+	}
+
+	public void sleepWhile(int ticks, BooleanSupplier sleepCondition)
+	{
+		this.sleepTicks = ticks;
+		this.sleepCondition = sleepCondition;
+		this.incrementSleepTicks = ticks;
 	}
 
 	public abstract boolean execute();

@@ -113,11 +113,11 @@ public class ReflectBreakHandler
 		chinMethods = new HashMap<>();
 		for (Plugin p : pluginManager.getPlugins())
 		{
-			if (p.getClass().getSimpleName().toLowerCase().equals("chinbreakhandlerplugin"))
+			if (p.getClass().getSimpleName().equalsIgnoreCase("chinbreakhandlerplugin"))
 			{
 				for (Field f : p.getClass().getDeclaredFields())
 				{
-					if (f.getName().toLowerCase().equals("chinbreakhandler"))
+					if (f.getName().equalsIgnoreCase("chinbreakhandler"))
 					{
 						f.setAccessible(true);
 						try

@@ -12,14 +12,6 @@ public class ZebakWaterfallRoom
 	public WorldArea roomArea;
 	public WorldPoint prePathTile;
 
-	public enum RoomType
-	{
-		NE,
-		NW,
-		SE,
-		SW
-	}
-
 	public ZebakWaterfallRoom(RoomType roomType, boolean active, WorldArea roomArea, GameObject waterfall, WorldPoint prePathTile)
 	{
 		this.waterfall = waterfall;
@@ -42,5 +34,13 @@ public class ZebakWaterfallRoom
 			", active=" + active +
 			", roomArea=" + roomArea +
 			'}';
+	}
+
+	public enum RoomType
+	{
+		NE,
+		NW,
+		SE,
+		SW
 	}
 }

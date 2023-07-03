@@ -20,13 +20,13 @@ import net.runelite.client.eventbus.Subscribe;
 )
 public class WardenP3SkullSkip extends StagedTask
 {
+	public int amountOfSkulls = -1;
+
 	@Inject
 	public WardenP3SkullSkip(ToaManager toaManager)
 	{
 		super(toaManager, Stage.WARDENS_P3);
 	}
-
-	public int amountOfSkulls = -1;
 
 	public boolean execute()
 	{

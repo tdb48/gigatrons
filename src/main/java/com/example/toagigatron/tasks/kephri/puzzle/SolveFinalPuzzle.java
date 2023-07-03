@@ -98,7 +98,7 @@ public class SolveFinalPuzzle extends StagedTask
 
 		if (targetTile != null)
 		{
-			toaManager.print("Flipping unflipped tile at " + targetTile.getWorldLocation().toString());
+			toaManager.print("Flipping unflipped tile at " + targetTile.getWorldLocation());
 			MousePackets.queueClickPacket();
 			ObjectPackets.queueObjectAction(targetTile, false, "Activate");
 		}

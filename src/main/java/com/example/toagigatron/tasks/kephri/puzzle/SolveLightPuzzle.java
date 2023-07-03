@@ -28,17 +28,12 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class SolveLightPuzzle extends StagedTask
 {
-	private final ToaManager toaManager;
-
-	@Inject
-	private Client client;
 	private static final Point[] SCENE_COORD_STARTS = {
 		new Point(36, 56),
 		new Point(36, 44),
 		new Point(53, 56),
 		new Point(53, 44),
 	};
-
 	private static final int[] LIGHTS_PUZZLE_XOR_ARRAY = {
 		0B01110101,
 		0B10111010,
@@ -49,6 +44,9 @@ public class SolveLightPuzzle extends StagedTask
 		0B01011101,
 		0B10101110,
 	};
+	private final ToaManager toaManager;
+	@Inject
+	private Client client;
 
 	@Inject
 	public SolveLightPuzzle(ToaManager toaManager)

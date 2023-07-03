@@ -153,7 +153,7 @@ public class ZebakSolveRoar extends StagedTask
 						System.out.println("Target jug world -> " + lpConverted);
 						System.out.println("Jug world instance -> " + WorldPoint.fromLocalInstance(client, n.getLocalLocation()));
 						System.out.println("Target jug world instance -> " + WorldPoint.fromLocalInstance(client, lp));
-						System.out.println("");
+						System.out.println();
 
 					}
 					ArrayList<NPC> jug = (ArrayList<NPC>) NPCs.search().withId(ToaConstants.ZEBAK_ROLLING_JUG).filter(

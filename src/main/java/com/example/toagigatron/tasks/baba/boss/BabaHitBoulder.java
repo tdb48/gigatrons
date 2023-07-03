@@ -23,13 +23,13 @@ import net.runelite.api.coords.WorldPoint;
 public class BabaHitBoulder extends StagedTask
 {
 	@Inject
+	GameTickManager gameTickManager;
+
+	@Inject
 	public BabaHitBoulder(ToaManager toaManager)
 	{
 		super(toaManager, Stage.BABA_BOSS);
 	}
-
-	@Inject
-	GameTickManager gameTickManager;
 
 	//TODO - Boulders are slow because we are finding a boulder that is dead up the top and attempting to hit it. However our pathing is written to
 	// accomodate this so if we add a alive() check we start running into boulders. Updating pathing to work properly and adding alive() check

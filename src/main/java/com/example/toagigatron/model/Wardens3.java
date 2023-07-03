@@ -29,18 +29,9 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class Wardens3
 {
-	@Inject
-	ToaManager toaManager;
-
-	@Inject
-	Client client;
-
-	@Inject
-	EventBus eventBus;
 	public boolean enrage;
 	public NPC warden = null;
 	public Direction tileflip = Direction.NONE;
-
 	public WorldPoint primarySafeTile = null;
 	public WorldPoint secondarySafeTile = null;
 	public WorldPoint nextPrimarySafeTile = null;
@@ -54,6 +45,12 @@ public class Wardens3
 	public int tileFlipTickCounter = 3;
 	public boolean stayOnGreen;
 	public ArrayList<WorldPoint> enrageArea = new ArrayList<>();
+	@Inject
+	ToaManager toaManager;
+	@Inject
+	Client client;
+	@Inject
+	EventBus eventBus;
 
 	public void register()
 	{

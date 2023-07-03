@@ -279,10 +279,7 @@ public class WardensP3Enrage extends StagedTask
 		}
 		if (toaManager.wardens3.lightning.containsKey(playerPoint))
 		{
-			if (toaManager.wardens3.lightning.get(playerPoint) <= 3)
-			{
-				return true;
-			}
+			return toaManager.wardens3.lightning.get(playerPoint) <= 3;
 		}
 		return false;
 	}
@@ -299,10 +296,7 @@ public class WardensP3Enrage extends StagedTask
 		}
 		if (toaManager.wardens3.lightning.containsKey(playerPoint))
 		{
-			if (toaManager.wardens3.lightning.get(playerPoint) == 2 || toaManager.wardens3.lightning.get(playerPoint) == 1)
-			{
-				return true;
-			}
+			return toaManager.wardens3.lightning.get(playerPoint) == 2 || toaManager.wardens3.lightning.get(playerPoint) == 1;
 		}
 		return false;
 	}

@@ -38,25 +38,6 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class Zebak
 {
-	@Inject
-	ToaManager toaManager;
-	@Inject
-	Client client;
-	@Inject
-	EventBus eventBus;
-	@Inject
-	GameTickManager gameTickManager;
-
-	public void register()
-	{
-		this.eventBus.register(this);
-	}
-
-	public void unregister()
-	{
-		this.eventBus.unregister(this);
-	}
-
 	public ZebakWaterfallRoom northEastZebakPuzzle = null;
 	public ZebakWaterfallRoom northWestZebakPuzzle = null;
 	public ZebakWaterfallRoom southEastZebakPuzzle = null;
@@ -83,7 +64,6 @@ public class Zebak
 	public WorldArea wavesTwoSafe = null;
 	public WorldArea wavesThreeSafe = null;
 	public boolean wavesSolved = false;
-
 	public ArrayList<WorldPoint> bloods = new ArrayList<>();
 	public ZebakJug hittableJug = null;
 	public ArrayList<WorldPoint> blowpipeTiles = new ArrayList<>();
@@ -92,6 +72,24 @@ public class Zebak
 	public ArrayList<WorldPoint> allWalkableRoomTilesIncludingChompZone = new ArrayList<>();
 	public ArrayList<WorldPoint> zebakEastTiles = new ArrayList<>();
 	public List<WorldPoint> path = new ArrayList<>();
+	@Inject
+	ToaManager toaManager;
+	@Inject
+	Client client;
+	@Inject
+	EventBus eventBus;
+	@Inject
+	GameTickManager gameTickManager;
+
+	public void register()
+	{
+		this.eventBus.register(this);
+	}
+
+	public void unregister()
+	{
+		this.eventBus.unregister(this);
+	}
 
 	public void resetVariables()
 	{

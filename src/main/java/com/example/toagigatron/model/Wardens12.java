@@ -18,7 +18,6 @@ import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
 import net.runelite.api.Projectile;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -35,15 +34,6 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class Wardens12
 {
-	@Inject
-	ToaManager toaManager;
-
-	@Inject
-	Client client;
-
-	@Inject
-	EventBus eventBus;
-
 	public int bgsHit = 0;
 	public int orbsTanked = 0;
 	public NPC obelisk = null;
@@ -67,6 +57,12 @@ public class Wardens12
 	public WorldPoint blockTile = null;
 	public boolean bagOpened = false;
 	public int coreTick = 0;
+	@Inject
+	ToaManager toaManager;
+	@Inject
+	Client client;
+	@Inject
+	EventBus eventBus;
 
 	public void register()
 	{

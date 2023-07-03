@@ -25,13 +25,13 @@ import net.runelite.api.widgets.Widget;
 public class KephriConsumables extends StagedTask
 {
 	@Inject
+	GameTickManager gameTickManager;
+
+	@Inject
 	public KephriConsumables(ToaManager toaManager)
 	{
 		super(toaManager, Stage.KEPHRI_BOSS);
 	}
-
-	@Inject
-	GameTickManager gameTickManager;
 
 	private int getDoseCount(int itemID)
 	{

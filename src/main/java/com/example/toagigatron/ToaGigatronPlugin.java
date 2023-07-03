@@ -127,15 +127,17 @@ public class ToaGigatronPlugin extends Plugin
 	@Inject
 	public ToaGigatronConfig config;
 	@Inject
+	public ToaManager toaManager;
+	public boolean stopPlugin = false;
+	public boolean finishRaid = false;
+	@Inject
 	Client client;
 	@Inject
 	PluginManager pluginManager;
 	@Inject
 	ToaGigatronInfoBox toaGigatronInfoBox;
-
 	@Inject
 	ToaGigatronOverlay toaGigatronOverlay;
-
 	@Inject
 	ConsumablesTrackerInfobox consumablesTrackerInfobox;
 	@Inject
@@ -145,11 +147,7 @@ public class ToaGigatronPlugin extends Plugin
 	@Inject
 	private GameTickManager gameTickManager;
 	@Inject
-	public ToaManager toaManager;
-	@Inject
 	private ReflectBreakHandler chinBreakHandler;
-	public boolean stopPlugin = false;
-	public boolean finishRaid = false;
 
 	@Provides
 	ToaGigatronConfig provideConfig(ConfigManager configManager)

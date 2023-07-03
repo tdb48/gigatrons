@@ -42,6 +42,34 @@ import net.runelite.client.config.ConfigSection;
 public interface ToaGigatronConfig extends Config
 {
 
+	@ConfigSection(
+		name = "General",
+		description = "General",
+		position = 0
+	)
+	String GENERAL_SETTINGS = "General";
+	@ConfigSection(
+		name = "Range setup",
+		description = "Settings for setup",
+		position = 10,
+		closedByDefault = true
+	)
+	String RANGE_SETUP = "Range setup";
+	@ConfigSection(
+		name = "Melee setup",
+		description = "Settings for setup",
+		position = 20,
+		closedByDefault = true
+	)
+	String MELEE_SETUP = "Melee setup";
+	@ConfigSection(
+		name = "Mage setup",
+		description = "Settings for setup",
+		position = 30,
+		closedByDefault = true
+	)
+	String MAGE_SETUP = "Mage setup";
+
 	@ConfigItem(keyName = "scheduleLogout", name = "Schedule logout", description = "Click this to schedule a logout", position = -10)
 	default Button scheduleLogout()
 	{
@@ -53,38 +81,6 @@ public interface ToaGigatronConfig extends Config
 	{
 		return new Button();
 	}
-
-	@ConfigSection(
-		name = "General",
-		description = "General",
-		position = 0
-	)
-	String GENERAL_SETTINGS = "General";
-
-	@ConfigSection(
-		name = "Range setup",
-		description = "Settings for setup",
-		position = 10,
-		closedByDefault = true
-	)
-	String RANGE_SETUP = "Range setup";
-
-
-	@ConfigSection(
-		name = "Melee setup",
-		description = "Settings for setup",
-		position = 20,
-		closedByDefault = true
-	)
-	String MELEE_SETUP = "Melee setup";
-
-	@ConfigSection(
-		name = "Mage setup",
-		description = "Settings for setup",
-		position = 30,
-		closedByDefault = true
-	)
-	String MAGE_SETUP = "Mage setup";
 
 	@ConfigItem(
 		position = 10,

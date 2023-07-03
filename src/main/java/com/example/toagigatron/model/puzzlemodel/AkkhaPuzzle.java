@@ -11,16 +11,16 @@ import net.runelite.api.coords.WorldPoint;
 public class AkkhaPuzzle
 {
 
+	public ArrayList<AkkhaPuzzleRoomTile> roomTiles;
+	public AkkhaPuzzleSolution solution;
+	public String roomMatrix = "";
+	public String layoutName = "";
 	WorldArea area;
 	ArrayList<WorldPoint> worldPointList;
 	ArrayList<AkkhaPuzzleRoomTile> blockingWalls;
 	ArrayList<AkkhaPuzzleRoomTile> mineableWalls;
 	ArrayList<AkkhaPuzzleRoomTile> fixedMirrors;
 	ArrayList<AkkhaPuzzleRoomTile> moveableMirrors;
-	public ArrayList<AkkhaPuzzleRoomTile> roomTiles;
-	public AkkhaPuzzleSolution solution;
-	public String roomMatrix = "";
-	public String layoutName = "";
 
 	public AkkhaPuzzle(WorldArea area,
 					   ArrayList<AkkhaPuzzleRoomTile> blockingWalls,

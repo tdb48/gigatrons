@@ -25,13 +25,13 @@ import net.runelite.api.widgets.Widget;
 public class BabaConsumables extends StagedTask
 {
 	@Inject
+	GameTickManager gameTickManager;
+
+	@Inject
 	public BabaConsumables(ToaManager toaManager)
 	{
 		super(toaManager, Stage.BABA_PUZZLE, Stage.BABA_BOSS);
 	}
-
-	@Inject
-	GameTickManager gameTickManager;
 
 	public boolean execute()
 	{

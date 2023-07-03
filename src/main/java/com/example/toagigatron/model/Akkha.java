@@ -36,15 +36,6 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class Akkha
 {
-	@Inject
-	ToaManager toaManager;
-
-	@Inject
-	Client client;
-
-	@Inject
-	EventBus eventBus;
-
 	public AkkhaQuadrant neQuadrant = null;
 	public AkkhaQuadrant nwQuadrant = null;
 	public AkkhaQuadrant seQuadrant = null;
@@ -59,13 +50,16 @@ public class Akkha
 	public ArrayList<WorldPoint> orbTiles = new ArrayList<>();
 	public ArrayList<WorldPoint> orbThirdTiles = new ArrayList<>();
 	public ArrayList<WorldPoint> akkhaOrbTiles = new ArrayList<>();
-
 	public ArrayList<WorldPoint> finalPhasePath = new ArrayList<>();
 	public WorldPoint targetPoint = null;
-
 	//TESTING PUZZLE CODE
 	public AkkhaPuzzle puzzle = null;
-
+	@Inject
+	ToaManager toaManager;
+	@Inject
+	Client client;
+	@Inject
+	EventBus eventBus;
 
 	public void register()
 	{

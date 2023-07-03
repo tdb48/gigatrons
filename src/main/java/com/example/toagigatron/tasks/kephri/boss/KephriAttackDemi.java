@@ -32,13 +32,13 @@ import net.runelite.api.coords.WorldPoint;
 public class KephriAttackDemi extends StagedTask
 {
 	@Inject
+	GameTickManager gameTickManager;
+
+	@Inject
 	public KephriAttackDemi(ToaManager toaManager)
 	{
 		super(toaManager, Stage.KEPHRI_BOSS);
 	}
-
-	@Inject
-	GameTickManager gameTickManager;
 
 	public boolean execute()
 	{

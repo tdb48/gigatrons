@@ -30,15 +30,14 @@ import net.runelite.client.eventbus.Subscribe;
 )
 public class AkkhaPrayerHandler extends StagedTask
 {
+	private Prayer current;
+	private Prayer next;
+	private int nextAttack;
 	@Inject
 	public AkkhaPrayerHandler(ToaManager toaManager)
 	{
 		super(toaManager, Stage.AKKHA_BOSS);
 	}
-
-	private Prayer current;
-	private Prayer next;
-	private int nextAttack;
 
 	public boolean execute()
 	{

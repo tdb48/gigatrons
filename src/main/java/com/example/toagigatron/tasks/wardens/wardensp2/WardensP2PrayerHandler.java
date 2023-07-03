@@ -28,13 +28,13 @@ import net.runelite.client.eventbus.Subscribe;
 )
 public class WardensP2PrayerHandler extends StagedTask
 {
+	private Prayer defensive;
+
 	@Inject
 	public WardensP2PrayerHandler(ToaManager toaManager)
 	{
 		super(toaManager, Stage.WARDENS_P2);
 	}
-
-	private Prayer defensive;
 
 	public List<Prayer> getPrayers()
 	{

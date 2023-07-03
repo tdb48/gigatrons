@@ -31,13 +31,13 @@ import net.runelite.api.coords.WorldPoint;
 public class KephriAttackBoss extends StagedTask
 {
 	@Inject
+	GameTickManager gameTickManager;
+
+	@Inject
 	public KephriAttackBoss(ToaManager toaManager)
 	{
 		super(toaManager, Stage.KEPHRI_BOSS);
 	}
-
-	@Inject
-	GameTickManager gameTickManager;
 
 	//todo optimise the under 50hp handling so it doesnt start 6ticking
 	// also check the sidestep/step back logic, i think its wrong

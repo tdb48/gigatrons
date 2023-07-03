@@ -14,12 +14,12 @@ public class GameTickManager
 {
 	private final EventBus eventBus;
 	private final Map<NPC, Integer> tornadoes = new HashMap<>();
+	public int attackWait;
 	private int tickCount;
 	private int tickWait;
 	private int foodWait;
 	private int comboFoodWait;
 	private int potionWait;
-	public int attackWait;
 
 	@Inject
 	public GameTickManager(EventBus eventBus)
@@ -147,17 +147,17 @@ public class GameTickManager
 
 	public int getLightningTicks(NPC lightning)
 	{
-		return (Integer) this.tornadoes.getOrDefault(lightning, 0);
-	}
-
-	public void setTickCount(int tickCount)
-	{
-		this.tickCount = tickCount;
+		return this.tornadoes.getOrDefault(lightning, 0);
 	}
 
 	public int getTickCount()
 	{
 		return this.tickCount;
+	}
+
+	public void setTickCount(int tickCount)
+	{
+		this.tickCount = tickCount;
 	}
 
 	public void setTickWait(int tickWait)

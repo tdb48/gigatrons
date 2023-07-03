@@ -43,28 +43,6 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class Baba
 {
-	@Inject
-	ToaManager toaManager;
-
-	@Inject
-	Client client;
-
-	@Inject
-	EventBus eventBus;
-
-	@Inject
-	GameTickManager gameTickManager;
-
-	public void register()
-	{
-		this.eventBus.register(this);
-	}
-
-	public void unregister()
-	{
-		this.eventBus.unregister(this);
-	}
-
 	public BabaPuzzleSpecial currentSpecial = BabaPuzzleSpecial.NULL;
 	public ArrayList<WorldPoint> babaPuzzleRoom = new ArrayList<>();
 	public ArrayList<WorldPoint> babaBossRoom = new ArrayList<>();
@@ -104,9 +82,26 @@ public class Baba
 	public int bouldersKilled = 0;
 	public int puzzleSpecialTickTimer = 0;
 	public boolean touchedPrePathTile = false;
-
 	public List<WorldPoint> attackPath = new ArrayList<>();
 	public List<WorldPoint> specialPath = new ArrayList<>();
+	@Inject
+	ToaManager toaManager;
+	@Inject
+	Client client;
+	@Inject
+	EventBus eventBus;
+	@Inject
+	GameTickManager gameTickManager;
+
+	public void register()
+	{
+		this.eventBus.register(this);
+	}
+
+	public void unregister()
+	{
+		this.eventBus.unregister(this);
+	}
 
 	public void resetVariables()
 	{
@@ -484,7 +479,8 @@ public class Baba
 		}
 		NPC deadMonkey = NPCs.search().withId(ToaConstants.BABA_BOSS_MONKEY).filter
 			(x -> (x.getHealthRatio() == 0 || x.getAnimation() == ToaConstants.BABA_BOSS_MONKEY_DEATH_ANIMATION)).first().orElse(null);
-		if(deadMonkey != null){
+		if (deadMonkey != null)
+		{
 			toaManager.print("Found a DEAD monkey");
 			System.out.println("Found a DEAD monkey");
 			badTiles.add(deadMonkey.getWorldLocation());

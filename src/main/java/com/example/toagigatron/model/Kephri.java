@@ -38,28 +38,6 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class Kephri
 {
-	@Inject
-	ToaManager toaManager;
-
-	@Inject
-	Client client;
-
-	@Inject
-	EventBus eventBus;
-
-	@Inject
-	GameTickManager gameTickManager;
-
-	public void register()
-	{
-		this.eventBus.register(this);
-	}
-
-	public void unregister()
-	{
-		this.eventBus.unregister(this);
-	}
-
 	public ArrayList<GameObject> memory_tiles = new ArrayList<>();
 	public ArrayList<GameObject> memory_completed_tiles = new ArrayList<>();
 	public int activeObelisks = 0;
@@ -86,18 +64,30 @@ public class Kephri
 	public ArrayList<WorldPoint> kephriMeleeTiles = new ArrayList<>();
 	public int dungGraphicTick = 0;
 	public boolean isLastPhase = false;
-
 	public int kephriPhase = 1;
-
 	public int previousKephriID = -1;
 	public int kephriTick = 0;
-
 	public int ticksSinceChange = -1;
-
 	public int previousKephriAnimation = 0;
-
 	public List<WorldPoint> kephriPath = new ArrayList<>();
+	@Inject
+	ToaManager toaManager;
+	@Inject
+	Client client;
+	@Inject
+	EventBus eventBus;
+	@Inject
+	GameTickManager gameTickManager;
 
+	public void register()
+	{
+		this.eventBus.register(this);
+	}
+
+	public void unregister()
+	{
+		this.eventBus.unregister(this);
+	}
 
 	public void resetVariables()
 	{

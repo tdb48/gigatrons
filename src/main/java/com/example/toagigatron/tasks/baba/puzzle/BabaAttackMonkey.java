@@ -41,9 +41,9 @@ import net.runelite.client.eventbus.Subscribe;
 )
 public class BabaAttackMonkey extends StagedTask
 {
-	private int lastAttackedIndex = 0;
 	@Inject
 	GameTickManager gameTickManager;
+	private int lastAttackedIndex = 0;
 
 	@Inject
 	public BabaAttackMonkey(ToaManager toaManager)

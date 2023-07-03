@@ -52,12 +52,6 @@ import org.apache.commons.lang3.ArrayUtils;
 )
 public class AkkhaSolvePuzzle extends StagedTask
 {
-	@Inject
-	public AkkhaSolvePuzzle(ToaManager toaManager)
-	{
-		super(toaManager, Stage.AKKHA_PUZZLE);
-	}
-
 	private static final String CHALLENGE_START_MESSAGE = "Challenge started: Path of Het.";
 	private static final String CHALLENGE_COMPLETE_MESSAGE = "Challenge complete: Path of Het.";
 	private static final int BEAM_FIRE_RATE_TICKS = 9;
@@ -67,6 +61,11 @@ public class AkkhaSolvePuzzle extends StagedTask
 		2120 // crash (into an object)
 	);
 	private int nextFireTick = -1;
+	@Inject
+	public AkkhaSolvePuzzle(ToaManager toaManager)
+	{
+		super(toaManager, Stage.AKKHA_PUZZLE);
+	}
 
 	public boolean execute()
 	{

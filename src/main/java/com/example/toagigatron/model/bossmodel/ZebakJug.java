@@ -34,35 +34,6 @@ public class ZebakJug
 
 	}
 
-	public LocalPoint getSolveTile()
-	{
-		if (push)
-		{
-			return pushTile;
-		}
-		return pullTile;
-	}
-
-	public boolean isPushOrPullFree(ArrayList<LocalPoint> poison)
-	{
-		if (!poison.contains(pushTile) && !poison.contains(pullTile))
-		{
-			push = true;
-			return true;
-		}
-		if (poison.contains(pushTile) && !poison.contains(pullTile))
-		{
-			push = false;
-			return true;
-		}
-		if (!poison.contains(pushTile) && poison.contains(pullTile))
-		{
-			push = true;
-			return true;
-		}
-		return false;
-	}
-
 	public static LocalPoint getDirectionTile(Direction direction, LocalPoint localPoint)
 	{
 		if (direction == Direction.NORTH)
@@ -98,6 +69,35 @@ public class ZebakJug
 			return new LocalPoint(localPoint.getX() + 128, localPoint.getY() + 128);
 		}
 		return localPoint;
+	}
+
+	public LocalPoint getSolveTile()
+	{
+		if (push)
+		{
+			return pushTile;
+		}
+		return pullTile;
+	}
+
+	public boolean isPushOrPullFree(ArrayList<LocalPoint> poison)
+	{
+		if (!poison.contains(pushTile) && !poison.contains(pullTile))
+		{
+			push = true;
+			return true;
+		}
+		if (poison.contains(pushTile) && !poison.contains(pullTile))
+		{
+			push = false;
+			return true;
+		}
+		if (!poison.contains(pushTile) && poison.contains(pullTile))
+		{
+			push = true;
+			return true;
+		}
+		return false;
 	}
 
 	public Direction getOppositeDirection(Direction direction)

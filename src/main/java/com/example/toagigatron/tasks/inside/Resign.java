@@ -25,6 +25,7 @@ import net.runelite.api.ItemID;
 public class Resign extends StagedTask
 {
 
+	public static final String ABANDON_MESSAGE = "Yes, abandon the raid.";
 	@Inject
 	ToaGigatronPlugin plugin;
 
@@ -33,8 +34,6 @@ public class Resign extends StagedTask
 	{
 		super(toaManager, Stage.INSIDE);
 	}
-
-	public static final String ABANDON_MESSAGE = "Yes, abandon the raid.";
 
 	public boolean execute()
 	{
