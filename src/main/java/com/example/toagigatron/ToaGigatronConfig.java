@@ -521,10 +521,20 @@ public interface ToaGigatronConfig extends Config {
 	@ConfigItem(
 		position = 900,
 		keyName = "showInfobox",
+		name = "Show Infobox",
+		description = "Show infobox"
+	)
+	default boolean showInfobox()
+	{
+		return true;
+	}
+	@ConfigItem(
+		position = 901,
+		keyName = "showOverlay",
 		name = "Show Overlay",
 		description = "Show overlay"
 	)
-	default boolean showInfobox()
+	default boolean showOverlay()
 	{
 		return true;
 	}

@@ -59,7 +59,7 @@ public class Combat
 		return Combat.AttackStyle.fromIndex(Static.getClient().getVarpValue(43));
 	}
 
-	public static enum AttackStyle
+	public enum AttackStyle
 	{
 		FIRST(0, WidgetInfo.COMBAT_STYLE_ONE),
 		SECOND(1, WidgetInfo.COMBAT_STYLE_TWO),
@@ -67,12 +67,12 @@ public class Combat
 		FOURTH(3, WidgetInfo.COMBAT_STYLE_FOUR),
 		SPELLS(4, WidgetInfo.COMBAT_SPELL_BOX),
 		SPELLS_DEFENSIVE(4, WidgetInfo.COMBAT_DEFENSIVE_SPELL_BOX),
-		UNKNOWN(-1, (WidgetInfo) null);
+		UNKNOWN(-1, null);
 
 		private final int index;
 		private final WidgetInfo widgetInfo;
 
-		private AttackStyle(int index, WidgetInfo widgetInfo)
+		AttackStyle(int index, WidgetInfo widgetInfo)
 		{
 			this.index = index;
 			this.widgetInfo = widgetInfo;
@@ -90,9 +90,7 @@ public class Combat
 
 		public static AttackStyle fromIndex(int index)
 		{
-			return (AttackStyle) Arrays.stream(values()).filter((x) -> {
-				return x.index == index;
-			}).findFirst().orElse(UNKNOWN);
+			return Arrays.stream(values()).filter((x) -> x.index == index).findFirst().orElse(UNKNOWN);
 		}
 	}
 }

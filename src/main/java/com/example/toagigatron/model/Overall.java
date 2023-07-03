@@ -72,7 +72,6 @@ public class Overall
 			if (message.contains("oh dear, you are dead")
 				|| message.contains("you have died"))
 			{
-
 				lockedChest = true;
 				deaths++;
 				died = true;

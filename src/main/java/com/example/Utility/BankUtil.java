@@ -55,7 +55,7 @@ public class BankUtil
 				if (WidgetUtil.isVisible(tab))
 				{
 					MousePackets.queueClickPacket();
-					if (10+index == 10)
+					if (10 + index == 10)
 					{
 						WidgetPackets.queueWidgetAction(tab, "View all items");
 					}
@@ -106,17 +106,21 @@ public class BankUtil
 		}
 	}
 
-	public static void depositInventory(){
+	public static void depositInventory()
+	{
 		Widget widget = client.getWidget(WidgetInfo.BANK_DEPOSIT_INVENTORY);
-		if(widget != null){
+		if (widget != null)
+		{
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(widget, "Deposit Inventory");
 		}
 	}
 
-	public static void depositEquipment() {
+	public static void depositEquipment()
+	{
 		Widget widget = client.getWidget(WidgetInfo.BANK_DEPOSIT_EQUIPMENT);
-		if (widget != null) {
+		if (widget != null)
+		{
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(widget, "Deposit worn items");
 		}
@@ -187,7 +191,8 @@ public class BankUtil
 		return BankInventory.search().nameContains(name).first().orElseThrow().getItemQuantity();
 	}
 
-	public static void close(){
+	public static void close()
+	{
 		EthanApiPlugin.invoke(-1, -1, 26, -1, -1, "", "", -1, -1);
 	}
 

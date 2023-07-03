@@ -21,19 +21,15 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class Static
 {
 	@Getter
+	static Client client = RuneLite.getInjector().getInstance(Client.class);
+	@Getter
 	private static String[] scriptArgs = new String[0];
-
 	@Inject
 	@Getter
 	private static EventBus eventBus;
-
 	@Inject
 	@Getter
 	private static ClientThread clientThread;
-
-	@Getter
-	static Client client = RuneLite.getInjector().getInstance(Client.class);
-
 	@Inject
 	@Getter
 	private static ItemManager itemManager;
