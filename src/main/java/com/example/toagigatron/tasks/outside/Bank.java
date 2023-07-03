@@ -12,17 +12,16 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import java.util.ArrayList;
+import javax.inject.Inject;
 import net.runelite.api.TileObject;
 import net.runelite.api.widgets.Widget;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
 import net.runelite.client.game.ItemManager;
 
 @TaskDescriptor(
 	name = "Banking junk",
 	priority = 25,
-		blocking = true
+	blocking = true
 )
 public class Bank extends StagedTask
 {
@@ -30,6 +29,7 @@ public class Bank extends StagedTask
 
 	@Inject
 	ItemManager itemManager;
+
 	@Inject
 	public Bank(ToaManager toaManager, GameTickManager gameTickManager)
 	{

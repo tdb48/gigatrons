@@ -10,13 +10,12 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import javax.inject.Inject;
 import net.runelite.api.GameObject;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-
-import javax.inject.Inject;
 
 @TaskDescriptor(
 	name = "Baba move off poison",

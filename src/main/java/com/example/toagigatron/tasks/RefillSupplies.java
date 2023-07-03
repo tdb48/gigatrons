@@ -5,8 +5,8 @@ import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
-import net.runelite.api.NPC;
 import javax.inject.Inject;
+import net.runelite.api.NPC;
 
 @TaskDescriptor(
 	name = "Refill supplies",
@@ -39,8 +39,10 @@ public class RefillSupplies extends StagedTask
 				return false;
 			}
 		}
-		if(toaManager.getStage() == Stage.WARDENS_P3){
-			if(client.getSelectedSceneTile() == null){ //we have not clicked to move do not refill
+		if (toaManager.getStage() == Stage.WARDENS_P3)
+		{
+			if (client.getSelectedSceneTile() == null)
+			{ //we have not clicked to move do not refill
 //				toaManager.print("No selected tile so we will not refill supplies right now");
 				return false;
 			}
@@ -48,7 +50,8 @@ public class RefillSupplies extends StagedTask
 		NPC playerInteracting = toaManager.playerInteractingWith();
 		if (toaManager.refill())
 		{
-			if(toaManager.getStage() != Stage.WARDENS_P3){
+			if (toaManager.getStage() != Stage.WARDENS_P3)
+			{
 				//toaManager.reAttack(playerInteracting);
 			}
 			toaManager.print("Refilling supplies");

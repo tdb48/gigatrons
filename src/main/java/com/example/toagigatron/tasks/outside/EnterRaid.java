@@ -9,10 +9,8 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
-import net.runelite.api.GameObject;
-import net.runelite.api.TileObject;
-
 import javax.inject.Inject;
+import net.runelite.api.TileObject;
 
 @TaskDescriptor(
 	name = "Entering raid",
@@ -33,10 +31,12 @@ public class EnterRaid extends StagedTask
 		{
 			return false;
 		}
-		if(toaManager.onBreak()){
+		if (toaManager.onBreak())
+		{
 			return false;
 		}
-		if(toaManager.needsBreak() && !toaManager.allowedToBreak){
+		if (toaManager.needsBreak() && !toaManager.allowedToBreak)
+		{
 			toaManager.allowedToBreak = true;
 			return false;
 		}

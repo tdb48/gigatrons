@@ -14,11 +14,11 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import java.util.ArrayList;
+import javax.inject.Inject;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
-import javax.inject.Inject;
-import java.util.ArrayList;
 
 @TaskDescriptor(
 	name = "Claiming supplies",
@@ -123,11 +123,14 @@ public class ClaimSupplies extends StagedTask
 		if (hasSupplyBag())
 		{
 			//If we already have a bag but we have 1 or less salt doses and the chaos widget has 1 or more salt doess, take chaos
-			if(lowSalt() && chaosSalt >= 1){
+			if (lowSalt() && chaosSalt >= 1)
+			{
 				updateDoses(chaos);
 				toaManager.print("Picking chaos");
 				return client.getWidget(777, 9);
-			} else {
+			}
+			else
+			{
 				toaManager.print("Picking life");
 				updateDoses(life);
 				return client.getWidget(777, 6);
@@ -175,6 +178,7 @@ public class ClaimSupplies extends StagedTask
 		}
 		return 0;
 	}
+
 	public int getScarabInWidget(Widget widget)
 	{
 		if (!WidgetUtil.isVisible(widget))
@@ -183,7 +187,7 @@ public class ClaimSupplies extends StagedTask
 		}
 		for (Widget itemWidget : widget.getDynamicChildren())
 		{
-				if (Consumables.SCARAB.contains(itemWidget.getItemId()))
+			if (Consumables.SCARAB.contains(itemWidget.getItemId()))
 			{
 				return itemWidget.getItemQuantity();
 			}
@@ -255,13 +259,15 @@ public class ClaimSupplies extends StagedTask
 		return 0;
 	}
 
-	private boolean lowSalt(){
-		if(toaManager.consumableTracker.totalSaltDoses >= 2){
+	private boolean lowSalt()
+	{
+		if (toaManager.consumableTracker.totalSaltDoses >= 2)
+		{
 			return false;
 		}
 
 		return toaManager.consumableTracker.totalSaltDoses == 0 ||
-				(toaManager.consumableTracker.totalSaltDoses == 1 && toaManager.overall.saltInTicks <= 300);
+			(toaManager.consumableTracker.totalSaltDoses == 1 && toaManager.overall.saltInTicks <= 300);
 	}
 
 

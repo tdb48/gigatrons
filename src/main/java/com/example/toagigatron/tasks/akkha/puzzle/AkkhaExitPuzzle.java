@@ -14,10 +14,10 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import java.util.ArrayList;
 import javax.inject.Inject;
 import net.runelite.api.TileObject;
 import org.apache.commons.lang3.ArrayUtils;
-import java.util.ArrayList;
 
 
 @TaskDescriptor(
@@ -52,7 +52,7 @@ public class AkkhaExitPuzzle extends StagedTask
 		{
 			toaManager.print("Depositing pickaxe");
 			MousePackets.queueClickPacket();
-			ObjectPackets.queueObjectAction(pickaxeStatue, false,"Deposit-pickaxe");
+			ObjectPackets.queueObjectAction(pickaxeStatue, false, "Deposit-pickaxe");
 			return true;
 		}
 		int[] potentialPotions = Consumables.BREW.stream().mapToInt(i -> i).toArray();
@@ -69,9 +69,10 @@ public class AkkhaExitPuzzle extends StagedTask
 			}
 		}
 		toaManager.print("Entering akkha");
-		if(!EthanApiPlugin.isMoving()){
+		if (!EthanApiPlugin.isMoving())
+		{
 			MousePackets.queueClickPacket();
-			ObjectPackets.queueObjectAction(exit, false,"Quick-Enter");
+			ObjectPackets.queueObjectAction(exit, false, "Quick-Enter");
 		}
 
 		return true;

@@ -1,18 +1,10 @@
 package com.example.toagigatron.tasks.wardens.wardensp3;
 
-import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
-import com.example.Packets.NPCPackets;
-import com.example.Packets.ObjectPackets;
 import com.example.Utility.Combat;
-import com.example.Utility.Movement;
 import com.example.Utility.NPCUtil;
-import com.example.Utility.ObjectUtil;
 import com.example.Utility.Prayer;
 import com.example.Utility.Prayers;
-import com.example.Utility.Reachable;
 import com.example.Utility.Static;
-import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
@@ -26,7 +18,6 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
-import net.runelite.api.Projectile;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;

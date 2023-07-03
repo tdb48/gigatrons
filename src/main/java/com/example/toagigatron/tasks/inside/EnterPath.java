@@ -10,9 +10,9 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import javax.inject.Inject;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
-import javax.inject.Inject;
 
 @TaskDescriptor(
 	name = "Entering path",
@@ -46,31 +46,31 @@ public class EnterPath extends StagedTask
 		{
 			toaManager.print("Entering ba-ba");
 			MousePackets.queueClickPacket();
-			ObjectPackets.queueObjectAction(babaPath, false,"Quick-Enter");
+			ObjectPackets.queueObjectAction(babaPath, false, "Quick-Enter");
 		}
 		else if (kephriPath != null)
 		{
 			toaManager.print("Entering kephri");
 			MousePackets.queueClickPacket();
-			ObjectPackets.queueObjectAction(kephriPath, false,"Quick-Enter");
+			ObjectPackets.queueObjectAction(kephriPath, false, "Quick-Enter");
 		}
 		else if (zebakPath != null)
 		{
 			toaManager.print("Entering Zebak");
 			MousePackets.queueClickPacket();
-			ObjectPackets.queueObjectAction(zebakPath, false,"Quick-Enter");
+			ObjectPackets.queueObjectAction(zebakPath, false, "Quick-Enter");
 		}
 		else if (akkhaPath != null)
 		{
 			toaManager.print("Entering Akkha");
 			MousePackets.queueClickPacket();
-			ObjectPackets.queueObjectAction(akkhaPath, false,"Quick-Enter");
+			ObjectPackets.queueObjectAction(akkhaPath, false, "Quick-Enter");
 		}
 		else if (wardensPath != null)
 		{
 			toaManager.print("Entering wardens");
 			MousePackets.queueClickPacket();
-			ObjectPackets.queueObjectAction(wardensPath, false,"Quick-Enter");
+			ObjectPackets.queueObjectAction(wardensPath, false, "Quick-Enter");
 		}
 		else
 		{

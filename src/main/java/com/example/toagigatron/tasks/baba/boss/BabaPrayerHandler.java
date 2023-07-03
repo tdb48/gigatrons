@@ -12,13 +12,12 @@ import com.example.toagigatron.model.constants.WeaponMap;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import com.google.inject.Inject;
+import java.util.List;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.widgets.Widget;
-
-import java.util.List;
 
 @TaskDescriptor(
 	name = "Baba prayers"

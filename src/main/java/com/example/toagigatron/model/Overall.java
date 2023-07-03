@@ -5,15 +5,14 @@ import com.example.EthanApiPlugin.Collections.Widgets;
 import com.example.Utility.BankUtil;
 import com.example.toagigatron.ToaGigatronPlugin;
 import com.example.toagigatron.manager.ToaManager;
+import java.time.Instant;
+import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
-
-import javax.inject.Inject;
-import java.time.Instant;
 
 public class Overall
 {

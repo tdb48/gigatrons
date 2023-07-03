@@ -39,17 +39,32 @@ import com.example.toagigatron.model.setup.MageSetup;
 import com.example.toagigatron.model.setup.MeleeSetup;
 import com.example.toagigatron.model.setup.RangeSetup;
 import com.google.inject.Singleton;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-
-import net.runelite.api.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
+import net.runelite.api.Projectile;
+import net.runelite.api.Scene;
+import net.runelite.api.Skill;
+import net.runelite.api.Tile;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -304,11 +319,14 @@ public class ToaManager
 //		}
 //	}
 
-	public boolean earlyReachableCheck(WorldPoint wp){
-		if(wp == null){
+	public boolean earlyReachableCheck(WorldPoint wp)
+	{
+		if (wp == null)
+		{
 			return false;
 		}
-		if(!wp.isInScene(client)){
+		if (!wp.isInScene(client))
+		{
 			return false;
 		}
 		LocalPoint lp = LocalPoint.fromWorld(client, wp);
@@ -807,6 +825,7 @@ public class ToaManager
 			counter++;
 		}
 	}
+
 	public GameObject findClosestGameObject(ArrayList<GameObject> gameObjects)
 	{
 		GameObject returnObj = null;

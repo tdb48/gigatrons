@@ -13,13 +13,11 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import javax.inject.Inject;
 import net.runelite.api.NPC;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
-
-
-import javax.inject.Inject;
 
 @TaskDescriptor(
 	name = "Baba attack boss",
@@ -33,19 +31,21 @@ public class BabaAttackBoss extends StagedTask
 		super(toaManager, Stage.BABA_BOSS);
 	}
 
-	private boolean somethingHappening(){
+	private boolean somethingHappening()
+	{
 		return toaManager.baba.rockfallTick > 0 ||
-				toaManager.baba.ceilingTick > 0 ||
-				toaManager.baba.shockwaveTick > 0 ||
-				toaManager.baba.closeToProccing();
+			toaManager.baba.ceilingTick > 0 ||
+			toaManager.baba.shockwaveTick > 0 ||
+			toaManager.baba.closeToProccing();
 	}
+
 	public boolean execute()
 	{
 		NPC weakBoulder = NPCUtil.findNearest(ToaConstants.WEAK_BOULDER);
 		if (toaManager.baba.babaBoss == null
 			|| (!toaManager.isNextToNpc(toaManager.baba.babaBoss) &&
-				somethingHappening() &&
-				client.getVarbitValue(Varbits.BOSS_HEALTH_CURRENT) < client.getVarbitValue(Varbits.BOSS_HEALTH_MAXIMUM))
+			somethingHappening() &&
+			client.getVarbitValue(Varbits.BOSS_HEALTH_CURRENT) < client.getVarbitValue(Varbits.BOSS_HEALTH_MAXIMUM))
 			|| weakBoulder != null)
 		{
 			return false;

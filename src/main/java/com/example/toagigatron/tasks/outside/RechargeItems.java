@@ -1,14 +1,12 @@
 package com.example.toagigatron.tasks.outside;
 
 
-import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.EthanApiPlugin.Collections.TileObjects;
 import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Packets.WidgetPackets;
 import com.example.Utility.BankUtil;
-import com.example.Utility.Dialog;
 import com.example.Utility.InventoryUtil;
 import com.example.toagigatron.ToaGigatronPlugin;
 import com.example.toagigatron.manager.ToaManager;
@@ -17,10 +15,10 @@ import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.model.setup.mage.MageWeapon;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.TileObject;
 import net.runelite.api.widgets.Widget;
-import javax.inject.Inject;
 
 @TaskDescriptor(
 	name = "Recharge items",
@@ -81,12 +79,14 @@ public class RechargeItems extends StagedTask
 			&& InventoryUtil.contains(ToaConstants.blowpipe))
 		{
 			toaManager.print("refiill bp");
-			if(BankUtil.isOpen()){
+			if (BankUtil.isOpen())
+			{
 				toaManager.print("Bank is open, closing to recharge");
 				BankUtil.close();
 			}
 			Widget blowieP = InventoryUtil.getFirst(ToaConstants.blowpipe);
-			if(blowieP != null){
+			if (blowieP != null)
+			{
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetOnWidget(InventoryUtil.getFirst(scales), blowieP);
 			}
@@ -100,12 +100,14 @@ public class RechargeItems extends StagedTask
 			&& InventoryUtil.contains(ToaConstants.blowpipe))
 		{
 			toaManager.print("recharg bp");
-			if(BankUtil.isOpen()){
+			if (BankUtil.isOpen())
+			{
 				toaManager.print("Bank is open, closing to recharge");
 				BankUtil.close();
 			}
 			Widget blowieP = InventoryUtil.getFirst(ToaConstants.blowpipe);
-			if(blowieP != null){
+			if (blowieP != null)
+			{
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetOnWidget(InventoryUtil.getFirst(toaManager.chargesTracker.dartType.itemId), blowieP);
 			}
@@ -120,7 +122,8 @@ public class RechargeItems extends StagedTask
 			&& InventoryUtil.contains(MageWeapon.SANG.itemId))
 		{
 			toaManager.print("charge mage");
-			if(BankUtil.isOpen()){
+			if (BankUtil.isOpen())
+			{
 				toaManager.print("Bank is open, closing to recharge");
 				BankUtil.close();
 			}

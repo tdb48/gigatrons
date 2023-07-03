@@ -2,10 +2,8 @@ package com.example.toagigatron.tasks.akkha.boss;
 
 import com.example.Utility.Movement;
 import com.example.Utility.Reachable;
-import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
-import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import javax.inject.Inject;

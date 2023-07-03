@@ -11,11 +11,9 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
-import net.runelite.api.GameObject;
-import net.runelite.api.TileObject;
-
-import javax.inject.Inject;
 import java.util.ArrayList;
+import javax.inject.Inject;
+import net.runelite.api.TileObject;
 
 @TaskDescriptor(
 	name = "Get supplies",
@@ -26,6 +24,7 @@ public class GetSupplies extends StagedTask
 {
 
 	GameTickManager gameTickManager;
+
 	@Inject
 	public GetSupplies(ToaManager toaManager, GameTickManager gameTickManager)
 	{
@@ -48,7 +47,8 @@ public class GetSupplies extends StagedTask
 			toaManager.allowedToBreak = true;
 			return false;
 		}
-		if(gameTickManager.isTickWaiting()){
+		if (gameTickManager.isTickWaiting())
+		{
 			return false;
 		}
 		if (!BankUtil.isOpen())

@@ -11,12 +11,10 @@ import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import java.util.HashSet;
+import javax.inject.Inject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashSet;
 
 @TaskDescriptor(
 	name = "Baba fix vent",
@@ -27,6 +25,7 @@ public class BabaFixVent extends StagedTask
 {
 	@Inject
 	GameTickManager gameTickManager;
+
 	@Inject
 	public BabaFixVent(ToaManager toaManager)
 	{
@@ -49,10 +48,11 @@ public class BabaFixVent extends StagedTask
 //					toaManager.baba.puzzleSpecialTickTimer + " ticks until vents demolish me.");
 //			return false;
 //		}
-		if(toaManager.baba.puzzleSpecialTickTimer > 10
-				&& client.getLocalPlayer().isInteracting()
-				&& client.getLocalPlayer().getInteracting().getName() != null
-				&& client.getLocalPlayer().getInteracting().getName().equalsIgnoreCase("baboon shaman")){
+		if (toaManager.baba.puzzleSpecialTickTimer > 10
+			&& client.getLocalPlayer().isInteracting()
+			&& client.getLocalPlayer().getInteracting().getName() != null
+			&& client.getLocalPlayer().getInteracting().getName().equalsIgnoreCase("baboon shaman"))
+		{
 			toaManager.print("Returning false in fix vent cause im attacking a shaman and have ticks to spare");
 			return false;
 		}
@@ -61,7 +61,8 @@ public class BabaFixVent extends StagedTask
 		{
 			toaManager.print("Fixing vent");
 			Widget potion = Inventory.search().nameContains("Neutralising potion").first().orElse(null);
-			if(potion != null){
+			if (potion != null)
+			{
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(potion, "Pour");
 				gameTickManager.setTickWait(1);

@@ -4,7 +4,11 @@ import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
-import com.example.Utility.*;
+import com.example.Utility.Combat;
+import com.example.Utility.Movement;
+import com.example.Utility.NPCUtil;
+import com.example.Utility.Reachable;
+import com.example.Utility.WorldAreas;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.bossmodel.KephriDungRow;
@@ -13,13 +17,11 @@ import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Varbits;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
 @TaskDescriptor(
@@ -46,7 +48,7 @@ public class KephriAttackBoss extends StagedTask
 		NPC demi = NPCUtil.findNearest("Spitting Scarab", "Arcane Scarab", "Soldier Scarab");
 
 		if (toaManager.kephri.kephri == null
-				|| !NPCUtil.hasAction(toaManager.kephri.kephri, "Attack")
+			|| !NPCUtil.hasAction(toaManager.kephri.kephri, "Attack")
 			|| toaManager.kephri.kephriRoom == null
 			|| !toaManager.kephri.kephriRoom.contains(playerPoint)
 			|| resetGhost != null
@@ -223,15 +225,18 @@ public class KephriAttackBoss extends StagedTask
 		}
 		return null;
 	}
-	private boolean onStartRow(WorldPoint playerPoint){
+
+	private boolean onStartRow(WorldPoint playerPoint)
+	{
 		KephriDungRow row = toaManager.kephri.currentRow;
-		if(row == null){
+		if (row == null)
+		{
 			return false;
 		}
 		return playerPoint.equals(row.middlePoint) ||
-				playerPoint.equals(row.startPoint) ||
-				playerPoint.equals(row.prePathPoint) ||
-				playerPoint.equals(row.endPoint);
+			playerPoint.equals(row.startPoint) ||
+			playerPoint.equals(row.prePathPoint) ||
+			playerPoint.equals(row.endPoint);
 	}
 
 //	private boolean onStartRow(WorldPoint playerPoint)
@@ -251,7 +256,7 @@ public class KephriAttackBoss extends StagedTask
 	private boolean shouldWeSpec()
 	{
 
-		if (Equipment.search().withId(ItemID.OSMUMTENS_FANG).empty()|| Combat.isSpecEnabled())
+		if (Equipment.search().withId(ItemID.OSMUMTENS_FANG).empty() || Combat.isSpecEnabled())
 		{
 			return false;
 		}
@@ -274,7 +279,8 @@ public class KephriAttackBoss extends StagedTask
 	private WorldPoint getSafeTile()
 	{
 		int startIndex = toaManager.kephri.currentRow.index;
-		for(int i = startIndex; i < toaManager.kephri.kephriDungRows.size(); i++){
+		for (int i = startIndex; i < toaManager.kephri.kephriDungRows.size(); i++)
+		{
 			KephriDungRow row = toaManager.kephri.kephriDungRows.get(i);
 			if (Reachable.isWalkable(row.startPoint) && !toaManager.kephri.bombTiles.contains(row.startPoint))
 			{
@@ -304,7 +310,8 @@ public class KephriAttackBoss extends StagedTask
 	private WorldPoint getStepBackStartTile()
 	{
 		int startIndex = toaManager.kephri.currentRow.index;
-		for(int i = startIndex; i < toaManager.kephri.kephriDungRows.size(); i++){
+		for (int i = startIndex; i < toaManager.kephri.kephriDungRows.size(); i++)
+		{
 			KephriDungRow row = toaManager.kephri.kephriDungRows.get(i);
 			if (Reachable.isWalkable(row.middlePoint))
 			{

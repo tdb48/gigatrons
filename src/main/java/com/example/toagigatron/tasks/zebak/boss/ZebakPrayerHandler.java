@@ -1,13 +1,10 @@
 package com.example.toagigatron.tasks.zebak.boss;
 
 
-import com.example.EthanApiPlugin.Collections.NPCs;
-import com.example.EthanApiPlugin.EthanApiPlugin;
-import com.example.Packets.MousePackets;
-import com.example.Packets.NPCPackets;
-import com.example.Utility.*;
+import com.example.Utility.Combat;
 import com.example.Utility.Prayer;
-import com.example.toagigatron.manager.GameTickManager;
+import com.example.Utility.Prayers;
+import com.example.Utility.Static;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;

@@ -39,7 +39,8 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("ToaGigatronConfig")
-public interface ToaGigatronConfig extends Config {
+public interface ToaGigatronConfig extends Config
+{
 
 	@ConfigItem(keyName = "scheduleLogout", name = "Schedule logout", description = "Click this to schedule a logout", position = -10)
 	default Button scheduleLogout()
@@ -528,6 +529,7 @@ public interface ToaGigatronConfig extends Config {
 	{
 		return true;
 	}
+
 	@ConfigItem(
 		position = 901,
 		keyName = "showOverlay",

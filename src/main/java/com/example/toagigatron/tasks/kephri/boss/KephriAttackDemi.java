@@ -4,7 +4,12 @@ import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
-import com.example.Utility.*;
+import com.example.Utility.Combat;
+import com.example.Utility.Movement;
+import com.example.Utility.NPCUtil;
+import com.example.Utility.Reachable;
+import com.example.Utility.Static;
+import com.example.Utility.WorldAreas;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.bossmodel.KephriDungRow;
@@ -39,7 +44,7 @@ public class KephriAttackDemi extends StagedTask
 	{
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
 		NPC demi = NPCUtil.findNearest("Spitting Scarab", "Arcane Scarab", "Soldier Scarab");
-		NPC resetGhost = NPCUtil.findNearest(ToaConstants.OSMUMTEN,ToaConstants.SCABARAS);
+		NPC resetGhost = NPCUtil.findNearest(ToaConstants.OSMUMTEN, ToaConstants.SCABARAS);
 		if (toaManager.kephri.kephriRoom == null
 			|| toaManager.kephri.kephri == null
 			|| resetGhost != null

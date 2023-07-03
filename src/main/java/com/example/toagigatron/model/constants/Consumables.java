@@ -3,7 +3,6 @@ package com.example.toagigatron.model.constants;
 import com.example.EthanApiPlugin.Collections.Inventory;
 import java.util.ArrayList;
 import java.util.Arrays;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.widgets.Widget;
 

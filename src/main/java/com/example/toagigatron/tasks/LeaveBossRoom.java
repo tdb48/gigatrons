@@ -5,17 +5,20 @@ import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
 import com.example.Packets.TileItemPackets;
-import com.example.Utility.*;
+import com.example.Utility.Dialog;
+import com.example.Utility.InventoryUtil;
+import com.example.Utility.NPCUtil;
+import com.example.Utility.Reachable;
+import com.example.Utility.TileItemUtil;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.Task;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import com.google.inject.Inject;
+import java.util.ArrayList;
 import net.runelite.api.NPC;
-import net.runelite.api.TileItem;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.Subscribe;
-import java.util.ArrayList;
 
 @TaskDescriptor(
 	priority = 20,

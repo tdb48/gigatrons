@@ -1,28 +1,38 @@
 package com.example.toagigatron.tasks.baba.puzzle;
 
-import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
-import com.example.Utility.*;
+import com.example.Utility.Combat;
+import com.example.Utility.Game;
+import com.example.Utility.InventoryUtil;
+import com.example.Utility.Movement;
+import com.example.Utility.ObjectUtil;
 import com.example.Utility.Prayer;
+import com.example.Utility.Prayers;
+import com.example.Utility.Reachable;
+import com.example.Utility.Tiles;
+import com.example.Utility.Walker;
+import com.example.Utility.WorldAreas;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldArea;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ProjectileMoved;
-import net.runelite.client.eventbus.Subscribe;
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import javax.inject.Inject;
+import net.runelite.api.NPC;
+import net.runelite.api.Projectile;
+import net.runelite.api.Tile;
+import net.runelite.api.coords.WorldArea;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ProjectileMoved;
+import net.runelite.client.eventbus.Subscribe;
 
 @TaskDescriptor(
 	name = "Baba attack monkey",

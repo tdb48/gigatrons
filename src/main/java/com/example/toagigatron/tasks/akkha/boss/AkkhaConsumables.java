@@ -12,7 +12,6 @@ import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import com.google.inject.Inject;
-import net.runelite.api.Item;
 import net.runelite.api.NPC;
 import net.runelite.api.widgets.Widget;
 

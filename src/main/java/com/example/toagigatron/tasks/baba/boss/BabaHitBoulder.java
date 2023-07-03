@@ -11,10 +11,10 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import java.util.HashSet;
+import javax.inject.Inject;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-import javax.inject.Inject;
-import java.util.HashSet;
 
 @TaskDescriptor(
 	name = "Baba hit boulder",
@@ -42,7 +42,7 @@ public class BabaHitBoulder extends StagedTask
 		}
 
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
-		NPC weakBoulder =  NPCUtil.findNearestNpcAliveOrDead(ToaConstants.WEAK_BOULDER);
+		NPC weakBoulder = NPCUtil.findNearestNpcAliveOrDead(ToaConstants.WEAK_BOULDER);
 		if (weakBoulder == null
 			&& (toaManager.baba.bouldersKilled == 7
 			|| toaManager.baba.bouldersKilled == 14))

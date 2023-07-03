@@ -1,14 +1,10 @@
 package com.example.toagigatron.tasks.kephri.puzzle;
 
-import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
 import com.example.Packets.NPCPackets;
 import com.example.Utility.Movement;
 import com.example.Utility.NPCUtil;
-import com.example.Utility.Reachable;
 import com.example.Utility.WorldAreas;
-import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
@@ -132,7 +128,7 @@ public class SolvePillarPuzzle extends StagedTask
 						toaManager.print("obelisk not in current order and not been attempted yet");
 						MousePackets.queueClickPacket();
 						NPCPackets.queueNPCAction(n, "Hit");
-						NPC hitPillar = NPCUtil.findAt (n.getLocalLocation(), ToaConstants.OBELISK_ID_INACTIVE);
+						NPC hitPillar = NPCUtil.findAt(n.getLocalLocation(), ToaConstants.OBELISK_ID_INACTIVE);
 						if (hitPillar != null)
 						{
 							toaManager.print("Pillar i hit was wrong, adding to attempted list");

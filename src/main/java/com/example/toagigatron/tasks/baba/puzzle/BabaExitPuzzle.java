@@ -2,29 +2,24 @@ package com.example.toagigatron.tasks.baba.puzzle;
 
 import com.example.EthanApiPlugin.Collections.ETileItem;
 import com.example.EthanApiPlugin.Collections.Inventory;
-import com.example.EthanApiPlugin.Collections.TileItems;
 import com.example.EthanApiPlugin.Collections.TileObjects;
 import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Packets.TileItemPackets;
 import com.example.Utility.Reachable;
 import com.example.Utility.TileItemUtil;
-import com.example.Utility.Tiles;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
-import net.runelite.api.GameObject;
-import net.runelite.api.TileItem;
+import java.util.ArrayList;
+import javax.inject.Inject;
 import net.runelite.api.TileObject;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
-
 @TaskDescriptor(
-		name = "Baba exit puzzle",
-		priority = 1
+	name = "Baba exit puzzle",
+	priority = 1
 )
 public class BabaExitPuzzle extends StagedTask
 {
@@ -58,7 +53,7 @@ public class BabaExitPuzzle extends StagedTask
 			toaManager.print("Exiting baba puzzle");
 
 			MousePackets.queueClickPacket();
-			ObjectPackets.queueObjectAction(exit, false,"Quick-Enter");
+			ObjectPackets.queueObjectAction(exit, false, "Quick-Enter");
 			return true;
 		}
 

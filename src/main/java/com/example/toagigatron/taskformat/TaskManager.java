@@ -1,14 +1,12 @@
 package com.example.toagigatron.taskformat;
 
-import javax.inject.Inject;
-
 import com.example.Utility.Static;
 import com.google.inject.Injector;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ThreadLocalRandom;
-
+import javax.inject.Inject;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;

@@ -6,19 +6,17 @@ import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Packets.WidgetPackets;
-import com.example.Utility.NPCUtil;
 import com.example.Utility.ObjectUtil;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import javax.inject.Inject;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.widgets.Widget;
-import javax.inject.Inject;
-import java.util.Arrays;
 
 @TaskDescriptor(
 	name = "Claim loot",
@@ -113,24 +111,28 @@ public class ClaimLoot extends StagedTask
 		{
 			ObjectComposition chestComp = client.getObjectDefinition(chest.getId());
 			ObjectComposition imposterComp = client.getObjectDefinition(chestComp.getImpostor().getId());
-			if(imposterComp != null){
-				if(imposterComp.getActions() != null){
-					for(String s : imposterComp.getActions()){
-						if(s == null){
+			if (imposterComp != null)
+			{
+				if (imposterComp.getActions() != null)
+				{
+					for (String s : imposterComp.getActions())
+					{
+						if (s == null)
+						{
 							continue;
 						}
-						if(s.equals("Open"))
+						if (s.equals("Open"))
 						{
 							toaManager.print("Has action open");
 							MousePackets.queueClickPacket();
-							ObjectPackets.queueObjectAction(chest, false,"Open");
+							ObjectPackets.queueObjectAction(chest, false, "Open");
 							return true;
 						}
-						if(s.equals("Search"))
+						if (s.equals("Search"))
 						{
 							toaManager.print("Has action Search");
 							MousePackets.queueClickPacket();
-							ObjectPackets.queueObjectAction(chest, false,"Search");
+							ObjectPackets.queueObjectAction(chest, false, "Search");
 							return true;
 						}
 					}

@@ -6,14 +6,11 @@ import com.example.Packets.ObjectPackets;
 import com.example.Packets.WidgetPackets;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
-import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
-import net.runelite.api.GameObject;
+import javax.inject.Inject;
 import net.runelite.api.TileObject;
 import net.runelite.api.widgets.Widget;
-
-import javax.inject.Inject;
 
 @TaskDescriptor(
 	name = "Claim Loot Outside",
@@ -46,7 +43,7 @@ public class ClaimLootOutside extends StagedTask
 		{
 			toaManager.print("Clicking loot chest");
 			MousePackets.queueClickPacket();
-			ObjectPackets.queueObjectAction(wallLoot, false,"Claim");
+			ObjectPackets.queueObjectAction(wallLoot, false, "Claim");
 			return true;
 		}
 		Widget bankAll = client.getWidget(771, 4);

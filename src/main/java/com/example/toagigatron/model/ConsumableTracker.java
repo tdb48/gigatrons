@@ -2,9 +2,13 @@ package com.example.toagigatron.model;
 
 
 import com.example.toagigatron.model.constants.Consumables;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
-
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.TileItem;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -14,9 +18,6 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.PluginManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ConsumableTracker
 {
@@ -225,8 +226,6 @@ public class ConsumableTracker
 //	}
 
 
-
-
 //	String name = "";
 //	int id = event.getItemId();
 //		if(!Consumables.isRaidPotion(id)){
@@ -266,50 +265,60 @@ public class ConsumableTracker
 //	}
 
 
-
-
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event){
-		if(event.getContainerId() != InventoryID.INVENTORY.getId()){
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (event.getContainerId() != InventoryID.INVENTORY.getId())
+		{
 			return;
 		}
-		if(inventory == null){
+		if (inventory == null)
+		{
 			return;
 		}
-		if(inventory.size() == 0){
-			for(int i = 0; i < 28; i++){
+		if (inventory.size() == 0)
+		{
+			for (int i = 0; i < 28; i++)
+			{
 				inventory.add(event.getItemContainer().getItem(i));
 			}
 			return;
 		}
-		for(int i = 0; i < 28; i++){
+		for (int i = 0; i < 28; i++)
+		{
 			Item newItem = event.getItemContainer().getItem(i);
 			Item oldItem = inventory.get(i);
 
-			if(oldItem == null && newItem == null)
+			if (oldItem == null && newItem == null)
 			{
 				//inventory.set(i, null);
 				//System.out.println("BOTH NULL who cares");
 			}
 			//Both items are not null so we may be adding a new item via sipping a potion or swapping gear, if not then items are unchanged
-			else if(oldItem != null && newItem != null){
-				if(!oldItem.equals(newItem)){
+			else if (oldItem != null && newItem != null)
+			{
+				if (!oldItem.equals(newItem))
+				{
 					inventoryChanged(oldItem.getId(), false);
 					inventoryChanged(newItem.getId(), true);
 					//System.out.println("Old item was -> " + oldItem + ", new item is -> " + newItem);
 					inventory.set(i, newItem);
-				} else {
+				}
+				else
+				{
 					//System.out.println("Unchanged items at these slots");
 				}
 			}
 			//Old item is null empty inv space) new item is not - adding an item
-			else if(oldItem == null){
+			else if (oldItem == null)
+			{
 				inventoryChanged(newItem.getId(), true);
 				inventory.set(i, newItem);
 				//System.out.println("Old item is null, new item is -> " + newItem);
 			}
 			//Old item is not null new item is null - removing an item
-			else {
+			else
+			{
 				inventoryChanged(oldItem.getId(), false);
 				inventory.set(i, null);
 				//System.out.println("Old item was -> " + oldItem + ", new item is null");
@@ -317,14 +326,17 @@ public class ConsumableTracker
 		}
 	}
 
-	public void inventoryChanged(int id, boolean added){
+	public void inventoryChanged(int id, boolean added)
+	{
 		String name = itemManager.getItemComposition(id).getName();
-		if(!Consumables.isRaidPotion(id)){
+		if (!Consumables.isRaidPotion(id))
+		{
 			return;
 		}
-		if(added){
+		if (added)
+		{
 			//The item disappeared off the ground and appeared in our inventory, logically we likely picked this up
-			if(name != null && recentlyDespawned != null && itemManager.getItemComposition(recentlyDespawned.getId()).getName().equals(name))
+			if (name != null && recentlyDespawned != null && itemManager.getItemComposition(recentlyDespawned.getId()).getName().equals(name))
 			{
 				//Handle adding doses to our inventory
 				updateInventoryDoses(id, true);
@@ -346,7 +358,9 @@ public class ConsumableTracker
 					updateInventoryDoses(id, true);
 				}
 			}
-		} else {
+		}
+		else
+		{
 			previousChange = id;
 			updateInventoryDoses(id, false);
 		}
@@ -526,7 +540,7 @@ public class ConsumableTracker
 		//Tears
 		if (Consumables.RAID_RESTORE.contains(id))
 		{
-		//	System.out.println("Its a raid restore");
+			//	System.out.println("Its a raid restore");
 			if (addition)
 			{
 				bagRaidRestoreDoses += determineDoses(name);
@@ -744,7 +758,7 @@ public class ConsumableTracker
 			return 0;
 		}
 		//System.out.println("Item removed: " + itemManager.getItemComposition(idRemoved).getName() + "\n" +
-			//"Item added: " + itemManager.getItemComposition(idAdded).getName());
+		//"Item added: " + itemManager.getItemComposition(idAdded).getName());
 		int doseDiff = dose2 - dose1;
 		if (doseDiff <= 0)
 		{

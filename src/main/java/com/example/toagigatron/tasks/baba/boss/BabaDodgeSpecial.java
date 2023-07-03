@@ -12,10 +12,10 @@ import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import com.google.inject.Inject;
-import net.runelite.api.NPC;
-import net.runelite.api.coords.WorldPoint;
 import java.util.ArrayList;
 import java.util.HashSet;
+import net.runelite.api.NPC;
+import net.runelite.api.coords.WorldPoint;
 
 @TaskDescriptor(
 	name = "Baba dodge special",

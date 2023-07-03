@@ -1,11 +1,8 @@
 package com.example.toagigatron.tasks.baba.puzzle;
 
 import com.example.EthanApiPlugin.Collections.TileObjects;
-import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
-import com.example.Utility.Game;
-import com.example.Utility.InventoryUtil;
 import com.example.Utility.Reachable;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Consumables;
@@ -13,10 +10,8 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
-import net.runelite.api.*;
-import net.runelite.api.widgets.Widget;
-
 import javax.inject.Inject;
+import net.runelite.api.TileObject;
 
 @TaskDescriptor(
 	name = "Baba enter puzzle",

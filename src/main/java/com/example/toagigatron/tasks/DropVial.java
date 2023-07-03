@@ -23,6 +23,7 @@ public class DropVial extends Task
 {
 
 	Client client = Static.getClient();
+
 	public boolean run()
 	{
 		if (BankUtil.isOpen())
@@ -41,28 +42,36 @@ public class DropVial extends Task
 		return false;
 	}
 
-	public void reAttack(NPC npc){
-		if(npc != null){
+	public void reAttack(NPC npc)
+	{
+		if (npc != null)
+		{
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(npc, "Attack");
 			print("Re-Attacking " + npc.getName() + " In drop vial task");
-		} else {
+		}
+		else
+		{
 			print("NPC IS NULL IN RE-ATTACK IN DROP VIAL TASK");
 		}
 	}
 
-	public NPC playerInteractingWith(){
+	public NPC playerInteractingWith()
+	{
 		Player p = client.getLocalPlayer();
-		if(p.getInteracting() == null) {
+		if (p.getInteracting() == null)
+		{
 			return null;
 		}
 
-		if(p.getInteracting() instanceof NPC){
+		if (p.getInteracting() instanceof NPC)
+		{
 			return (NPC) p.getInteracting();
 		}
 
 		return null;
 	}
+
 	public void print(String msg)
 	{
 		if (client.isClientThread())

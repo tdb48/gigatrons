@@ -1,13 +1,11 @@
 package com.example.toagigatron.tasks;
 
 
-
 import com.example.Utility.Prayers;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
-
 import javax.inject.Inject;
 
 @TaskDescriptor(

@@ -1,23 +1,16 @@
 package com.example.toagigatron.tasks.wardens.wardensp3;
 
 import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
 import com.example.Packets.NPCPackets;
-import com.example.Packets.ObjectPackets;
 import com.example.Utility.Combat;
 import com.example.Utility.Movement;
-import com.example.Utility.ObjectUtil;
-import com.example.Utility.Reachable;
-import com.example.Utility.Static;
 import com.example.Utility.WorldAreas;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
-import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
-import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;

@@ -1,17 +1,13 @@
 package com.example.toagigatron.tasks.akkha.boss;
 
-import com.example.EthanApiPlugin.Collections.Widgets;
-import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Utility.Combat;
 import com.example.Utility.NPCUtil;
 import com.example.Utility.Prayer;
 import com.example.Utility.Prayers;
 import com.example.Utility.Projectiles;
 import com.example.Utility.Static;
-import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
-import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.model.constants.WeaponMap;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;

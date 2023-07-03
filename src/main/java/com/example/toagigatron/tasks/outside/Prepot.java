@@ -16,16 +16,20 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
-import net.runelite.api.*;
+import java.util.Objects;
+import javax.inject.Inject;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.Skill;
+import net.runelite.api.TileObject;
+import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import javax.inject.Inject;
-import java.util.Objects;
 
 @TaskDescriptor(
 	name = "Prepotting",
 	priority = 20,
-		blocking = true
+	blocking = true
 )
 public class Prepot extends StagedTask
 {
@@ -141,9 +145,12 @@ public class Prepot extends StagedTask
 			Widget boost = InventoryUtil.getFirst(item);
 			int slot = 0;
 			ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
-			if(invent != null){
-				for(int i = 0 ; i < 28; i++){
-					if(Objects.requireNonNull(invent.getItem(i)).getId() == boost.getItemId()){
+			if (invent != null)
+			{
+				for (int i = 0; i < 28; i++)
+				{
+					if (Objects.requireNonNull(invent.getItem(i)).getId() == boost.getItemId())
+					{
 						//System.out.println("Item found at slot -> " + i);
 						slot = i;
 						break;
@@ -153,7 +160,7 @@ public class Prepot extends StagedTask
 			if (Bank.isOpen() && boost != null)
 			{
 				MousePackets.queueClickPacket();
-				WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId(), boost.getItemId(),slot);
+				WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId(), boost.getItemId(), slot);
 			}
 			else
 			{

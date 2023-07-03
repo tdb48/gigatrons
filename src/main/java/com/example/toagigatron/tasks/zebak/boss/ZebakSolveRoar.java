@@ -5,9 +5,11 @@ import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
-import com.example.Utility.*;
-import com.example.Utility.Prayer;
-import com.example.toagigatron.manager.GameTickManager;
+import com.example.Utility.Movement;
+import com.example.Utility.NPCUtil;
+import com.example.Utility.Reachable;
+import com.example.Utility.Walker;
+import com.example.Utility.WorldAreas;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
@@ -143,7 +145,8 @@ public class ZebakSolveRoar extends StagedTask
 				{
 					WorldPoint lpConverted = WorldPoint.fromLocal(client, lp);
 					ArrayList<NPC> jug2 = (ArrayList<NPC>) NPCs.search().withId(ToaConstants.ZEBAK_ROLLING_JUG).result();
-					for(NPC n : jug2){
+					for (NPC n : jug2)
+					{
 						System.out.println("Jug Local -> " + n.getLocalLocation());
 						System.out.println("Target jug local -> " + lp);
 						System.out.println("Jug world -> " + WorldPoint.fromLocal(client, n.getLocalLocation()));
@@ -154,10 +157,10 @@ public class ZebakSolveRoar extends StagedTask
 
 					}
 					ArrayList<NPC> jug = (ArrayList<NPC>) NPCs.search().withId(ToaConstants.ZEBAK_ROLLING_JUG).filter(
-							n -> WorldPoint.fromLocal(client, n.getLocalLocation()).equals(lpConverted)
+						n -> WorldPoint.fromLocal(client, n.getLocalLocation()).equals(lpConverted)
 					).result();
 					NPC jugg = NPCs.search().withId(ToaConstants.ZEBAK_ROLLING_JUG).filter(
-							n -> WorldPoint.fromLocal(client, n.getLocalLocation()).equals(lpConverted)
+						n -> WorldPoint.fromLocal(client, n.getLocalLocation()).equals(lpConverted)
 					).nearestToPlayer().orElse(null);
 					System.out.println("Jugg is null? " + (jugg == null));
 					System.out.println("NEW JUG SEARCH SIZE -> " + jug.size());
@@ -208,21 +211,24 @@ public class ZebakSolveRoar extends StagedTask
 					dangerTiles.addAll(toaManager.zebak.bloods);
 					dangerTiles.addAll(toaManager.zebak.getChompZone());
 					toaManager.zebak.path = EthanApiPlugin.pathToGoal(WorldPoint.fromLocal(client, targetPoint), dangerTiles);
-					if(toaManager.zebak.path != null){
+					if (toaManager.zebak.path != null)
+					{
 						System.out.println("Path to rolling jug size -> " + toaManager.zebak.path.size());
 					}
 					if (toaManager.zebak.path == null)
 					{
 						toaManager.zebak.getChompZone().forEach(dangerTiles::remove);
 						toaManager.zebak.path = EthanApiPlugin.pathToGoal(WorldPoint.fromLocal(client, targetPoint), dangerTiles);
-						if(toaManager.zebak.path != null){
+						if (toaManager.zebak.path != null)
+						{
 							System.out.println("Path to rolling jug size 2 -> " + toaManager.zebak.path.size());
 						}
 						if (toaManager.zebak.path == null)
 						{
 							toaManager.zebak.poisonWorldPoints.forEach(dangerTiles::remove);
 							toaManager.zebak.path = EthanApiPlugin.pathToGoal(WorldPoint.fromLocal(client, targetPoint), dangerTiles);
-							if(toaManager.zebak.path != null){
+							if (toaManager.zebak.path != null)
+							{
 								System.out.println("Path to rolling jug size 3 -> " + toaManager.zebak.path.size());
 							}
 						}
@@ -316,7 +322,7 @@ public class ZebakSolveRoar extends StagedTask
 			toaManager.print("Pushpulltile -> " + pushOrPullTile + "  playerpoint -> " + playerPoint);
 			toaManager.print("PPT WORLD -> " + WorldPoint.fromLocal(client, pushOrPullTile) + " Playerpoint World -> " + WorldPoint.fromLocal(client, playerPoint));
 			System.out.println("Pushpulltile -> " + pushOrPullTile + "  playerpoint -> " + playerPoint);
-			System.out.println("PPT WORLD -> " + WorldPoint.fromLocal(client, pushOrPullTile)+ " Playerpoint World -> " + WorldPoint.fromLocal(client, playerPoint));
+			System.out.println("PPT WORLD -> " + WorldPoint.fromLocal(client, pushOrPullTile) + " Playerpoint World -> " + WorldPoint.fromLocal(client, playerPoint));
 			toaManager.print("There is hittable jug, no splash and no rolling jugs but somehow nothing above is right");
 		}
 		else

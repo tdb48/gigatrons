@@ -1,13 +1,6 @@
 package com.example.toagigatron.tasks.wardens.wardensp3;
 
-import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
-import com.example.Packets.NPCPackets;
-import com.example.Packets.ObjectPackets;
 import com.example.Utility.Movement;
-import com.example.Utility.ObjectUtil;
-import com.example.Utility.Reachable;
-import com.example.Utility.Static;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
@@ -107,7 +100,7 @@ public class WardenP3DodgeFloor extends StagedTask
 		else if (tileTick == 2
 			&& !playerPoint.equals(primaryTile)
 			&& !playerPoint.equals(nextPrimaryTile)
-				&& (toaManager.wardens3.babaBombs.size() == 0 || !toaManager.wardens3.babaBombs.containsKey(primaryTile)))
+			&& (toaManager.wardens3.babaBombs.size() == 0 || !toaManager.wardens3.babaBombs.containsKey(primaryTile)))
 		{
 			toaManager.print("Walking to P, tick(" + tileTick + ")");
 //			toaManager.print("Walking");

@@ -8,12 +8,11 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import java.util.List;
+import javax.inject.Inject;
 import net.runelite.api.GameObject;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-
-import javax.inject.Inject;
-import java.util.List;
 
 @TaskDescriptor(
 	name = "Baba avoid explosion",
@@ -65,7 +64,7 @@ public class BabaAvoidExplosion extends StagedTask
 				&& !toaManager.baba.explosionTiles.contains(wp)
 				&& isDiagonalVerticalHorizontal(player, wp)
 				&& Reachable.isWalkable(wp)
-					&& hasClearPath(player, wp, distance))
+				&& hasClearPath(player, wp, distance))
 			{
 				toaManager.print("Found safetile at " + wp);
 				targetPoint = wp;
@@ -75,7 +74,8 @@ public class BabaAvoidExplosion extends StagedTask
 		return targetPoint;
 	}
 
-	public boolean hasClearPath(WorldPoint playerPoint, WorldPoint destination, int distance){
+	public boolean hasClearPath(WorldPoint playerPoint, WorldPoint destination, int distance)
+	{
 
 		int pX = playerPoint.getX();
 		int pY = playerPoint.getY();
@@ -86,9 +86,12 @@ public class BabaAvoidExplosion extends StagedTask
 		WorldPoint candidateTileThree;
 		WorldPoint candidateTileFour;
 		WorldPoint candidateTileFive;
-		if(Math.abs(playerPoint.getX() - destination.getX()) == Math.abs(playerPoint.getY() - destination.getY())){
-			if(distance == 2){
-				if(pX > dX && pY > dY){
+		if (Math.abs(playerPoint.getX() - destination.getX()) == Math.abs(playerPoint.getY() - destination.getY()))
+		{
+			if (distance == 2)
+			{
+				if (pX > dX && pY > dY)
+				{
 					//South west
 					candidateTile = playerPoint.dy(-1);
 					candidateTileTwo = playerPoint.dy(-1).dx(-1);
@@ -96,7 +99,8 @@ public class BabaAvoidExplosion extends StagedTask
 					candidateTileFour = playerPoint.dx(-1).dy(-2);
 					candidateTileFive = playerPoint.dx(-2).dy(-1);
 				}
-				else if(pX > dX && pY < dY){
+				else if (pX > dX && pY < dY)
+				{
 					//North west
 					candidateTile = playerPoint.dy(1);
 					candidateTileTwo = playerPoint.dy(1).dx(-1);
@@ -104,7 +108,8 @@ public class BabaAvoidExplosion extends StagedTask
 					candidateTileFour = playerPoint.dx(-1).dy(2);
 					candidateTileFive = playerPoint.dx(-2).dy(1);
 				}
-				else if(pX < dX && pY < dY){
+				else if (pX < dX && pY < dY)
+				{
 					//North east
 					candidateTile = playerPoint.dy(1);
 					candidateTileTwo = playerPoint.dy(1).dx(1);
@@ -113,7 +118,8 @@ public class BabaAvoidExplosion extends StagedTask
 					candidateTileFive = playerPoint.dx(2).dy(1);
 				}
 				//
-				else {
+				else
+				{
 					//South East
 					candidateTile = playerPoint.dy(-1);
 					candidateTileTwo = playerPoint.dy(-1).dx(1);
@@ -122,55 +128,73 @@ public class BabaAvoidExplosion extends StagedTask
 					candidateTileFive = playerPoint.dx(2).dy(-1);
 				}
 				return (Reachable.isWalkable(candidateTile) && !Reachable.isObstacle(candidateTile)) &&
-						(Reachable.isWalkable(candidateTileTwo) && !Reachable.isObstacle(candidateTileTwo)) &&
-						(Reachable.isWalkable(candidateTileThree) && !Reachable.isObstacle(candidateTileThree)) &&
-						(Reachable.isWalkable(candidateTileFour) && !Reachable.isObstacle(candidateTileFour)) &&
-						(Reachable.isWalkable(candidateTileFive) && !Reachable.isObstacle(candidateTileFive));
-			} else {
-				if(pX > dX && pY > dY){
+					(Reachable.isWalkable(candidateTileTwo) && !Reachable.isObstacle(candidateTileTwo)) &&
+					(Reachable.isWalkable(candidateTileThree) && !Reachable.isObstacle(candidateTileThree)) &&
+					(Reachable.isWalkable(candidateTileFour) && !Reachable.isObstacle(candidateTileFour)) &&
+					(Reachable.isWalkable(candidateTileFive) && !Reachable.isObstacle(candidateTileFive));
+			}
+			else
+			{
+				if (pX > dX && pY > dY)
+				{
 					//South west
 					candidateTile = playerPoint.dy(-1);
 					candidateTileTwo = playerPoint.dx(-1);
 				}
-				else if(pX > dX && pY < dY){
+				else if (pX > dX && pY < dY)
+				{
 					//North west
 					candidateTile = playerPoint.dy(1);
 					candidateTileTwo = playerPoint.dx(-1);
 				}
-				else if(pX < dX && pY < dY){
+				else if (pX < dX && pY < dY)
+				{
 					//North east
 					candidateTile = playerPoint.dy(1);
 					candidateTileTwo = playerPoint.dx(1);
 				}
 				//
-				else {
+				else
+				{
 					//South East
 					candidateTile = playerPoint.dy(-1);
 					candidateTileTwo = playerPoint.dx(1);
 				}
 				return (Reachable.isWalkable(candidateTile) && !Reachable.isObstacle(candidateTile)) &&
-						(Reachable.isWalkable(candidateTileTwo) && !Reachable.isObstacle(candidateTileTwo));
+					(Reachable.isWalkable(candidateTileTwo) && !Reachable.isObstacle(candidateTileTwo));
 			}
-		} else {
-			if(distance == 1){
+		}
+		else
+		{
+			if (distance == 1)
+			{
 				return true;
 			}
 			//vertical or horizontal straight line
-			if(pX == dX){
+			if (pX == dX)
+			{
 				//North or south
-				if(pY > dY){
+				if (pY > dY)
+				{
 					//South
 					candidateTile = playerPoint.dy(-1);
-				} else {
+				}
+				else
+				{
 					//North
 					candidateTile = playerPoint.dy(1);
 				}
-			} else {
+			}
+			else
+			{
 				//East or west
-				if(pX < dX){
+				if (pX < dX)
+				{
 					//east
 					candidateTile = playerPoint.dx(1);
-				} else {
+				}
+				else
+				{
 					//west
 					candidateTile = playerPoint.dx(-1);
 				}

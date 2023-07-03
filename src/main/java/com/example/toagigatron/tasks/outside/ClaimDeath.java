@@ -11,10 +11,9 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
-import net.runelite.api.GameObject;
+import javax.inject.Inject;
 import net.runelite.api.TileObject;
 import net.runelite.api.widgets.Widget;
-import javax.inject.Inject;
 
 @TaskDescriptor(
 	name = "Claim death",
@@ -71,7 +70,7 @@ public class ClaimDeath extends StagedTask
 			ObjectPackets.queueObjectAction(chest, false, "Claim");
 			return true;
 		}
-		Widget claimWidget = client.getWidget(602,6);
+		Widget claimWidget = client.getWidget(602, 6);
 		if (claimWidget != null && !claimWidget.isHidden() && claimWidget.getActions() != null)
 		{
 			String action = claimWidget.getActions()[0];
@@ -91,7 +90,7 @@ public class ClaimDeath extends StagedTask
 
 	public boolean isChestInterfaceOpen()
 	{
-		Widget chestWidget = client.getWidget(602,2);
+		Widget chestWidget = client.getWidget(602, 2);
 		return (chestWidget != null && !chestWidget.isHidden());
 	}
 }

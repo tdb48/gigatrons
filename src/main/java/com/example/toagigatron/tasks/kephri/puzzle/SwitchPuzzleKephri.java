@@ -1,14 +1,9 @@
 package com.example.toagigatron.tasks.kephri.puzzle;
 
 import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
-import com.example.Packets.NPCPackets;
 import com.example.Packets.ObjectPackets;
-import com.example.Utility.Movement;
 import com.example.Utility.ObjectUtil;
-import com.example.Utility.Reachable;
 import com.example.Utility.Static;
-import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;

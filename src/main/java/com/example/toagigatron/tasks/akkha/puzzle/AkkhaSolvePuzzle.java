@@ -8,7 +8,12 @@ import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Packets.WidgetPackets;
-import com.example.Utility.*;
+import com.example.Utility.InventoryUtil;
+import com.example.Utility.Movement;
+import com.example.Utility.NPCUtil;
+import com.example.Utility.Reachable;
+import com.example.Utility.Walker;
+import com.example.Utility.WorldAreas;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Consumables;
 import com.example.toagigatron.model.constants.Stage;
@@ -17,10 +22,19 @@ import com.example.toagigatron.model.puzzlemodel.AkkhaPuzzleSolution;
 import com.example.toagigatron.model.puzzlemodel.Mirror;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
-import net.runelite.api.GameObject;
-import javax.inject.Inject;
 import com.google.common.collect.ImmutableSet;
-import net.runelite.api.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.GameObject;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.Perspective;
+import net.runelite.api.Point;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -30,10 +44,6 @@ import net.runelite.api.events.NpcChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 import org.apache.commons.lang3.ArrayUtils;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @TaskDescriptor(
 	name = "Akkha solve puzzle",
@@ -179,7 +189,8 @@ public class AkkhaSolvePuzzle extends StagedTask
 				{
 					toaManager.print("Placing at " + toaManager.worldPointString(placeMirrors.get(0)));
 					Widget mirror = InventoryUtil.getFirst("Mirror");
-					if(mirror != null){
+					if (mirror != null)
+					{
 						MousePackets.queueClickPacket();
 						WidgetPackets.queueWidgetAction(mirror, "Place");
 					}
@@ -220,7 +231,7 @@ public class AkkhaSolvePuzzle extends StagedTask
 			{
 				toaManager.print("Picking up mirror");
 				MousePackets.queueClickPacket();
-				ObjectPackets.queueObjectAction(closestMirror, false,"Pick-up");
+				ObjectPackets.queueObjectAction(closestMirror, false, "Pick-up");
 				return true;
 			}
 		}
@@ -233,7 +244,8 @@ public class AkkhaSolvePuzzle extends StagedTask
 				{
 					toaManager.print("Placing at " + toaManager.worldPointString(placeMirrors.get(0)));
 					Widget w = InventoryUtil.getFirst("Mirror");
-					if(w != null){
+					if (w != null)
+					{
 						MousePackets.queueClickPacket();
 						WidgetPackets.queueWidgetAction(w, "Place");
 					}

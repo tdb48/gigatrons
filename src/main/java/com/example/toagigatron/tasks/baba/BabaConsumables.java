@@ -1,6 +1,5 @@
 package com.example.toagigatron.tasks.baba;
 
-import com.example.InteractionApi.InventoryInteraction;
 import com.example.Packets.MousePackets;
 import com.example.Packets.WidgetPackets;
 import com.example.Utility.Combat;

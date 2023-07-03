@@ -1,6 +1,5 @@
 package com.example.toagigatron.tasks.baba.puzzle;
 
-import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
@@ -11,11 +10,9 @@ import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
-import net.runelite.api.coords.WorldPoint;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.HashSet;
+import javax.inject.Inject;
+import net.runelite.api.coords.WorldPoint;
 
 @TaskDescriptor(
 	name = "Baba fix pillar",
@@ -50,10 +47,11 @@ public class BabaFixPillar extends StagedTask
 //					toaManager.baba.puzzleSpecialTickTimer + " ticks until pillars demolish me.");
 //			return false;
 //		}
-		if(toaManager.baba.puzzleSpecialTickTimer > 10
-				&& client.getLocalPlayer().isInteracting()
-				&& client.getLocalPlayer().getInteracting().getName() != null
-				&& client.getLocalPlayer().getInteracting().getName().equalsIgnoreCase("baboon shaman")){
+		if (toaManager.baba.puzzleSpecialTickTimer > 10
+			&& client.getLocalPlayer().isInteracting()
+			&& client.getLocalPlayer().getInteracting().getName() != null
+			&& client.getLocalPlayer().getInteracting().getName().equalsIgnoreCase("baboon shaman"))
+		{
 			toaManager.print("Returning false in fix pillar cause im attacking a shaman and have ticks to spare");
 			return false;
 		}

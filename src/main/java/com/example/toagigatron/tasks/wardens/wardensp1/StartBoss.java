@@ -2,18 +2,13 @@ package com.example.toagigatron.tasks.wardens.wardensp1;
 
 
 import com.example.EthanApiPlugin.Collections.Inventory;
-import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
 import com.example.Packets.NPCPackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Packets.WidgetPackets;
-import com.example.Utility.Movement;
 import com.example.Utility.NPCUtil;
 import com.example.Utility.ObjectUtil;
 import com.example.Utility.Reachable;
-import com.example.Utility.Static;
-import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Consumables;
 import com.example.toagigatron.model.constants.Stage;
@@ -23,7 +18,6 @@ import com.example.toagigatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import net.runelite.api.GameObject;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.widgets.Widget;

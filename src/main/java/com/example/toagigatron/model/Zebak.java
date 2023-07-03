@@ -16,7 +16,6 @@ import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.model.puzzlemodel.ZebakWaterfallRoom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -978,10 +977,13 @@ public class Zebak
 		LocalPoint localRefPoint = gameObjectDespawned.getGameObject().getLocalLocation();
 		if (ToaConstants.ZEBAK_POISON_GAME_OBJECT.contains(gameObjectDespawned.getGameObject().getId()))
 		{
-			if(poisonTiles.contains(localRefPoint)){
+			if (poisonTiles.contains(localRefPoint))
+			{
 				System.out.println("Removing dead poison tile");
 				poisonTiles.remove(localRefPoint);
-			} else {
+			}
+			else
+			{
 				System.out.println("Localpoint bug in poison tiles, attempting to remove via worldpoint conversion instead.");
 				poisonTiles.removeIf(x -> WorldPoint.fromLocal(client, x).equals(refPoint));
 			}

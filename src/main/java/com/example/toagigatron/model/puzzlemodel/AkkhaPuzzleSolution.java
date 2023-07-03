@@ -1,8 +1,8 @@
 package com.example.toagigatron.model.puzzlemodel;
 
-import java.util.ArrayList;
 import com.example.EthanApiPlugin.Collections.TileObjects;
 import com.example.toagigatron.model.constants.ToaConstants;
+import java.util.ArrayList;
 import net.runelite.api.GameObject;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
@@ -29,8 +29,10 @@ public class AkkhaPuzzleSolution
 	public ArrayList<GameObject> getWrongMirrors()
 	{
 		ArrayList<GameObject> returnList = new ArrayList<>();
-		for(TileObject gameObject : TileObjects.search().withId(ToaConstants.AKKHA_MOVEABLE_MIRROR).result()){
-			if(!(gameObject instanceof GameObject)){
+		for (TileObject gameObject : TileObjects.search().withId(ToaConstants.AKKHA_MOVEABLE_MIRROR).result())
+		{
+			if (!(gameObject instanceof GameObject))
+			{
 				continue;
 			}
 			if (!hasWorldPoint(gameObject.getWorldLocation()))

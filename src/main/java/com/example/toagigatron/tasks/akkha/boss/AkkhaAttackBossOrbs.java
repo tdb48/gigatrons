@@ -6,7 +6,6 @@ import com.example.Packets.NPCPackets;
 import com.example.Utility.Combat;
 import com.example.Utility.NPCUtil;
 import com.example.Utility.Walker;
-import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;

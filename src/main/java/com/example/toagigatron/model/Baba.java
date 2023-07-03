@@ -1,7 +1,13 @@
 package com.example.toagigatron.model;
 
 import com.example.EthanApiPlugin.Collections.NPCs;
-import com.example.Utility.*;
+import com.example.Utility.Combat;
+import com.example.Utility.NPCUtil;
+import com.example.Utility.ObjectUtil;
+import com.example.Utility.Prayers;
+import com.example.Utility.Reachable;
+import com.example.Utility.WorldAreas;
+import com.example.Utility.WorldPoints;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
@@ -101,6 +107,7 @@ public class Baba
 
 	public List<WorldPoint> attackPath = new ArrayList<>();
 	public List<WorldPoint> specialPath = new ArrayList<>();
+
 	public void resetVariables()
 	{
 		attackPath = new ArrayList<>();
@@ -151,8 +158,8 @@ public class Baba
 	{
 		if (hitsplatApplied.getActor().equals(babaBoss)
 			&& client.getLocalPlayer().getAnimation() == ToaConstants.BGS_SPEC_ANIMATION)
-				//TODO ALL EQUIPMENT MANAGEMENT N UNCOMMENT THIS LINE
-			//&& toaManager.hasGearEquipped(toaManager.meleeSetup.getAllItemsBgs()))
+		//TODO ALL EQUIPMENT MANAGEMENT N UNCOMMENT THIS LINE
+		//&& toaManager.hasGearEquipped(toaManager.meleeSetup.getAllItemsBgs()))
 		{
 			toaManager.print("Hit bgs with " + hitsplatApplied.getHitsplat().getAmount());
 			bgsHit = hitsplatApplied.getHitsplat().getAmount();
@@ -315,15 +322,15 @@ public class Baba
 		if (babaEntry != null)
 		{
 			blockTiles = new ArrayList<>();
-			ArrayList<NPC> boulders = (ArrayList<NPC>) NPCs.search().idInList(List.of(ToaConstants.STRONG_BOULDER,ToaConstants.WEAK_BOULDER)).result();
+			ArrayList<NPC> boulders = (ArrayList<NPC>) NPCs.search().idInList(List.of(ToaConstants.STRONG_BOULDER, ToaConstants.WEAK_BOULDER)).result();
 			if (!boulders.isEmpty())
 			{
 				for (NPC boulder : boulders)
 				{
 					WorldPoint centerTile = WorldAreas.getCenter(boulder.getWorldArea());
 					WorldArea boulderTiles = WorldAreas.createArea(
-							centerTile.dx(-2).dy(-1),
-							centerTile.dx(2).dy(2));
+						centerTile.dx(-2).dy(-1),
+						centerTile.dx(2).dy(2));
 					blockTiles.addAll(boulderTiles.toWorldPointList());
 				}
 			}

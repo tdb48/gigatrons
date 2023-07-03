@@ -12,18 +12,15 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
-import net.runelite.api.GameObject;
-import net.runelite.api.Item;
+import java.util.ArrayList;
+import javax.inject.Inject;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
-
 @TaskDescriptor(
-		name = "Baba pickup hammer and potion",
-		blocking = true
+	name = "Baba pickup hammer and potion",
+	blocking = true
 )
 public class BabaGetHammerPotion extends StagedTask
 {

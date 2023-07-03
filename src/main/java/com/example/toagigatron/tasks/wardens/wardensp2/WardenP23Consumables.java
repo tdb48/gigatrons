@@ -1,17 +1,10 @@
 package com.example.toagigatron.tasks.wardens.wardensp2;
 
 import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
-import com.example.Packets.NPCPackets;
-import com.example.Packets.ObjectPackets;
 import com.example.Packets.WidgetPackets;
 import com.example.Utility.Combat;
-import com.example.Utility.Movement;
 import com.example.Utility.NPCUtil;
-import com.example.Utility.ObjectUtil;
 import com.example.Utility.Prayers;
-import com.example.Utility.Reachable;
-import com.example.Utility.Static;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Consumables;
@@ -20,7 +13,6 @@ import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import javax.inject.Inject;
-import net.runelite.api.Item;
 import net.runelite.api.NPC;
 import net.runelite.api.widgets.Widget;
 
@@ -56,8 +48,8 @@ public class WardenP23Consumables extends StagedTask
 		}
 
 		boolean shouldDrinkAdren = core != null ||
-				(toaManager.wardens12.warden != null
-						&& toaManager.wardens12.warden.getAnimation() == ToaConstants.WARDEN_P2_DROPPING_CORE_ANIMATION);
+			(toaManager.wardens12.warden != null
+				&& toaManager.wardens12.warden.getAnimation() == ToaConstants.WARDEN_P2_DROPPING_CORE_ANIMATION);
 		Widget healingPotion = Consumables.getBrew();
 		Widget prayerRestore = Consumables.getRestore();
 		Widget salt = Consumables.getSalt();
@@ -72,7 +64,7 @@ public class WardenP23Consumables extends StagedTask
 		{
 			toaManager.print("Consuming salt");
 			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(salt,"Crush");
+			WidgetPackets.queueWidgetAction(salt, "Crush");
 			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion(); //TODO Do we need this? Idk if salt pot blocks you
 			return true;
@@ -81,7 +73,7 @@ public class WardenP23Consumables extends StagedTask
 		{
 			toaManager.print("Drinking adrenaline");
 			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(adrenaline,"Drink");
+			WidgetPackets.queueWidgetAction(adrenaline, "Drink");
 			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -93,7 +85,7 @@ public class WardenP23Consumables extends StagedTask
 		{
 			toaManager.print("Drinking ambrosia");
 			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(ambrosia,"Drink");
+			WidgetPackets.queueWidgetAction(ambrosia, "Drink");
 			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -105,7 +97,7 @@ public class WardenP23Consumables extends StagedTask
 			{
 				toaManager.print("Using scarab");
 				MousePackets.queueClickPacket();
-				WidgetPackets.queueWidgetAction(scarab,"Crack");
+				WidgetPackets.queueWidgetAction(scarab, "Crack");
 				//toaManager.reAttack(playerInteracting);
 				gameTickManager.drinkPotion();
 				return true;
@@ -114,7 +106,7 @@ public class WardenP23Consumables extends StagedTask
 			{
 				toaManager.print("Drinking restore");
 				MousePackets.queueClickPacket();
-				WidgetPackets.queueWidgetAction(prayerRestore,"Drink");
+				WidgetPackets.queueWidgetAction(prayerRestore, "Drink");
 				//toaManager.reAttack(playerInteracting);
 				gameTickManager.drinkPotion();
 				return true;
@@ -129,7 +121,7 @@ public class WardenP23Consumables extends StagedTask
 		{
 			toaManager.print("Drinking brew on GOD tick");
 			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(healingPotion,"Drink");
+			WidgetPackets.queueWidgetAction(healingPotion, "Drink");
 			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -140,7 +132,7 @@ public class WardenP23Consumables extends StagedTask
 		{
 			toaManager.print("Panic brew");
 			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(healingPotion,"Drink");
+			WidgetPackets.queueWidgetAction(healingPotion, "Drink");
 			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;

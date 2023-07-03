@@ -14,10 +14,9 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import javax.inject.Inject;
 import net.runelite.api.TileObject;
 import net.runelite.api.widgets.Widget;
-
-import javax.inject.Inject;
 
 @TaskDescriptor(
 	name = "Akkha enter puzzle",
@@ -65,7 +64,7 @@ public class AkkhaEnterPuzzle extends StagedTask
 				}
 				toaManager.print("Grabbing pickaxe");
 				MousePackets.queueClickPacket();
-				ObjectPackets.queueObjectAction(pickaxeStatue, false,"Take-pickaxe");
+				ObjectPackets.queueObjectAction(pickaxeStatue, false, "Take-pickaxe");
 			}
 		}
 		else
@@ -78,7 +77,7 @@ public class AkkhaEnterPuzzle extends StagedTask
 			{
 				toaManager.print("Entering barrier");
 				MousePackets.queueClickPacket();
-				ObjectPackets.queueObjectAction(barrier, false,"Quick-Pass");
+				ObjectPackets.queueObjectAction(barrier, false, "Quick-Pass");
 			}
 		}
 		return true;

@@ -1,7 +1,12 @@
 package com.example.toagigatron.tasks.kephri.boss;
 
 
-import com.example.Utility.*;
+import com.example.Utility.Combat;
+import com.example.Utility.NPCUtil;
+import com.example.Utility.Prayer;
+import com.example.Utility.Prayers;
+import com.example.Utility.Reachable;
+import com.example.Utility.Static;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;

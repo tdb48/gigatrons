@@ -1,8 +1,6 @@
 package com.example.toagigatron.tasks;
 
 import com.example.EthanApiPlugin.Collections.NPCs;
-import com.example.EthanApiPlugin.EthanApiPlugin;
-import com.example.Utility.NPCUtil;
 import com.example.Utility.Static;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
@@ -10,10 +8,10 @@ import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.Task;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import com.google.inject.Inject;
+import java.util.ArrayList;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import java.util.ArrayList;
 
 @TaskDescriptor(
 	priority = 20,

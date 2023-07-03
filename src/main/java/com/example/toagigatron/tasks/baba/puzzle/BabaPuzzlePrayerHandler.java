@@ -1,18 +1,22 @@
 package com.example.toagigatron.tasks.baba.puzzle;
 
-import com.example.Utility.*;
+import com.example.Utility.Combat;
+import com.example.Utility.NPCUtil;
+import com.example.Utility.Prayer;
+import com.example.Utility.Prayers;
+import com.example.Utility.Static;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.WeaponMap;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import java.util.List;
+import javax.inject.Inject;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.widgets.Widget;
-import javax.inject.Inject;
-import java.util.List;
 
 @TaskDescriptor(
 	name = "Baba prayers",

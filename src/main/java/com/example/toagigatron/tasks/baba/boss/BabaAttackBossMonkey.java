@@ -8,9 +8,9 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import javax.inject.Inject;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-import javax.inject.Inject;
 
 @TaskDescriptor(
 	name = "Baba attack monkey",
@@ -42,7 +42,7 @@ public class BabaAttackBossMonkey extends StagedTask
 		// but it would be nice, we take avoidable damage from their thrown rocks
 
 		NPC bossMonkey = NPCs.search().alive().withId(ToaConstants.BABA_BOSS_MONKEY).filter(
-				n -> !toaManager.baba.badTiles.contains(n.getWorldLocation())
+			n -> !toaManager.baba.badTiles.contains(n.getWorldLocation())
 				&& !toaManager.baba.tilesUnderBoss().contains(n.getWorldLocation())).nearestToPlayer().orElse(null);
 
 		if (bossMonkey == null

@@ -1,23 +1,19 @@
 package com.example.toagigatron.model;
 
 import com.example.EthanApiPlugin.Collections.Inventory;
-import com.example.EthanApiPlugin.Collections.Widgets;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Dart;
 import com.example.toagigatron.model.constants.ToaConstants;
+import java.util.List;
+import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.PluginManager;
-
-import javax.inject.Inject;
-import java.util.List;
 
 public class ChargesTracker
 {
@@ -81,7 +77,7 @@ public class ChargesTracker
 	{
 
 		if (Inventory.search().idInList(List.of(ToaConstants.BLOWPIPE_EMPTY, ToaConstants.BLOWPIPE_CHARGED)).result().isEmpty()
-				|| Inventory.getItemAmount(toaManager.mageSetup.weapon) == 0)
+			|| Inventory.getItemAmount(toaManager.mageSetup.weapon) == 0)
 		{
 			return false;
 		}
@@ -169,7 +165,8 @@ public class ChargesTracker
 				System.out.println("Found amount of mage charges: " + charges);
 				mageCharges = Integer.parseInt(charges);
 			}
-			if(message.contains("staff is already fully charged")){
+			if (message.contains("staff is already fully charged"))
+			{
 				mageCharges = 20000;
 			}
 		}

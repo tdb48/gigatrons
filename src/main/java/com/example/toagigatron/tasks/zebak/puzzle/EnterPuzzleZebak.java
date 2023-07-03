@@ -1,9 +1,11 @@
 package com.example.toagigatron.tasks.zebak.puzzle;
 
 import com.example.EthanApiPlugin.Collections.Widgets;
-import com.example.Packets.*;
-import com.example.Utility.*;
-import com.example.toagigatron.manager.GameTickManager;
+import com.example.Packets.MousePackets;
+import com.example.Packets.ObjectPackets;
+import com.example.Packets.WidgetPackets;
+import com.example.Utility.ObjectUtil;
+import com.example.Utility.Static;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
@@ -11,7 +13,6 @@ import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import javax.inject.Inject;
 import net.runelite.api.GameObject;
-import net.runelite.api.widgets.Widget;
 
 @TaskDescriptor(
 	name = "Entering puzzle Zebak",
@@ -53,7 +54,7 @@ public class EnterPuzzleZebak extends StagedTask
 		{
 			toaManager.zebak.generateZebakWaterfallRooms(tree);
 			MousePackets.queueClickPacket();
-			ObjectPackets.queueObjectAction(barrier,false,"Pass");
+			ObjectPackets.queueObjectAction(barrier, false, "Pass");
 		}
 		return true;
 	}

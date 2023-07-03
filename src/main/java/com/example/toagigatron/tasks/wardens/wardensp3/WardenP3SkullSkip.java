@@ -1,19 +1,9 @@
 package com.example.toagigatron.tasks.wardens.wardensp3;
 
 import com.example.EthanApiPlugin.Collections.NPCs;
-import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
-import com.example.Packets.NPCPackets;
-import com.example.Packets.ObjectPackets;
 import com.example.Utility.Movement;
-import com.example.Utility.NPCUtil;
-import com.example.Utility.ObjectUtil;
-import com.example.Utility.Reachable;
-import com.example.Utility.Static;
-import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
-import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
@@ -61,7 +51,7 @@ public class WardenP3SkullSkip extends StagedTask
 			return true;
 		}
 		if (skullTick > (dodgeTick() + 10) && toaManager.wardens3.warden != null
-		&& toaManager.wardens3.warden.getAnimation() == 9682)
+			&& toaManager.wardens3.warden.getAnimation() == 9682)
 		{
 			toaManager.print("else statement dodging baba boulder (?) to " + toaManager.worldPointString(safeTile()));
 			Movement.walk(safeTile());

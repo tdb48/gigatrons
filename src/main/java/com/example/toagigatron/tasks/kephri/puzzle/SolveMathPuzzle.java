@@ -1,13 +1,9 @@
 package com.example.toagigatron.tasks.kephri.puzzle;
 
 import com.example.Packets.MousePackets;
-import com.example.Packets.MovementPackets;
-import com.example.Packets.NPCPackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Utility.Movement;
 import com.example.Utility.ObjectUtil;
-import com.example.Utility.Reachable;
-import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
@@ -192,9 +188,9 @@ public class SolveMathPuzzle extends StagedTask
 				solutionTiles.add(new WorldPoint(x + 6, y + 1, client.getPlane()));
 				break;
 			case 36:
-				solutionTiles.add(new WorldPoint(x + 2, y +1, client.getPlane()));
-				solutionTiles.add(new WorldPoint(x + 6, y +1, client.getPlane()));
-				solutionTiles.add(new WorldPoint(x + 6, y -1, client.getPlane()));
+				solutionTiles.add(new WorldPoint(x + 2, y + 1, client.getPlane()));
+				solutionTiles.add(new WorldPoint(x + 6, y + 1, client.getPlane()));
+				solutionTiles.add(new WorldPoint(x + 6, y - 1, client.getPlane()));
 
 			case 37:
 				solutionTiles.add(new WorldPoint(x + 4, y + 1, client.getPlane()));
@@ -236,7 +232,7 @@ public class SolveMathPuzzle extends StagedTask
 				solutionTiles.add(new WorldPoint(x + 3, y + 1, client.getPlane()));
 				solutionTiles.add(new WorldPoint(x + 6, y + 1, client.getPlane()));
 			case 45:
-				solutionTiles.add(new WorldPoint(x + 2, y +1, client.getPlane()));
+				solutionTiles.add(new WorldPoint(x + 2, y + 1, client.getPlane()));
 				solutionTiles.add(new WorldPoint(x + 2, y - 2, client.getPlane()));
 				solutionTiles.add(new WorldPoint(x + 6, y - 2, client.getPlane()));
 				break;

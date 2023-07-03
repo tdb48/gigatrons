@@ -1,21 +1,16 @@
 package com.example.toagigatron.tasks.zebak.boss;
 
-import com.example.EthanApiPlugin.Collections.NPCs;
-import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
-import com.example.Packets.NPCPackets;
 import com.example.Packets.WidgetPackets;
-import com.example.Utility.*;
-import com.example.Utility.Prayer;
+import com.example.Utility.Combat;
+import com.example.Utility.Prayers;
 import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Consumables;
 import com.example.toagigatron.model.constants.Stage;
-import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import com.google.inject.Inject;
-import net.runelite.api.Item;
 import net.runelite.api.NPC;
 import net.runelite.api.widgets.Widget;
 
@@ -54,7 +49,7 @@ public class ZebakConsumables extends StagedTask
 		{
 			toaManager.print("Consuming salt");
 			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(salt,"Crush");
+			WidgetPackets.queueWidgetAction(salt, "Crush");
 			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -66,7 +61,7 @@ public class ZebakConsumables extends StagedTask
 		{
 			toaManager.print("Panic brew");
 			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(healingPotion,"Drink");
+			WidgetPackets.queueWidgetAction(healingPotion, "Drink");
 			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -79,7 +74,7 @@ public class ZebakConsumables extends StagedTask
 		{
 			toaManager.print("Drinking brew on brew tick");
 			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(healingPotion,"Drink");
+			WidgetPackets.queueWidgetAction(healingPotion, "Drink");
 			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
@@ -89,7 +84,7 @@ public class ZebakConsumables extends StagedTask
 		{
 			toaManager.print("Drinking restore");
 			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(prayerRestore,"Drink");
+			WidgetPackets.queueWidgetAction(prayerRestore, "Drink");
 			//toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;

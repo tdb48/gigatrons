@@ -12,10 +12,9 @@ import com.example.toagigatron.model.setup.mage.MageOffhand;
 import com.example.toagigatron.model.setup.range.RangeBoots;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
+import javax.inject.Inject;
 import net.runelite.api.NPC;
 import net.runelite.api.widgets.Widget;
-
-import javax.inject.Inject;
 
 @TaskDescriptor(
 	name = "Take off gear",
@@ -57,7 +56,8 @@ public class TakeOffGear extends StagedTask
 		{
 			toaManager.print("Unequipping mage offhand");
 			Widget offHandd = Equipment.search().withId(offHand).first().orElse(null);
-			if(offHandd != null){
+			if (offHandd != null)
+			{
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(offHandd, "Remove");
 			}
@@ -78,7 +78,8 @@ public class TakeOffGear extends StagedTask
 		{
 			toaManager.print("Unequipping mage boots");
 			Widget booties = Equipment.search().withId(boots).first().orElse(null);
-			if(booties != null){
+			if (booties != null)
+			{
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(booties, "Remove");
 			}
@@ -91,7 +92,8 @@ public class TakeOffGear extends StagedTask
 		{
 			toaManager.print("Unequipping range boots");
 			Widget booties = Equipment.search().withId(boots).first().orElse(null);
-			if(booties != null){
+			if (booties != null)
+			{
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(booties, "Remove");
 			}
