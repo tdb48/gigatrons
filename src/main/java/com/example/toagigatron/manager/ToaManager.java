@@ -14,6 +14,7 @@ import com.example.Utility.Combat;
 import com.example.Utility.Movement;
 import com.example.Utility.Prayer;
 import com.example.Utility.Prayers;
+import com.example.Utility.Projectiles;
 import com.example.Utility.Static;
 import com.example.Utility.Tiles;
 import com.example.Utility.WidgetUtil;
@@ -73,7 +74,6 @@ public class ToaManager
 	public Random random = new Random();
 	@Inject
 	private ReflectBreakHandler chinBreakHandler;
-
 	private Stage stage = Stage.NONE;
 	private final EventBus eventBus;
 	public final Client client;
@@ -307,19 +307,25 @@ public class ToaManager
 //	}
 
 	public Projectile p = null;
-	@Subscribe
-	public void onClientTick(ClientTick event){
-		if(p != null && p.getRemainingCycles() <= 0){
-			p = null;
-		}
-	}
+
+//	@Subscribe
+//	public void onClientTick(ClientTick event)
+//	{
+//		if (p != null && p.getRemainingCycles() <= 0)
+//		{
+//			print("Setting projectile to null " + p.getRemainingCycles());
+//			p = null;
+//		}
+//	}
 
 	@Subscribe
-	public void onProjectileMoved(ProjectileMoved event){
+	public void onProjectileMoved(ProjectileMoved event)
+	{
 		Projectile projectile = event.getProjectile();
 		if (ToaConstants.DARTS.contains(projectile.getId()))
 		{
-			if(p == null || !p.equals(projectile)){
+			if (p == null || !p.equals(projectile))
+			{
 				gameTickManager.attack(2);
 				p = projectile;
 			}
@@ -792,6 +798,7 @@ public class ToaManager
 			counter++;
 		}
 	}
+
 	public GameObject findClosestGameObject(ArrayList<GameObject> gameObjects)
 	{
 		GameObject returnObj = null;
@@ -809,9 +816,10 @@ public class ToaManager
 		return returnObj;
 	}
 
-	public void sendIntValue(int amount){
-		EthanApiPlugin.getClient().setVarcStrValue(359,Integer.toString(amount));
-		EthanApiPlugin.getClient().setVarcIntValue(5,7);
+	public void sendIntValue(int amount)
+	{
+		EthanApiPlugin.getClient().setVarcStrValue(359, Integer.toString(amount));
+		EthanApiPlugin.getClient().setVarcIntValue(5, 7);
 		EthanApiPlugin.getClient().runScript(681);
 	}
 
@@ -827,7 +835,8 @@ public class ToaManager
 				Widget item = Inventory.search().withId(i).first().orElse(null);
 				if (item != null)
 				{
-					if(!stage.equals(Stage.OUTSIDE) && !stage.equals(Stage.OUTSIDE_TOA) && !stage.equals(Stage.GRAND_EXCHANGE)){
+					if (!stage.equals(Stage.OUTSIDE) && !stage.equals(Stage.OUTSIDE_TOA) && !stage.equals(Stage.GRAND_EXCHANGE))
+					{
 						Prayer p = prayWithId(i);
 						Prayers.toggle(p);
 					}
@@ -835,14 +844,18 @@ public class ToaManager
 
 					int slot = 0;
 					ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
-					if(invent != null){
-						for(int j = 0 ; j < 28; j++){
+					if (invent != null)
+					{
+						for (int j = 0; j < 28; j++)
+						{
 							Item inventoryItem = invent.getItem(j);
-							if(inventoryItem == null){
+							if (inventoryItem == null)
+							{
 								continue;
 							}
 							//System.out.println("Item id -> " + item.getItemId());
-							if(inventoryItem.getId() == item.getItemId()){
+							if (inventoryItem.getId() == item.getItemId())
+							{
 								//System.out.println("Item found at slot -> " + j);
 								slot = j;
 								break;
@@ -891,15 +904,19 @@ public class ToaManager
 			{
 				int slot = 0;
 				ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
-				if(invent != null){
-					for(int j = 0 ; j < 28; j++){
+				if (invent != null)
+				{
+					for (int j = 0; j < 28; j++)
+					{
 						Item inventoryItem = invent.getItem(j);
-						if(inventoryItem == null){
+						if (inventoryItem == null)
+						{
 							//System.out.println("Inventory item is null somehow?");
 							continue;
 						}
 						//System.out.println("Item id -> " + item.getItemId());
-						if(inventoryItem.getId() == item.getItemId()){
+						if (inventoryItem.getId() == item.getItemId())
+						{
 							//System.out.println("Item found at slot -> " + j);
 							slot = j;
 							break;
@@ -926,7 +943,8 @@ public class ToaManager
 
 		int[] gear = gearList.stream().mapToInt(i -> i).toArray();
 		List<Integer> gearAsList = Arrays.stream(gear).boxed().collect(Collectors.toList());
-		if(BankUtil.isOpen()){
+		if (BankUtil.isOpen())
+		{
 			for (Widget item : BankInventory.search().idInList(gearAsList).result())
 			{
 				if (counter == swaps)
@@ -935,15 +953,19 @@ public class ToaManager
 				}
 				int slot = 0;
 				ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
-				if(invent != null){
-					for(int j = 0 ; j < 28; j++){
+				if (invent != null)
+				{
+					for (int j = 0; j < 28; j++)
+					{
 						Item inventoryItem = invent.getItem(j);
-						if(inventoryItem == null){
+						if (inventoryItem == null)
+						{
 							//System.out.println("Inventory item is null somehow?");
 							continue;
 						}
 						//System.out.println("Item id -> " + item.getItemId());
-						if(inventoryItem.getId() == item.getItemId()){
+						if (inventoryItem.getId() == item.getItemId())
+						{
 							//System.out.println("Item found at slot -> " + j);
 							slot = j;
 							break;
@@ -972,7 +994,9 @@ public class ToaManager
 					}
 				}
 			}
-		} else {
+		}
+		else
+		{
 			for (Widget item : Inventory.search().idInList(gearAsList).result())
 			{
 				if (counter == swaps)
@@ -981,15 +1005,19 @@ public class ToaManager
 				}
 				int slot = 0;
 				ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
-				if(invent != null){
-					for(int j = 0 ; j < 28; j++){
+				if (invent != null)
+				{
+					for (int j = 0; j < 28; j++)
+					{
 						Item inventoryItem = invent.getItem(j);
-						if(inventoryItem == null){
+						if (inventoryItem == null)
+						{
 							//System.out.println("Inventory item is null somehow?");
 							continue;
 						}
 						//System.out.println("Item id -> " + item.getItemId());
-						if(inventoryItem.getId() == item.getItemId()){
+						if (inventoryItem.getId() == item.getItemId())
+						{
 							//System.out.println("Item found at slot -> " + j);
 							slot = j;
 							break;
@@ -1062,7 +1090,8 @@ public class ToaManager
 		items.removeIf(n -> n == 0 || n == -1);
 		ArrayList<Widget> playerItems = (ArrayList<Widget>) Inventory.search().result();
 		ArrayList<Integer> returnList = itemsToIntegers(playerItems);
-		for(EquipmentItemWidget w : Equipment.search().result()){
+		for (EquipmentItemWidget w : Equipment.search().result())
+		{
 			returnList.add(w.getEquipmentItemId());
 		}
 

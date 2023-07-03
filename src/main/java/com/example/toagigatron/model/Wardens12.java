@@ -120,7 +120,7 @@ public class Wardens12
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		if (npcDespawned.getNpc().getName() != null
-			&& npcDespawned.getNpc().getName().equals("Core"))
+			&& npcDespawned.getNpc().getName().contains("Core"))
 		{
 			coreTick = 0;
 		}

@@ -50,11 +50,10 @@ public class WardenP23Consumables extends StagedTask
 		NPC core = NPCUtil.findNearest("Core");
 
 		// Don't run if core is out and you are about to attack
-		if (core != null && !gameTickManager.isAttackWaiting())
+		if (core != null && gameTickManager.attackWait <= 1)
 		{
 			return false;
 		}
-
 
 		boolean shouldDrinkAdren = core != null ||
 				(toaManager.wardens12.warden != null

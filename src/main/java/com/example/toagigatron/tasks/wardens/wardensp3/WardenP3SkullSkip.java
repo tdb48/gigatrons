@@ -73,7 +73,7 @@ public class WardenP3SkullSkip extends StagedTask
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		ArrayList<NPC> skulls = (ArrayList<NPC>) NPCUtil.findAll("Energy Siphon");
+		ArrayList<NPC> skulls = (ArrayList<NPC>) NPCs.search().nameContains("Energy Siphon").result();
 		if (skulls.size() > 0)
 		{
 			amountOfSkulls = skulls.size();

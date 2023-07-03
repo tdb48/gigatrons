@@ -1,5 +1,6 @@
 package com.example.toagigatron.tasks;
 
+import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Utility.NPCUtil;
 import com.example.Utility.Static;
@@ -73,8 +74,11 @@ public class ProgressStage extends Task
 				return true;
 			}
 
-			NPC warden = NPCUtil.findNearest(ToaConstants.P2_WARDEN_NAME);
-			if (warden != null && (warden.getId() == ToaConstants.WARDENS_P2_DOWNED || warden.getId() == ToaConstants.WARDENS_P2_ACTIVE_RANGE_MELEE || warden.getId() == ToaConstants.WARDENS_P2_ACTIVE_MAGE_MELEE))
+			NPC warden = NPCs.search().nameContains(ToaConstants.P2_WARDEN_NAME).first().orElse(null);
+			if (warden != null
+				&& (warden.getId() == ToaConstants.WARDENS_P2_DOWNED
+				|| warden.getId() == ToaConstants.WARDENS_P2_ACTIVE_RANGE_MELEE
+				|| warden.getId() == ToaConstants.WARDENS_P2_ACTIVE_MAGE_MELEE))
 			{
 				toaManager.setStage(Stage.WARDENS_P2);
 			}
