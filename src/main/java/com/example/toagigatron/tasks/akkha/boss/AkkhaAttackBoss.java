@@ -79,12 +79,12 @@ public class AkkhaAttackBoss extends StagedTask
 			&& toaManager.akkha.akkhaBoss.getWorldArea().contains(toaManager.akkha.safeQuadrant.centerTile)
 			&& Reachable.isWalkable(toaManager.akkha.safeQuadrant.memoryTile)
 			&& !gameTickManager.isTickWaiting())
-	{
-		toaManager.print("Repositioning to memory tile bc akkha is standing EVERYWHERE");
-		Movement.walk(toaManager.akkha.safeQuadrant.memoryTile);
-		gameTickManager.setTickWait(3);
-		return true;
-	}
+		{
+			toaManager.print("Repositioning to memory tile bc akkha is standing EVERYWHERE");
+			Movement.walk(toaManager.akkha.safeQuadrant.memoryTile);
+			gameTickManager.setTickWait(3);
+			return true;
+		}
 		else if (!toaManager.akkha.orbSpecialActive()
 			&& !playerPoint.equals(toaManager.akkha.safeQuadrant.centerTile)
 			&& Reachable.isWalkable(toaManager.akkha.safeQuadrant.centerTile)
@@ -96,10 +96,10 @@ public class AkkhaAttackBoss extends StagedTask
 			return true;
 		}
 		else if (!toaManager.akkha.orbSpecialActive()
-				&& !playerPoint.equals(toaManager.akkha.safeQuadrant.memoryTile)
-				&& toaManager.akkha.akkhaBoss.getWorldArea().contains(toaManager.akkha.safeQuadrant.centerTile)
-				&& Reachable.isWalkable(toaManager.akkha.safeQuadrant.memoryTile)
-				&& !gameTickManager.isTickWaiting())
+			&& !playerPoint.equals(toaManager.akkha.safeQuadrant.memoryTile)
+			&& toaManager.akkha.akkhaBoss.getWorldArea().contains(toaManager.akkha.safeQuadrant.centerTile)
+			&& Reachable.isWalkable(toaManager.akkha.safeQuadrant.memoryTile)
+			&& !gameTickManager.isTickWaiting())
 		{
 			toaManager.print("Repositioning to memory tile bc akkha is standing on our good tile");
 			Movement.walk(toaManager.akkha.safeQuadrant.memoryTile);
@@ -109,7 +109,7 @@ public class AkkhaAttackBoss extends StagedTask
 		else if (!toaManager.akkha.orbSpecialActive()
 			&& !playerPoint.equals(toaManager.akkha.safeQuadrant.centerTile)
 			&& Reachable.isWalkable(toaManager.akkha.safeQuadrant.centerTile)
-				&& !gameTickManager.isTickWaiting())
+			&& !gameTickManager.isTickWaiting())
 		{
 			toaManager.print("Repositioning to center tile THERE" + toaManager.worldPointString(toaManager.akkha.safeQuadrant.centerTile));
 			Movement.walk(toaManager.akkha.safeQuadrant.centerTile);
@@ -124,7 +124,8 @@ public class AkkhaAttackBoss extends StagedTask
 			return true;
 		}
 		// Return if in melee gear and akkha is not close enough yet
-		else if (!toaManager.isNextToNpc(toaManager.akkha.akkhaBoss))
+		else if (toaManager.akkha.activeShadows.size() > 0
+			&& !toaManager.isNextToNpc(toaManager.akkha.akkhaBoss))
 		{
 			toaManager.print("waiting for akkha to get close");
 			return false;
@@ -138,7 +139,7 @@ public class AkkhaAttackBoss extends StagedTask
 		{
 			toaManager.print("Attacking akkha");
 			MousePackets.queueClickPacket();
-			NPCPackets.queueNPCAction(toaManager.akkha.akkhaBoss,"Attack");
+			NPCPackets.queueNPCAction(toaManager.akkha.akkhaBoss, "Attack");
 			return true;
 		}
 
