@@ -123,8 +123,9 @@ public class AkkhaAttackBoss extends StagedTask
 			return true;
 		}
 		// Return if in melee gear and akkha is not close enough yet
-		else if (toaManager.akkha.activeShadows.size() > 0
-			&& !toaManager.isNextToNpc(toaManager.akkha.akkhaBoss))
+		//toaManager.akkha.activeShadows.size() > 0
+		//			&&
+		else if (!toaManager.isNextToNpc(toaManager.akkha.akkhaBoss))
 		{
 			toaManager.print("waiting for akkha to get close");
 			return false;
