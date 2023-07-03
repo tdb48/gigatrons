@@ -58,6 +58,16 @@ public class ToaGigatronOverlay extends Overlay
 			}
 		}
 
+		for(NPC npc : client.getNpcs()){
+			if(npc != null && npc.getWorldLocation().isInScene(client)){
+				int health = npc.getHealthRatio();
+				Point textLocation = npc.getCanvasTextLocation(graphics2D, String.valueOf(health),npc.getModelHeight()/2);
+				if(textLocation != null){
+					renderTextLocation(graphics2D, String.valueOf(health), 12, Font.BOLD, Color.CYAN, textLocation);
+				}
+			}
+		}
+
 
 
 		if (plugin.toaManager.kephri.firstKephriPuzzle != null)

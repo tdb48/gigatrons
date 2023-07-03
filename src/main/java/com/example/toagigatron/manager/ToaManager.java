@@ -7,14 +7,12 @@ import com.example.EthanApiPlugin.Collections.EquipmentItemWidget;
 import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
-import com.example.Packets.NPCPackets;
 import com.example.Packets.WidgetPackets;
 import com.example.Utility.BankUtil;
 import com.example.Utility.Combat;
 import com.example.Utility.Movement;
 import com.example.Utility.Prayer;
 import com.example.Utility.Prayers;
-import com.example.Utility.Projectiles;
 import com.example.Utility.Static;
 import com.example.Utility.Tiles;
 import com.example.Utility.WidgetUtil;
@@ -798,7 +796,6 @@ public class ToaManager
 			counter++;
 		}
 	}
-
 	public GameObject findClosestGameObject(ArrayList<GameObject> gameObjects)
 	{
 		GameObject returnObj = null;

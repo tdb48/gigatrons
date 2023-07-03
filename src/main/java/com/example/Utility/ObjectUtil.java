@@ -19,9 +19,16 @@ public class ObjectUtil
 {
 
 	public static boolean hasAction(GameObject obj, String action){
+		int index = 1;
 		for(String s : client.getObjectDefinition(obj.getId()).getActions()){
-			if(s.equalsIgnoreCase(action)){
+			if(s != null && s.equalsIgnoreCase(action)){
+				//System.out.println("Action " + index + ": " + s);
 				return true;
+			} else if(s != null){
+				//System.out.println("Action not matching -> " + s);
+			}
+			else if(s == null){
+				//System.out.println("Action is null");
 			}
 		}
 		return false;

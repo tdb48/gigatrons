@@ -259,7 +259,6 @@ public class Wardens3
 		if (npc.getName() != null
 			&& npc.getName().toLowerCase().contains("energy siphon"))
 		{
-			toaManager.print("Skulls spawned");
 			stayOnGreen = true;
 			skullTick = 0;
 		}

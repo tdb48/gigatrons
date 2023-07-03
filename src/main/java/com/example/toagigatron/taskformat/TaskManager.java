@@ -88,6 +88,7 @@ public class TaskManager
     @Subscribe
     public void onClientTick(ClientTick event){
         //If a game tick has not yet passed since our last iteration, return
+
         if(tickCounter <= previousTick){
             return;
         }
@@ -98,6 +99,9 @@ public class TaskManager
         }
         randomSleepCounter = 0;
         previousTick = tickCounter;
+        if(Static.getClient().getLocalPlayer().getPoseAnimation() == 5538){
+            return;
+        }
         for (Task task : this.tasks)
         {
 //            System.out.println("Iterating tasks");

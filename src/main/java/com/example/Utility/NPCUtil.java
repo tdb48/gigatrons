@@ -125,4 +125,9 @@ public class NPCUtil
 		return NPCs.search().withId(id).nearestToPlayer().orElse(null);
 	}
 
+	public static NPC findNearestNpcAliveOrDead(String name)
+	{
+		return NPCs.search().nameContains(name).nearestToPlayer().orElse(null);
+	}
+
 }
