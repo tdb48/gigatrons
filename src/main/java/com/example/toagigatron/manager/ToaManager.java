@@ -304,6 +304,17 @@ public class ToaManager
 //		}
 //	}
 
+	public boolean earlyReachableCheck(WorldPoint wp){
+		if(wp == null){
+			return false;
+		}
+		if(!wp.isInScene(client)){
+			return false;
+		}
+		LocalPoint lp = LocalPoint.fromWorld(client, wp);
+		return lp != null && lp.isInScene();
+	}
+
 	public Projectile p = null;
 
 //	@Subscribe

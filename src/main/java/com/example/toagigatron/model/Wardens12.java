@@ -19,6 +19,7 @@ import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
 import net.runelite.api.Projectile;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -414,6 +415,7 @@ public class Wardens12
 		WorldPoint southWest = refPoint.dx(-6).dy(-6);
 		WorldPoint northEast = refPoint.dx(7).dy(7);
 		returnList = new ArrayList<>(WorldAreas.createArea(southWest, northEast).toWorldPointList());
+		returnList.removeIf(n -> !toaManager.earlyReachableCheck(n));
 		returnList.removeIf(n -> !Reachable.isWalkable(n));
 		return returnList;
 	}
