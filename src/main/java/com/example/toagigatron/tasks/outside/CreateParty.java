@@ -64,8 +64,11 @@ public class CreateParty extends StagedTask
 			//WidgetPackets.queueWidgetActionPacket(5, 13500422, 11733, 6);
 			//MenuOptionClicked(getParam0=-1, getParam1=50593856, getMenuOption=Make Party, getMenuTarget=, getMenuAction=CC_OP, getId=1)
 			//WidgetPackets.queueWidgetAction(createParty,"Make Party");
-			EthanApiPlugin.invoke(-1, 50593856, MenuAction.CC_OP.getId(),1, -1, "", "", -1, -1);
-			toaManager.print("Clicked make party widget using invokes cause nothing else works");
+			//EthanApiPlugin.invoke(-1, 50593856, MenuAction.CC_OP.getId(),1, -1, "", "", -1, -1);
+//			toaManager.print("Clicked make party widget using invokes cause nothing else works");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueResumePause(50593793, 1);
+			toaManager.print("Clicked make party widget");
 		}
 		else
 		{
