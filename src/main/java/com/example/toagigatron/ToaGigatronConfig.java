@@ -482,6 +482,19 @@ public interface ToaGigatronConfig extends Config {
 //		return false;
 //	}
 
+
+	@ConfigItem(
+		position = 1,
+		keyName = "prayFlick",
+		name = "Prayer flick",
+		description = "Whether to 1 tick flick or not",
+		section = "General"
+	)
+	default boolean prayFlick()
+	{
+		return false;
+	}
+
 	@ConfigItem(
 		position = 2,
 		keyName = "brewCount",
