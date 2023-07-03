@@ -47,11 +47,25 @@ public class BabaPrayerHandler extends StagedTask
 		}
 		if (!this.getPrayers().isEmpty() && Prayers.getPoints() > 0)
 		{
-			for (Prayer prayer : getPrayers())
+			if (toaManager.config.prayFlick() && Prayers.hasEnabled(getPrayers()))
 			{
-				if (!Prayers.isEnabled(prayer))
+				for (Prayer prayer : getPrayers())
 				{
 					Prayers.toggle(prayer);
+				}
+				for (Prayer prayer : getPrayers())
+				{
+					Prayers.toggle(prayer);
+				}
+			}
+			else
+			{
+				for (Prayer prayer : getPrayers())
+				{
+					if (!Prayers.isEnabled(prayer))
+					{
+						Prayers.toggle(prayer);
+					}
 				}
 			}
 			return true;
@@ -67,15 +81,20 @@ public class BabaPrayerHandler extends StagedTask
 	public List<Prayer> getPrayers()
 	{
 		NPC baba = toaManager.baba.babaBoss;
-		if(baba == null){
+		if (baba == null)
+		{
 			return List.of();
 		}
 		//This is the boulder phase ID i assume?
 		//Pray range overhead while the ranged monkeys are attacking
-		if(baba.getId() == 11780){
-			if(NPCs.search().interactingWith(client.getLocalPlayer()).withId(ToaConstants.BABA_BOSS_MONKEY).alive().empty()){
+		if (baba.getId() == 11780)
+		{
+			if (NPCs.search().interactingWith(client.getLocalPlayer()).withId(ToaConstants.BABA_BOSS_MONKEY).alive().empty())
+			{
 				return List.of(this.getOffensive());
-			} else {
+			}
+			else
+			{
 				return List.of(Prayer.PROTECT_FROM_MISSILES, this.getOffensive());
 			}
 		}

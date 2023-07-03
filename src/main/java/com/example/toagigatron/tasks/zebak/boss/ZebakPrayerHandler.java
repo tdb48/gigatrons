@@ -72,11 +72,25 @@ public class ZebakPrayerHandler extends StagedTask
 		}
 		if (!this.getPrayers().isEmpty() && Prayers.getPoints() > 0)
 		{
-			for (Prayer prayer : getPrayers())
+			if (toaManager.config.prayFlick() && Prayers.hasEnabled(getPrayers()))
 			{
-				if (!Prayers.isEnabled(prayer))
+				for (Prayer prayer : getPrayers())
 				{
 					Prayers.toggle(prayer);
+				}
+				for (Prayer prayer : getPrayers())
+				{
+					Prayers.toggle(prayer);
+				}
+			}
+			else
+			{
+				for (Prayer prayer : getPrayers())
+				{
+					if (!Prayers.isEnabled(prayer))
+					{
+						Prayers.toggle(prayer);
+					}
 				}
 			}
 			return true;

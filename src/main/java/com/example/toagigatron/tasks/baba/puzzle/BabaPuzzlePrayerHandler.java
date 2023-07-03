@@ -15,8 +15,8 @@ import javax.inject.Inject;
 import java.util.List;
 
 @TaskDescriptor(
-		name = "Baba prayers",
-		priority = 12
+	name = "Baba prayers",
+	priority = 12
 )
 public class BabaPuzzlePrayerHandler extends StagedTask
 {
@@ -49,7 +49,8 @@ public class BabaPuzzlePrayerHandler extends StagedTask
 				}
 			}
 		}
-		if(thrallNpcs != null){
+		if (thrallNpcs != null)
+		{
 			for (NPC n : thrallNpcs)
 			{
 				if (n.getInteracting() != null && n.getInteracting().equals(client.getLocalPlayer()))
@@ -196,11 +197,25 @@ public class BabaPuzzlePrayerHandler extends StagedTask
 		}
 		if (!this.getPrayers().isEmpty() && Prayers.getPoints() > 0)
 		{
-			for (Prayer prayer : getPrayers())
+			if (toaManager.config.prayFlick() && Prayers.hasEnabled(getPrayers()))
 			{
-				if (!Prayers.isEnabled(prayer))
+				for (Prayer prayer : getPrayers())
 				{
 					Prayers.toggle(prayer);
+				}
+				for (Prayer prayer : getPrayers())
+				{
+					Prayers.toggle(prayer);
+				}
+			}
+			else
+			{
+				for (Prayer prayer : getPrayers())
+				{
+					if (!Prayers.isEnabled(prayer))
+					{
+						Prayers.toggle(prayer);
+					}
 				}
 			}
 			return true;
