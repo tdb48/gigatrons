@@ -21,13 +21,11 @@ public class Walker
 	public static void stepAlong(List<WorldPoint> path)
 	{
 		if(path == null || path.isEmpty()){
-			System.out.println("Path paramater is empty!!");
 			return;
 		}
 		List<WorldPoint> reachablePath = reachablePath(path);
 		if (reachablePath.isEmpty())
 		{
-			System.out.println("Reachable path is empty!!");
 			return;
 		}
 		if (reachablePath.size() > 1)
@@ -99,21 +97,21 @@ public class Walker
 				System.out.println("Tile is null in reachable path even though lp was not null");
 				break;
 			}
-			System.out.println("Adding worldpoint to list -> " + p);
+			//System.out.println("Adding worldpoint to list -> " + p);
 			out.add(p);
 		}
 
 		if (out.isEmpty() || out.size() == 1 && out.get(0).equals(local.getWorldLocation()))
 		{
-			System.out.println("Returning empty list in reachable path");
+			//System.out.println("Returning empty list in reachable path");
 			if(out.isEmpty()){
-				System.out.println("'out' is empty.");
+				//System.out.println("'out' is empty.");
 			} else if((out.size() == 1 && out.get(0).equals(local.getWorldLocation()))){
-				System.out.println("'out' is size 1 and index 0 is the player world location.");
+				//System.out.println("'out' is size 1 and index 0 is the player world location.");
 			}
 			return Collections.emptyList();
 		}
-		System.out.println("Returning out");
+		//System.out.println("Returning out");
 		return out;
 	}
 }
