@@ -64,6 +64,8 @@ public class ToaConstants
 	// This is the Akkha ID when you're not in the room
 	public static final int INACTIVE_AKKHA = 11789;
 	public static final int BABA_BOSS_MONKEY = 11781;
+	public static final int BABA_BOSS_MONKEY_ROCKTHROW_ANIMATION = 9745;
+	public static final int BABA_BOSS_MONKEY_DEATH_ANIMATION = 9755;
 	public static final int INVENTORY_MIRROR = 27296;
 	public static final int MINEABLE_WALL_1 = 45464;
 	public static final int MINEABLE_WALL_2 = 45462;

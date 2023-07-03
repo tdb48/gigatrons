@@ -475,6 +475,13 @@ public class Baba
 		{
 			badTiles.addAll(tilesUnderBoss());
 		}
+		NPC deadMonkey = NPCs.search().withId(ToaConstants.BABA_BOSS_MONKEY).filter
+			(x -> (x.getHealthRatio() == 0 || x.getAnimation() == ToaConstants.BABA_BOSS_MONKEY_DEATH_ANIMATION)).first().orElse(null);
+		if(deadMonkey != null){
+			toaManager.print("Found a DEAD monkey");
+			System.out.println("Found a DEAD monkey");
+			badTiles.add(deadMonkey.getWorldLocation());
+		}
 
 		// Add corner tiles of the rocks so that it doesn't get bouldered for 90s
 		badTiles.addAll(diagonalRockFallTile);
