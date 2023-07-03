@@ -17,10 +17,10 @@ public class WorldAreas
 	public static WorldArea createArea(WorldPoint location, int width, int height)
 	{
 		return new WorldArea(location.getX(),
-				location.getY(),
-				width,
-				height,
-				location.getPlane());
+			location.getY(),
+			width,
+			height,
+			location.getPlane());
 	}
 
 	// TODO

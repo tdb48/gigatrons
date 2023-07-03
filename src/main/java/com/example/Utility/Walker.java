@@ -2,16 +2,15 @@ package com.example.Utility;
 
 import com.example.Packets.MousePackets;
 import com.example.Packets.MovementPackets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class Walker
 {
@@ -20,7 +19,8 @@ public class Walker
 
 	public static void stepAlong(List<WorldPoint> path)
 	{
-		if(path == null || path.isEmpty()){
+		if (path == null || path.isEmpty())
+		{
 			return;
 		}
 		List<WorldPoint> reachablePath = reachablePath(path);
@@ -104,9 +104,12 @@ public class Walker
 		if (out.isEmpty() || out.size() == 1 && out.get(0).equals(local.getWorldLocation()))
 		{
 			//System.out.println("Returning empty list in reachable path");
-			if(out.isEmpty()){
+			if (out.isEmpty())
+			{
 				//System.out.println("'out' is empty.");
-			} else if((out.size() == 1 && out.get(0).equals(local.getWorldLocation()))){
+			}
+			else if ((out.size() == 1 && out.get(0).equals(local.getWorldLocation())))
+			{
 				//System.out.println("'out' is size 1 and index 0 is the player world location.");
 			}
 			return Collections.emptyList();

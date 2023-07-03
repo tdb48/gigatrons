@@ -72,11 +72,12 @@ public class NPCUtil
 			.collect(Collectors.toList());
 		return NPCs.search().alive().idInList(arrayList).result();
 	}
+
 	public static List<NPC> findAllDeadOrAlive(int... id)
 	{
 		List<Integer> arrayList = Arrays.stream(id)
-				.boxed()
-				.collect(Collectors.toList());
+			.boxed()
+			.collect(Collectors.toList());
 		return NPCs.search().idInList(arrayList).result();
 	}
 
