@@ -70,7 +70,14 @@ public class NPCUtil
 		List<Integer> arrayList = Arrays.stream(id)
 			.boxed()
 			.collect(Collectors.toList());
-		return NPCs.search().idInList(arrayList).filter(x -> x.getHealthRatio() != 0).result();
+		return NPCs.search().alive().idInList(arrayList).result();
+	}
+	public static List<NPC> findAllDeadOrAlive(int... id)
+	{
+		List<Integer> arrayList = Arrays.stream(id)
+				.boxed()
+				.collect(Collectors.toList());
+		return NPCs.search().idInList(arrayList).result();
 	}
 
 	public static List<NPC> findAll(String... name)
