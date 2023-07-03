@@ -47,27 +47,35 @@ public class ToaGigatronOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics2D)
 	{
-		if(client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null){
+		if (!config.showOverlay())
+		{
+			return null;
+		}
+		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
+		{
 			Point textLocation = client.getLocalPlayer().getCanvasTextLocation(graphics2D,
-					plugin.toaManager.p == null ? plugin.toaManager.gameTickManager.attackWait + "  |  " + "0   " :
+				plugin.toaManager.p == null ? plugin.toaManager.gameTickManager.attackWait + "  |  " + "0   " :
 					plugin.toaManager.gameTickManager.attackWait + "  |  " + plugin.toaManager.p.getRemainingCycles() + "   ",
-					185);
-			if (textLocation != null) {
+				185);
+			if (textLocation != null)
+			{
 				renderTextLocation(graphics2D, plugin.toaManager.p == null ? plugin.toaManager.gameTickManager.attackWait + "  |  " + "0   " :
-						plugin.toaManager.gameTickManager.attackWait + "  |  " + plugin.toaManager.p.getRemainingCycles() + "   ", 14, Font.BOLD, Color.CYAN, textLocation);
+					plugin.toaManager.gameTickManager.attackWait + "  |  " + plugin.toaManager.p.getRemainingCycles() + "   ", 14, Font.BOLD, Color.CYAN, textLocation);
 			}
 		}
 
-		for(NPC npc : client.getNpcs()){
-			if(npc != null && npc.getWorldLocation().isInScene(client)){
+		for (NPC npc : client.getNpcs())
+		{
+			if (npc != null && npc.getWorldLocation().isInScene(client))
+			{
 				int health = npc.getHealthRatio();
-				Point textLocation = npc.getCanvasTextLocation(graphics2D, String.valueOf(health),npc.getModelHeight()/2);
-				if(textLocation != null){
+				Point textLocation = npc.getCanvasTextLocation(graphics2D, String.valueOf(health), npc.getModelHeight() / 2);
+				if (textLocation != null)
+				{
 					renderTextLocation(graphics2D, String.valueOf(health), 12, Font.BOLD, Color.CYAN, textLocation);
 				}
 			}
 		}
-
 
 
 		if (plugin.toaManager.kephri.firstKephriPuzzle != null)
@@ -494,7 +502,7 @@ public class ToaGigatronOverlay extends Overlay
 			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
 			if (poly3 != null)
 			{
-				OverlayUtil.renderPolygon(graphics2D, poly3, Color.PINK, new Color(Color.PINK.getRed(), Color.PINK.getGreen(), Color.PINK	.getBlue(), 100), stroke);
+				OverlayUtil.renderPolygon(graphics2D, poly3, Color.PINK, new Color(Color.PINK.getRed(), Color.PINK.getGreen(), Color.PINK.getBlue(), 100), stroke);
 			}
 		}
 		if (plugin.toaManager.kephri.currentRow != null)
@@ -721,15 +729,18 @@ public class ToaGigatronOverlay extends Overlay
 		}
 
 
-		if(client.getLocalDestinationLocation() != null && client.getLocalDestinationLocation().isInScene()){
+		if (client.getLocalDestinationLocation() != null && client.getLocalDestinationLocation().isInScene())
+		{
 			LocalPoint lp = client.getLocalDestinationLocation();
 			assert lp != null;
 			Polygon poly = Perspective.getCanvasTileAreaPoly(client, lp, 1);
-			if(poly != null){
+			if (poly != null)
+			{
 				OverlayUtil.renderPolygon(graphics2D, poly, Color.RED, new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 75), stroke);
 			}
 		}
-		if(plugin.toaManager.kephri.dungGraphicTick > 0){
+		if (plugin.toaManager.kephri.dungGraphicTick > 0)
+		{
 			LocalPoint lp2 = client.getLocalPlayer().getLocalLocation();
 			assert lp2 != null;
 			Polygon poly2 = Perspective.getCanvasTileAreaPoly(client, lp2, 1);
@@ -738,7 +749,8 @@ public class ToaGigatronOverlay extends Overlay
 				OverlayUtil.renderPolygon(graphics2D, poly2, Color.CYAN, new Color(Color.CYAN.getRed(), Color.cyan.getGreen(), Color.cyan.getBlue(), 15), stroke);
 			}
 			Point textLocation = client.getLocalPlayer().getCanvasTextLocation(graphics2D, String.valueOf(plugin.toaManager.kephri.dungGraphicTick), 185);
-			if(textLocation != null){
+			if (textLocation != null)
+			{
 				renderTextLocation(graphics2D, String.valueOf(plugin.toaManager.kephri.dungGraphicTick), 14, Font.BOLD, Color.CYAN, textLocation);
 			}
 		}
