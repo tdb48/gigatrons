@@ -4,6 +4,7 @@ import com.example.Packets.MousePackets;
 import com.example.Packets.WidgetPackets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.WidgetInfo;
@@ -18,6 +19,18 @@ public class Prayers
 	public static boolean isEnabled(Prayer prayer)
 	{
 		return Static.getClient().getVarbitValue(prayer.getVarbit()) == 1;
+	}
+
+	public static boolean hasEnabled(List<Prayer> prayers)
+	{
+		for (Prayer prayer : prayers)
+		{
+			if (!isEnabled(prayer))
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static void toggle(Prayer prayer)
