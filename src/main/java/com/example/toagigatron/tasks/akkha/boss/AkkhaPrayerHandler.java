@@ -1,6 +1,7 @@
 package com.example.toagigatron.tasks.akkha.boss;
 
 import com.example.EthanApiPlugin.Collections.Widgets;
+import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Utility.Combat;
 import com.example.Utility.NPCUtil;
 import com.example.Utility.Prayer;
@@ -75,6 +76,9 @@ public class AkkhaPrayerHandler extends StagedTask
 		}
 		return false;
 	}
+	private boolean isAnimating(Actor actor) {
+		return actor.getAnimation() != -1;
+	}
 
 	public List<Prayer> getPrayers()
 	{
@@ -96,7 +100,7 @@ public class AkkhaPrayerHandler extends StagedTask
 			}
 
 			boolean isMageProjectile = Projectiles.getProjectile(2253) != null;
-			if (!isMageProjectile && this.next == Prayer.PROTECT_FROM_MELEE && akkha.getAnimation() != -1 )
+			if (!isMageProjectile && this.next == Prayer.PROTECT_FROM_MELEE && !isAnimating(akkha))
 			{
 				this.current = this.next;
 			}
