@@ -287,7 +287,7 @@ public class Akkha
 
 	public void setSafeQuadrant()
 	{
-		ArrayList<NPC> shadows = (ArrayList<NPC>) NPCUtil.findAll(ToaConstants.SHADOW_AKKHA);
+		ArrayList<NPC> shadows = (ArrayList<NPC>) NPCUtil.findAllDeadOrAlive(ToaConstants.SHADOW_AKKHA);
 		if (shadows.size() != 3)
 		{
 			return;

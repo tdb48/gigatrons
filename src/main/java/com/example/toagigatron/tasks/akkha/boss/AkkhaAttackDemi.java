@@ -52,6 +52,8 @@ public class AkkhaAttackDemi extends StagedTask
 			&& !playerPoint.equals(toaManager.akkha.nextQuadrant.memoryTile)
 			&& Reachable.isWalkable(toaManager.akkha.nextQuadrant.memoryTile))
 		{
+			toaManager.print("Moving to memory tile because we arent on it and theres no orb special, no memory tiles, and its reachable.");
+			toaManager.print("Memory tile -> " + toaManager.akkha.nextQuadrant.memoryTile);
 			Movement.walk(toaManager.akkha.nextQuadrant.memoryTile);
 			return true;
 		}
