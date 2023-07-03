@@ -17,7 +17,7 @@ import net.runelite.api.widgets.Widget;
 
 @TaskDescriptor(
 	name = "Claim death",
-	priority = 999,
+	priority = 99999,
 	blocking = true
 )
 public class ClaimDeath extends StagedTask

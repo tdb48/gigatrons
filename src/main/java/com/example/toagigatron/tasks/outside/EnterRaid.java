@@ -3,6 +3,7 @@ package com.example.toagigatron.tasks.outside;
 import com.example.EthanApiPlugin.Collections.TileObjects;
 import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
+import com.example.Utility.Dialog;
 import com.example.Utility.Static;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
@@ -45,7 +46,20 @@ public class EnterRaid extends StagedTask
 		{
 			return false;
 		}
-		MousePackets.queueClickPacket();
+//		if (Dialog.canContinue())
+//		{
+//			Dialog.continueSpace();
+//			return true;
+//		}
+//		else if (Dialog.isOpen())
+//		{
+//			Dialog.type();
+//			return true;
+//		}
+		if (Dialog.canContinueTOAResign())
+		{
+			MousePackets.queueClickPacket();
+		}
 		ObjectPackets.queueObjectAction(entry, false, "Enter");
 		toaManager.print("Entering raid");
 		return true;
