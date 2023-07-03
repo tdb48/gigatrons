@@ -4,7 +4,8 @@ import net.runelite.api.ItemID;
 
 public enum RangeHelm
 {
-	MASORI(ItemID.MASORI_MASK_F),
+	MASORI_RICH(ItemID.MASORI_MASK_F),
+	MASORI_POOR(ItemID.MASORI_MASK),
 	ARMADYL(ItemID.ARMADYL_HELMET),
 	GUTHIX(ItemID.GUTHIX_COIF),
 	NONE(-1);
