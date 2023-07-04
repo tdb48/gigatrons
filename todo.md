@@ -17,6 +17,8 @@
 - Support bofa/crystal
 - Recharge sang (why? its perfect i think)
 - Rework charging (why? its perfect i think)
+- Shadow/tbow support (likely required)
+- Butterfly akkha (if shadow / potentially with sang if ur very low on supplies? Could be clutch)
 ## INVOCATION SUPPORT
 ### Consider the following invocations as potentials to add support for in no particular order
 - Walk for it (40 mins)
