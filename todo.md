@@ -1,8 +1,6 @@
 # TODO
 ## TOA
 - Kephri deaths
-- Losing ticks on core with consumables
-- Dragging issue (Find cause and fix optimally dont just re-enable the re-attack method because that is not a clean fix)
 - Support ahrims (probably lets just rewrite the entire gear system in a seperate project instead)
 - Add logic to open the relevant inventory tab using hotkeys when gear switching/consuming food or pots/praying/logging out etc.
 - Emergency 1t flicking
