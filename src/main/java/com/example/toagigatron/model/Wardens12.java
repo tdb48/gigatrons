@@ -410,7 +410,7 @@ public class Wardens12
 		WorldPoint southWest = refPoint.dx(-6).dy(-6);
 		WorldPoint northEast = refPoint.dx(7).dy(7);
 		returnList = new ArrayList<>(WorldAreas.createArea(southWest, northEast).toWorldPointList());
-		returnList.removeIf(n -> !toaManager.earlyReachableCheck(n));
+//		returnList.removeIf(n -> !toaManager.earlyReachableCheck(n));
 		returnList.removeIf(n -> !Reachable.isWalkable(n));
 		return returnList;
 	}
