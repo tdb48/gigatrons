@@ -56,10 +56,11 @@ public class EnterRaid extends StagedTask
 //			Dialog.type();
 //			return true;
 //		}
-		if (Dialog.canContinueTOAResign())
-		{
-			MousePackets.queueClickPacket();
-		}
+//		if (Dialog.canContinueTOAResign())
+//		{
+//			MousePackets.queueClickPacket();
+//		}
+		MousePackets.queueClickPacket();
 		ObjectPackets.queueObjectAction(entry, false, "Enter");
 		toaManager.print("Entering raid");
 		return true;
