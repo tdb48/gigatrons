@@ -110,30 +110,46 @@ public class ClaimLoot extends StagedTask
 		if (!isLootWidgetOpen())
 		{
 			ObjectComposition chestComp = client.getObjectDefinition(chest.getId());
-			ObjectComposition imposterComp = client.getObjectDefinition(chestComp.getImpostor().getId());
-			if (imposterComp != null)
-			{
-				if (imposterComp.getActions() != null)
+			//purple chest handling
+			if(chest.getId() == ToaConstants.PURPLE_CHEST_OPEN){
+				if(chestComp.getActions() != null){
+					if(ObjectUtil.hasAction(chest, "Search")){
+						toaManager.print("Has action Search");
+						MousePackets.queueClickPacket();
+						ObjectPackets.queueObjectAction(chest, false, "Search");
+						return true;
+					}
+					if(ObjectUtil.hasAction(chest, "Open")){
+						toaManager.print("Has action open somehow which it should not");
+						return false;
+					}
+				}
+			} else {
+				ObjectComposition imposterComp = client.getObjectDefinition(chestComp.getImpostor().getId());
+				if (imposterComp != null)
 				{
-					for (String s : imposterComp.getActions())
+					if (imposterComp.getActions() != null)
 					{
-						if (s == null)
+						for (String s : imposterComp.getActions())
 						{
-							continue;
-						}
-						if (s.equals("Open"))
-						{
-							toaManager.print("Has action open");
-							MousePackets.queueClickPacket();
-							ObjectPackets.queueObjectAction(chest, false, "Open");
-							return true;
-						}
-						if (s.equals("Search"))
-						{
-							toaManager.print("Has action Search");
-							MousePackets.queueClickPacket();
-							ObjectPackets.queueObjectAction(chest, false, "Search");
-							return true;
+							if (s == null)
+							{
+								continue;
+							}
+							if (s.equals("Open"))
+							{
+								toaManager.print("Has action open");
+								MousePackets.queueClickPacket();
+								ObjectPackets.queueObjectAction(chest, false, "Open");
+								return true;
+							}
+							if (s.equals("Search"))
+							{
+								toaManager.print("Has action Search");
+								MousePackets.queueClickPacket();
+								ObjectPackets.queueObjectAction(chest, false, "Search");
+								return true;
+							}
 						}
 					}
 				}
