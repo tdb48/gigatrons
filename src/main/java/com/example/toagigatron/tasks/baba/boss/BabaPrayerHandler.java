@@ -88,7 +88,8 @@ public class BabaPrayerHandler extends StagedTask
 		//Pray range overhead while the ranged monkeys are attacking
 		if (baba.getId() == 11780)
 		{
-			if (NPCs.search().interactingWith(client.getLocalPlayer()).withId(ToaConstants.BABA_BOSS_MONKEY).alive().empty())
+			if (NPCs.search().alive().withId(ToaConstants.BABA_BOSS_MONKEY).notInteracting().empty() &&
+				NPCs.search().alive().withId(ToaConstants.BABA_BOSS_MONKEY).interactingWithLocal().empty())
 			{
 				return List.of(this.getOffensive());
 			}
