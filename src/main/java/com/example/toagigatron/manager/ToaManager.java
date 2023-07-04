@@ -260,10 +260,6 @@ public class ToaManager
 			NPCPackets.queueNPCAction(npc, "Attack");
 			print("Re-Attacking " + npc.getName());
 		}
-		else
-		{
-			print("NPC IS NULL IN RE-ATTACK");
-		}
 	}
 
 	public String worldPointStringVerbose(WorldPoint wp)
