@@ -11,7 +11,6 @@
 - Prioritise what to drop at start of warden p1 based on if you are 1t flicking and the supplies you have (dont drop all ur brews if ur 1t flicking and have 5 restores)
 - Change spec logic for obelisk p1 so that it BGS more efficiently
 - Taking baba boulder on p3 warden when bgsing from far away tile and dragging yourself in
-- Deal with getting stuck 6h log outside
 - GE/run to toa tasks
 - Support bofa/crystal
 - Rework charging to support bofa/crystal/potentially ahrims? this comes after the equipment rework
