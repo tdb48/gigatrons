@@ -24,6 +24,9 @@ public class ChargesTracker
 	public int blowpipeDarts = -1;
 	public int blowpipeScales = -1;
 	public int mageCharges = -1;
+	public int ahrimsHood = -1;
+	public int ahrimsTop = -1;
+	public int ahrimsSkirt = -1;
 	EventBus eventBus;
 	Client client;
 	PluginManager pluginManager;
