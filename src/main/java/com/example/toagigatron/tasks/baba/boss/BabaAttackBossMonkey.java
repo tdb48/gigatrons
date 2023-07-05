@@ -48,10 +48,6 @@ public class BabaAttackBossMonkey extends StagedTask
 		NPC bossMonkey = NPCs.search().alive().withId(ToaConstants.BABA_BOSS_MONKEY).filter(
 			n -> !toaManager.baba.badTiles.contains(n.getWorldLocation())
 				&& !toaManager.baba.tilesUnderBoss().contains(n.getWorldLocation())).nearestToPlayer().orElse(null);
-		if (bossMonkey != null)
-		{
-			toaManager.print("Boss monkey alive ");
-		}
 		if (bossMonkey == null
 			|| toaManager.getBossHp() < 150
 			|| !toaManager.baba.blockTiles.isEmpty()
@@ -60,7 +56,6 @@ public class BabaAttackBossMonkey extends StagedTask
 			|| toaManager.baba.shockwaveTick != 0
 		)
 		{
-			toaManager.print("Not attacking boss monkey rn");
 			return false;
 		}
 		if (!toaManager.hasGearEquipped(toaManager.meleeSetup.getAllItems()))
