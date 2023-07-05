@@ -14,9 +14,11 @@ import com.example.toagigatron.taskformat.TaskManager;
 import com.example.toagigatron.tasks.CheckCharges;
 import com.example.toagigatron.tasks.DisablePrayers;
 import com.example.toagigatron.tasks.DropVial;
+import com.example.toagigatron.tasks.FairyRingFromGE;
 import com.example.toagigatron.tasks.LeaveBossRoom;
 import com.example.toagigatron.tasks.ProgressStage;
 import com.example.toagigatron.tasks.RefillSupplies;
+import com.example.toagigatron.tasks.RunToToa;
 import com.example.toagigatron.tasks.TakeOffGear;
 import com.example.toagigatron.tasks.ToggleRun;
 import com.example.toagigatron.tasks.akkha.boss.AkkhaAttackBoss;
@@ -246,6 +248,8 @@ public class ToaGigatronPlugin extends Plugin
 			ZebakSolveWave.class,
 			ZebakSolveBloods.class,
 			ZebakSolveRoar.class,
+			FairyRingFromGE.class,
+			RunToToa.class,
 		};
 	}
 
