@@ -18,23 +18,13 @@ import net.runelite.api.coords.WorldPoint;
 public class ObjectUtil
 {
 
-	public static boolean hasAction(GameObject obj, String action)
+	public static boolean hasAction(TileObject obj, String action)
 	{
-		int index = 1;
 		for (String s : client.getObjectDefinition(obj.getId()).getActions())
 		{
 			if (s != null && s.equalsIgnoreCase(action))
 			{
-				//System.out.println("Action " + index + ": " + s);
 				return true;
-			}
-			else if (s != null)
-			{
-				//System.out.println("Action not matching -> " + s);
-			}
-			else if (s == null)
-			{
-				//System.out.println("Action is null");
 			}
 		}
 		return false;
@@ -73,6 +63,11 @@ public class ObjectUtil
 	public static TileObject getNearestTileObject(int id)
 	{
 		return TileObjects.search().withId(id).nearestToPlayer().orElse(null);
+	}
+
+	public static TileObject getTileObjectAt(int id, WorldPoint worldPoint)
+	{
+		return TileObjects.search().withId(id).filter(n -> n.getWorldLocation().equals(worldPoint)).nearestToPlayer().orElse(null);
 	}
 
 	public static int distanceTo(GameObject gameObject, WorldPoint worldPoint)
