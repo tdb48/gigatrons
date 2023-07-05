@@ -13,7 +13,9 @@ import com.example.toagigatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import net.runelite.api.GameObject;
+import net.runelite.api.ObjectComposition;
 import net.runelite.api.coords.WorldPoint;
+
 @TaskDescriptor(
 	name = "FairyRingFromGE",
 	priority = 80
@@ -29,7 +31,6 @@ public class FairyRingFromGE extends StagedTask
 	private final static int FAIRY_RING = 29495;
 	private final static String FAIRY_RING_OPTION = "Last-destination (AKP)";
 
-
 	@Inject
 	public FairyRingFromGE(ToaManager toaManager)
 	{
@@ -42,28 +43,43 @@ public class FairyRingFromGE extends StagedTask
 		GameObject fairyRing = ObjectUtil.getNearestGameObject(FAIRY_RING);
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
 		// If we are west of the wall, use the fairy ring
+		boolean hasAction = false;
+		if (fairyRing != null && !ObjectUtil.hasAction(fairyRing, FAIRY_RING_OPTION))
+		{
+			ObjectComposition fairyComp = client.getObjectDefinition(fairyRing.getId());
+			ObjectComposition imposterComp = client.getObjectDefinition(fairyComp.getImpostor().getId());
+			for (String s : imposterComp.getActions())
+			{
+				if (s != null && s.toLowerCase().equalsIgnoreCase(FAIRY_RING_OPTION))
+				{
+					hasAction = true;
+					break;
+				}
+			}
+		}
+
 		if (fairyRing != null
 			&& tunnel != null
-			&& ObjectUtil.hasAction(fairyRing, FAIRY_RING_OPTION)
+			&& hasAction
 			&& playerPoint.getX() <= WEST_GE_WALL.getX())
 		{
 			toaManager.print("Using fairy ring");
 			MousePackets.queueClickPacket();
-			ObjectPackets.queueObjectAction(fairyRing,false,FAIRY_RING_OPTION);
+			ObjectPackets.queueObjectAction(fairyRing, false, FAIRY_RING_OPTION);
 			return true;
 		}
 		else if (tunnel != null && playerPoint.distanceTo(tunnel.getWorldLocation()) <= 10)
 		{
 			toaManager.print("Crawling through the tunnel");
 			MousePackets.queueClickPacket();
-			ObjectPackets.queueObjectAction(tunnel,false,"Climb-into");
+			ObjectPackets.queueObjectAction(tunnel, false, "Climb-into");
 			return true;
 		}
 		else
 		{
-			toaManager.print("Walking next to tunnel");
 			ArrayList<WorldPoint> path = (ArrayList<WorldPoint>) GlobalCollisionMap.findPath(TILE_NEXT_TO_TUNNEL);
-			Walker.stepAlong(path);
+			toaManager.print("Walking next to tunnel");
+			Walker.stepAlongBigSteps(path);
 			return true;
 		}
 	}

@@ -4,11 +4,11 @@ import com.example.EthanApiPlugin.PathFinding.GlobalCollisionMap;
 import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Utility.ObjectUtil;
-import com.example.Utility.Static;
 import com.example.Utility.Walker;
 import com.example.Utility.WorldAreas;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
+import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.taskformat.StagedTask;
 import com.example.toagigatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
@@ -33,7 +33,6 @@ public class RunToToa extends StagedTask
 	private final static WorldArea ISLAND_TWO = WorldAreas.createArea(
 		new WorldPoint(3292, 2698, 0),
 		new WorldPoint(3298, 2705, 0));
-
 	private final static int TOA_PYRAMID_ENTRY = 44596;
 
 	@Inject
@@ -41,6 +40,7 @@ public class RunToToa extends StagedTask
 	{
 		super(toaManager, Stage.OUTSIDE_TOA);
 	}
+
 
 	public boolean execute()
 	{
@@ -52,6 +52,10 @@ public class RunToToa extends StagedTask
 			&& steppingStoneOne != null
 			&& ObjectUtil.hasAction(steppingStoneOne, "Cross"))
 		{
+			if (client.getLocalPlayer().getAnimation() == ToaConstants.STEPPING_STONE_ANIMATION)
+			{
+				return true;
+			}
 			toaManager.print("Crossing first stone at " + toaManager.worldPointString(steppingStoneOne.getWorldLocation()));
 			MousePackets.queueClickPacket();
 			ObjectPackets.queueObjectAction(steppingStoneOne, false, "Cross");
@@ -61,27 +65,28 @@ public class RunToToa extends StagedTask
 			&& steppingStoneTwo != null
 			&& ObjectUtil.hasAction(steppingStoneTwo, "Cross"))
 		{
+			if (client.getLocalPlayer().getAnimation() == ToaConstants.STEPPING_STONE_ANIMATION)
+			{
+				return true;
+			}
 			toaManager.print("Crossing second stone at " + toaManager.worldPointString(steppingStoneTwo.getWorldLocation()));
 			MousePackets.queueClickPacket();
 			ObjectPackets.queueObjectAction(steppingStoneTwo, false, "Cross");
 			return true;
 		}
-
-
 		GameObject entry = ObjectUtil.getNearestGameObject(TOA_PYRAMID_ENTRY);
 		if (entry != null
-			&& ObjectUtil.hasAction(entry,"Enter")
 			&& entry.getWorldLocation().distanceTo(playerPoint) <= 10)
 		{
-			toaManager.print("Running to pyramid");
+			toaManager.print("Clicking entrance");
 			MousePackets.queueClickPacket();
 			ObjectPackets.queueObjectAction(entry, false, "Enter");
 		}
 		else
 		{
-			toaManager.print("Running to entrance");
 			ArrayList<WorldPoint> path = (ArrayList<WorldPoint>) GlobalCollisionMap.findPath(PYRAMID_ENTRANCE);
-			Walker.stepAlong(path);
+			toaManager.print("Walking next to tunnel");
+			Walker.stepAlongBigSteps(path);
 		}
 		return true;
 	}
