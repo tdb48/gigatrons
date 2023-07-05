@@ -70,6 +70,7 @@ import com.example.toagigatron.tasks.outside.ClaimDeath;
 import com.example.toagigatron.tasks.outside.ClaimLootOutside;
 import com.example.toagigatron.tasks.outside.CreateParty;
 import com.example.toagigatron.tasks.outside.EnterRaid;
+import com.example.toagigatron.tasks.outside.FindChargeableItems;
 import com.example.toagigatron.tasks.outside.GetSupplies;
 import com.example.toagigatron.tasks.outside.PickupPet;
 import com.example.toagigatron.tasks.outside.Prepot;
@@ -250,6 +251,7 @@ public class ToaGigatronPlugin extends Plugin
 			ZebakSolveRoar.class,
 			FairyRingFromGE.class,
 			RunToToa.class,
+			FindChargeableItems.class,
 		};
 	}
 

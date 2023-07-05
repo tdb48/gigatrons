@@ -2,8 +2,10 @@ package com.example.toagigatron.model.setup;
 
 import com.example.toagigatron.ToaGigatronPlugin;
 import com.example.toagigatron.manager.ToaManager;
+import com.example.toagigatron.model.setup.mage.MageBody;
+import com.example.toagigatron.model.setup.mage.MageLegs;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 
 public class MageSetup
@@ -11,6 +13,7 @@ public class MageSetup
 
 	@Inject
 	ToaGigatronPlugin plugin;
+
 	public MageSetup()
 	{
 	}
@@ -32,27 +35,48 @@ public class MageSetup
 	public int amulet = 0;
 
 	public int ring = 0;
-	public ArrayList<Integer> allGear = new ArrayList<>(
-		Arrays.asList(
-			weapon,
-			helm,
-			body,
-			legs,
-			boots,
-			cape,
-			gloves,
-			offhand,
-			ring,
-			amulet,
-			arrows));
 
-	public ArrayList<Integer> tankGear = new ArrayList<>(
-		Arrays.asList(
-			0));
+	public ArrayList<Integer> allGear()
+	{
+		ArrayList<Integer> returnList = new ArrayList<>();
+		if (plugin.config.mageBody() == MageBody.AHRIMS)
+		{
+			returnList.add(plugin.toaManager.chargesTracker.ahrimsTop);
+		}
+		else
+		{
+			returnList.add(body);
+		}
+		if (plugin.config.mageLegs() == MageLegs.AHRIMS)
+		{
+			returnList.add(plugin.toaManager.chargesTracker.ahrimsSkirt);
+		}
+		else
+		{
+			returnList.add(legs);
+		}
+		returnList.add(weapon);
+		returnList.add(helm);
+		returnList.add(boots);
+		returnList.add(cape);
+		returnList.add(gloves);
+		returnList.add(offhand);
+		returnList.add(ring);
+		returnList.add(amulet);
+		returnList.add(arrows);
+		return returnList;
+	}
+
+	public ArrayList<Integer> tankGear()
+	{
+		return new ArrayList<>(
+			List.of(
+				0));
+	}
 
 	public boolean hasMageSetup()
 	{
-		return ToaManager.isMissingAnyItems(allGear);
+		return ToaManager.isMissingAnyItems(allGear());
 	}
 
 	public void setVariables()
@@ -68,38 +92,12 @@ public class MageSetup
 		gloves = plugin.config.mageGloves().itemId;
 		amulet = plugin.config.mageAmulet().itemId;
 		ring = plugin.config.mageRing().itemId;
-		allGear = new ArrayList<>(
-			Arrays.asList(
-				weapon,
-				helm,
-				body,
-				legs,
-				boots,
-				cape,
-				gloves,
-				offhand,
-				ring,
-				amulet,
-				arrows));
-		tankGear = new ArrayList<>(
-			Arrays.asList(
-				weapon,
-				helm,
-				plugin.config.meleeBody().itemId,
-				plugin.config.meleeLegs().itemId,
-				boots,
-				cape,
-				gloves,
-				offhand,
-				ring,
-				amulet,
-				arrows));
 	}
 
 	public ArrayList<Integer> getAllItems()
 	{
 		ArrayList<Integer> returnList = new ArrayList<>();
-		for (int i : allGear)
+		for (int i : allGear())
 		{
 			if (i != 0 && i != -1)
 			{
@@ -112,7 +110,7 @@ public class MageSetup
 	public ArrayList<Integer> getAllItemsTankGear()
 	{
 		ArrayList<Integer> returnList = new ArrayList<>();
-		for (int i : tankGear)
+		for (int i : tankGear())
 		{
 			if (i != 0 && i != -1)
 			{
