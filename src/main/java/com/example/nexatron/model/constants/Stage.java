@@ -15,7 +15,6 @@ public enum Stage
 	MINION_ICE,
 	NEX_ZAROS,
 	NEX_DEAD,
-	GRAND_EXCHANGE,
 	NONE;
 
 	Stage()
