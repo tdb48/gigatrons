@@ -2,37 +2,30 @@ package com.example.nexatron.manager;
 
 
 import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.Packets.MousePackets;
+import com.example.Packets.NPCPackets;
 import com.example.Utility.Static;
-import com.example.Utility.WidgetUtil;
-import com.example.nexatron.ReflectBreakHandler;
 import com.example.nexatron.NexatronConfig;
 import com.example.nexatron.NexatronPlugin;
+import com.example.nexatron.ReflectBreakHandler;
 import com.example.nexatron.model.ChargesTracker;
 import com.example.nexatron.model.Nex;
 import com.example.nexatron.model.Overall;
+import com.example.nexatron.model.Setup;
 import com.example.nexatron.model.constants.Stage;
 import com.google.inject.Singleton;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
-import net.runelite.api.Scene;
 import net.runelite.api.Skill;
-import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 
@@ -54,6 +47,8 @@ public class NexManager
 	public ChargesTracker chargesTracker;
 	@Inject
 	public Nex nex;
+	@Inject
+	public Setup setup;
 	@Inject
 	ItemManager itemManager;
 	@Inject
@@ -134,14 +129,14 @@ public class NexManager
 		return client.getVarbitValue(Varbits.BOSS_HEALTH_CURRENT);
 	}
 
-	public int getBossMaxHp()
-	{
-		return client.getVarbitValue(Varbits.BOSS_HEALTH_MAXIMUM);
-	}
-
 	public boolean isBoosted(Skill skill)
 	{
 		return client.getBoostedSkillLevel(skill) > client.getRealSkillLevel(skill);
+	}
+
+	public WorldPoint getPlayerPoint()
+	{
+		return client.getLocalPlayer().getWorldLocation();
 	}
 
 	public NPC playerInteractingWith()
@@ -151,13 +146,21 @@ public class NexManager
 		{
 			return null;
 		}
-
 		if (p.getInteracting() instanceof NPC)
 		{
 			return (NPC) p.getInteracting();
 		}
-
 		return null;
+	}
+
+	public void reattackInteracting()
+	{
+		NPC interactingNPC = playerInteractingWith();
+		if (interactingNPC != null)
+		{
+			MousePackets.queueClickPacket();
+			NPCPackets.queueNPCAction(interactingNPC, "Attack");
+		}
 	}
 
 	public boolean isAntiVenomed()
