@@ -17,6 +17,13 @@ public interface NexatronConfig extends Config
 	)
 	String GENERAL_SETTINGS = "General";
 
+	@ConfigSection(
+		name = "Consume Options",
+		description = "Different options for consumables",
+		position = 20
+	)
+	String CONSUME_SETTINGS = "ConsumeOptions";
+
 
 
 
@@ -37,7 +44,7 @@ public interface NexatronConfig extends Config
 		position = 1,
 		keyName = "prayFlick",
 		name = "Prayer flick",
-		description = "Whether to 1 tick flick or not",
+		description = "Whether to 1 tick flick or not (only at nex itself)",
 		section = "General"
 	)
 	default boolean prayFlick()
@@ -47,14 +54,50 @@ public interface NexatronConfig extends Config
 
 	@ConfigItem(
 		position = 2,
+		keyName = "kcOnly",
+		name = "Kc only",
+		description = "If this is true, the bot will only get kc",
+		section = "General"
+	)
+	default boolean kcOnly()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 20,
 		keyName = "brewCount",
 		name = "Brews #",
 		description = "",
-		section = "General"
+		section = "ConsumeOptions"
 	)
 	default int brewCount()
 	{
 		return 5;
+	}
+
+	@ConfigItem(
+		position = 21,
+		keyName = "scbCount",
+		name = "SCB #",
+		description = "",
+		section = "ConsumeOptions"
+	)
+	default int scbCount()
+	{
+		return 2;
+	}
+
+	@ConfigItem(
+		position = 21,
+		keyName = "rangeCount",
+		name = "Range #",
+		description = "",
+		section = "ConsumeOptions"
+	)
+	default int rangeCount()
+	{
+		return 2;
 	}
 
 	@ConfigItem(
