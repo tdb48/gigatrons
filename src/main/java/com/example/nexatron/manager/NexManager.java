@@ -2,8 +2,10 @@ package com.example.nexatron.manager;
 
 
 import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.PacketUtils.WidgetInfoExtended;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
+import com.example.Packets.WidgetPackets;
 import com.example.Utility.Static;
 import com.example.nexatron.NexatronConfig;
 import com.example.nexatron.NexatronPlugin;
@@ -117,6 +119,27 @@ public class NexManager
 		return "(X: " + wp.getX() + ", Y: " + wp.getY() + ") ";
 	}
 
+	public boolean isDeathChargeOffCD()
+	{
+		return client.getVarbitValue(Varbits.DEATH_CHARGE_COOLDOWN) == 0;
+	}
+
+	public boolean isThrallOffCD()
+	{
+		return client.getVarbitValue(Varbits.RESURRECT_THRALL) == 0;
+	}
+
+	public void castThrall()
+	{
+		MousePackets.queueClickPacket();
+		WidgetPackets.queueWidgetAction(client.getWidget(WidgetInfoExtended.SPELL_RESURRECT_GREATER_GHOST.getPackedId()), "Cast");
+	}
+
+	public void castDeathCharge()
+	{
+		MousePackets.queueClickPacket();
+		WidgetPackets.queueWidgetAction(client.getWidget(WidgetInfoExtended.SPELL_DEATH_CHARGE.getPackedId()), "Cast");
+	}
 
 	public WorldPoint findClosestTileToPlayer(ArrayList<WorldPoint> possibleTiles)
 	{
