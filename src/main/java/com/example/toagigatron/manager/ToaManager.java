@@ -7,6 +7,7 @@ import com.example.EthanApiPlugin.Collections.EquipmentItemWidget;
 import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
+import com.example.Packets.NPCPackets;
 import com.example.Packets.WidgetPackets;
 import com.example.Utility.BankUtil;
 import com.example.Utility.Combat;
@@ -251,19 +252,15 @@ public class ToaManager
 		return "(X: " + wp.getX() + ", Y: " + wp.getY() + ") ";
 	}
 
-//	public void reAttack(NPC npc)
-//	{
-//		if (npc != null)
-//		{
-//			MousePackets.queueClickPacket();
-//			NPCPackets.queueNPCAction(npc, "Attack");
-//			print("Re-Attacking " + npc.getName());
-//		}
-//		else
-//		{
-//			print("NPC IS NULL IN RE-ATTACK");
-//		}
-//	}
+	public void reAttack(NPC npc)
+	{
+		if (npc != null)
+		{
+			MousePackets.queueClickPacket();
+			NPCPackets.queueNPCAction(npc, "Attack");
+			print("Re-Attacking " + npc.getName());
+		}
+	}
 
 	public String worldPointStringVerbose(WorldPoint wp)
 	{

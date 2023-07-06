@@ -33,15 +33,9 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class ToaGigatronOverlay extends Overlay
 {
-
 	Client client;
-
 	ToaGigatronPlugin plugin;
-
 	ToaGigatronConfig config;
-
-	Color color = new Color(199, 2, 61, 75);
-	Color color2 = new Color(26, 151, 200, 175);
 	Stroke stroke = new BasicStroke((float) 2);
 	Stroke stroke2 = new BasicStroke((float) 1);
 
@@ -61,33 +55,40 @@ public class ToaGigatronOverlay extends Overlay
 	{
 		if (!config.showOverlay())
 		{
-			return null;
-		}
-		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
-		{
-			Point textLocation = client.getLocalPlayer().getCanvasTextLocation(graphics2D,
-				plugin.toaManager.p == null ? plugin.toaManager.gameTickManager.attackWait + "  |  " + "0   " :
-					plugin.toaManager.gameTickManager.attackWait + "  |  " + plugin.toaManager.p.getRemainingCycles() + "   ",
-				185);
-			if (textLocation != null)
+			if (plugin.toaManager.baba.attackPath != null)
 			{
-				renderTextLocation(graphics2D, plugin.toaManager.p == null ? plugin.toaManager.gameTickManager.attackWait + "  |  " + "0   " :
-					plugin.toaManager.gameTickManager.attackWait + "  |  " + plugin.toaManager.p.getRemainingCycles() + "   ", 14, Font.BOLD, Color.CYAN, textLocation);
-			}
-		}
-
-		for (NPC npc : client.getNpcs())
-		{
-			if (npc != null && npc.getWorldLocation().isInScene(client))
-			{
-				int health = npc.getHealthRatio();
-				Point textLocation = npc.getCanvasTextLocation(graphics2D, String.valueOf(health), npc.getModelHeight() / 2);
-				if (textLocation != null)
+				for (WorldPoint wp : plugin.toaManager.baba.attackPath)
 				{
-					renderTextLocation(graphics2D, String.valueOf(health), 12, Font.BOLD, Color.CYAN, textLocation);
+					drawTile(graphics2D, wp, Color.MAGENTA, 1, 50, 50);
 				}
 			}
+			return null;
 		}
+//		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
+//		{
+//			Point textLocation = client.getLocalPlayer().getCanvasTextLocation(graphics2D,
+//				plugin.toaManager.p == null ? plugin.toaManager.gameTickManager.attackWait + "  |  " + "0   " :
+//					plugin.toaManager.gameTickManager.attackWait + "  |  " + plugin.toaManager.p.getRemainingCycles() + "   ",
+//				185);
+//			if (textLocation != null)
+//			{
+//				renderTextLocation(graphics2D, plugin.toaManager.p == null ? plugin.toaManager.gameTickManager.attackWait + "  |  " + "0   " :
+//					plugin.toaManager.gameTickManager.attackWait + "  |  " + plugin.toaManager.p.getRemainingCycles() + "   ", 14, Font.BOLD, Color.CYAN, textLocation);
+//			}
+//		}
+
+//		for (NPC npc : client.getNpcs())
+//		{
+//			if (npc != null && npc.getWorldLocation().isInScene(client))
+//			{
+//				int health = npc.getHealthRatio();
+//				Point textLocation = npc.getCanvasTextLocation(graphics2D, String.valueOf(health), npc.getModelHeight() / 2);
+//				if (textLocation != null)
+//				{
+//					renderTextLocation(graphics2D, String.valueOf(health), 12, Font.BOLD, Color.CYAN, textLocation);
+//				}
+//			}
+//		}
 
 
 		if (plugin.toaManager.kephri.firstKephriPuzzle != null)
@@ -741,16 +742,16 @@ public class ToaGigatronOverlay extends Overlay
 		}
 
 
-		if (client.getLocalDestinationLocation() != null && client.getLocalDestinationLocation().isInScene())
-		{
-			LocalPoint lp = client.getLocalDestinationLocation();
-			assert lp != null;
-			Polygon poly = Perspective.getCanvasTileAreaPoly(client, lp, 1);
-			if (poly != null)
-			{
-				OverlayUtil.renderPolygon(graphics2D, poly, Color.RED, new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 75), stroke);
-			}
-		}
+//		if (client.getLocalDestinationLocation() != null && client.getLocalDestinationLocation().isInScene())
+//		{
+//			LocalPoint lp = client.getLocalDestinationLocation();
+//			assert lp != null;
+//			Polygon poly = Perspective.getCanvasTileAreaPoly(client, lp, 1);
+//			if (poly != null)
+//			{
+//				OverlayUtil.renderPolygon(graphics2D, poly, Color.RED, new Color(Color.RED.getRed(), Color.RED.getGreen(), Color.RED.getBlue(), 75), stroke);
+//			}
+//		}
 		if (plugin.toaManager.kephri.dungGraphicTick > 0)
 		{
 			LocalPoint lp2 = client.getLocalPlayer().getLocalLocation();

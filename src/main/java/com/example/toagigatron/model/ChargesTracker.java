@@ -4,15 +4,19 @@ import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Dart;
 import com.example.toagigatron.model.constants.ToaConstants;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.PluginManager;
 
 public class ChargesTracker
@@ -24,10 +28,32 @@ public class ChargesTracker
 	public int blowpipeDarts = -1;
 	public int blowpipeScales = -1;
 	public int mageCharges = -1;
+	public int ahrimsTop = -1;
+	public int ahrimsSkirt = -1;
+	public static final ArrayList<Integer> ATOP =
+		new ArrayList<>(Arrays.asList(
+			ItemID.AHRIMS_ROBETOP_25,
+			ItemID.AHRIMS_ROBETOP_50,
+			ItemID.AHRIMS_ROBETOP_75,
+			ItemID.AHRIMS_ROBETOP_100,
+			ItemID.AHRIMS_ROBETOP)
+		);
+
+	public static final ArrayList<Integer> ASKIRT =
+		new ArrayList<>(Arrays.asList(
+			ItemID.AHRIMS_ROBESKIRT_25,
+			ItemID.AHRIMS_ROBESKIRT_50,
+			ItemID.AHRIMS_ROBESKIRT_75,
+			ItemID.AHRIMS_ROBESKIRT_100,
+			ItemID.AHRIMS_ROBESKIRT)
+		);
 	EventBus eventBus;
 	Client client;
 	PluginManager pluginManager;
 	ToaManager toaManager;
+	@Inject
+	ItemManager itemManager;
+
 	@Inject
 	public ChargesTracker(EventBus eventBus, Client client, PluginManager pluginManager, ToaManager toaManager)
 	{
@@ -53,6 +79,8 @@ public class ChargesTracker
 		blowpipeDarts = -1;
 		blowpipeScales = -1;
 		mageCharges = -1;
+		ahrimsSkirt = -1;
+		ahrimsTop = -1;
 	}
 
 	public boolean shouldRechargeBlowpipe()
@@ -90,22 +118,30 @@ public class ChargesTracker
 	}
 
 	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned gameObjectSpawned)
-	{
-		GameObject g = gameObjectSpawned.getGameObject();
-		if (g.getId() == ToaConstants.GROUPING_OBELISK)
-		{
-			toaManager.print("Resetting charges bc obelisk spawned");
-			reset();
-		}
-	}
-
-	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE || chatMessage.getType() == ChatMessageType.SPAM || chatMessage.getType() == ChatMessageType.CONSOLE || chatMessage.getType() == ChatMessageType.ENGINE)
 		{
 			String message = chatMessage.getMessage().toLowerCase();
+			if (message.contains("ahrim's"))
+			{
+				if (message.contains("skirt"))
+				{
+					if (message.contains("degraded"))
+					{
+						setNextSkirt();
+						toaManager.print("setting next ahrims skirt to " + itemManager.getItemComposition(ahrimsSkirt).getName());
+					}
+				}
+				if (message.contains("body"))
+				{
+					if (message.contains("degraded"))
+					{
+						setNextTop();
+						toaManager.print("setting next ahrims top to " + itemManager.getItemComposition(ahrimsTop).getName());
+					}
+				}
+			}
 			if (message.contains("dart"))
 			{
 				for (Dart dart : Dart.values())
@@ -166,6 +202,59 @@ public class ChargesTracker
 			{
 				mageCharges = 20000;
 			}
+		}
+	}
+
+	public void setNextSkirt()
+	{
+		switch (ahrimsSkirt)
+		{
+			case ItemID.AHRIMS_ROBESKIRT:
+				ahrimsSkirt = ItemID.AHRIMS_ROBESKIRT_100;
+				break;
+			case ItemID.AHRIMS_ROBESKIRT_100:
+				ahrimsSkirt = ItemID.AHRIMS_ROBESKIRT_75;
+				break;
+			case ItemID.AHRIMS_ROBESKIRT_75:
+				ahrimsSkirt = ItemID.AHRIMS_ROBESKIRT_50;
+				break;
+			case ItemID.AHRIMS_ROBESKIRT_50:
+				ahrimsSkirt = ItemID.AHRIMS_ROBESKIRT_25;
+				break;
+			default:
+				ahrimsSkirt = -1;
+		}
+	}
+
+	public void setNextTop()
+	{
+		switch (ahrimsTop)
+		{
+			case ItemID.AHRIMS_ROBETOP:
+				ahrimsTop = ItemID.AHRIMS_ROBETOP_100;
+				break;
+			case ItemID.AHRIMS_ROBETOP_100:
+				ahrimsTop = ItemID.AHRIMS_ROBETOP_75;
+				break;
+			case ItemID.AHRIMS_ROBETOP_75:
+				ahrimsTop = ItemID.AHRIMS_ROBETOP_50;
+				break;
+			case ItemID.AHRIMS_ROBETOP_50:
+				ahrimsTop = ItemID.AHRIMS_ROBETOP_25;
+				break;
+			default:
+				ahrimsTop = -1;
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned gameObjectSpawned)
+	{
+		GameObject g = gameObjectSpawned.getGameObject();
+		if (g.getId() == ToaConstants.GROUPING_OBELISK)
+		{
+			toaManager.print("Resetting charges bc obelisk spawned");
+			reset();
 		}
 	}
 

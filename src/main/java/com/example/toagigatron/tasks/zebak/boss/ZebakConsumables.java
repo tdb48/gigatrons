@@ -50,7 +50,7 @@ public class ZebakConsumables extends StagedTask
 			toaManager.print("Consuming salt");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(salt, "Crush");
-			//toaManager.reAttack(playerInteracting);
+			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
 		}
@@ -62,7 +62,7 @@ public class ZebakConsumables extends StagedTask
 			toaManager.print("Panic brew");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(healingPotion, "Drink");
-			//toaManager.reAttack(playerInteracting);
+			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
 		}
@@ -75,7 +75,7 @@ public class ZebakConsumables extends StagedTask
 			toaManager.print("Drinking brew on brew tick");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(healingPotion, "Drink");
-			//toaManager.reAttack(playerInteracting);
+			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
 		}
@@ -85,7 +85,7 @@ public class ZebakConsumables extends StagedTask
 			toaManager.print("Drinking restore");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(prayerRestore, "Drink");
-			//toaManager.reAttack(playerInteracting);
+			toaManager.reAttack(playerInteracting);
 			gameTickManager.drinkPotion();
 			return true;
 		}

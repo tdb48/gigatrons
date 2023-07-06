@@ -38,6 +38,31 @@ public class Walker
 		}
 	}
 
+	public static void stepAlongBigSteps(List<WorldPoint> path)
+	{
+		if (path == null || path.isEmpty())
+		{
+			return;
+		}
+		List<WorldPoint> reachablePath = reachablePath(path);
+		if (reachablePath.isEmpty())
+		{
+			return;
+		}
+		if (reachablePath.size() > 5)
+		{
+			walk(reachablePath.get(5));
+		}
+		else if (reachablePath.size() > 1)
+		{
+			walk(reachablePath.get(1));
+		}
+		else
+		{
+			walk(reachablePath.get(0));
+		}
+	}
+
 	public static void walk(WorldPoint worldPoint)
 	{
 		Player local = client.getLocalPlayer();
