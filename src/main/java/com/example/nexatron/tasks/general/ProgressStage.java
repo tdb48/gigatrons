@@ -1,4 +1,4 @@
-package com.example.nexatron.tasks;
+package com.example.nexatron.tasks.general;
 
 import com.example.Utility.Static;
 import com.example.nexatron.manager.NexManager;

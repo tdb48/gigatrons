@@ -1,4 +1,4 @@
-package com.example.nexatron.tasks;
+package com.example.nexatron.tasks.general;
 
 
 import com.example.Packets.MousePackets;
