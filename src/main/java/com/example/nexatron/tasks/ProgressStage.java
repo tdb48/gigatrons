@@ -1,21 +1,20 @@
 package com.example.nexatron.tasks;
 
-import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.Utility.Static;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.Stage;
-import com.example.nexatron.model.constants.NexConstants;
 import com.example.nexatron.taskformat.Task;
 import com.example.nexatron.taskformat.TaskDescriptor;
 import com.google.inject.Inject;
 import java.util.ArrayList;
-import net.runelite.api.NPC;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.client.eventbus.Subscribe;
 
 @TaskDescriptor(
 	priority = 20,
-	name = "Updating stage"
+	name = "Updating stage",
+	register = true
 )
 public class ProgressStage extends Task
 {
@@ -43,6 +42,55 @@ public class ProgressStage extends Task
 		{
 			nexManager.setStage(Stage.NONE);
 			return false;
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
+	{
+		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
+		{
+			String message = chatMessage.getMessage().toLowerCase();
+			if (message.contains("fumus, don't fail me!"))
+			{
+				nexManager.setStage(Stage.MINION_SMOKE);
+			}
+			if (message.contains("darken my shadow!"))
+			{
+				nexManager.setStage(Stage.NEX_SHADOW);
+			}
+			if (message.contains("fill my soul"))
+			{
+				nexManager.setStage(Stage.NEX_SMOKE);
+			}
+			if (message.contains("umbra, don't fail me!"))
+			{
+				nexManager.setStage(Stage.MINION_SHADOW);
+			}
+			if (message.contains("contain this!"))
+			{
+//				mushroomContainTick = 18;
+			}
+			if (message.contains("flood my lungs with blood!"))
+			{
+				nexManager.setStage(Stage.NEX_BLOOD);
+			}
+			if (message.contains("cruor, don't fail me!"))
+			{
+				nexManager.setStage(Stage.MINION_BLOOD);
+			}
+			if (message.contains("infuse me with the power of ice!"))
+			{
+				nexManager.setStage(Stage.NEX_ICE);
+			}
+			if (message.contains("glacies, don't fail me!"))
+			{
+				nexManager.setStage(Stage.MINION_ICE);
+			}
+			if (message.contains("now, the power of zaros!"))
+			{
+				nexManager.setStage(Stage.NEX_ZAROS);
+			}
 		}
 	}
 }
