@@ -6,9 +6,10 @@ import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.overlay.NexatronInfoBox;
 import com.example.nexatron.overlay.NexatronOverlay;
 import com.example.nexatron.taskformat.TaskManager;
-import com.example.nexatron.tasks.DropVial;
-import com.example.nexatron.tasks.ProgressStage;
-import com.example.nexatron.tasks.ToggleRun;
+import com.example.nexatron.tasks.general.DisablePrayers;
+import com.example.nexatron.tasks.general.DropVial;
+import com.example.nexatron.tasks.general.ProgressStage;
+import com.example.nexatron.tasks.general.ToggleRun;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +69,7 @@ public class NexatronPlugin extends Plugin
 			ProgressStage.class,
 			ToggleRun.class,
 			DropVial.class,
+			DisablePrayers.class,
 		};
 	}
 
