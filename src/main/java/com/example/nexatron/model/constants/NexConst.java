@@ -12,6 +12,14 @@ public class NexConst
 	public static final int FANG_ANIMATION = 9471;
 	public static final int ZCB_ANIMATION = 9168;
 	public static final ArrayList<Integer> DARTS = new ArrayList<>(Arrays.asList(1043, 1936, 1122));
+	public static final int KC_AREA_DOOR = 42933;
+	public static final int DEATH_CHEST = 9168;
+	public static final int BANK_DOOR = 42934;
+	public static final int ALTAR = 42965;
+	public static final int ACTIVE_BARRIER = 42967;
+	public static final int INACTIVE_BARRIER = 42968;
+	public static final int BANKER = 11289;
+	public static final int ANCIENT_KILLCOUNT_VARBIT = 13080;
 
 
 
