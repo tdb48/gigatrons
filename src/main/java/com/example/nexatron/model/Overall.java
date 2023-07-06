@@ -1,15 +1,17 @@
 package com.example.nexatron.model;
 
 
-import com.example.EthanApiPlugin.Collections.Widgets;
-import com.example.Utility.BankUtil;
 import com.example.nexatron.NexatronPlugin;
 import com.example.nexatron.manager.NexManager;
+import com.example.nexatron.model.constants.NexConst;
 import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.ItemID;
+import net.runelite.api.GameObject;
+import net.runelite.api.NPC;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -20,6 +22,13 @@ public class Overall
 	public int deaths = 0;
 	public boolean died;
 	public Instant botTimer = Instant.now();
+	public GameObject kcAreaDoor = null;
+	public GameObject deathChest = null;
+	public GameObject bankDoor = null;
+	public GameObject altar = null;
+	public GameObject barrier = null;
+	public NPC banker = null;
+
 	@Inject
 	NexatronPlugin nexatronPlugin;
 	@Inject
@@ -62,7 +71,7 @@ public class Overall
 
 	}
 
-	public void reset()
+	public void bankReset()
 	{
 	}
 
@@ -72,6 +81,12 @@ public class Overall
 		botTimer = Instant.now();
 		killCount = 0;
 		deaths = 0;
+		kcAreaDoor = null;
+		deathChest = null;
+		bankDoor = null;
+		altar = null;
+		barrier = null;
+		banker = null;
 	}
 }
 
