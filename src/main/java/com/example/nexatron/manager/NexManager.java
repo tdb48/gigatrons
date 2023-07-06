@@ -14,6 +14,7 @@ import com.example.nexatron.model.ChargesTracker;
 import com.example.nexatron.model.Nex;
 import com.example.nexatron.model.Overall;
 import com.example.nexatron.model.Setup;
+import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
 import com.google.inject.Singleton;
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ public class NexManager
 	@Inject
 	private ReflectBreakHandler chinBreakHandler;
 	private Stage stage = Stage.NONE;
+	public boolean shouldReattack;
 
 	@Inject
 	public NexManager(EventBus eventBus, Client client, NexatronConfig config, NexatronPlugin plugin)
@@ -64,6 +66,12 @@ public class NexManager
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
+	}
+
+	public void fullReset()
+	{
+		stage = Stage.NONE;
+		shouldReattack = false;
 	}
 
 	public boolean needsBreak()
@@ -184,6 +192,11 @@ public class NexManager
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(interactingNPC, "Attack");
 		}
+	}
+
+	public int getAncientKc()
+	{
+		return client.getVarbitValue(NexConst.ANCIENT_KILLCOUNT_VARBIT);
 	}
 
 	public boolean isAntiVenomed()
