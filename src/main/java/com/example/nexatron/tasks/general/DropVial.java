@@ -7,8 +7,10 @@ import com.example.Packets.WidgetPackets;
 import com.example.Utility.BankUtil;
 import com.example.Utility.InventoryUtil;
 import com.example.Utility.Static;
+import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.taskformat.Task;
 import com.example.nexatron.taskformat.TaskDescriptor;
+import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
@@ -16,14 +18,10 @@ import net.runelite.api.Player;
 import net.runelite.api.widgets.Widget;
 
 @TaskDescriptor(
-	priority = -1,
 	name = "Drop vial"
 )
 public class DropVial extends Task
 {
-
-	Client client = Static.getClient();
-
 	public boolean run()
 	{
 		if (BankUtil.isOpen())
@@ -38,14 +36,6 @@ public class DropVial extends Task
 			return true;
 		}
 		return false;
-	}
-
-	public void print(String msg)
-	{
-		if (client.isClientThread())
-		{
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", msg, "");
-		}
 	}
 
 }
