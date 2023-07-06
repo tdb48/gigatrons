@@ -1,11 +1,16 @@
 package com.example.nexatron.manager;
 
+import com.example.Utility.Static;
+import com.example.nexatron.model.constants.NexConst;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.NPC;
+import net.runelite.api.Projectile;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -20,6 +25,7 @@ public class GameTickManager
 	private int foodWait;
 	private int comboFoodWait;
 	private int potionWait;
+	private Projectile p;
 
 	@Inject
 	public GameTickManager(EventBus eventBus)
@@ -132,12 +138,14 @@ public class GameTickManager
 	{
 		this.eventBus.register(this);
 		this.setTickCount(0);
+		this.p = null;
 	}
 
 	public void unregister()
 	{
 		this.eventBus.unregister(this);
 		this.setTickCount(0);
+		this.p = null;
 	}
 
 	public void setLightningSpawn(NPC npc)
@@ -164,4 +172,32 @@ public class GameTickManager
 	{
 		this.tickWait = tickWait;
 	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged animationChanged)
+	{
+		if (animationChanged.getActor().equals(Static.getClient().getLocalPlayer()))
+		{
+			if (animationChanged.getActor().getAnimation() == NexConst.FANG_ANIMATION
+				|| animationChanged.getActor().getAnimation() == NexConst.ZCB_ANIMATION)
+			{
+				attack(5);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onProjectileMoved(ProjectileMoved event)
+	{
+		Projectile projectile = event.getProjectile();
+		if (NexConst.DARTS.contains(projectile.getId()))
+		{
+			if (p == null || !p.equals(projectile))
+			{
+				attack(2);
+				p = projectile;
+			}
+		}
+	}
+
 }
