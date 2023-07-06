@@ -1,18 +1,10 @@
 package com.example.nexatron.model;
 
-import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.nexatron.manager.NexManager;
-import com.example.nexatron.model.constants.NexConstants;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -60,12 +52,6 @@ public class ChargesTracker
 			String message = chatMessage.getMessage().toLowerCase();
 
 		}
-	}
-
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned gameObjectSpawned)
-	{
-
 	}
 
 }
