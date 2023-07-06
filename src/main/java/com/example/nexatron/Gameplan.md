@@ -157,39 +157,21 @@ so when playerhealthratio = -1
 
 
 
-
-
-
-
-
-
-
-
 ### Gear
 #### Blood reavers
-Range dps: 7.23
-
-Range dps acb: 7.34
-Melee dps: 9.22
-
-Melee dps tassets: 9.23
+Range dps: 7.23  
+Range dps acb: 7.34  
+Melee dps: 9.22  
 
 #### Nex
-Range dps: 5.12
-
-Range dps acb: 4.83
-
-Melee dps: 7.23
-
-Melee dps tassets: 7.35
+Range dps: 5.12  
+Range dps acb: 4.83  
+Melee dps: 7.23  
 
 #### Nex minions
-Range dps: 8.05
-
-Range dps acb: 7.75
-
-Range dps tbow: 8.88
-
-Melee dps: 8.48
-
-Melee dps tassets: 8.53
+Range dps zcb ruby: 8.05  
+Range dps zcb dia: 6.44  
+Range dps bp: 7.1  
+Range dps acb: 7.75  
+Range dps tbow: 8.88  
+Melee dps: 8.48  
