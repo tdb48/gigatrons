@@ -9,6 +9,7 @@ import com.example.nexatron.taskformat.TaskManager;
 import com.example.nexatron.tasks.general.DisablePrayers;
 import com.example.nexatron.tasks.general.DropVial;
 import com.example.nexatron.tasks.general.ProgressStage;
+import com.example.nexatron.tasks.general.Reattack;
 import com.example.nexatron.tasks.general.ToggleRun;
 import com.google.inject.Provides;
 import javax.inject.Inject;
@@ -70,54 +71,53 @@ public class NexatronPlugin extends Plugin
 			ToggleRun.class,
 			DropVial.class,
 			DisablePrayers.class,
+			Reattack.class,
 		};
 	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		chinBreakHandler.registerPlugin(this);
+		chinBreakHandler.startPlugin(this);
+		nexManager.allowedToBreak = false;
 		finishKill = false;
 		stopPlugin = false;
 		super.startUp();
-		startState();
 		overlayManager.add(nexatronInfoBox);
 		overlayManager.add(nexatronOverlay);
 		Class<?>[] tasks = this.tasks();
 		this.manager.registerTasks(this.getInjector(), tasks);
 		this.manager.start();
-		resetAllModels();
 		this.gameTickManager.register();
 		this.nexManager.register();
 		this.nexManager.chargesTracker.reset();
 		this.nexManager.chargesTracker.register();
 		this.nexManager.nex.register();
+		this.nexManager.overall.register();
 		this.nexManager.overall.fullReset();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		chinBreakHandler.unregisterPlugin(this);
+		chinBreakHandler.stopPlugin(this);
+		nexManager.allowedToBreak = false;
 		finishKill = false;
 		stopPlugin = false;
 		overlayManager.remove(nexatronInfoBox);
 		overlayManager.remove(nexatronOverlay);
 		this.manager.stop();
 		super.shutDown();
-		stopState();
-		resetAllModels();
-		this.nexManager.chargesTracker.reset();
 		this.nexManager.chargesTracker.unregister();
 		this.nexManager.overall.unregister();
 		this.nexManager.unregister();
 		this.gameTickManager.unregister();
 		this.nexManager.nex.unregister();
+		this.nexManager.overall.unregister();
+		this.nexManager.chargesTracker.reset();
 		this.nexManager.overall.fullReset();
-	}
-
-	public void resetAllModels()
-	{
-		this.nexManager.overall.reset();
-		this.nexManager.nex.resetVariables();
 	}
 
 	@Subscribe
@@ -125,28 +125,9 @@ public class NexatronPlugin extends Plugin
 	{
 	}
 
-	private void startState()
-	{
-		chinBreakHandler.registerPlugin(this);
-		chinBreakHandler.startPlugin(this);
-		nexManager.allowedToBreak = false;
-	}
-
-	private void stopState()
-	{
-		chinBreakHandler.unregisterPlugin(this);
-		chinBreakHandler.stopPlugin(this);
-		nexManager.allowedToBreak = false;
-	}
-
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState().equals(GameState.LOADING)
-			|| event.getGameState().equals(GameState.LOGIN_SCREEN))
-		{
-			this.resetAllModels();
-		}
 		if (event.getGameState().equals(GameState.LOGIN_SCREEN) && chinBreakHandler.isBreakActive(this))
 		{
 			nexManager.allowedToBreak = false;
