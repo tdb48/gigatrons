@@ -1,0 +1,168 @@
+package com.example.nexatron.model;
+
+import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.Packets.MousePackets;
+import com.example.Packets.WidgetPackets;
+import com.example.nexatron.manager.NexManager;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javax.inject.Inject;
+import net.runelite.api.ItemID;
+import net.runelite.api.widgets.Widget;
+
+public class Consumable
+{
+	@Inject
+	NexManager nexManager;
+	public static final ArrayList<Integer> RESTORE =
+		new ArrayList<>(Arrays.asList(
+			ItemID.SUPER_RESTORE1,
+			ItemID.SUPER_RESTORE2,
+			ItemID.SUPER_RESTORE3,
+			ItemID.SUPER_RESTORE4
+		));
+	public static final ArrayList<Integer> RANGE =
+		new ArrayList<>(Arrays.asList(
+			ItemID.RANGING_POTION1,
+			ItemID.RANGING_POTION2,
+			ItemID.RANGING_POTION3,
+			ItemID.RANGING_POTION4
+		));
+	public static final ArrayList<Integer> ANTI =
+		new ArrayList<>(Arrays.asList(
+			ItemID.ANTIDOTE4_5952,
+			ItemID.ANTIDOTE3_5954,
+			ItemID.ANTIDOTE2_5956,
+			ItemID.ANTIDOTE1_5958,
+			ItemID.ANTIVENOM1_12919,
+			ItemID.ANTIVENOM2_12917,
+			ItemID.ANTIVENOM3_12915,
+			ItemID.ANTIVENOM4_12913
+		));
+	public static final ArrayList<Integer> COMBAT =
+		new ArrayList<>(Arrays.asList(
+			ItemID.SUPER_COMBAT_POTION1,
+			ItemID.SUPER_COMBAT_POTION2,
+			ItemID.SUPER_COMBAT_POTION3,
+			ItemID.SUPER_COMBAT_POTION4)
+		);
+	public static final ArrayList<Integer> STAM =
+		new ArrayList<>(Arrays.asList(
+			ItemID.STAMINA_POTION1,
+			ItemID.STAMINA_POTION2,
+			ItemID.STAMINA_POTION3,
+			ItemID.STAMINA_POTION4
+		));
+	public static final ArrayList<Integer> BREW =
+		new ArrayList<>(Arrays.asList(
+			ItemID.SARADOMIN_BREW1,
+			ItemID.SARADOMIN_BREW2,
+			ItemID.SARADOMIN_BREW3,
+			ItemID.SARADOMIN_BREW4)
+		);
+//	public static ArrayList<Integer> getThrallItems = new ArrayList<>(
+//		Arrays.asList(
+//			ItemID.BOOK_OF_THE_DEAD,
+//			ItemID.RUNE_POUCH));
+
+	public static Widget getBrew()
+	{
+		for (int i : BREW)
+		{
+			if (Inventory.search().withId(i).first().orElse(null) != null)
+			{
+				return Inventory.search().withId(i).first().orElse(null);
+			}
+		}
+		return null;
+	}
+
+	public static Widget getRestore()
+	{
+		for (int i : RESTORE)
+		{
+			if (Inventory.search().withId(i).first().orElse(null) != null)
+			{
+				return Inventory.search().withId(i).first().orElse(null);
+			}
+		}
+		return null;
+	}
+
+	public static Widget getSCB()
+	{
+		for (int i : COMBAT)
+		{
+			if (Inventory.search().withId(i).first().orElse(null) != null)
+			{
+				return Inventory.search().withId(i).first().orElse(null);
+			}
+		}
+		return null;
+	}
+
+	public static Widget getRange()
+	{
+		for (int i : RANGE)
+		{
+			if (Inventory.search().withId(i).first().orElse(null) != null)
+			{
+				return Inventory.search().withId(i).first().orElse(null);
+			}
+		}
+		return null;
+	}
+
+	public static Widget getAngler()
+	{
+		return Inventory.search().withId(ItemID.ANGLERFISH).first().orElse(null);
+	}
+
+	public boolean consume(Widget consumable)
+	{
+		if (consumable == null
+			|| consumable.getActions() == null)
+		{
+			return false;
+		}
+		String action = "Drink";
+		for (String s : consumable.getActions())
+		{
+			if (s.equalsIgnoreCase("eat"))
+			{
+				action = "Eat";
+				break;
+			}
+		}
+		MousePackets.queueClickPacket();
+		WidgetPackets.queueWidgetAction(consumable, action);
+		nexManager.shouldReattack = true;
+		return true;
+	}
+
+	public boolean consumeBrew()
+	{
+		return consume(getBrew());
+	}
+
+	public boolean consumeRestore()
+	{
+		return consume(getRestore());
+	}
+
+	public boolean consumeSCB()
+	{
+		return consume(getSCB());
+	}
+
+	public boolean consumeRange()
+	{
+		return consume(getRange());
+	}
+
+	public boolean consumeAnglerf()
+	{
+		return consume(getAngler());
+	}
+}
+
