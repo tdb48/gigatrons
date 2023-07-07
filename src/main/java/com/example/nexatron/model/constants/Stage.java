@@ -3,7 +3,7 @@ package com.example.nexatron.model.constants;
 public enum Stage
 {
 	KC_AREA,
-	CLAIMING_DEATH,
+	LOBBY,
 	BANK,
 	NEX_SMOKE,
 	NEX_SHADOW,
