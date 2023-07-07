@@ -10,7 +10,10 @@ import com.example.Utility.Static;
 import com.example.nexatron.NexatronConfig;
 import com.example.nexatron.NexatronPlugin;
 import com.example.nexatron.ReflectBreakHandler;
+import com.example.nexatron.model.NexBank;
 import com.example.nexatron.model.ChargesTracker;
+import com.example.nexatron.model.KcArea;
+import com.example.nexatron.model.Lobby;
 import com.example.nexatron.model.Nex;
 import com.example.nexatron.model.Overall;
 import com.example.nexatron.model.Setup;
@@ -19,7 +22,6 @@ import com.example.nexatron.model.constants.Stage;
 import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Random;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -39,17 +41,21 @@ public class NexManager
 	private final EventBus eventBus;
 	private final NexatronPlugin plugin;
 	@Inject
-	public Overall overall;
-	@Inject
 	public GameTickManager gameTickManager;
-	@Inject
-	public Random random = new Random();
 	public boolean allowedToBreak = false;
 	public NexatronConfig config;
 	@Inject
 	public ChargesTracker chargesTracker;
 	@Inject
 	public Nex nex;
+	@Inject
+	public Overall overall;
+	@Inject
+	public NexBank nexBank;
+	@Inject
+	public KcArea kcArea;
+	@Inject
+	public Lobby lobby;
 	@Inject
 	public Setup setup;
 	@Inject
