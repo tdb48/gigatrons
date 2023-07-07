@@ -1,8 +1,11 @@
 package com.example.nexatron.model.constants;
 
+import com.example.Utility.WorldAreas;
 import java.util.ArrayList;
 import java.util.Arrays;
 import net.runelite.api.ItemID;
+import net.runelite.api.coords.WorldArea;
+import net.runelite.api.coords.WorldPoint;
 
 public class NexConst
 {
@@ -20,7 +23,16 @@ public class NexConst
 	public static final int INACTIVE_BARRIER = 42968;
 	public static final int BANKER = 11289;
 	public static final int ANCIENT_KILLCOUNT_VARBIT = 13080;
-
+	public static final WorldArea KC_AREA = WorldAreas.createArea(
+		new WorldPoint(2848, 5194, 0),
+		new WorldPoint(2900, 5228, 0));
+	public static final WorldArea BANK_AREA = WorldAreas.createArea(
+		new WorldPoint(2899, 5198, 0),
+		new WorldPoint(2909, 5209, 0));
+	public static final WorldArea LOBBY_AREA = WorldAreas.createArea(
+		new WorldPoint(2850, 5216, 0),
+		new WorldPoint(2862, 5231, 0));
+	public static final String BREW_MESSAGE = "You drink some of the foul liquid.";
 
 
 }

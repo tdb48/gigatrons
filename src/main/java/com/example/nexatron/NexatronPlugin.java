@@ -26,6 +26,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.GameEventManager;
 
 @PluginDescriptor(
 	name = "Nexatron",
@@ -53,6 +54,8 @@ public class NexatronPlugin extends Plugin
 	OverlayManager overlayManager;
 	@Inject
 	private TaskManager manager;
+	@Inject
+	GameEventManager gameEventManager;
 	@Inject
 	private GameTickManager gameTickManager;
 	@Inject
@@ -96,6 +99,8 @@ public class NexatronPlugin extends Plugin
 		this.nexManager.nex.register();
 		this.nexManager.overall.register();
 		this.nexManager.overall.fullReset();
+		gameEventManager.simulateGameEvents(this.nexManager.overall);
+		gameEventManager.simulateGameEvents(this.nexManager.nex);
 	}
 
 	@Override
