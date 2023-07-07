@@ -53,10 +53,10 @@ public class Nex
 	public void fullReset()
 	{
 		icePrisonSpike = null;
-		 nex = null;
+		nex = null;
 		fumus = null;
-	umbra = null;
-		 glacies = null;
-		 cruor = null;
+		umbra = null;
+		glacies = null;
+		cruor = null;
 	}
 }

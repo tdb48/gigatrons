@@ -16,7 +16,11 @@ public class DisablePrayers extends StagedTask
 	@Inject
 	public DisablePrayers(NexManager nexManager)
 	{
-		super(nexManager, Stage.BANK, Stage.NEX_DEAD);
+		super(nexManager,
+			Stage.LOBBY,
+			Stage.BANK,
+			Stage.NEX_DEAD,
+			Stage.NONE);
 	}
 
 	public boolean execute()
