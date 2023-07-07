@@ -43,7 +43,7 @@ public interface NexatronConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "prayFlick",
-		name = "Prayer flick",
+		name = "Pray flick",
 		description = "Whether to 1 tick flick or not (only at nex itself)",
 		section = "General"
 	)
@@ -54,12 +54,12 @@ public interface NexatronConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "kcOnly",
-		name = "Kc only",
-		description = "If this is true, the bot will only get kc",
+		keyName = "kcMode",
+		name = "KC mode",
+		description = "If this is true, the bot will only do tasks to get kc",
 		section = "General"
 	)
-	default boolean kcOnly()
+	default boolean kcMode()
 	{
 		return false;
 	}
@@ -100,16 +100,6 @@ public interface NexatronConfig extends Config
 		return 2;
 	}
 
-	@ConfigItem(
-		position = 9999,
-		keyName = "debug",
-		name = "Debug",
-		description = "Posts debug message to chat if having problems"
-	)
-	default boolean debug()
-	{
-		return true;
-	}
 
 	@ConfigItem(
 		position = 900,
@@ -123,7 +113,7 @@ public interface NexatronConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 901,
+		position = 910,
 		keyName = "showOverlay",
 		name = "Show Overlay",
 		description = "Show overlay"
@@ -133,13 +123,14 @@ public interface NexatronConfig extends Config
 		return true;
 	}
 
+
 	@ConfigItem(
-		position = 900,
-		keyName = "showConsumablesInfobox",
-		name = "Consumables Infobox",
-		description = "Show consumables overlay"
+		position = 9999,
+		keyName = "debug",
+		name = "Debug",
+		description = "Posts debug message to chat if having problems"
 	)
-	default boolean showConsumablesInfobox()
+	default boolean debug()
 	{
 		return true;
 	}
