@@ -40,8 +40,6 @@ public class NexatronPlugin extends Plugin
 	public NexatronConfig config;
 	@Inject
 	public NexManager nexManager;
-	public boolean stopPlugin = false;
-	public boolean finishKill = false;
 	@Inject
 	Client client;
 	@Inject
@@ -53,13 +51,16 @@ public class NexatronPlugin extends Plugin
 	@Inject
 	OverlayManager overlayManager;
 	@Inject
-	private TaskManager manager;
-	@Inject
 	GameEventManager gameEventManager;
+	@Inject
+	private TaskManager manager;
 	@Inject
 	private GameTickManager gameTickManager;
 	@Inject
 	private ReflectBreakHandler chinBreakHandler;
+
+	public boolean stopPlugin = false;
+	public boolean finishKill = false;
 
 	@Provides
 	NexatronConfig provideConfig(ConfigManager configManager)
@@ -86,21 +87,31 @@ public class NexatronPlugin extends Plugin
 		nexManager.allowedToBreak = false;
 		finishKill = false;
 		stopPlugin = false;
-		super.startUp();
 		overlayManager.add(nexatronInfoBox);
 		overlayManager.add(nexatronOverlay);
 		Class<?>[] tasks = this.tasks();
 		this.manager.registerTasks(this.getInjector(), tasks);
 		this.manager.start();
 		this.gameTickManager.register();
+		this.nexManager.fullReset();
 		this.nexManager.register();
 		this.nexManager.chargesTracker.reset();
 		this.nexManager.chargesTracker.register();
+		this.nexManager.nex.fullReset();
 		this.nexManager.nex.register();
-		this.nexManager.overall.register();
 		this.nexManager.overall.fullReset();
+		this.nexManager.overall.register();
+		this.nexManager.nexBank.fullReset();
+		this.nexManager.nexBank.register();
+		this.nexManager.kcArea.fullReset();
+		this.nexManager.kcArea.register();
+		this.nexManager.lobby.fullReset();
+		this.nexManager.lobby.register();
 		gameEventManager.simulateGameEvents(this.nexManager.overall);
 		gameEventManager.simulateGameEvents(this.nexManager.nex);
+		gameEventManager.simulateGameEvents(this.nexManager.nexBank);
+		gameEventManager.simulateGameEvents(this.nexManager.kcArea);
+		gameEventManager.simulateGameEvents(this.nexManager.lobby);
 	}
 
 	@Override
@@ -114,15 +125,21 @@ public class NexatronPlugin extends Plugin
 		overlayManager.remove(nexatronInfoBox);
 		overlayManager.remove(nexatronOverlay);
 		this.manager.stop();
-		super.shutDown();
-		this.nexManager.chargesTracker.unregister();
-		this.nexManager.overall.unregister();
-		this.nexManager.unregister();
 		this.gameTickManager.unregister();
-		this.nexManager.nex.unregister();
-		this.nexManager.overall.unregister();
+		this.nexManager.chargesTracker.unregister();
 		this.nexManager.chargesTracker.reset();
+		this.nexManager.overall.unregister();
 		this.nexManager.overall.fullReset();
+		this.nexManager.nex.unregister();
+		this.nexManager.nex.fullReset();
+		this.nexManager.nexBank.fullReset();
+		this.nexManager.nexBank.unregister();
+		this.nexManager.kcArea.fullReset();
+		this.nexManager.kcArea.unregister();
+		this.nexManager.lobby.fullReset();
+		this.nexManager.lobby.unregister();
+		this.nexManager.unregister();
+		this.nexManager.fullReset();
 	}
 
 	@Subscribe
