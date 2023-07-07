@@ -18,6 +18,8 @@ public class Nex
 	public NPC umbra = null;
 	public NPC glacies = null;
 	public NPC cruor = null;
+	public GameObject altar = null;
+
 	@Inject
 	NexManager nexManager;
 
@@ -58,5 +60,6 @@ public class Nex
 		umbra = null;
 		glacies = null;
 		cruor = null;
+		altar = null;
 	}
 }
