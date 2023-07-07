@@ -22,12 +22,6 @@ public class Overall
 	public int deaths = 0;
 	public boolean died;
 	public Instant botTimer = Instant.now();
-	public GameObject kcAreaDoor = null;
-	public GameObject deathChest = null;
-	public GameObject bankDoor = null;
-	public GameObject altar = null;
-	public GameObject barrier = null;
-	public NPC banker = null;
 
 	@Inject
 	NexatronPlugin nexatronPlugin;
@@ -76,42 +70,15 @@ public class Overall
 	}
 
 	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned gameObjectSpawned)
-	{
-		GameObject gameObject = gameObjectSpawned.getGameObject();
-		if (gameObject.getId() == NexConst.KC_AREA_DOOR)
-		{
-			kcAreaDoor = gameObject;
-		}
-		if (gameObject.getId() == NexConst.DEATH_CHEST)
-		{
-			deathChest = gameObject;
-		}
-		if (gameObject.getId() == NexConst.BANK_DOOR)
-		{
-			bankDoor = gameObject;
-		}
-		if (gameObject.getId() == NexConst.ALTAR)
-		{
-			altar = gameObject;
-		}
-		if (gameObject.getId() == NexConst.ACTIVE_BARRIER)
-		{
-			nexManager.print("barrier spawned");
-			barrier = gameObject;
-		}
-	}
-
-	@Subscribe
 	public void onGameObjectDespawned(GameObjectDespawned gameObjectDespawned)
 	{
 		nexManager.print("despawned " + gameObjectDespawned.getGameObject().getId());
 		GameObject gameObject = gameObjectDespawned.getGameObject();
-		if (gameObject.equals(barrier))
-		{
-			nexManager.print("setting barrier to null");
-			barrier = null;
-		}
+//		if (gameObject.equals(barrier))
+//		{
+//			nexManager.print("setting barrier to null");
+//			barrier = null;
+//		}
 		if (gameObject.getId() == NexConst.ACTIVE_BARRIER)
 		{
 			nexManager.print("barrier despawned through ID");
@@ -124,12 +91,6 @@ public class Overall
 		botTimer = Instant.now();
 		killCount = 0;
 		deaths = 0;
-		kcAreaDoor = null;
-		deathChest = null;
-		bankDoor = null;
-		altar = null;
-		barrier = null;
-		banker = null;
 	}
 }
 
