@@ -72,7 +72,7 @@ public class Overall
 	@Subscribe
 	public void onGameObjectDespawned(GameObjectDespawned gameObjectDespawned)
 	{
-		nexManager.print("despawned " + gameObjectDespawned.getGameObject().getId());
+//		nexManager.print("despawned " + client.getObjectDefinition(gameObjectDespawned.getGameObject().);
 		GameObject gameObject = gameObjectDespawned.getGameObject();
 //		if (gameObject.equals(barrier))
 //		{

@@ -11,6 +11,7 @@ import com.example.nexatron.tasks.general.DropVial;
 import com.example.nexatron.tasks.general.ProgressStage;
 import com.example.nexatron.tasks.general.Reattack;
 import com.example.nexatron.tasks.general.ToggleRun;
+import com.example.nexatron.tasks.kcArea.KcPrayer;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -76,6 +77,7 @@ public class NexatronPlugin extends Plugin
 			DropVial.class,
 			DisablePrayers.class,
 			Reattack.class,
+			KcPrayer.class,
 		};
 	}
 
