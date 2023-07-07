@@ -6,6 +6,7 @@ import com.example.toagigatron.model.constants.WeaponMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -26,7 +27,7 @@ public class Prayers
 		return Static.getClient().getVarbitValue(prayer.getVarbit()) == 1;
 	}
 
-	public Prayer getOffensive()
+	public static Prayer getOffensive()
 	{
 		ItemContainer equipped = Static.getClient().getItemContainer(InventoryID.EQUIPMENT);
 		if (equipped != null)
@@ -106,6 +107,35 @@ public class Prayers
 		int widgetId = WidgetInfo.MINIMAP_QUICK_PRAYER_ORB.getPackedId();
 		MousePackets.queueClickPacket();
 		WidgetPackets.queueWidgetActionPacket(1, widgetId, -1, -1);
+	}
+
+	public static void activateAll(ArrayList<Prayer> prayers)
+	{
+		for (Prayer prayer : prayers)
+		{
+			if (!Prayers.isEnabled(prayer))
+			{
+				Prayers.toggle(prayer);
+			}
+		}
+	}
+
+	public static void disableUnused(ArrayList<Prayer> prayersWeWant)
+	{
+		ArrayList<Prayer> activePrayers = getActivePrayers();
+		for (Prayer prayer : activePrayers)
+		{
+			if (!prayersWeWant.contains(prayer))
+			{
+				toggle(prayer);
+			}
+		}
+	}
+
+
+	public static ArrayList<Prayer> getActivePrayers()
+	{
+		return (ArrayList<Prayer>) Arrays.stream(Prayer.values()).filter(Prayers::isEnabled).collect(Collectors.toList());
 	}
 
 	public static boolean isQuickPrayerEnabled()
