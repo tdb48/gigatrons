@@ -2,6 +2,7 @@ package com.example.nexatron.tasks.general;
 
 import com.example.Utility.Static;
 import com.example.nexatron.manager.NexManager;
+import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.Task;
 import com.example.nexatron.taskformat.TaskDescriptor;
@@ -33,9 +34,19 @@ public class ProgressStage extends Task
 		{
 			regions.add(i);
 		}
-		if (regions.contains(99999))
+		if (NexConst.LOBBY_AREA.contains(nexManager.getPlayerPoint()))
+		{
+			nexManager.setStage(Stage.LOBBY);
+			return true;
+		}
+		if (NexConst.KC_AREA.contains(nexManager.getPlayerPoint()))
 		{
 			nexManager.setStage(Stage.KC_AREA);
+			return true;
+		}
+		if (NexConst.BANK_AREA.contains(nexManager.getPlayerPoint()))
+		{
+			nexManager.setStage(Stage.BANK);
 			return true;
 		}
 		else
