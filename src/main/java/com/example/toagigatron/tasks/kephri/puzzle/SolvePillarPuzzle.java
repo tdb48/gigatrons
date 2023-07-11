@@ -1,11 +1,15 @@
 package com.example.toagigatron.tasks.kephri.puzzle;
 
+import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
+import com.example.Packets.WidgetPackets;
 import com.example.Utility.Movement;
 import com.example.Utility.NPCUtil;
 import com.example.Utility.WorldAreas;
 import com.example.toagigatron.manager.ToaManager;
+import com.example.toagigatron.model.constants.Consumables;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.model.puzzlemodel.KephriPuzzleRoom;
@@ -18,6 +22,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.NpcChanged;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
 @TaskDescriptor(
@@ -60,6 +65,17 @@ public class SolvePillarPuzzle extends StagedTask
 		}
 		if (!toaManager.hasGearEquipped(toaManager.rangeSetup.getAllItemsBp()))
 		{
+			// If inventory is full and we don't have a blowpipe equipped, drop lowest dose restore
+			if (Inventory.full()
+				&& Equipment.search().withId(ToaConstants.BLOWPIPE_CHARGED).first().orElse(null) == null)
+			{
+				Widget restore = Consumables.getRestore();
+				if (restore != null)
+				{
+					MousePackets.queueClickPacket();
+					WidgetPackets.queueWidgetAction(restore, "Drop");
+				}
+			}
 			toaManager.swap(toaManager.rangeSetup.getAllItemsBp());
 			return true;
 		}
