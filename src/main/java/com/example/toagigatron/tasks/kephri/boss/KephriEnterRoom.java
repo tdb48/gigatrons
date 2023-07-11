@@ -28,6 +28,7 @@ public class KephriEnterRoom extends StagedTask
 
 	public boolean execute()
 	{
+
 		if (toaManager.kephri.kephriRoom == null || toaManager.kephri.kephriRoom.contains(Static.getClient().getLocalPlayer().getWorldLocation()))
 		{
 			return false;
@@ -38,7 +39,6 @@ public class KephriEnterRoom extends StagedTask
 			return true;
 		}
 		TileObject entry = TileObjects.search().withId(ToaConstants.KEPHRI_BOSS_ENTRY).first().orElse(null);
-		//todo check this world point is accurate
 		if (entry != null && Reachable.isWalkable(entry.getWorldLocation().dx(-1)))
 		{
 			toaManager.print("Entering boss fight");

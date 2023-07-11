@@ -53,6 +53,7 @@ import com.example.toagigatron.tasks.inside.EnterPath;
 import com.example.toagigatron.tasks.inside.Resign;
 import com.example.toagigatron.tasks.kephri.boss.KephriAttackBoss;
 import com.example.toagigatron.tasks.kephri.boss.KephriAttackDemi;
+import com.example.toagigatron.tasks.kephri.boss.KephriBossBrawler;
 import com.example.toagigatron.tasks.kephri.boss.KephriConsumables;
 import com.example.toagigatron.tasks.kephri.boss.KephriDodgeDung;
 import com.example.toagigatron.tasks.kephri.boss.KephriEnterRoom;
@@ -183,7 +184,7 @@ public class ToaGigatronPlugin extends Plugin
 			LeaveBossRoom.class,
 			BabaPuzzlePrayerHandler.class,
 			KephriDodgeDung.class,
-			KephriAttackBoss.class,
+			//KephriAttackBoss.class,
 			BabaFixPillar.class,
 			BabaFixVent.class,
 			BabaAvoidExplosion.class,
@@ -252,6 +253,7 @@ public class ToaGigatronPlugin extends Plugin
 			FairyRingFromGE.class,
 			RunToToa.class,
 			FindChargeableItems.class,
+			KephriBossBrawler.class
 		};
 	}
 

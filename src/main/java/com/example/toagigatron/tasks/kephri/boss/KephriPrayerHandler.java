@@ -1,6 +1,8 @@
 package com.example.toagigatron.tasks.kephri.boss;
 
 
+import com.example.Packets.MousePackets;
+import com.example.Packets.MovementPackets;
 import com.example.Utility.Combat;
 import com.example.Utility.NPCUtil;
 import com.example.Utility.Prayer;
@@ -19,6 +21,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 

@@ -3,6 +3,7 @@ package com.example.toagigatron.tasks.kephri.boss;
 import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
+import com.example.Packets.MovementPackets;
 import com.example.Packets.NPCPackets;
 import com.example.Utility.Combat;
 import com.example.Utility.Movement;
@@ -23,6 +24,7 @@ import java.util.HashSet;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 
 @TaskDescriptor(
@@ -49,7 +51,7 @@ public class KephriAttackDemi extends StagedTask
 			|| toaManager.kephri.kephri == null
 			|| resetGhost != null
 			|| !toaManager.kephri.kephriRoom.contains(playerPoint)
-			|| (demi == null && Arrays.asList(client.getNpcDefinition(toaManager.kephri.kephri.getId()).getActions()).contains("Attack"))
+			|| (demi == null && NPCUtil.hasAction(toaManager.kephri.kephri, "Attack"))
 			|| toaManager.kephri.dungGraphicTick > 0
 			|| Static.getClient().getLocalPlayer().getGraphic() == ToaConstants.DUNG_GRAPHIC_START)
 		{
@@ -122,7 +124,7 @@ public class KephriAttackDemi extends StagedTask
 			}
 		}
 
-		WorldPoint startTile = toaManager.kephri.currentRow.startPoint;
+		WorldPoint startTile = toaManager.kephri.melee;
 		NPC soldier = NPCUtil.findNearest("Soldier Scarab");
 		if (soldier != null)
 		{
@@ -195,13 +197,18 @@ public class KephriAttackDemi extends StagedTask
 		for (WorldPoint worldPoint : areaAroundPlayer)
 		{
 			testPath = EthanApiPlugin.pathToGoal(worldPoint, dangerTiles);
-			if (testPath.size() <= 3)
+			if (testPath != null && testPath.size() <= 3)
 			{
 				return worldPoint;
+			}
+			if(testPath == null)
+			{
+				toaManager.print("Path is null in safe bomb tile attack demi");
 			}
 		}
 		return null;
 	}
+
 
 	private WorldPoint getStartTile()
 	{

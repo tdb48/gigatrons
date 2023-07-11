@@ -113,6 +113,7 @@ public class ToaConstants
 	public static final int ARCANE_SCARAB_FLY_ANIMATION = 9598;
 	public static final int BABA_PUZZLE_STATUE = 45496;
 	public static final int KEPHRI_BOSS_ENTRY = 45505;
+	public static final int KEPHRI_DUNG_GAME_OBJECT = 45504;
 	public static final int WARDENS_P1_BOSS_ENTRY = 45579;
 
 	public static final int AKKHA_BOSS_ENTRY = 45866;

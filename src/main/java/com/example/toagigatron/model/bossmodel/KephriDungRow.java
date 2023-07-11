@@ -1,6 +1,7 @@
 package com.example.toagigatron.model.bossmodel;
 
-import net.runelite.api.coords.Direction;
+
+import com.example.toagigatron.model.constants.Direction;
 import net.runelite.api.coords.WorldPoint;
 
 public class KephriDungRow
