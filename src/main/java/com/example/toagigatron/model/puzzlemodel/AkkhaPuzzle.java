@@ -1,6 +1,7 @@
 package com.example.toagigatron.model.puzzlemodel;
 
 import com.example.Utility.ObjectUtil;
+import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.ToaConstants;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -22,11 +23,14 @@ public class AkkhaPuzzle
 	ArrayList<AkkhaPuzzleRoomTile> fixedMirrors;
 	ArrayList<AkkhaPuzzleRoomTile> moveableMirrors;
 
+	private final ToaManager toaManager;
+
 	public AkkhaPuzzle(WorldArea area,
 					   ArrayList<AkkhaPuzzleRoomTile> blockingWalls,
 					   ArrayList<AkkhaPuzzleRoomTile> mineableWalls,
 					   ArrayList<AkkhaPuzzleRoomTile> fixedMirrors,
-					   ArrayList<AkkhaPuzzleRoomTile> moveableMirrors)
+					   ArrayList<AkkhaPuzzleRoomTile> moveableMirrors,
+					   ToaManager toaManager)
 	{
 		this.area = area;
 		this.worldPointList = (ArrayList<WorldPoint>) area.toWorldPointList();
@@ -38,6 +42,7 @@ public class AkkhaPuzzle
 		roomMatrix = "";
 		solution = null;
 		constructRoomTiles();
+		this.toaManager = toaManager;
 	}
 
 	public void updateLocation(WorldPoint worldPoint, GameObject obj, String type)
@@ -378,212 +383,29 @@ public class AkkhaPuzzle
 			}
 			solution = new AkkhaPuzzleSolution(mineableWallLocations, mirrorLocations, mineTile);
 		}
-
-
-	}
-
-	private boolean charMatcher(ArrayList<Integer> inputStr, char[] matrix)
-	{
-		for (int i = 0; i < inputStr.size(); i++)
-		{
-			int charOne = inputStr.get(i);
-			int charTwo = matrix[i];
-			if (charOne != charTwo)
-			{
-//				System.out.println("istr size: " + inputStr.size() + "  mat size: " + matrix.length);
-//							System.out.println("C1: " + charOne + " C2: " + charTwo);
-//				System.out.println("Returning false,  char one ->  " + charOne + "  char two -> " + charTwo);
-//		System.out.println("i: " + i);
-				return false;
-			}
-		}
-		return true;
 	}
 
 	public boolean matches()
 	{
-		ArrayList<String> solveNames = new ArrayList<>();
-		solveNames.add("N1.txt");
-		solveNames.add("N2.txt");
-		solveNames.add("N3.txt");
-		solveNames.add("N4.txt");
-		solveNames.add("N5.txt");
-		solveNames.add("N6.txt");
-		solveNames.add("N7.txt");
-		solveNames.add("S1.txt");
-		solveNames.add("S2.txt");
-		solveNames.add("S3.txt");
-		solveNames.add("S4.txt");
-		solveNames.add("S5.txt");
-		solveNames.add("S6.txt");
-		try
-		{
-
-			for (String s : solveNames)
-			{
-				byte[] array;
-				InputStream input = this.getClass().getClassLoader().getResourceAsStream(s);
-				if (input != null)
-				{
-					array = new byte[input.available()];
-//					System.out.println("Bytes available -> " + input.available());
-					input.read(array);
-
-					String str = new String(array);
-					str = str.trim();
-//					System.out.println("Reading solve -> " + s);
-//					System.out.println("STRING FROM TEXT FILE: ");
-//					System.out.println(str);
-//					System.out.println("STRING FROM MATRIX: ");
-//					System.out.println(roomMatrix);
-//					System.out.println("DOES IT MATCH? -> " + str.equals(roomMatrix));
-					char[] strChar = str.toCharArray();
-					ArrayList<Integer> strCharList = new ArrayList<>();
-					for (char c : strChar)
-					{
-						strCharList.add((int) c);
-					}
-					strCharList.removeIf(x -> x == 13);
-
-					char[] roomMatrixChar = roomMatrix.toCharArray();
-//					System.out.println("size -> " + strCharList.size());
-//					System.out.println("matrix size -> " + roomMatrixChar.length);
-//					System.out.println("DOES IT MATCH? -> " + charMatcher(strCharList, roomMatrixChar));
-//					if(s.equals("N4.txt")){
-//						for(int i = 0; i < strCharList.size(); i++){
-//							System.out.print((int) strCharList.get(i));
-//							System.out.print(" ");
-//						}
-//						System.out.println("");
-//						System.out.println("");
-//						for(int i = 0; i < roomMatrixChar.length; i++){
-//							System.out.print((int) roomMatrixChar[i]);
-//							System.out.print(" ");
-//						}
-//					}
-
-					if (charMatcher(strCharList, roomMatrixChar))
-					{
-//						System.out.println("FOUND SOLVE -> " + s);
-						layoutName = s;
-						setSolution(s);
-						input.close();
-						break;
-					}
-					input.close();
-				}
-
-//				URL resource = this.getClass().getClassLoader().getResource(s);
-//				if (resource == null)
-//				{
-//					throw new IllegalArgumentException("file not found!");
-//				}
-//				else
-//				{
-//					File solve = new File(resource.getPath());
-//					//System.out.println(solve.getAbsolutePath());
-//					//System.out.println(solve.getCanonicalPath());
-//					FileReader fr = new FileReader(solve);
-//					BufferedReader br = new BufferedReader(fr);
-//					String str = "";
-//					System.out.println("Reading solve -> " + solve.getName());
-//					while (true)
-//					{
-//						String tmp = br.readLine();
-//						if (tmp == null)
-//						{
-//							break;
-//						}
-//						str = str + tmp + "\n";
-//					}
-//					System.out.println("STRING FROM TEXT FILE: ");
-//					str = str.trim();
-//					System.out.println(str);
-//					System.out.println("STRING FROM MATRIX: ");
-//					System.out.println(roomMatrix);
-//					System.out.println("DOES IT MATCH? -> " + str.equals(roomMatrix));
-//					if (str.equals(roomMatrix))
-//					{
-//						System.out.println("FOUND SOLVE -> " + solve.getName());
-//						layoutName = solve.getName();
-//						setSolution(solve.getName());
-//						br.close();
-//						fr.close();
-//						break;
-//					}
-//					if (s.equals("S6.txt"))
-//					{
-//						br.close();
-//						fr.close();
-//					}
-//
-//				}
+		for(AkkhaPuzzleSolutionsEnum solutions : AkkhaPuzzleSolutionsEnum.values()){
+			toaManager.print("Checking solution -> " + solutions.solutionName + " for a potential match.");
+			if(solutions.solution.trim().equals(roomMatrix)){
+				toaManager.print("Solution found!");
+				layoutName = solutions.solutionName;
+				setSolution(solutions.solutionName);
+				return true;
 			}
-
-//			URL resource = this.getClass().getClassLoader().getResource("akkhapuzzlelayouts");
-//			if (resource == null)
-//			{
-//				throw new IllegalArgumentException("file not found!");
-//			}
-//			else
-//			{
-//				System.out.println("File name -> " + resource.getFile());
-//				File solvesFolder = new File(resource.getFile());
-//				System.out.println("Solves folder -> " + solvesFolder.getName());
-//				File[] allSolves = solvesFolder.listFiles();
-//				if (allSolves != null)
-//				{
-//					System.out.println("all solves is not null");
-//					for (int i = 0; i < allSolves.length; i++)
-//					{
-//						File file = allSolves[i];
-//						System.out.println(file.getName());
-//						FileReader fr = new FileReader(file);
-//						BufferedReader br = new BufferedReader(fr);
-//						String str = "";
-//						System.out.println("Reading solve -> " + file.getName());
-//						while (true)
-//						{
-//							String tmp = br.readLine();
-//							if (tmp == null)
-//							{
-//								break;
-//							}
-//							str = str + tmp + "\n";
-//						}
-//						System.out.println("STRING FROM TEXT FILE: ");
-//						str = str.trim();
-//						System.out.println(str);
-//						System.out.println("STRING FROM MATRIX: ");
-//						System.out.println(roomMatrix);
-//						System.out.println("DOES IT MATCH? -> " + str.equals(roomMatrix));
-//						if (str.equals(roomMatrix))
-//						{
-//							System.out.println("FOUND SOLVE -> " + file.getName());
-//							layoutName = file.getName();
-//							setSolution(file.getName());
-//							br.close();
-//							fr.close();
-//							break;
-//						}
-//						if (i == allSolves.length - 1)
-//						{
-//							br.close();
-//							fr.close();
-//						}
-//					}
-//				} else {
-//					System.out.println("All solves is null i guess");
-//				}
+		}
 //
-//			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+//		toaManager.print("Iterated them all without a solution oh no...");
+//		for(AkkhaPuzzleSolutionsEnum solutions : AkkhaPuzzleSolutionsEnum.values()){
+//			System.out.println("Comparing solution -> " + solutions.solutionName + " against room matrix.");
+//			System.out.println(solutions.solution.trim());
+//			System.out.println();
+//			System.out.println(roomMatrix);
+//
+//		}
+		return false;
 	}
 
 	public void print()

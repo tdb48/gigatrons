@@ -159,6 +159,8 @@ public class Akkha
 			return;
 		}
 
+		//todo - stop this iterating every game tick theres no need for it
+		// it should find the solution and then solve it, only iterating the potential solutions again as needed
 		if (isPuzzleActive() && toaManager.getStage() == Stage.AKKHA_PUZZLE)
 		{
 			generatePuzzle();
@@ -257,7 +259,7 @@ public class Akkha
 				{
 					minedWalls.add(new AkkhaPuzzleRoomTile(obj.getWorldLocation(), obj));
 				}
-				puzzle = new AkkhaPuzzle(puzzleRoomArea, walls, minedWalls, mirrors, moveableMirrors);
+				puzzle = new AkkhaPuzzle(puzzleRoomArea, walls, minedWalls, mirrors, moveableMirrors, toaManager);
 				//puzzle.constructRoomTiles();
 			}
 		}

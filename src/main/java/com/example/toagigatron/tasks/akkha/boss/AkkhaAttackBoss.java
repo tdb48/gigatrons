@@ -71,7 +71,10 @@ public class AkkhaAttackBoss extends StagedTask
 			toaManager.swap(toaManager.rangeSetup.getAllItemsBp());
 		}
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
-		// If akkha is standing on both the memory tile and center tile, stand on memory tile and akkha will reposition itself hopefully
+
+		//TODO - LOOK AT THIS CONVOLUTED LOGIC THAT REPEATS ITSELF
+
+		//If akkha is standing on both the memory tile and center tile, stand on memory tile and akkha will reposition itself hopefully
 		if (!toaManager.akkha.orbSpecialActive()
 			&& !playerPoint.equals(toaManager.akkha.safeQuadrant.memoryTile)
 			&& toaManager.akkha.akkhaBoss.getWorldArea().contains(toaManager.akkha.safeQuadrant.memoryTile)
