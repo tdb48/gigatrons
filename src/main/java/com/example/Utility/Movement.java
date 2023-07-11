@@ -1,8 +1,12 @@
 package com.example.Utility;
 
+import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
 import com.example.Packets.MovementPackets;
 import com.example.Packets.WidgetPackets;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
@@ -15,6 +19,18 @@ import java.util.Comparator;
 @Slf4j
 public class Movement
 {
+
+	public static ArrayList<WorldPoint> pathToGoal(WorldPoint startingPoint, WorldPoint goal, HashSet<WorldPoint> dangerous) {
+
+		ArrayList<List<WorldPoint>> paths = new ArrayList<>();
+		paths.add(List.of(startingPoint));
+		HashSet<WorldPoint> walkableTiles = new HashSet<>(EthanApiPlugin.reachableTiles());
+		HashSet<WorldPoint> impassibleTiles = new HashSet<>(EthanApiPlugin.sceneWorldPoints());
+		impassibleTiles.removeIf(walkableTiles::contains);
+		HashSet<WorldPoint> goalSet = new HashSet<>();
+		goalSet.add(goal);
+		return EthanApiPlugin.pathToGoal(goalSet, paths, impassibleTiles, dangerous, new HashSet<>(EthanApiPlugin.reachableTiles()), new HashSet<>());
+	}
 
 	public static boolean isRunEnabled()
 	{
