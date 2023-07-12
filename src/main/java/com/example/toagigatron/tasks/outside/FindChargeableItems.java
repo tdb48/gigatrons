@@ -2,6 +2,9 @@ package com.example.toagigatron.tasks.outside;
 
 
 import com.example.EthanApiPlugin.Collections.Bank;
+import com.example.EthanApiPlugin.Collections.BankInventory;
+import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.EthanApiPlugin.Collections.TileObjects;
 import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
@@ -44,44 +47,60 @@ public class FindChargeableItems extends StagedTask
 			&& (toaManager.chargesTracker.ahrimsSkirt == -1
 			|| toaManager.chargesTracker.ahrimsSkirt == ItemID.AHRIMS_ROBESKIRT_25))
 		{
-			if (!Bank.isOpen())
-			{
-				return openBank();
-			}
 			Widget skirt = findLowestCharge(ChargesTracker.ASKIRT);
 			if (skirt != null)
 			{
 				toaManager.print("Ahrims skirt found with id " + skirt.getItemId());
 				toaManager.chargesTracker.ahrimsSkirt = skirt.getItemId();
-				return true;
 			}
 			else
 			{
-				toaManager.print("Can't find ahrims skirt");
-				return true;
+				if (!Bank.isOpen())
+				{
+					return openBank();
+				}
+				skirt = findLowestChargeBank(ChargesTracker.ASKIRT);
+				if (skirt != null)
+				{
+					toaManager.print("Ahrims skirt found with id " + skirt.getItemId());
+					toaManager.chargesTracker.ahrimsSkirt = skirt.getItemId();
+				}
+				else
+				{
+					toaManager.print("Can't find ahrims skirt");
+				}
 			}
+			return true;
 		}
 
 		if (toaManager.config.mageBody() == MageBody.AHRIMS
 			&& (toaManager.chargesTracker.ahrimsTop == -1
 			|| toaManager.chargesTracker.ahrimsTop == ItemID.AHRIMS_ROBETOP_25))
 		{
-			if (!Bank.isOpen())
-			{
-				return openBank();
-			}
 			Widget top = findLowestCharge(ChargesTracker.ATOP);
 			if (top != null)
 			{
 				toaManager.print("Ahrims top found with id " + top.getItemId());
 				toaManager.chargesTracker.ahrimsTop = top.getItemId();
-				return true;
 			}
 			else
 			{
-				toaManager.print("Can't find ahrims top");
-				return true;
+				if (!Bank.isOpen())
+				{
+					return openBank();
+				}
+				top = findLowestChargeBank(ChargesTracker.ATOP);
+				if (top != null)
+				{
+					toaManager.print("Ahrims top found with id " + top.getItemId());
+					toaManager.chargesTracker.ahrimsTop = top.getItemId();
+				}
+				else
+				{
+					toaManager.print("Can't find ahrims top");
+				}
 			}
+			return true;
 		}
 
 		return false;
@@ -91,7 +110,30 @@ public class FindChargeableItems extends StagedTask
 	{
 		for (int i : list)
 		{
-			Widget item = Bank.search().withId(i).first().orElse(null);
+			Widget item = Inventory.search().withId(i).first().orElse(null);
+			if (item != null)
+			{
+				return item;
+			}
+			item = Equipment.search().withId(i).first().orElse(null);
+			if (item != null)
+			{
+				return item;
+			}
+		}
+		return null;
+	}
+
+	public Widget findLowestChargeBank(ArrayList<Integer> list)
+	{
+		for (int i : list)
+		{
+			Widget item = BankInventory.search().withId(i).first().orElse(null);
+			if (item != null)
+			{
+				return item;
+			}
+			item = Bank.search().withId(i).first().orElse(null);
 			if (item != null)
 			{
 				return item;
