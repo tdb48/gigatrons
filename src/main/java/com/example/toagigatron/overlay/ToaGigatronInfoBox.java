@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +59,19 @@ public class ToaGigatronInfoBox extends OverlayPanel
 		Stage stage = plugin.toaManager.getStage();
 		String title = "ToA Megatron";
 		Duration duration = Duration.between(plugin.toaManager.overall.botTimer, Instant.now());
-
+		long millis = duration.toMillis();
+		//more than 10 hours
+		String hhms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+			TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
+			TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
+		//more than 1 hour
+		String hms = String.format("%01d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+			TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
+			TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
+		//Less than 1 hour
+		String ms = String.format("%02d:%02d",
+			TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
+			TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
 		panelComponent.getChildren().clear();
 		panelComponent.setBackgroundColor(new Color(16, 24, 32, 150));
 		panelComponent.getChildren().add(TitleComponent.builder().text(title).color(new Color(242, 170, 76)).build());
@@ -73,7 +86,18 @@ public class ToaGigatronInfoBox extends OverlayPanel
 		}
 		if (plugin.toaManager.overall.botTimer != null)
 		{
-			panelComponent.getChildren().add(LineComponent.builder().left("Runtime ").right((duration.toHours() > 0 ? (duration.toHours() + ":") : ("")) + (new SimpleDateFormat("mm:ss").format(new Date(duration.toMillis())))).build());
+			if (duration.toHours() >= 10)
+			{
+				panelComponent.getChildren().add(LineComponent.builder().left("Runtime ").right(hhms).build());
+			}
+			else if (duration.toHours() >= 1)
+			{
+				panelComponent.getChildren().add(LineComponent.builder().left("Runtime ").right(hms).build());
+			}
+			else
+			{
+				panelComponent.getChildren().add(LineComponent.builder().left("Runtime ").right(ms).build());
+			}
 		}
 		panelComponent.getChildren().add(LineComponent.builder().left("Stage ").right(String.valueOf(stage)).build());
 		panelComponent.getChildren().add(LineComponent.builder().left("K/D ").right(plugin.toaManager.overall.killCount + " / " + plugin.toaManager.overall.deaths).build());
