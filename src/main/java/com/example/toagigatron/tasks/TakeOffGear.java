@@ -39,10 +39,10 @@ public class TakeOffGear extends StagedTask
 		// If we don't have less slots than we need, return
 		if (Inventory.getEmptySlots() < invSlotsNeeded)
 		{
-			if (Static.getClient().getTickCount() % 5 == 0)
-			{
-				toaManager.print("Want to unequip, but don't have enough space");
-			}
+//			if (Static.getClient().getTickCount() % 5 == 0)
+//			{
+//				toaManager.print("Want to unequip, but don't have enough space");
+//			}
 			return false;
 		}
 
@@ -61,7 +61,7 @@ public class TakeOffGear extends StagedTask
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(offHandd, "Remove");
 			}
-			//toaManager.reAttack(interactingPlayer);
+			toaManager.reAttack(interactingPlayer);
 			return true;
 		}
 
@@ -83,7 +83,7 @@ public class TakeOffGear extends StagedTask
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(booties, "Remove");
 			}
-			//toaManager.reAttack(interactingPlayer);
+			toaManager.reAttack(interactingPlayer);
 			return true;
 		}
 
@@ -97,7 +97,7 @@ public class TakeOffGear extends StagedTask
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(booties, "Remove");
 			}
-			//toaManager.reAttack(interactingPlayer);
+			toaManager.reAttack(interactingPlayer);
 			return true;
 		}
 		return false;
