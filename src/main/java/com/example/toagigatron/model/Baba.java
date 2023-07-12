@@ -84,6 +84,8 @@ public class Baba
 	public boolean touchedPrePathTile = false;
 	public List<WorldPoint> attackPath = new ArrayList<>();
 	public List<WorldPoint> specialPath = new ArrayList<>();
+
+	public ArrayList<WorldPoint> diagonalRockFallTiles = new ArrayList<>();
 	@Inject
 	ToaManager toaManager;
 	@Inject
@@ -105,6 +107,7 @@ public class Baba
 
 	public void resetVariables()
 	{
+		diagonalRockFallTiles = new ArrayList<>();
 		attackPath = new ArrayList<>();
 		specialPath = new ArrayList<>();
 		currentSpecial = BabaPuzzleSpecial.NULL;
@@ -344,7 +347,7 @@ public class Baba
 			rockFromCeiling.clear();
 		}
 		rockfallTiles.clear();
-		ArrayList<WorldPoint> diagonalRockFallTile = new ArrayList<>();
+		diagonalRockFallTiles.clear();
 		for (TileObject gameObject : ObjectUtil.getObjects(ToaConstants.BABA_BOSS_ROCKFALL)
 //			new GameObjectQuery().idEquals(ToaConstants.BABA_BOSS_ROCKFALL).result(client)
 		)
@@ -362,7 +365,7 @@ public class Baba
 				}
 				if (WorldPoints.isDiagonalOf(worldPoint, refPoint) && Reachable.isWalkable(worldPoint))
 				{
-					diagonalRockFallTile.add(worldPoint);
+					diagonalRockFallTiles.add(worldPoint);
 				}
 			}
 		}
@@ -487,7 +490,7 @@ public class Baba
 		}
 
 		// Add corner tiles of the rocks so that it doesn't get bouldered for 90s
-		badTiles.addAll(diagonalRockFallTile);
+		badTiles.addAll(diagonalRockFallTiles);
 		badTiles.addAll(bananaTiles);
 		// If theres two rocks out, mark tiles 14 away as bad
 		int rocks = ObjectUtil.getObjects(ToaConstants.BABA_BOSS_ROCKFALL).size();

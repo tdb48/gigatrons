@@ -32,6 +32,16 @@ public class Movement
 		return EthanApiPlugin.pathToGoal(goalSet, paths, impassibleTiles, dangerous, new HashSet<>(EthanApiPlugin.reachableTiles()), new HashSet<>());
 	}
 
+	public static ArrayList<WorldPoint> pathToGoal(WorldPoint goal, HashSet<WorldPoint> walkable, HashSet<WorldPoint> dangerous) {
+		ArrayList<List<WorldPoint>> paths = new ArrayList<>();
+		paths.add(List.of(Static.getClient().getLocalPlayer().getWorldLocation()));
+		HashSet<WorldPoint> impassibleTiles = new HashSet<>(EthanApiPlugin.sceneWorldPoints());
+		impassibleTiles.removeIf(walkable::contains);
+		HashSet<WorldPoint> goalSet = new HashSet<>();
+		goalSet.add(goal);
+		return EthanApiPlugin.pathToGoal(goalSet, paths, impassibleTiles, dangerous, walkable, new HashSet<>());
+	}
+
 	public static boolean isRunEnabled()
 	{
 		return Static.getClient().getVarpValue(173) == 1;

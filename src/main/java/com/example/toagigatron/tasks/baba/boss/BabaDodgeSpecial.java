@@ -2,6 +2,7 @@ package com.example.toagigatron.tasks.baba.boss;
 
 
 import com.example.EthanApiPlugin.EthanApiPlugin;
+import com.example.Utility.Movement;
 import com.example.Utility.NPCUtil;
 import com.example.Utility.Reachable;
 import com.example.Utility.Walker;
@@ -103,6 +104,10 @@ public class BabaDodgeSpecial extends StagedTask
 			safeTiles.removeAll(toaManager.baba.badTiles);
 			safeTiles.removeIf(n -> !Reachable.isWalkable(n));
 			safeTiles.removeAll(toaManager.baba.tilesUnderBoss());
+			if(toaManager.baba.rockfallTick > 0 && toaManager.baba.shockwaveTick > 0){
+				safeTiles.addAll(toaManager.baba.diagonalRockFallTiles);
+				safeTiles.removeAll(toaManager.baba.shockwaveTiles);
+			}
 			WorldPoint safeTile = toaManager.findClosestTile(safeTiles, playerPoint);
 			if (safeTile == null)
 			{
@@ -110,7 +115,9 @@ public class BabaDodgeSpecial extends StagedTask
 			}
 			toaManager.print("In danger, moving to " + toaManager.worldPointString(safeTile));
 			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.baba.bananaTiles);
-			toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(safeTile, dangerTiles);
+			HashSet<WorldPoint> walkableTiles = new HashSet<>(toaManager.baba.rockfallTiles);
+			walkableTiles.addAll(toaManager.baba.diagonalRockFallTiles);
+			toaManager.baba.attackPath = Movement.pathToGoal(safeTile, walkableTiles, dangerTiles);
 			Walker.stepAlong(toaManager.baba.attackPath);
 		}
 		return true;
