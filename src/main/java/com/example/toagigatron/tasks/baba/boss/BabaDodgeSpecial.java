@@ -104,10 +104,10 @@ public class BabaDodgeSpecial extends StagedTask
 			safeTiles.removeAll(toaManager.baba.badTiles);
 			safeTiles.removeIf(n -> !Reachable.isWalkable(n));
 			safeTiles.removeAll(toaManager.baba.tilesUnderBoss());
-			if(toaManager.baba.rockfallTick > 0 && toaManager.baba.shockwaveTick > 0){
-				safeTiles.addAll(toaManager.baba.diagonalRockFallTiles);
-				safeTiles.removeAll(toaManager.baba.shockwaveTiles);
-			}
+//			if(toaManager.baba.rockfallTick > 0 && toaManager.baba.shockwaveTick > 0){
+//				safeTiles.addAll(toaManager.baba.diagonalRockFallTiles);
+//				safeTiles.removeAll(toaManager.baba.shockwaveTiles);
+//			}
 			WorldPoint safeTile = toaManager.findClosestTile(safeTiles, playerPoint);
 			if (safeTile == null)
 			{
@@ -117,7 +117,11 @@ public class BabaDodgeSpecial extends StagedTask
 			HashSet<WorldPoint> dangerTiles = new HashSet<>(toaManager.baba.bananaTiles);
 			HashSet<WorldPoint> walkableTiles = new HashSet<>(toaManager.baba.rockfallTiles);
 			walkableTiles.addAll(toaManager.baba.diagonalRockFallTiles);
-			toaManager.baba.attackPath = Movement.pathToGoal(safeTile, walkableTiles, dangerTiles);
+			if(toaManager.baba.rockfallTick > 0 && walkableTiles.contains(client.getLocalPlayer().getWorldLocation())){
+				toaManager.baba.attackPath = Movement.pathToGoal(safeTile, walkableTiles, dangerTiles);
+			} else {
+				toaManager.baba.attackPath = EthanApiPlugin.pathToGoal(safeTile, dangerTiles);
+			}
 			Walker.stepAlong(toaManager.baba.attackPath);
 		}
 		return true;
