@@ -97,10 +97,12 @@ public class AkkhaPrayerHandler extends StagedTask
 		NPC magicOrb = NPCUtil.findNearest(11804);
 		if (akkha == null)
 		{
+			toaManager.print("Akkha is null, returning offensive prayers only, list size -> " + List.of(this.getOffensive()).size());
 			return List.of(this.getOffensive());
 		}
 		else if (magicOrb != null)
 		{
+			toaManager.print("Orb is not null, list size -> " + List.of(Prayer.PROTECT_FROM_MAGIC, this.getOffensive()).size());
 			return List.of(Prayer.PROTECT_FROM_MAGIC, this.getOffensive());
 		}
 		else
@@ -117,8 +119,10 @@ public class AkkhaPrayerHandler extends StagedTask
 			}
 			if (current == null)
 			{
+				toaManager.print("Akkha is not null, 'current' is null, list size ->" + List.of(this.getOffensive()).size());
 				return List.of(this.getOffensive());
 			}
+			toaManager.print("Akkha is not null, 'current' is NOT null, list size ->" + List.of(this.getOffensive(), this.getOffensive()).size());
 			return List.of(this.getOffensive(), this.current);
 		}
 	}
