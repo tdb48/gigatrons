@@ -341,6 +341,26 @@ public class ToaGigatronPlugin extends Plugin
 		this.toaManager.initialiseSetups();
 	}
 
+
+	public void scheduleLogout()
+	{
+		finishRaid = false;
+		stopPlugin = true;
+	}
+
+	public void finishRaid()
+	{
+		stopPlugin = false;
+		finishRaid = true;
+
+	}
+
+	public void undoMisclick()
+	{
+		finishRaid = false;
+		stopPlugin = false;
+	}
+
 	private void startState()
 	{
 		chinBreakHandler.registerPlugin(this);

@@ -14,6 +14,7 @@ import java.util.Date;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -38,9 +39,12 @@ public class ToaGigatronInfoBox extends OverlayPanel
 		setPosition(OverlayPosition.BOTTOM_LEFT);
 		this.plugin = plugin;
 		this.config = config;
-		this.setLayer(OverlayLayer.ALWAYS_ON_TOP);
-		this.setPriority(OverlayPriority.HIGH);
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "One Click Nex"));
+		//this.setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		this.setPriority(OverlayPriority.LOW);
+		//getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Toa Gigatron"));
+		addMenuEntry(RUNELITE_OVERLAY, "Schedule logout", "Toa Gigatron", e -> plugin.scheduleLogout());
+		addMenuEntry(RUNELITE_OVERLAY, "Finish raid", "Toa Gigatron", e -> plugin.finishRaid());
+		addMenuEntry(RUNELITE_OVERLAY, "Undo misclick", "Toa Gigatron", e -> plugin.undoMisclick());
 	}
 
 	@Override

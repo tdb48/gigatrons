@@ -70,18 +70,6 @@ public interface ToaGigatronConfig extends Config
 	)
 	String MAGE_SETUP = "Mage setup";
 
-	@ConfigItem(keyName = "scheduleLogout", name = "Schedule logout", description = "Click this to schedule a logout", position = -10)
-	default Button scheduleLogout()
-	{
-		return new Button();
-	}
-
-	@ConfigItem(keyName = "finishRaid", name = "Finish raid", description = "Finish current raid", position = -9)
-	default Button finishRaid()
-	{
-		return new Button();
-	}
-
 	@ConfigItem(
 		position = 10,
 		keyName = "rangeHelm",
