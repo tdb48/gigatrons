@@ -6,6 +6,7 @@ import com.example.Packets.ObjectPackets;
 import com.example.Packets.WidgetPackets;
 import com.example.Utility.BankUtil;
 import com.example.Utility.InventoryUtil;
+import com.example.toagigatron.manager.GameTickManager;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
@@ -22,6 +23,8 @@ import net.runelite.api.widgets.Widget;
 )
 public class ClaimDeath extends StagedTask
 {
+	@Inject
+	GameTickManager gameTickManager;
 
 	@Inject
 	public ClaimDeath(ToaManager toaManager)
@@ -58,8 +61,13 @@ public class ClaimDeath extends StagedTask
 				return true;
 			}
 		}
+		if (gameTickManager.isTickWaiting())
+		{
+			return true;
+		}
 		if (!isChestInterfaceOpen())
 		{
+			gameTickManager.setTickWait(2);
 			TileObject chest = TileObjects.search().withId(ToaConstants.DEATH_CHEST).first().orElse(null);
 			if (chest == null)
 			{
@@ -73,6 +81,7 @@ public class ClaimDeath extends StagedTask
 		Widget claimWidget = client.getWidget(602, 6);
 		if (claimWidget != null && !claimWidget.isHidden() && claimWidget.getActions() != null)
 		{
+			gameTickManager.setTickWait(2);
 			String action = claimWidget.getActions()[0];
 			toaManager.print("Unlocking chest");
 			MousePackets.queueClickPacket();
