@@ -29,7 +29,10 @@ public class ZebakSolveBloods extends StagedTask
 	{
 		// Dont deal with bloods during waves or rocks in this task
 		//if (toaManager.zebak.bloods.isEmpty() || !toaManager.zebak.waves.isEmpty() || !toaManager.zebak.safeRockTiles.isEmpty())
-		if (toaManager.zebak.bloods.isEmpty() || !toaManager.zebak.safeRockTiles.isEmpty())
+		if (toaManager.zebak.zebakBoss == null
+			|| toaManager.zebak.zebakBoss.getHealthRatio() == 0
+			|| toaManager.zebak.bloods.isEmpty()
+			|| !toaManager.zebak.safeRockTiles.isEmpty())
 		{
 			return false;
 		}
