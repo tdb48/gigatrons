@@ -1,4 +1,4 @@
-package com.example.toagigatron.tasks.kephri.boss;
+package com.example.toagigatron.model.bossmodel;
 
 import com.example.toagigatron.model.constants.Direction;
 import net.runelite.api.coords.WorldPoint;
