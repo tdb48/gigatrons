@@ -249,7 +249,7 @@ public class Zebak
 		{
 			staticJugs = npcsToWorldpoints((ArrayList<NPC>) NPCUtil.findAll(ToaConstants.ZEBAK_STATIC_JUG));
 		}
-		zebakBoss = NPCUtil.findNearest("Zebak");
+		zebakBoss = NPCUtil.findNearestNpcAliveOrDead("Zebak");
 		if (bloodBarrageTick > 0)
 		{
 			bloodBarrageTick--;

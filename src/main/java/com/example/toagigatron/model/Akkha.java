@@ -215,7 +215,7 @@ public class Akkha
 			}
 		}
 		setSafeQuadrant();
-		akkhaBoss = NPCUtil.findNearest("Akkha");
+		akkhaBoss = NPCUtil.findNearestNpcAliveOrDead("Akkha");
 	}
 
 	public boolean hasPickaxe()
