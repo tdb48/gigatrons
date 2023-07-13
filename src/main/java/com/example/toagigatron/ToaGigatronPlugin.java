@@ -26,6 +26,7 @@ import com.example.toagigatron.tasks.akkha.boss.AkkhaAttackBossOrbs;
 import com.example.toagigatron.tasks.akkha.boss.AkkhaAttackDemi;
 import com.example.toagigatron.tasks.akkha.boss.AkkhaConsumables;
 import com.example.toagigatron.tasks.akkha.boss.AkkhaDodgeMemory;
+import com.example.toagigatron.tasks.akkha.boss.AkkhaDying;
 import com.example.toagigatron.tasks.akkha.boss.AkkhaEnterBoss;
 import com.example.toagigatron.tasks.akkha.boss.AkkhaPrayerHandler;
 import com.example.toagigatron.tasks.akkha.puzzle.AkkhaEnterPuzzle;
@@ -35,6 +36,7 @@ import com.example.toagigatron.tasks.baba.BabaConsumables;
 import com.example.toagigatron.tasks.baba.boss.BabaAttackBoss;
 import com.example.toagigatron.tasks.baba.boss.BabaAttackBossMonkey;
 import com.example.toagigatron.tasks.baba.boss.BabaDodgeSpecial;
+import com.example.toagigatron.tasks.baba.boss.BabaDying;
 import com.example.toagigatron.tasks.baba.boss.BabaEnterBoss;
 import com.example.toagigatron.tasks.baba.boss.BabaHitBoulder;
 import com.example.toagigatron.tasks.baba.boss.BabaPrayerHandler;
@@ -56,6 +58,7 @@ import com.example.toagigatron.tasks.kephri.boss.KephriAttackDemi;
 import com.example.toagigatron.tasks.kephri.boss.KephriBossBrawler;
 import com.example.toagigatron.tasks.kephri.boss.KephriConsumables;
 import com.example.toagigatron.tasks.kephri.boss.KephriDodgeDung;
+import com.example.toagigatron.tasks.kephri.boss.KephriDying;
 import com.example.toagigatron.tasks.kephri.boss.KephriEnterRoom;
 import com.example.toagigatron.tasks.kephri.boss.KephriPrayerHandler;
 import com.example.toagigatron.tasks.kephri.puzzle.EnterPuzzleKephri;
@@ -94,6 +97,7 @@ import com.example.toagigatron.tasks.wardens.wardensp3.WardensP3Enrage;
 import com.example.toagigatron.tasks.wardens.wardensp3.WardensP3PrayerHandler;
 import com.example.toagigatron.tasks.zebak.boss.ZebakAttack;
 import com.example.toagigatron.tasks.zebak.boss.ZebakConsumables;
+import com.example.toagigatron.tasks.zebak.boss.ZebakDying;
 import com.example.toagigatron.tasks.zebak.boss.ZebakEnterRoom;
 import com.example.toagigatron.tasks.zebak.boss.ZebakMoveOffPoison;
 import com.example.toagigatron.tasks.zebak.boss.ZebakPrayerHandler;
@@ -253,7 +257,11 @@ public class ToaGigatronPlugin extends Plugin
 			FairyRingFromGE.class,
 			RunToToa.class,
 			FindChargeableItems.class,
-			KephriBossBrawler.class
+			KephriBossBrawler.class,
+			BabaDying.class,
+			KephriDying.class,
+			ZebakDying.class,
+			AkkhaDying.class,
 		};
 	}
 
