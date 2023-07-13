@@ -2,6 +2,7 @@ package com.example.toagigatron.manager;
 
 import com.example.EthanApiPlugin.Collections.Bank;
 import com.example.EthanApiPlugin.Collections.BankInventory;
+import com.example.EthanApiPlugin.Collections.ETileItem;
 import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.EthanApiPlugin.Collections.EquipmentItemWidget;
 import com.example.EthanApiPlugin.Collections.Inventory;
@@ -15,6 +16,7 @@ import com.example.Utility.Movement;
 import com.example.Utility.Prayer;
 import com.example.Utility.Prayers;
 import com.example.Utility.Static;
+import com.example.Utility.TileItemUtil;
 import com.example.Utility.Tiles;
 import com.example.Utility.WidgetUtil;
 import com.example.toagigatron.ReflectBreakHandler;
@@ -1180,6 +1182,18 @@ public class ToaManager
 			&& Inventory.search().withId(Consumables.FULL_DOSE_STAM).result().size() > necessaryStam;
 	}
 
+	public ArrayList<ETileItem> getTileItemSupplies()
+	{
+		return TileItemUtil.getAllETileItems(
+			"Saradomin brew(4)",
+			"Saradomin brew(3)",
+			"Saradomin brew(2)",
+			"Saradomin brew(1)",
+			"Super restore(4)",
+			"Super restore(3)",
+			"Super restore(2)",
+			"Super restore(1)");
+	}
 
 	public ArrayList<Integer> getAllNecessaryItems()
 	{
