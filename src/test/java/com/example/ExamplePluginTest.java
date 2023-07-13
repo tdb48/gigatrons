@@ -19,7 +19,7 @@ public class ExamplePluginTest
 			NexatronPlugin.class,
 			PacketUtilsPlugin.class,
 			ToaGigatronPlugin.class,
-			ChinBreakHandlerPlugin.class,
+//			ChinBreakHandlerPlugin.class,
 			BetterProfilesPlugin.class,
 			PathingTesting.class);
 		RuneLite.main(args);
