@@ -146,7 +146,6 @@ public class BabaAttackMonkey extends StagedTask
 				&& n.getName() != null
 				&& n.getName().equals("Baboon Thrall")).result();
 
-		System.out.println("All thralls size -> " + allThralls.size());
 		NPC stinker = NPCs.search().alive().filter(n ->
 			n.getWorldLocation().distanceTo(playerPoint) > 0
 				&& n.getWorldLocation().distanceTo(playerPoint) <= 10
@@ -189,7 +188,7 @@ public class BabaAttackMonkey extends StagedTask
 			{
 				Combat.toggleSpec();
 			}
-			System.out.println("Returning attack shaman at top");
+//			System.out.println("Returning attack shaman at top");
 			return attackWithRange(playerPoint, shaman, false);
 		}
 
@@ -198,24 +197,24 @@ public class BabaAttackMonkey extends StagedTask
 			&& thrall != null
 			&& toaManager.hasGearEquipped(toaManager.rangeSetup.getAllItemsBp()))
 		{
-			System.out.println("Returning attack with range thralls at top, thrall index: " + thrall.getIndex() + " prev index: " + lastAttackedIndex);
+//			System.out.println("Returning attack with range thralls at top, thrall index: " + thrall.getIndex() + " prev index: " + lastAttackedIndex);
 			return attackWithRange(playerPoint, thrall, false);
 		}
 
 		else if (stinker != null && ranger == null)
 		{
-			System.out.println("Returning attack with mage vs stinker");
+//			System.out.println("Returning attack with mage vs stinker");
 			return attackWithMage(playerPoint, stinker, true);
 		}
 		else if (ranger != null && brawler != null)
 		{
-			System.out.println("Returning attack with melee vs ranger");
+//			System.out.println("Returning attack with melee vs ranger");
 			return attackWithMelee(playerPoint, ranger);
 		}
 		else if (Prayers.isEnabled(Prayer.PROTECT_FROM_MAGIC)
 			&& magician != null)
 		{
-			System.out.println("Returning attack with range vs magician");
+//			System.out.println("Returning attack with range vs magician");
 			return attackWithRange(playerPoint, magician, false);
 		}
 		else if (nearestOther != null)
@@ -224,12 +223,12 @@ public class BabaAttackMonkey extends StagedTask
 			{
 				if (nearestOther.getName().equals("Baboon Thrower"))
 				{
-					System.out.println("thrower nearest other");
+//					System.out.println("thrower nearest other");
 					return attackWithMelee(playerPoint, nearestOther);
 				}
 				else if (nearestOther.getName().equals("Baboon Brawler"))
 				{
-					System.out.println("brawler nearest other");
+//					System.out.println("brawler nearest other");
 					return attackWithMage(playerPoint, nearestOther, false);
 				}
 				else if (nearestOther.getName().equals("Baboon Mage"))
@@ -243,14 +242,14 @@ public class BabaAttackMonkey extends StagedTask
 
 		else if (thrall != null)
 		{
-			System.out.println("Thrall down bottom");
-			System.out.println("Thrall index: " + thrall.getIndex() + " prev index: " + lastAttackedIndex);
+//			System.out.println("Thrall down bottom");
+//			System.out.println("Thrall index: " + thrall.getIndex() + " prev index: " + lastAttackedIndex);
 			return attackWithRange(playerPoint, thrall, false);
 		}
 
 		else if (Game.isIdle())
 		{
-			System.out.println("Game is idle? how is everything else null?");
+//			System.out.println("Game is idle? how is everything else null?");
 			WorldPoint breakTile = toaManager.findClosestTile(breakLoSPoints());
 			if (breakTile != null && !playerPoint.equals(breakTile))
 			{

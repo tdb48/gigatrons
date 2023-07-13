@@ -41,7 +41,7 @@ public class BabaExitPuzzle extends StagedTask
 			toaManager.swap(toaManager.meleeSetup.getAllItems());
 		}
 		TileObject exit = TileObjects.search().withId(ToaConstants.BABA_PUZZLE_EXIT).first().orElse(null);
-		ArrayList<ETileItem> tileItems = TileItemUtil.getAllETileItems("Saradomin brew(4)", "Super restore(4)");
+		ArrayList<ETileItem> tileItems = toaManager.getTileItemSupplies();
 		if (!tileItems.isEmpty() && Inventory.getEmptySlots() != 0)
 		{
 			MousePackets.queueClickPacket();

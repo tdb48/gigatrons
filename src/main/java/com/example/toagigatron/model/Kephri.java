@@ -549,14 +549,11 @@ public class Kephri
 			WorldPoint northEast = centerTile.dx(+4).dy(+4);
 			ArrayList<WorldPoint> bigKephriArea = (ArrayList<WorldPoint>) WorldAreas.createArea(southWest, northEast).toWorldPointList();
 			bigKephriArea.removeIf(kephriArea::contains);
-			for (WorldPoint wp : bigKephriArea)
-			{
-//				if (Math.abs(centerTile.getX() - wp.getX()) == 3 && Math.abs(centerTile.getY() - wp.getY()) == 3)
-//				{
-//					continue;
-//				}
-				kephriMeleeTiles.add(wp);
-			}
+			//				if (Math.abs(centerTile.getX() - wp.getX()) == 3 && Math.abs(centerTile.getY() - wp.getY()) == 3)
+			//				{
+			//					continue;
+			//				}
+			kephriMeleeTiles.addAll(bigKephriArea);
 		}
 	}
 

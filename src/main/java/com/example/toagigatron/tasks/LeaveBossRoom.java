@@ -8,6 +8,7 @@ import com.example.Packets.TileItemPackets;
 import com.example.Utility.Dialog;
 import com.example.Utility.InventoryUtil;
 import com.example.Utility.NPCUtil;
+import com.example.Utility.Prayers;
 import com.example.Utility.Reachable;
 import com.example.Utility.TileItemUtil;
 import com.example.toagigatron.manager.ToaManager;
@@ -56,7 +57,7 @@ public class LeaveBossRoom extends Task
 			ToaConstants.HET);
 		if (leaveNPC != null && Reachable.isWalkable(leaveNPC.getWorldLocation()))
 		{
-			ArrayList<ETileItem> tileItems = TileItemUtil.getAllETileItems("Saradomin brew(4)", "Super restore(4)");
+			ArrayList<ETileItem> tileItems = toaManager.getTileItemSupplies();
 			if (!tileItems.isEmpty() && !InventoryUtil.isFull())
 			{
 				MousePackets.queueClickPacket();
@@ -87,8 +88,7 @@ public class LeaveBossRoom extends Task
 		NPC spawned = npcSpawned.getNpc();
 		if (spawned.getName() != null && spawned.getName().equalsIgnoreCase("osmumten"))
 		{
-			toaManager.disableOverheadsIfEnabled();
-			toaManager.disableOffensiveIfEnabled();
+			Prayers.disableAll();
 		}
 	}
 }

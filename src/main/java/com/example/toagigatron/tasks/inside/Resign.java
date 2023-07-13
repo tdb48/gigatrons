@@ -45,7 +45,6 @@ public class Resign extends StagedTask
 		if (exit == null)
 		{
 			exit = ObjectUtil.getObject(ToaConstants.BABA_BOSS_EXIT);
-
 		}
 		if (!shouldResign() || exit == null || !ObjectUtil.hasAction(exit, "Leave"))
 		{
