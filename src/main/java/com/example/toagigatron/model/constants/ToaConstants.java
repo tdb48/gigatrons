@@ -13,6 +13,11 @@ import net.runelite.api.coords.WorldPoint;
 
 public class ToaConstants
 {
+	public static final int AKKHA_DEATH_ANIMATION = -1;
+	public static final int ZEBAK_DEATH_ANIMATION = -1;
+	public static final int KEPHRI_DEATH_ANIMATION = -1;
+	public static final int BABA_DEATH_ANIMATION = -1;
+
 	public static final int STEPPING_STONE_ANIMATION = 741;
 	public static final int BGS_SPEC_ANIMATION = 7642;
 	public static final int YELLOW_UFO = 45751;

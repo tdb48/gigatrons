@@ -55,7 +55,7 @@ public class ClaimDeath extends StagedTask
 					return true;
 				}
 				toaManager.print("Cant find banker somehow");
-				return false;
+				return true;
 			}
 		}
 		if (!isChestInterfaceOpen())
@@ -63,7 +63,7 @@ public class ClaimDeath extends StagedTask
 			TileObject chest = TileObjects.search().withId(ToaConstants.DEATH_CHEST).first().orElse(null);
 			if (chest == null)
 			{
-				return false;
+				return true;
 			}
 			toaManager.print("Clicking chest");
 			MousePackets.queueClickPacket();
@@ -85,7 +85,7 @@ public class ClaimDeath extends StagedTask
 		 * if chest interface is not open, open it
 		 * if chest is locked, unlock it
 		 * */
-		return false;
+		return true;
 	}
 
 	public boolean isChestInterfaceOpen()
