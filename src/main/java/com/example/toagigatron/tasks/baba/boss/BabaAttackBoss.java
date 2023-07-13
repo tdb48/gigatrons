@@ -92,7 +92,7 @@ public class BabaAttackBoss extends StagedTask
 					MousePackets.queueClickPacket();
 					WidgetPackets.queueWidgetAction(brewToDrop, "Drop");
 					toaManager.print("Dropping low dose brew to make space");
-					return true;
+//					return true;
 				}
 			}
 			// If you're not wearing bgs gear, equip bgs gear
