@@ -5,6 +5,7 @@ import com.example.Packets.MousePackets;
 import com.example.Packets.MovementPackets;
 import com.example.Packets.TileItemPackets;
 import com.example.Utility.InventoryUtil;
+import com.example.Utility.NPCUtil;
 import com.example.Utility.ObjectUtil;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
@@ -14,6 +15,7 @@ import com.example.toagigatron.taskformat.TaskDescriptor;
 import com.google.inject.Inject;
 import java.util.ArrayList;
 import net.runelite.api.GameObject;
+import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 
 @TaskDescriptor(
@@ -31,8 +33,10 @@ public class AkkhaDying extends StagedTask
 
 	public boolean execute()
 	{
-		if (toaManager.akkha.akkhaBoss == null
-			|| toaManager.akkha.akkhaBoss.getHealthRatio() != 0)
+		NPC akkha = NPCUtil.findNearest("Akkha");
+		if (akkha == null
+			|| akkha.getHealthRatio() != 0
+			|| akkha.getId() != ToaConstants.FINAL_AKKHA)
 		{
 			return false;
 		}
