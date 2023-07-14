@@ -54,6 +54,34 @@ public class KephriConsumables extends StagedTask
 		return -1;
 	}
 
+	private int scbDoseCount()
+	{
+		int doseCount = 0;
+		int itemID = 0;
+		for (Widget w : InventoryUtil.getAll(ItemID.SUPER_COMBAT_POTION1,
+			ItemID.SUPER_COMBAT_POTION2, ItemID.SUPER_COMBAT_POTION3, ItemID.SUPER_COMBAT_POTION4))
+		{
+			itemID = w.getItemId();
+			if (itemID == ItemID.SUPER_COMBAT_POTION1)
+			{
+				doseCount = doseCount + 1;
+			}
+			if (itemID == ItemID.SUPER_COMBAT_POTION2)
+			{
+				doseCount = doseCount + 2;
+			}
+			if (itemID == ItemID.SUPER_COMBAT_POTION3)
+			{
+				doseCount = doseCount + 3;
+			}
+			if (itemID == ItemID.SUPER_COMBAT_POTION4)
+			{
+				doseCount = doseCount + 4;
+			}
+		}
+		return doseCount > 0 ? doseCount : -1;
+	}
+
 	public boolean execute()
 	{
 		if (gameTickManager.isPotionWaiting()
@@ -68,7 +96,7 @@ public class KephriConsumables extends StagedTask
 		//Combat
 		int[] potentialCombat = Consumables.COMBAT.stream().mapToInt(i -> i).toArray();
 		Widget combatPotion = InventoryUtil.getFirst(potentialCombat);
-		int scbDoseCount = combatPotion != null ? getDoseCount(combatPotion.getId()) : -1;
+		int scbDoseCount = scbDoseCount();
 
 		// Poison
 		int[] potentialAnti = Consumables.ANTI.stream().mapToInt(i -> i).toArray();
