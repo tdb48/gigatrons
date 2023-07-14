@@ -33,6 +33,7 @@ public class AkkhaPrayerHandler extends StagedTask
 	private Prayer current;
 	private Prayer next;
 	private int nextAttack;
+
 	@Inject
 	public AkkhaPrayerHandler(ToaManager toaManager)
 	{
@@ -119,10 +120,10 @@ public class AkkhaPrayerHandler extends StagedTask
 			}
 			if (current == null)
 			{
-				toaManager.print("Akkha is not null, 'current' is null, list size ->" + List.of(this.getOffensive()).size());
+//				toaManager.print("Akkha is not null, 'current' is null, list size ->" + List.of(this.getOffensive()).size());
 				return List.of(this.getOffensive());
 			}
-			toaManager.print("Akkha is not null, 'current' is NOT null, list size ->" + List.of(this.getOffensive(), this.getOffensive()).size());
+//			toaManager.print("Akkha is not null, 'current' is NOT null, list size ->" + List.of(this.getOffensive(), this.getOffensive()).size());
 			return List.of(this.getOffensive(), this.current);
 		}
 	}
