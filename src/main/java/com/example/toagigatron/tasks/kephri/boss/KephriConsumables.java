@@ -155,18 +155,18 @@ public class KephriConsumables extends StagedTask
 
 	private int determineDrinkAtLevel(int doseCount)
 	{
-		int returnVal = 14;
-		if (doseCount == 4)
-		{
-			returnVal = 17;
+		int phase = toaManager.kephri.kephriPhase;
+		int returnVal = 15;
+		if(phase == 6 || doseCount == 4){
+			returnVal = 18;
 		}
 		else if (doseCount == 3)
 		{
-			returnVal = 16;
+			returnVal = 17;
 		}
 		else if (doseCount == 2)
 		{
-			returnVal = 15;
+			returnVal = 16;
 		}
 		return returnVal;
 	}
