@@ -133,6 +133,7 @@ public class ToaManager
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
+		necessaryScb = config.prayFlick() ? 2 : 1;
 	}
 
 	public static boolean isMissingAnyItems(ArrayList<Integer> items)
