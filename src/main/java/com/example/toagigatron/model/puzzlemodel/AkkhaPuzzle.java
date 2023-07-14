@@ -388,9 +388,9 @@ public class AkkhaPuzzle
 	public boolean matches()
 	{
 		for(AkkhaPuzzleSolutionsEnum solutions : AkkhaPuzzleSolutionsEnum.values()){
-			toaManager.print("Checking solution -> " + solutions.solutionName + " for a potential match.");
+			//toaManager.print("Checking solution -> " + solutions.solutionName + " for a potential match.");
 			if(solutions.solution.trim().equals(roomMatrix)){
-				toaManager.print("Solution found!");
+				//toaManager.print("Solution found!");
 				layoutName = solutions.solutionName;
 				setSolution(solutions.solutionName);
 				return true;
