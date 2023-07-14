@@ -1,6 +1,7 @@
 package com.example.toagigatron.tasks.baba.puzzle;
 
 import com.example.EthanApiPlugin.Collections.TileObjects;
+import com.example.EthanApiPlugin.Collections.Widgets;
 import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Utility.Reachable;
@@ -32,17 +33,10 @@ public class BabaEnterPuzzle extends StagedTask
 		{
 			return false;
 		}
-		//Combat
-		int[] potentialCombat = Consumables.COMBAT.stream().mapToInt(i -> i).toArray();
-
-//		Widget combatPotion = InventoryUtil.getFirst(potentialCombat);
-//		if (client.getBoostedSkillLevel(Skill.STRENGTH) < (client.getRealSkillLevel(Skill.STRENGTH) + 13) && combatPotion != null && combatPotion.getId() != ItemID.SUPER_COMBAT_POTION1)
-//		{
-//			toaManager.print("Drinking scb");
-//			combatPotion.interact("Drink");
-//			return true;
-//		}
-
+		if(!Widgets.search().withTextContains("Challenge started: Path of Apmeken").empty()){
+			toaManager.print("Already started room i do not need to click again");
+			return false;
+		}
 		TileObject exit = TileObjects.search().withId(ToaConstants.BABA_PUZZLE_EXIT).first().orElse(null);
 		if (exit != null && Reachable.isWalkable(exit.getWorldLocation().dx(-1)))
 		{
