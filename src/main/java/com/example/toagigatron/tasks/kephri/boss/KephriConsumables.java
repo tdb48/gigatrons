@@ -110,6 +110,15 @@ public class KephriConsumables extends StagedTask
 			gameTickManager.drinkPotion();
 			return true;
 		}
+		if(Combat.isPoisoned() && (sanfewPotion != null && toaManager.config.prayFlick()))
+		{
+			toaManager.print("Drinking sanfew as an antipoison");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(sanfewPotion, "Drink");
+			toaManager.reAttack(playerInteracting);
+			gameTickManager.drinkPotion();
+			return true;
+		}
 
 		if (client.getBoostedSkillLevel(Skill.HITPOINTS) <= 40 && healingPotion != null)
 		{
