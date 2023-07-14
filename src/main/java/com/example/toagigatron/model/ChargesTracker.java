@@ -142,7 +142,7 @@ public class ChargesTracker
 					}
 				}
 			}
-			if (message.contains("dart"))
+			if (message.contains("dart") && !message.contains("tip"))
 			{
 				for (Dart dart : Dart.values())
 				{
