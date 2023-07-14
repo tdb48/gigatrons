@@ -5,7 +5,6 @@ import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.setup.mage.MageBody;
 import com.example.toagigatron.model.setup.mage.MageLegs;
 import java.util.ArrayList;
-import java.util.List;
 import javax.inject.Inject;
 
 public class MageSetup
@@ -69,9 +68,19 @@ public class MageSetup
 
 	public ArrayList<Integer> tankGear()
 	{
-		return new ArrayList<>(
-			List.of(
-				0));
+		ArrayList<Integer> returnList = new ArrayList<>();
+		returnList.add(plugin.toaManager.meleeSetup.body);
+		returnList.add(plugin.toaManager.meleeSetup.legs);
+		returnList.add(weapon);
+		returnList.add(helm);
+		returnList.add(boots);
+		returnList.add(cape);
+		returnList.add(gloves);
+		returnList.add(offhand);
+		returnList.add(ring);
+		returnList.add(amulet);
+		returnList.add(arrows);
+		return returnList;
 	}
 
 	public boolean hasMageSetup()
