@@ -26,7 +26,8 @@ import net.runelite.client.eventbus.Subscribe;
 
 @TaskDescriptor(
 	name = "Akkha prayers",
-	register = true
+	register = true,
+	priority = 2
 )
 public class AkkhaPrayerHandler extends StagedTask
 {

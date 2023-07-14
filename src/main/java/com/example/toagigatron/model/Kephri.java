@@ -1029,12 +1029,24 @@ public class Kephri
 					{
 						continue;
 					}
+					if(kephriPhase == 5){
+						if (!TileObjects.search().withId(ToaConstants.KEPHRI_DUNG_GAME_OBJECT).atLocation(newDungTile.dy(3).dx(-3)).empty())
+						{
+							continue;
+						}
+					}
 				}
 				else if(index == 6)
 				{
 					if (!TileObjects.search().withId(ToaConstants.KEPHRI_DUNG_GAME_OBJECT).atLocation(newDungTile.dy(-2).dx(-2)).empty())
 					{
 						continue;
+					}
+					if(kephriPhase == 5){
+						if (!TileObjects.search().withId(ToaConstants.KEPHRI_DUNG_GAME_OBJECT).atLocation(newDungTile.dy(-3).dx(-3)).empty())
+						{
+							continue;
+						}
 					}
 				}
 				else if(index == 12)
@@ -1043,12 +1055,24 @@ public class Kephri
 					{
 						continue;
 					}
+					if(kephriPhase == 5){
+						if (!TileObjects.search().withId(ToaConstants.KEPHRI_DUNG_GAME_OBJECT).atLocation(newDungTile.dy(-3).dx(3)).empty())
+						{
+							continue;
+						}
+					}
 				}
 				else
 				{
 					if (!TileObjects.search().withId(ToaConstants.KEPHRI_DUNG_GAME_OBJECT).atLocation(newDungTile.dy(2).dx(2)).empty())
 					{
 						continue;
+					}
+					if(kephriPhase == 5){
+						if (!TileObjects.search().withId(ToaConstants.KEPHRI_DUNG_GAME_OBJECT).atLocation(newDungTile.dy(3).dx(3)).empty())
+						{
+							continue;
+						}
 					}
 				}
 				if (Reachable.isWalkable(newDungTile))

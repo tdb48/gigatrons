@@ -2,7 +2,9 @@ package com.example.toagigatron.tasks.kephri.boss;
 
 import com.example.Packets.MousePackets;
 import com.example.Packets.MovementPackets;
+import com.example.Packets.NPCPackets;
 import com.example.Utility.Movement;
+import com.example.Utility.NPCUtil;
 import com.example.Utility.Static;
 import com.example.toagigatron.manager.ToaManager;
 import com.example.toagigatron.model.constants.Stage;
@@ -77,8 +79,16 @@ public class KephriDodgeDung extends StagedTask
 			toaManager.kephri.dungEscape = false;
 			toaManager.kephri.dungedPrepathTile = null;
 			toaManager.kephri.playerDungedLocation = null;
+
 			//this might be bad idk
 			toaManager.kephri.preDungedTile = null;
+
+			//re-attack so we stop losing a tick
+			if(toaManager.kephri.kephri != null && NPCUtil.hasAction(toaManager.kephri.kephri, "Attack")){
+				toaManager.print("Attacking kephri in dodge dung task");
+				MousePackets.queueClickPacket();
+				NPCPackets.queueNPCAction(toaManager.kephri.kephri, "Attack");
+			}
 			return true;
 		}
 		//toaManager.print("Returning false at bottom of dodge dung somehow nothing is right.");

@@ -145,6 +145,18 @@ public class Reachable
 
 	public static boolean isWalkable(WorldPoint worldPoint)
 	{
+		if(worldPoint == null){
+			return false;
+		}
+		if(!worldPoint.isInScene(Static.getClient())){
+			return false;
+		}
+		if(LocalPoint.fromWorld(Static.getClient(), worldPoint) == null){
+			return false;
+		}
+		if(worldPoint.getPlane() != Static.getClient().getPlane()){
+			return false;
+		}
 		return EthanApiPlugin.canPathToTile(worldPoint).isReachable();
 	}
 }

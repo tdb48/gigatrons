@@ -19,6 +19,7 @@ import com.example.toagigatron.taskformat.TaskDescriptor;
 import java.util.Objects;
 import javax.inject.Inject;
 import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Skill;
 import net.runelite.api.TileObject;
@@ -149,9 +150,8 @@ public class Prepot extends StagedTask
 			{
 				for (int i = 0; i < 28; i++)
 				{
-					if (Objects.requireNonNull(invent.getItem(i)).getId() == boost.getItemId())
-					{
-						//System.out.println("Item found at slot -> " + i);
+					Item inventoryItem = invent.getItem(i);
+					if(inventoryItem != null && inventoryItem.getId() == boost.getItemId()){
 						slot = i;
 						break;
 					}
