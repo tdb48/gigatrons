@@ -111,20 +111,26 @@ public class ClaimLoot extends StagedTask
 		{
 			ObjectComposition chestComp = client.getObjectDefinition(chest.getId());
 			//purple chest handling
-			if(chest.getId() == ToaConstants.PURPLE_CHEST_OPEN){
-				if(chestComp.getActions() != null){
-					if(ObjectUtil.hasAction(chest, "Search")){
-						toaManager.print("Has action Search");
+			if (chest.getId() == ToaConstants.PURPLE_CHEST_OPEN)
+			{
+				if (chestComp.getActions() != null)
+				{
+					if (ObjectUtil.hasAction(chest, "Search"))
+					{
+//						toaManager.print("Has action Search");
 						MousePackets.queueClickPacket();
 						ObjectPackets.queueObjectAction(chest, false, "Search");
 						return true;
 					}
-					if(ObjectUtil.hasAction(chest, "Open")){
+					if (ObjectUtil.hasAction(chest, "Open"))
+					{
 						toaManager.print("Has action open somehow which it should not");
 						return false;
 					}
 				}
-			} else {
+			}
+			else
+			{
 				ObjectComposition imposterComp = client.getObjectDefinition(chestComp.getImpostor().getId());
 				if (imposterComp != null)
 				{
