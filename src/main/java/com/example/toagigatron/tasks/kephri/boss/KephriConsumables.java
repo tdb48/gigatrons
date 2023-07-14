@@ -110,7 +110,7 @@ public class KephriConsumables extends StagedTask
 			gameTickManager.drinkPotion();
 			return true;
 		}
-		if(Combat.isPoisoned() && (sanfewPotion != null && toaManager.config.prayFlick()))
+		if (Combat.isPoisoned() && (sanfewPotion != null && toaManager.config.prayFlick()))
 		{
 			toaManager.print("Drinking sanfew as an antipoison");
 			MousePackets.queueClickPacket();
@@ -157,7 +157,8 @@ public class KephriConsumables extends StagedTask
 	{
 		int phase = toaManager.kephri.kephriPhase;
 		int returnVal = 15;
-		if(phase == 6 || doseCount == 4){
+		if (phase == 6 || doseCount == 4)
+		{
 			returnVal = 18;
 		}
 		else if (doseCount == 3)
