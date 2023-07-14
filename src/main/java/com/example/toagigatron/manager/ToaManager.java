@@ -256,12 +256,21 @@ public class ToaManager
 
 	public void reAttack(NPC npc)
 	{
-		if (npc != null)
+		if (npc == null || npc.getName() == null)
 		{
-			MousePackets.queueClickPacket();
-			NPCPackets.queueNPCAction(npc, "Attack");
-			print("Re-Attacking " + npc.getName());
+			return;
 		}
+		//Can add any more specific inclusions here if we think of them
+		if ((npc.getName().toLowerCase().contains("akkha")
+			&& !npc.getName().toLowerCase().contains("shadow")))
+		{
+			print("NOT re-attacking " + npc.getName());
+			return;
+		}
+		MousePackets.queueClickPacket();
+		NPCPackets.queueNPCAction(npc, "Attack");
+		print("Re-Attacking " + npc.getName());
+
 	}
 
 	public String worldPointStringVerbose(WorldPoint wp)
