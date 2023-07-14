@@ -185,7 +185,7 @@ public class KephriConsumables extends StagedTask
 	{
 		int phase = toaManager.kephri.kephriPhase;
 		int returnVal = 15;
-		if (phase == 6 || doseCount == 4)
+		if (phase == 6 || doseCount >= 4)
 		{
 			returnVal = 18;
 		}
