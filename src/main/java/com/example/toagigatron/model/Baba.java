@@ -573,6 +573,7 @@ public class Baba
 				if (wp.distanceTo(boulder) < distance
 					&& !toaManager.baba.blockTiles.contains(wp)
 					&& !toaManager.baba.sarcophagusProjectilesTiles.contains(wp)
+					&& !toaManager.baba.sarcophagusProjectilesTiles.contains(wp.dx(-1))
 					&& !toaManager.baba.bananaTiles.contains(wp)
 					&& !toaManager.baba.bananaTiles.contains(wp.dx(-1))
 					&& !toaManager.baba.bananaTiles.contains(wp.dx(-2)))

@@ -84,23 +84,26 @@ public class KephriBossBrawler extends StagedTask
 			&& toaManager.kephri.kephriPhase == 5
 			&& (toaManager.kephri.dungGraphicTick > 0 || !onStartRow(playerPoint))) //getting double dunged or not on start row, dont attack or stop attacking
 		{
-			if (client.getLocalPlayer().getInteracting() != null)
-			{
-				toaManager.print("50HP - Stop interacting with Kephri");
-				Movement.walk(playerPoint);
-				return false;
-			}
 			if (toaManager.kephri.kephriBombTick == 2
 				&& toaManager.kephri.bombTiles.contains(playerPoint))
 			{
 				if (playerPoint.equals(p5Tile))
 				{
-					toaManager.print("50HP - Returning in step back up top");
+					WorldPoint safeBombTile = safeBombTile(playerPoint);
+					Movement.walk(safeBombTile);
+					toaManager.print("Edge case - last resort dodging in p5 under 60hp method thing");
+					//toaManager.print("50HP - Returning in step back up top");
 					return false;
 				}
 				Movement.walk(p5Tile);
 				toaManager.print("50HP - Stepping back up top");
 				return true;
+			}
+			if (client.getLocalPlayer().getInteracting() != null)
+			{
+				toaManager.print("50HP - Stop interacting with Kephri");
+				Movement.walk(playerPoint);
+				return false;
 			}
 //			KephriRowTest currentRow = getRow(dodgeTile);
 			KephriRowTest currentRow = toaManager.kephri.optimalRow;

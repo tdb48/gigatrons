@@ -73,6 +73,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 
 @Singleton
@@ -134,6 +135,13 @@ public class ToaManager
 		this.config = config;
 		this.plugin = plugin;
 		necessaryScb = config.prayFlick() ? 2 : 1;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event){
+		if(event.getGroup().equals("ToaGigatronConfig") && event.getKey().equals("prayFlick")){
+			necessaryScb = config.prayFlick() ? 2 : 1;
+		}
 	}
 
 	public static boolean isMissingAnyItems(ArrayList<Integer> items)
@@ -230,6 +238,7 @@ public class ToaManager
 		mageSetup.setVariables();
 		rangeSetup.setVariables();
 		meleeSetup.setVariables();
+		necessaryScb = config.prayFlick() ? 2 : 1;
 	}
 
 	public boolean hasGearEquipped(ArrayList<Integer> gearList)
