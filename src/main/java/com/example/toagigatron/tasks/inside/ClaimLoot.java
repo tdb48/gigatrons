@@ -2,6 +2,7 @@ package com.example.toagigatron.tasks.inside;
 
 import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.EthanApiPlugin.Collections.Widgets;
+import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
 import com.example.Packets.ObjectPackets;
@@ -54,6 +55,10 @@ public class ClaimLoot extends StagedTask
 			return true;
 		}
 		toaManager.overall.lootClaimed = isLootClaimed();
+		if(EthanApiPlugin.isMoving()){
+			toaManager.print("I'm moving rn I don't need to be clicking anything.");
+			return false;
+		}
 		// Step 1.
 		if (toaManager.overall.lootClaimed)
 		{
