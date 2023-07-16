@@ -1,5 +1,6 @@
 package com.example.toagigatron.tasks.inside;
 
+import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Utility.NPCUtil;
@@ -34,6 +35,10 @@ public class EnterPath extends StagedTask
 		NPC supplyGhost = NPCUtil.findNearest(ToaConstants.HELPFUL_SPIRIT);
 		if (gameTickManager.isTickWaiting() || (toaManager.inside.canClaimSupplies() && supplyGhost != null))
 		{
+			return false;
+		}
+		if(EthanApiPlugin.isMoving()){
+			toaManager.print("I am moving rn i don't need to be clicking anything.");
 			return false;
 		}
 
