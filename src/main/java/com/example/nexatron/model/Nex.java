@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -19,6 +20,8 @@ public class Nex
 	public NPC glacies = null;
 	public NPC cruor = null;
 	public GameObject altar = null;
+	public int nexAttackTick = 0;
+	public int umbraAttackTick = 0;
 
 	@Inject
 	NexManager nexManager;
@@ -28,9 +31,6 @@ public class Nex
 
 	@Inject
 	EventBus eventBus;
-
-	@Inject
-	GameTickManager gameTickManager;
 
 	public void register()
 	{
@@ -45,6 +45,7 @@ public class Nex
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
+
 	}
 
 	public void bankReset()
