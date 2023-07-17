@@ -113,6 +113,17 @@ public interface NexatronConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 905,
+		keyName = "showSocketInfobox",
+		name = "Show Socket Infobox",
+		description = "Show socket infobox"
+	)
+	default boolean showSocketInfobox()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		position = 910,
 		keyName = "showOverlay",
 		name = "Show Overlay",
