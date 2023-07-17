@@ -5,6 +5,7 @@ import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.overlay.NexatronInfoBox;
 import com.example.nexatron.overlay.NexatronOverlay;
+import com.example.nexatron.overlay.SocketInfoBox;
 import com.example.nexatron.taskformat.TaskManager;
 import com.example.nexatron.tasks.general.DisablePrayers;
 import com.example.nexatron.tasks.general.DropVial;
@@ -48,6 +49,8 @@ public class NexatronPlugin extends Plugin
 	@Inject
 	NexatronInfoBox nexatronInfoBox;
 	@Inject
+	SocketInfoBox socketInfoBox;
+	@Inject
 	NexatronOverlay nexatronOverlay;
 	@Inject
 	OverlayManager overlayManager;
@@ -90,6 +93,7 @@ public class NexatronPlugin extends Plugin
 		finishKill = false;
 		stopPlugin = false;
 		overlayManager.add(nexatronInfoBox);
+		overlayManager.add(socketInfoBox);
 		overlayManager.add(nexatronOverlay);
 		Class<?>[] tasks = this.tasks();
 		this.manager.registerTasks(this.getInjector(), tasks);
@@ -109,6 +113,8 @@ public class NexatronPlugin extends Plugin
 		this.nexManager.kcArea.register();
 		this.nexManager.lobby.fullReset();
 		this.nexManager.lobby.register();
+		this.nexManager.socket.register();
+		this.nexManager.socket.reset();
 		gameEventManager.simulateGameEvents(this.nexManager.overall);
 		gameEventManager.simulateGameEvents(this.nexManager.nex);
 		gameEventManager.simulateGameEvents(this.nexManager.nexBank);
@@ -125,6 +131,7 @@ public class NexatronPlugin extends Plugin
 		finishKill = false;
 		stopPlugin = false;
 		overlayManager.remove(nexatronInfoBox);
+		overlayManager.remove(socketInfoBox);
 		overlayManager.remove(nexatronOverlay);
 		this.manager.stop();
 		this.gameTickManager.unregister();
@@ -140,6 +147,8 @@ public class NexatronPlugin extends Plugin
 		this.nexManager.kcArea.unregister();
 		this.nexManager.lobby.fullReset();
 		this.nexManager.lobby.unregister();
+		this.nexManager.socket.unregister();
+		this.nexManager.socket.reset();
 		this.nexManager.unregister();
 		this.nexManager.fullReset();
 	}

@@ -17,6 +17,7 @@ import com.example.nexatron.model.Lobby;
 import com.example.nexatron.model.Nex;
 import com.example.nexatron.model.Overall;
 import com.example.nexatron.model.Setup;
+import com.example.nexatron.model.Socket;
 import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
 import com.google.inject.Singleton;
@@ -55,11 +56,11 @@ public class NexManager
 	@Inject
 	public KcArea kcArea;
 	@Inject
+	public Socket socket;
+	@Inject
 	public Lobby lobby;
 	@Inject
 	public Setup setup;
-	@Inject
-	ItemManager itemManager;
 	@Inject
 	private ReflectBreakHandler chinBreakHandler;
 	private Stage stage = Stage.NONE;
