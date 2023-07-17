@@ -139,15 +139,15 @@ so when playerhealthratio = -1
 - Stand in MD
 - Switch to diamond bolts at 200hp
 
-2. DodgeExplosion
-- Dodge taste my wrath towards the altar, stay as close as possible to save time
-
 #### Dead Nex
-1. LootItems (dont pick up supplies)
-2. Heal up
+1. DodgeExplosion
+- Dodge taste my wrath towards the altar, stay as close as possible to save time
+2. LootItems (dont pick up supplies)
+3. Heal up
 - Use whatever supplies currently in inventory while running to altar to teleport out
-3. Equip melee gear 
-4. Teleport out
+4. Equip melee gear 
+5. Teleport out
+
 
 #### Spawning Nex
 1. GetReady
