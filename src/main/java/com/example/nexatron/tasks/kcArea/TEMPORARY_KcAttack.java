@@ -1,0 +1,103 @@
+package com.example.nexatron.tasks.kcArea;
+
+
+import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.EthanApiPlugin.Collections.NPCs;
+import com.example.Packets.MousePackets;
+import com.example.Packets.NPCPackets;
+import com.example.Packets.WidgetPackets;
+import com.example.Utility.Combat;
+import com.example.Utility.Prayers;
+import com.example.nexatron.manager.NexManager;
+import com.example.nexatron.model.Consumable;
+import com.example.nexatron.model.constants.Stage;
+import com.example.nexatron.taskformat.StagedTask;
+import com.example.nexatron.taskformat.TaskDescriptor;
+import javax.inject.Inject;
+import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
+import net.runelite.api.Skill;
+import net.runelite.api.widgets.Widget;
+
+@TaskDescriptor(
+	name = "KC Attack",
+	priority = 1,
+	register = true
+)
+public class TEMPORARY_KcAttack extends StagedTask
+{
+	@Inject
+	public TEMPORARY_KcAttack(NexManager nexManager)
+	{
+		super(nexManager, Stage.KC_AREA);
+	}
+
+	public boolean execute()
+	{
+		Widget restore = Consumable.getRestore();
+		if (Prayers.getPoints() == 0
+			|| restore == null)
+		{
+			return false;
+		}
+
+		if (Prayers.getPoints() <= 10)
+		{
+			nexManager.print("Drinking restore pot");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(restore, "Drink");
+			return true;
+		}
+
+		Widget rangePot = Consumable.getRange();
+		if (client.getBoostedSkillLevel(Skill.RANGED) - client.getRealSkillLevel(Skill.RANGED) <= 5
+			&& rangePot != null)
+		{
+			nexManager.print("Drinking range pot");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(rangePot, "Drink");
+			return true;
+		}
+
+		Widget anti = Consumable.getAnti();
+		if (Combat.isPoisoned()
+			&& anti != null)
+		{
+			nexManager.print("Drinking anti pot");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(anti, "Drink");
+			return true;
+		}
+
+		if (Combat.getSpecEnergy() >= 50
+			&& !Combat.isSpecEnabled()
+			&& Equipment.search().withId(ItemID.TOXIC_BLOWPIPE).first().orElse(null) != null)
+		{
+			nexManager.print("Toggling spec");
+			Combat.toggleSpec();
+		}
+
+		NPC targetNPC = getNPC();
+		if (targetNPC != null)
+		{
+			MousePackets.queueClickPacket();
+			NPCPackets.queueNPCAction(targetNPC, "Attack");
+			return true;
+		}
+
+		return false;
+	}
+
+	public NPC getNPC()
+	{
+		NPC returnNPC = NPCs.search().interactingWithLocal().first().orElse(null);
+		if (returnNPC != null)
+		{
+			return returnNPC;
+		}
+		String npcName = client.getBoostedSkillLevel(Skill.SLAYER) >= 83 ? "Mage" : "Reaver";
+		return NPCs.search().nameContains(npcName).alive().nearestToPlayer().orElse(null);
+	}
+
+
+}
