@@ -77,6 +77,18 @@ public class Consumable
 		return null;
 	}
 
+	public static Widget getAnti()
+	{
+		for (int i : ANTI)
+		{
+			if (Inventory.search().withId(i).first().orElse(null) != null)
+			{
+				return Inventory.search().withId(i).first().orElse(null);
+			}
+		}
+		return null;
+	}
+
 	public static Widget getRestore()
 	{
 		for (int i : RESTORE)
