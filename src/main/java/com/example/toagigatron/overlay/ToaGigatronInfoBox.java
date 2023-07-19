@@ -57,7 +57,7 @@ public class ToaGigatronInfoBox extends OverlayPanel
 		}
 
 		Stage stage = plugin.toaManager.getStage();
-		String title = "ToA Megatron";
+		String title = "ToA Gigatron";
 		Duration duration = Duration.between(plugin.toaManager.overall.botTimer, Instant.now());
 		long millis = duration.toMillis();
 		//more than 10 hours
