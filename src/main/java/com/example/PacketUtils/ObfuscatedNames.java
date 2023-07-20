@@ -5,6 +5,7 @@ import java.util.HashMap;
 public final class ObfuscatedNames
 {
 
+
 //    public static final HashMap<String, String> BUFFER_METHODS = new HashMap<>() {{
 //        put("ef","-1426704705");
 //        put("be","-3");

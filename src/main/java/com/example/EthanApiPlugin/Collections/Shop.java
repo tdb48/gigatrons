@@ -44,6 +44,7 @@ public class Shop {
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged e)
 	{
+
 		if (client.getWidget(SHOP_ITEM_CONTAINER_PACKED_ID) == null)
 		{
 			shopItems.clear();

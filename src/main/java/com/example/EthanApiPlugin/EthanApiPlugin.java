@@ -435,6 +435,7 @@ public class EthanApiPlugin extends Plugin
 							  int var8)
 	{
 		Class invokeClass = client.getClass().getClassLoader().loadClass("ce");
+
 		Method invoke = invokeClass.getDeclaredMethod("kc", int.class, int.class, int.class, int.class, int.class,
 			String.class, String.class, int.class, int.class, byte.class);
 		invoke.setAccessible(true);
