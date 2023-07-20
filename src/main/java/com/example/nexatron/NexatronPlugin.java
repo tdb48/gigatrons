@@ -14,6 +14,7 @@ import com.example.nexatron.tasks.general.Reattack;
 import com.example.nexatron.tasks.general.ToggleRun;
 import com.example.nexatron.tasks.kcArea.KcPrayer;
 import com.example.nexatron.tasks.kcArea.TEMPORARY_KcAttack;
+import com.example.nexatron.tasks.nex.NexAbort;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -83,6 +84,7 @@ public class NexatronPlugin extends Plugin
 			Reattack.class,
 			KcPrayer.class,
 			TEMPORARY_KcAttack.class,
+			NexAbort.class,
 		};
 	}
 
@@ -177,6 +179,11 @@ public class NexatronPlugin extends Plugin
 		{
 			Dialog.continueSpace();
 		}
+	}
+
+	public void teleportOut()
+	{
+		nexManager.nex.teleportOut = !nexManager.nex.teleportOut;
 	}
 }
 

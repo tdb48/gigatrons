@@ -14,6 +14,7 @@ public enum Stage
 	MINION_BLOOD,
 	MINION_ICE,
 	NEX_ZAROS,
+	NEX_START,
 	NEX_DEAD,
 	NONE;
 

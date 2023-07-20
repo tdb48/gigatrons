@@ -35,13 +35,14 @@ public class TEMPORARY_KcAttack extends StagedTask
 	public boolean execute()
 	{
 		Widget restore = Consumable.getRestore();
-		if (Prayers.getPoints() == 0
-			|| restore == null)
+		if (!client.getLocalPlayer().isInteracting() && (
+			Prayers.getPoints() == 0
+				|| restore == null))
 		{
 			return false;
 		}
 
-		if (Prayers.getPoints() <= 10)
+		if (Prayers.getPoints() <= 30 && restore != null)
 		{
 			nexManager.print("Drinking restore pot");
 			MousePackets.queueClickPacket();
@@ -80,6 +81,11 @@ public class TEMPORARY_KcAttack extends StagedTask
 		NPC targetNPC = getNPC();
 		if (targetNPC != null)
 		{
+			if (client.getLocalPlayer().isInteracting())
+			{
+				return false;
+			}
+			nexManager.print("Attacking " + targetNPC.getName());
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(targetNPC, "Attack");
 			return true;

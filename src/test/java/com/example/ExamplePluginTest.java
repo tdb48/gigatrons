@@ -24,8 +24,8 @@ public class ExamplePluginTest
 //			ChinBreakHandlerPlugin.class,
 			BetterProfilesPlugin.class,
 			PathingTesting.class,
-			SocketPlugin.class,
-			TestingSuitePlugin.class);
+//			TestingSuitePlugin.class,
+			SocketPlugin.class);
 		RuneLite.main(args);
 	}
 }

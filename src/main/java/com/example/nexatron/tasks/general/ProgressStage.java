@@ -1,5 +1,6 @@
 package com.example.nexatron.tasks.general;
 
+import com.example.Utility.Reachable;
 import com.example.Utility.Static;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
@@ -49,6 +50,13 @@ public class ProgressStage extends Task
 			nexManager.setStage(Stage.BANK);
 			return true;
 		}
+		if ((nexManager.getStage().equals(Stage.BANK)
+			|| nexManager.getStage().equals(Stage.NONE))
+			&& Reachable.isWalkable(nexManager.nex.centerPoint))
+		{
+			nexManager.setStage(Stage.NEX_START);
+			return true;
+		}
 		else
 		{
 			nexManager.setStage(Stage.NONE);
@@ -62,6 +70,10 @@ public class ProgressStage extends Task
 		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
 		{
 			String message = chatMessage.getMessage().toLowerCase();
+			if (message.contains("fill my soul"))
+			{
+				nexManager.setStage(Stage.NEX_SMOKE);
+			}
 			if (message.contains("fumus, don't fail me!"))
 			{
 				nexManager.setStage(Stage.MINION_SMOKE);
@@ -70,17 +82,9 @@ public class ProgressStage extends Task
 			{
 				nexManager.setStage(Stage.NEX_SHADOW);
 			}
-			if (message.contains("fill my soul"))
-			{
-				nexManager.setStage(Stage.NEX_SMOKE);
-			}
 			if (message.contains("umbra, don't fail me!"))
 			{
 				nexManager.setStage(Stage.MINION_SHADOW);
-			}
-			if (message.contains("contain this!"))
-			{
-//				mushroomContainTick = 18;
 			}
 			if (message.contains("flood my lungs with blood!"))
 			{
@@ -101,6 +105,10 @@ public class ProgressStage extends Task
 			if (message.contains("now, the power of zaros!"))
 			{
 				nexManager.setStage(Stage.NEX_ZAROS);
+			}
+			if (message.contains("my wrath"))
+			{
+				nexManager.setStage(Stage.NEX_DEAD);
 			}
 		}
 	}
