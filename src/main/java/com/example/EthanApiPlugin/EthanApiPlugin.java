@@ -436,9 +436,9 @@ public class EthanApiPlugin extends Plugin
 	{
 		Class invokeClass = client.getClass().getClassLoader().loadClass("ce");
 		Method invoke = invokeClass.getDeclaredMethod("kc", int.class, int.class, int.class, int.class, int.class,
-			String.class, String.class, int.class, int.class, int.class);
+			String.class, String.class, int.class, int.class, byte.class);
 		invoke.setAccessible(true);
-		invoke.invoke(null, var0, var1, var2, var3, var4, var5, var6, var7, var8, 14);
+		invoke.invoke(null, var0, var1, var2, var3, var4, var5, var6, var7, var8, (byte) 14);
 		invoke.setAccessible(false);
 	}
 
@@ -1395,5 +1395,6 @@ public class EthanApiPlugin extends Plugin
 		eventBus.register(RuneLite.getInjector().getInstance(Equipment.class));
 		eventBus.register(RuneLite.getInjector().getInstance(DepositBox.class));
 		eventBus.register(RuneLite.getInjector().getInstance(ShopInventory.class));
+		eventBus.register(RuneLite.getInjector().getInstance(Shop.class));
 	}
 }
