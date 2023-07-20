@@ -3,11 +3,14 @@ package com.example.nexatron.model;
 import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
+import com.example.nexatron.model.constants.NexConst;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -35,7 +38,6 @@ import net.runelite.client.eventbus.Subscribe;
 	* */
 public class KcArea
 {
-
 	public GameObject bankDoor = null;
 	@Inject
 	NexManager nexManager;
@@ -90,5 +92,27 @@ public class KcArea
 			}
 		}
 		return NPCs.search().nameContains("Reaver").alive().notInteracting().first().orElse(null);
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned gameObjectSpawned)
+	{
+		GameObject gameObject = gameObjectSpawned.getGameObject();
+		if (gameObject.getId() == NexConst.BANK_DOOR)
+		{
+			nexManager.print("bank door spawned");
+			bankDoor = gameObject;
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectDespawned(GameObjectDespawned gameObjectDespawned)
+	{
+		GameObject gameObject = gameObjectDespawned.getGameObject();
+		if (gameObject.getId() == NexConst.BANK_DOOR)
+		{
+			nexManager.print("bank door despawned");
+			bankDoor = null;
+		}
 	}
 }

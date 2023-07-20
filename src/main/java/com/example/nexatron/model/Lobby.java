@@ -6,6 +6,7 @@ import com.example.nexatron.model.constants.NexConst;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;
@@ -59,6 +60,22 @@ public class Lobby
 		if (gameObject.getId() == NexConst.DEATH_CHEST)
 		{
 			deathChest = gameObject;
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectDespawned(GameObjectDespawned gameObjectDespawned)
+	{
+		GameObject gameObject = gameObjectDespawned.getGameObject();
+		if (gameObject.getId() == NexConst.KC_AREA_DOOR)
+		{
+			nexManager.print("kc area door despawned");
+			kcAreaDoor = null;
+		}
+		if (gameObject.getId() == NexConst.DEATH_CHEST)
+		{
+			nexManager.print("death chest despawned");
+			deathChest = null;
 		}
 	}
 

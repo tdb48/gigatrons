@@ -69,22 +69,6 @@ public class Overall
 	{
 	}
 
-	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned gameObjectDespawned)
-	{
-//		nexManager.print("despawned " + client.getObjectDefinition(gameObjectDespawned.getGameObject().);
-		GameObject gameObject = gameObjectDespawned.getGameObject();
-//		if (gameObject.equals(barrier))
-//		{
-//			nexManager.print("setting barrier to null");
-//			barrier = null;
-//		}
-		if (gameObject.getId() == NexConst.ACTIVE_BARRIER)
-		{
-			nexManager.print("barrier despawned through ID");
-		}
-	}
-
 	public void fullReset()
 	{
 		died = false;
