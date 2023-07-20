@@ -4,6 +4,7 @@ import com.example.ChinBreakHandler.ChinBreakHandlerPlugin;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.PacketUtils.PacketUtilsPlugin;
 import com.example.PathingTesting.PathingTesting;
+import com.example.TestingSuite.TestingSuitePlugin;
 import com.example.betterprofiles.BetterProfilesPlugin;
 import com.example.nexatron.NexatronPlugin;
 import com.example.socket.SocketPlugin;
@@ -23,6 +24,7 @@ public class ExamplePluginTest
 //			ChinBreakHandlerPlugin.class,
 			BetterProfilesPlugin.class,
 			PathingTesting.class,
+//			TestingSuitePlugin.class,
 			SocketPlugin.class);
 		RuneLite.main(args);
 	}
