@@ -13,10 +13,8 @@ import java.util.Date;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import net.runelite.client.ui.overlay.OverlayLayer;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -37,9 +35,10 @@ public class NexatronInfoBox extends OverlayPanel
 		setPosition(OverlayPosition.BOTTOM_LEFT);
 		this.plugin = plugin;
 		this.config = config;
-		this.setLayer(OverlayLayer.ALWAYS_ON_TOP);
-		this.setPriority(OverlayPriority.HIGH);
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "One Click Nex"));
+//		this.setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		this.setPriority(OverlayPriority.LOW);
+		addMenuEntry(RUNELITE_OVERLAY, "TELEPORT OUT", "Nexatron", e -> plugin.teleportOut());
+
 	}
 
 	@Override
@@ -58,6 +57,10 @@ public class NexatronInfoBox extends OverlayPanel
 		panelComponent.setBackgroundColor(new Color(16, 24, 32, 150));
 		panelComponent.getChildren().add(TitleComponent.builder().text(title).color(new Color(242, 170, 76)).build());
 		panelComponent.setPreferredSize(new Dimension(graphics.getFontMetrics().stringWidth(title) + 100, 0));
+		if (plugin.nexManager.nex.teleportOut)
+		{
+			panelComponent.getChildren().add(TitleComponent.builder().text("TELEPORTING OUT").color(Color.red).build());
+		}
 		if (plugin.stopPlugin)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder().text("Stopping ASAP").color(Color.red).build());
@@ -72,6 +75,10 @@ public class NexatronInfoBox extends OverlayPanel
 		}
 		panelComponent.getChildren().add(LineComponent.builder().left("Stage ").right(String.valueOf(stage)).build());
 		panelComponent.getChildren().add(LineComponent.builder().left("K/D ").right(plugin.nexManager.overall.killCount + " / " + plugin.nexManager.overall.deaths).build());
+		if (plugin.nexManager.nex.nex != null)
+		{
+			panelComponent.getChildren().add(LineComponent.builder().left("Nex tick ").right(String.valueOf(plugin.nexManager.nex.nexAttackTick)).build());
+		}
 		return panelComponent.render(graphics);
 	}
 

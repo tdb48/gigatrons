@@ -2,7 +2,6 @@ package com.example.nexatron.overlay;
 
 import com.example.nexatron.NexatronConfig;
 import com.example.nexatron.NexatronPlugin;
-import com.google.common.base.Strings;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,8 +10,8 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Stroke;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
@@ -52,6 +51,11 @@ public class NexatronOverlay extends Overlay
 		{
 			return null;
 		}
+		drawPoint(plugin.nexManager.nex.centerPoint, graphics2D, Color.PINK);
+		if (plugin.nexManager.nex.altar != null)
+		{
+			drawPoint(plugin.nexManager.nex.altar.getWorldLocation(), graphics2D, Color.RED);
+		}
 		return null;
 	}
 
@@ -74,33 +78,8 @@ public class NexatronOverlay extends Overlay
 
 	protected void drawPoint(WorldPoint point, Graphics2D graphics2D, Color color)
 	{
-		if (point != null)
-		{
-			LocalPoint lp3 = LocalPoint.fromWorld(client, point);
-			assert lp3 != null;
-			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
-			if (poly3 != null)
-			{
-				OverlayUtil.renderPolygon(graphics2D, poly3, color, new Color(0, 0, 0, 5), stroke);
-			}
-		}
-	}
-
-	protected void drawPoints(ArrayList<WorldPoint> list, Graphics2D graphics2D)
-	{
-		if (!list.isEmpty())
-		{
-			for (WorldPoint wp : list)
-			{
-				LocalPoint lp3 = LocalPoint.fromWorld(client, wp);
-				assert lp3 != null;
-				Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
-				if (poly3 != null)
-				{
-					OverlayUtil.renderPolygon(graphics2D, poly3, Color.GREEN, new Color(0, 0, 0, 5), stroke);
-				}
-			}
-		}
+		ArrayList<WorldPoint> list = new ArrayList<>(Collections.singleton(point));
+		drawPoints(list, graphics2D, color);
 	}
 
 	protected void drawPoints(ArrayList<WorldPoint> list, Graphics2D graphics2D, Color color)
@@ -109,30 +88,18 @@ public class NexatronOverlay extends Overlay
 		{
 			for (WorldPoint wp : list)
 			{
-				LocalPoint lp3 = LocalPoint.fromWorld(client, wp);
-				assert lp3 != null;
-				Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
-				if (poly3 != null)
+				if (wp != null)
 				{
-					OverlayUtil.renderPolygon(graphics2D, poly3, color, new Color(0, 0, 0, 5), stroke);
+					LocalPoint lp3 = LocalPoint.fromWorld(client, wp);
+					if (lp3 != null)
+					{
+						Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp3, 1);
+						if (poly3 != null)
+						{
+							OverlayUtil.renderPolygon(graphics2D, poly3, color, new Color(0, 0, 0, 5), stroke);
+						}
+					}
 				}
-			}
-		}
-	}
-
-	protected void drawWorldArea(WorldPoint center, Graphics2D graphics2D, Color color, int size)
-	{
-		if (center != null)
-		{
-			LocalPoint lp2 = LocalPoint.fromWorld(client, center);
-			if (lp2 == null)
-			{
-				return;
-			}
-			Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp2, size);
-			if (poly3 != null)
-			{
-				OverlayUtil.renderPolygon(graphics2D, poly3, color, new Color(0, 0, 0, 5), stroke);
 			}
 		}
 	}
@@ -150,82 +117,6 @@ public class NexatronOverlay extends Overlay
 				{
 					OverlayUtil.renderPolygon(graphics2D, poly3, color, new Color(0, 0, 0, 5), stroke);
 				}
-			}
-		}
-	}
-
-	protected void drawLocalPoints(ArrayList<LocalPoint> list, Graphics2D graphics2D, Color color)
-	{
-		if (!list.isEmpty())
-		{
-			for (LocalPoint lp : list)
-			{
-
-				assert lp != null;
-				Polygon poly3 = Perspective.getCanvasTileAreaPoly(client, lp, 1);
-				if (poly3 != null)
-				{
-					OverlayUtil.renderPolygon(graphics2D, poly3, color, new Color(0, 0, 0, 5), stroke);
-				}
-			}
-		}
-	}
-
-	protected void drawTile(Graphics2D graphics, WorldPoint point, Color color, int strokeWidth, int outlineAlpha, int fillAlpha)
-	{
-		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-		if (point.distanceTo(playerLocation) >= 32)
-		{
-			return;
-		}
-
-		LocalPoint lp = LocalPoint.fromWorld(client, point);
-		if (lp == null)
-		{
-			return;
-		}
-
-		Polygon poly = Perspective.getCanvasTilePoly(client, lp);
-		if (poly == null)
-		{
-			return;
-		}
-
-		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
-		graphics.setStroke(new BasicStroke(strokeWidth));
-		graphics.draw(poly);
-		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
-		graphics.fill(poly);
-	}
-
-	private void drawTile(Graphics2D graphics, WorldPoint point, Color color, @Nullable String label, Stroke borderStroke)
-	{
-		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-
-		if (point.distanceTo(playerLocation) >= 32)
-		{
-			return;
-		}
-
-		LocalPoint lp = LocalPoint.fromWorld(client, point);
-		if (lp == null)
-		{
-			return;
-		}
-
-		Polygon poly = Perspective.getCanvasTilePoly(client, lp);
-		if (poly != null)
-		{
-			OverlayUtil.renderPolygon(graphics, poly, color, new Color(color.getRed(), color.getGreen(), color.getBlue(), 150), borderStroke);
-		}
-
-		if (!Strings.isNullOrEmpty(label))
-		{
-			Point canvasTextLocation = Perspective.getCanvasTextLocation(client, graphics, lp, label, 0);
-			if (canvasTextLocation != null)
-			{
-				graphics.setFont(new Font("Arial", 1, 15));
-				OverlayUtil.renderTextLocation(graphics, canvasTextLocation, label, color);
 			}
 		}
 	}
