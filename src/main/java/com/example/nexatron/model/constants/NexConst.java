@@ -48,9 +48,9 @@ public class NexConst
 	public static final Set<Integer> SUPPLY_LOOT = Set.of(
 		-1);
 
-
-	public static final int NEX_MELEE_ANIMATION = -1;
-	public static final int NEX_MAGE_ANIMATION = -1;
+	public static final int NEX_MELEE_ANIMATION = 9180;
+	public static final int NEX_MAGE_ANIMATION = 9188;
+	public static final int NEX_SHADOW_ANIMATION = 9189;
 
 	public static final int KC_AREA_DOOR = 42933;
 	public static final int ICE_PRISON = 42944;
@@ -72,6 +72,30 @@ public class NexConst
 		new WorldPoint(2862, 5231, 0));
 
 	public static final String BREW_MESSAGE = "You drink some of the foul liquid.";
+	public final String SMOKE_SPAWN_MSG = "Fill my soul with smoke!";
+	public final String COUGH_SPECIAL_MSG = "Let the virus flow through you!";
+	public final String DASH_SPECIAL_MSG = "There is...";
+	public final String FUMUS_SPAWN_MSG = "Fumus, don't fail me!";
 
+	//Shadow
+	public final String SHADOW_SPAWN_MSG = "Darken my shadow!";
+	public final String SHADOW_DARKNESS_SPECIAL_MSG = "Embrace darkness!";
+	public final String SHADOW_POOL_SPECIAL_MSG = "Fear the shadow!";
+	public final String UMBRA_SPAWN_MSG = "Umbra, don't fail me!";
+
+	//Blood
+	public final String BLOOD_SPAWN_MSG = "Flood my lungs with blood!";
+	public final String BLOOD_SIPHON_SPECIAL_MSG = "A siphon will solve this!";
+	public final String BLOOD_SACRIFICE_SPECIAL_MSG = "I demand a blood sacrifice!";
+	public final String CRUOR_SPAWN_MSG = "Cruor, don't fail me!";
+
+	//Ice
+	public final String ICE_SPAWN_MSG = "Infuse me with the power of ice!";
+	public final String ICE_PRISON_SPECIAL_MSG = "Die now, in a prison of ice!";
+	public final String ICE_CONTAIN_SPECIAL_MSG = "Contain this!";
+	public final String GLACIES_SPAWN_MSG = "Glacies, don't fail me!";
+
+	//Zaros
+	public final String ZAROS_SPAWN_MSG = "NOW, THE POWER OF ZAROS!";
 
 }
