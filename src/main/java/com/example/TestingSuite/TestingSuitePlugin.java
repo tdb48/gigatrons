@@ -207,7 +207,8 @@ public class TestingSuitePlugin extends Plugin
 	{
 		String msg = event.getMessage();
 		String spec = determineSpecial(msg);
-		if(spec.length() > 0){
+		if (spec.length() > 0)
+		{
 			attacksSinceSpecial = 0;
 			previousSpecial = spec;
 			attacksSinceInteractingChangedIncSpecial++;
@@ -261,16 +262,17 @@ public class TestingSuitePlugin extends Plugin
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
-		if(nex == null)
+		if (nex == null)
 		{
 			return;
 		}
 		Actor a = event.getActor();
-		if(!(a instanceof NPC)){
+		if (!(a instanceof NPC))
+		{
 			return;
 		}
 		NPC n = (NPC) event.getActor();
-		if(n.getIndex() != nex.getIndex())
+		if (n.getIndex() != nex.getIndex())
 		{
 			return;
 		}
@@ -279,7 +281,7 @@ public class TestingSuitePlugin extends Plugin
 		//9189 = shadow range
 		//9188 = blood/ice mage
 		//9184 = dying
-		if(n.getAnimation() == 9189 || n.getAnimation() == 9188 || n.getAnimation() == 9180)
+		if (n.getAnimation() == 9189 || n.getAnimation() == 9188 || n.getAnimation() == 9180)
 		{
 			attacksSinceSpecial++;
 			attacksSinceInteractingChanged++;
@@ -302,9 +304,12 @@ public class TestingSuitePlugin extends Plugin
 
 		try
 		{
-			if(EthanApiPlugin.getHeadIcon(nex) != null){
+			if (EthanApiPlugin.getHeadIcon(nex) != null)
+			{
 				nexOverhead = EthanApiPlugin.getHeadIcon(nex);
-			} else {
+			}
+			else
+			{
 				nexOverhead = null;
 			}
 		}
@@ -325,8 +330,8 @@ public class TestingSuitePlugin extends Plugin
 				{
 					ticksBetweenInteractingChanged = client.getTickCount() - tickWhenInteractingChanged;
 				}
-				attacksSinceInteractingChanged = 0;
-				attacksSinceInteractingChangedIncSpecial = 0;
+				attacksSinceInteractingChanged = 1;
+				attacksSinceInteractingChangedIncSpecial = 1;
 				previousNexInteracting = nexInteracting;
 				nexInteracting = nex.getInteracting();
 				tickWhenInteractingChanged = client.getTickCount();

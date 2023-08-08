@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 repositories {
@@ -8,9 +9,10 @@ repositories {
         url = 'https://repo.runelite.net'
     }
     mavenCentral()
+    jcenter()
 }
 
-def runeLiteVersion = '1.10.8.3'
+def runeLiteVersion = '1.10.9.1'
 
 dependencies {
     compileOnly group: 'net.runelite', name: 'client', version: runeLiteVersion
@@ -21,6 +23,8 @@ dependencies {
     testImplementation group: 'net.runelite', name: 'jshell', version: runeLiteVersion
     implementation 'org.json:json:20230227'
     implementation 'org.roaringbitmap:RoaringBitmap:0.9.44'
+    implementation("com.google.archivepatcher:archive-patch-applier:1.0.4")
+    implementation("org.benf:cfr:0.152")
     implementation "io.reactivex.rxjava3:rxjava:3.1.1"
 }
 sourceSets {
@@ -59,6 +63,24 @@ task FatJarWithHidden(type: Jar) {
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            credentials {
+                username 'admin'
+                password 'password'
+            }
+            url "http://baseUrl/artifactory/libs-release-local"
+        }
+    }
+}
+
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }

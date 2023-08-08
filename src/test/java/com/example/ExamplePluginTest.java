@@ -8,6 +8,7 @@ import com.example.TestingSuite.TestingSuitePlugin;
 import com.example.betterprofiles.BetterProfilesPlugin;
 import com.example.nexatron.NexatronPlugin;
 import com.example.socket.SocketPlugin;
+import com.example.steroidtoa.SteroidToaPlugin;
 import com.example.toagigatron.ToaGigatronPlugin;
 import net.runelite.client.RuneLite;
 import net.runelite.client.externalplugins.ExternalPluginManager;
@@ -25,7 +26,8 @@ public class ExamplePluginTest
 			BetterProfilesPlugin.class,
 			PathingTesting.class,
 //			TestingSuitePlugin.class,
-			SocketPlugin.class);
+			SocketPlugin.class,
+			SteroidToaPlugin.class);
 		RuneLite.main(args);
 	}
 }
