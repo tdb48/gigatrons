@@ -55,6 +55,14 @@ public class NexatronOverlay extends Overlay
 		if (plugin.nexManager.nex.altar != null)
 		{
 			drawPoint(plugin.nexManager.nex.altar.getWorldLocation(), graphics2D, Color.RED);
+			drawPoint(plugin.nexManager.nex.masterMainTile, graphics2D, Color.RED);
+			drawPoint(plugin.nexManager.nex.masterStepUnderTile, graphics2D, Color.GREEN);
+			drawPoint(plugin.nexManager.nex.masterDodgeTile, graphics2D, Color.BLUE);
+			drawPoint(plugin.nexManager.nex.slaveDodgeTile, graphics2D, Color.BLUE);
+			drawPoint(plugin.nexManager.nex.slaveStepUnderTile, graphics2D, Color.GREEN);
+			drawPoint(plugin.nexManager.nex.slaveMainTile, graphics2D, Color.RED);
+
+
 		}
 		return null;
 	}
