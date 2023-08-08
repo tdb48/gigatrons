@@ -37,24 +37,29 @@ public class ProgressStage extends Task
 		}
 		if (NexConst.LOBBY_AREA.contains(nexManager.getPlayerPoint()))
 		{
+			nexManager.nex.teleportOut = false;
 			nexManager.setStage(Stage.LOBBY);
 			return true;
 		}
 		if (NexConst.KC_AREA.contains(nexManager.getPlayerPoint()))
 		{
+			nexManager.nex.teleportOut = false;
 			nexManager.setStage(Stage.KC_AREA);
 			return true;
 		}
 		if (NexConst.BANK_AREA.contains(nexManager.getPlayerPoint()))
 		{
+			nexManager.nex.teleportOut = false;
 			nexManager.setStage(Stage.BANK);
 			return true;
 		}
-		if ((nexManager.getStage().equals(Stage.BANK)
-			|| nexManager.getStage().equals(Stage.NONE))
-			&& Reachable.isWalkable(nexManager.nex.centerPoint))
+		if (Reachable.isWalkable(nexManager.nex.centerPoint))
 		{
-			nexManager.setStage(Stage.NEX_START);
+			if ((nexManager.getStage().equals(Stage.BANK)
+				|| nexManager.getStage().equals(Stage.NONE)))
+			{
+				nexManager.setStage(Stage.NEX_START);
+			}
 			return true;
 		}
 		else
@@ -72,6 +77,7 @@ public class ProgressStage extends Task
 			String message = chatMessage.getMessage().toLowerCase();
 			if (message.contains("fill my soul"))
 			{
+				nexManager.nex.invincibleTick = 4;
 				nexManager.setStage(Stage.NEX_SMOKE);
 			}
 			if (message.contains("fumus, don't fail me!"))
