@@ -34,6 +34,10 @@ public class TEMPORARY_KcAttack extends StagedTask
 
 	public boolean execute()
 	{
+		if (!nexManager.config.kcMode())
+		{
+			return false;
+		}
 		Widget restore = Consumable.getRestore();
 		if (!client.getLocalPlayer().isInteracting() && (
 			Prayers.getPoints() == 0
