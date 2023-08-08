@@ -5,22 +5,24 @@ import com.example.Packets.MousePackets;
 import com.example.Packets.MovementPackets;
 import com.example.Packets.WidgetPackets;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.Player;
+import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
-import java.util.Comparator;
-
 @Slf4j
 public class Movement
 {
 
-	public static ArrayList<WorldPoint> pathToGoal(WorldPoint startingPoint, WorldPoint goal, HashSet<WorldPoint> dangerous) {
+	public static ArrayList<WorldPoint> pathToGoal(WorldPoint startingPoint, WorldPoint goal, HashSet<WorldPoint> dangerous)
+	{
 
 		ArrayList<List<WorldPoint>> paths = new ArrayList<>();
 		paths.add(List.of(startingPoint));
@@ -32,7 +34,8 @@ public class Movement
 		return EthanApiPlugin.pathToGoal(goalSet, paths, impassibleTiles, dangerous, new HashSet<>(EthanApiPlugin.reachableTiles()), new HashSet<>());
 	}
 
-	public static ArrayList<WorldPoint> pathToGoal(WorldPoint goal, HashSet<WorldPoint> walkable, HashSet<WorldPoint> dangerous) {
+	public static ArrayList<WorldPoint> pathToGoal(WorldPoint goal, HashSet<WorldPoint> walkable, HashSet<WorldPoint> dangerous)
+	{
 		ArrayList<List<WorldPoint>> paths = new ArrayList<>();
 		paths.add(List.of(Static.getClient().getLocalPlayer().getWorldLocation()));
 		HashSet<WorldPoint> impassibleTiles = new HashSet<>(EthanApiPlugin.sceneWorldPoints());
@@ -40,6 +43,20 @@ public class Movement
 		HashSet<WorldPoint> goalSet = new HashSet<>();
 		goalSet.add(goal);
 		return EthanApiPlugin.pathToGoal(goalSet, paths, impassibleTiles, dangerous, walkable, new HashSet<>());
+	}
+
+	public static void move(WorldPoint worldPoint)
+	{
+		if (worldPoint == null)
+		{
+			System.out.println("Worldpoint is null in Movement.move");
+			return;
+		}
+		if (worldPoint.isInScene(Static.getClient()))
+		{
+			MousePackets.queueClickPacket();
+			MovementPackets.queueMovement(worldPoint);
+		}
 	}
 
 	public static boolean isRunEnabled()
