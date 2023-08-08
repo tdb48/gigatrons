@@ -3,16 +3,17 @@ package com.example.nexatron.tasks.nex;
 
 import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
+import com.example.Utility.Combat;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
+import java.util.ArrayList;
 import javax.inject.Inject;
 
 @TaskDescriptor(
-	name = "Nex teleport out",
-	priority = Integer.MAX_VALUE - 1,
-	blocking = true
+	name = "Nex prayers",
+	priority = -1
 )
 public class NexAbort extends StagedTask
 {
@@ -28,7 +29,8 @@ public class NexAbort extends StagedTask
 			Stage.MINION_BLOOD,
 			Stage.NEX_BLOOD,
 			Stage.MINION_ICE,
-			Stage.NEX_ICE);
+			Stage.NEX_ICE,
+			Stage.NEX_START);
 	}
 
 	public boolean execute()
@@ -38,6 +40,13 @@ public class NexAbort extends StagedTask
 		{
 			return false;
 		}
+
+		if (!nexManager.hasGearEquipped(nexManager.nex.setup.rangeNex()))
+		{
+			nexManager.print("Equipping range gear");
+			nexManager.swap(nexManager.nex.setup.rangeNex());
+		}
+
 		MousePackets.queueClickPacket();
 		ObjectPackets.queueObjectAction(nexManager.nex.altar, false, "Teleport");
 		return true;
