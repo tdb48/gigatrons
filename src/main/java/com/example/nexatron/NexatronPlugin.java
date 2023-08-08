@@ -15,6 +15,9 @@ import com.example.nexatron.tasks.general.ToggleRun;
 import com.example.nexatron.tasks.kcArea.KcPrayer;
 import com.example.nexatron.tasks.kcArea.TEMPORARY_KcAttack;
 import com.example.nexatron.tasks.nex.NexAbort;
+import com.example.nexatron.tasks.nex.NexPrayers;
+import com.example.nexatron.tasks.nex.NexStart;
+import com.example.nexatron.tasks.nex.smoke.AttackSmokeNex;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -85,6 +88,9 @@ public class NexatronPlugin extends Plugin
 			KcPrayer.class,
 			TEMPORARY_KcAttack.class,
 			NexAbort.class,
+			AttackSmokeNex.class,
+			NexStart.class,
+			NexPrayers.class,
 		};
 	}
 
