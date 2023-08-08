@@ -3,6 +3,7 @@ package com.example.nexatron.model.constants;
 import com.example.Utility.WorldAreas;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import net.runelite.api.ItemID;
 import net.runelite.api.coords.WorldArea;
@@ -10,6 +11,14 @@ import net.runelite.api.coords.WorldPoint;
 
 public class NexConst
 {
+	public static List<Integer> WEAPONS =
+		List.of(
+			ItemID.OSMUMTENS_FANG,
+			ItemID.OSMUMTENS_FANG_OR,
+			ItemID.ZARYTE_CROSSBOW,
+			ItemID.ARMADYL_CROSSBOW,
+			ItemID.TOXIC_BLOWPIPE);
+
 	public static final int TROLLHEIM_TAB = ItemID.TROLLHEIM_TELEPORT;
 	public static final int DIA_BOLTS = ItemID.DIAMOND_DRAGON_BOLTS_E;
 	public static final int RUBY_BOLTS = ItemID.RUBY_DRAGON_BOLTS_E;
