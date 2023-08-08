@@ -30,6 +30,14 @@ public class Nex
 	public int nexAttackTick = 0;
 	public int umbraAttackTick = 0;
 	public boolean teleportOut = false;
+	public WorldPoint masterMainTile = null;
+	public WorldPoint masterDodgeTile = null;
+	public WorldPoint masterStepUnderTile = null;
+
+	public WorldPoint slaveMainTile = null;
+	public WorldPoint slaveDodgeTile = null;
+	public WorldPoint slaveStepUnderTile = null;
+	public int invincibleTick = 0;
 	@Inject
 	NexManager nexManager;
 
@@ -38,6 +46,9 @@ public class Nex
 
 	@Inject
 	EventBus eventBus;
+
+	@Inject
+	public Setup setup;
 
 	public void register()
 	{
@@ -56,11 +67,22 @@ public class Nex
 		{
 			nexAttackTick--;
 		}
+		if (invincibleTick > 0)
+		{
+			invincibleTick--;
+		}
 	}
 
 	public void bankReset()
 	{
-
+		nex = null;
+		fumus = null;
+		umbra = null;
+		glacies = null;
+		cruor = null;
+		nexAttackTick = 0;
+		umbraAttackTick = 0;
+		teleportOut = false;
 	}
 
 	public void fullReset()
@@ -101,10 +123,9 @@ public class Nex
 		GameObject gameObject = gameObjectSpawned.getGameObject();
 		if (gameObject.getId() == NexConst.ALTAR)
 		{
-			nexManager.print("Altar spawned");
 			altar = gameObject;
 			centerPoint = altar.getWorldLocation().dx(-15);
-			nexManager.print("Center: " + centerPoint);
+			initSmokeTiles();
 		}
 	}
 
@@ -114,9 +135,9 @@ public class Nex
 		GameObject gameObject = gameObjectDespawned.getGameObject();
 		if (gameObject.getId() == NexConst.ALTAR)
 		{
-			nexManager.print("altar despawned");
 			altar = null;
 			centerPoint = null;
+			deinitSmokeTiles();
 		}
 	}
 
@@ -142,6 +163,30 @@ public class Nex
 			nexManager.print("Nex despawned");
 			nex = null;
 		}
+	}
+
+	public void initSmokeTiles()
+	{
+		if (centerPoint == null)
+		{
+			return;
+		}
+		masterMainTile = centerPoint.dx(-2);
+		masterDodgeTile = centerPoint.dy(-2);
+		masterStepUnderTile = centerPoint.dx(-1);
+		slaveMainTile = centerPoint.dy(2);
+		slaveDodgeTile = centerPoint.dx(2);
+		slaveStepUnderTile = centerPoint.dy(1);
+	}
+
+	public void deinitSmokeTiles()
+	{
+		masterMainTile = null;
+		masterDodgeTile = null;
+		masterStepUnderTile = null;
+		slaveMainTile = null;
+		slaveDodgeTile = null;
+		slaveStepUnderTile = null;
 	}
 
 	public boolean isTargetUnderNex()
