@@ -14,7 +14,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.client.eventbus.Subscribe;
 
 @TaskDescriptor(
-	priority = 20,
+	priority = Integer.MAX_VALUE,
 	name = "Updating stage",
 	register = true
 )
@@ -49,7 +49,7 @@ public class ProgressStage extends Task
 		}
 		if (NexConst.BANK_AREA.contains(nexManager.getPlayerPoint()))
 		{
-			nexManager.nex.teleportOut = false;
+			nexManager.nex.bankReset();
 			nexManager.setStage(Stage.BANK);
 			return true;
 		}
@@ -78,6 +78,7 @@ public class ProgressStage extends Task
 			if (message.contains("fill my soul"))
 			{
 				nexManager.nex.invincibleTick = 4;
+				nexManager.nex.dashTick = 0;
 				nexManager.setStage(Stage.NEX_SMOKE);
 			}
 			if (message.contains("fumus, don't fail me!"))
