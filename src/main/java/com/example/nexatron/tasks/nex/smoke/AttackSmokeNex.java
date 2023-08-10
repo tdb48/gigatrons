@@ -73,7 +73,8 @@ public class AttackSmokeNex extends StagedTask
 
 		// If we are not interacting, attack nex
 		if (!client.getLocalPlayer().isInteracting()
-			&& nexManager.nex.invincibleTick == 0)
+			&& nexManager.nex.invincibleTick == 0
+			&& nexManager.nex.dashTick == 0)
 		{
 			nexManager.print("Attacking Nex");
 			MousePackets.queueClickPacket();
