@@ -70,6 +70,7 @@ public class NexConst
 	public static final int INACTIVE_BARRIER = 42968;
 	public static final int BANKER = 11289;
 	public static final int ANCIENT_KILLCOUNT_VARBIT = 13080;
+	public static final WorldPoint ENTER_BANK_TILE = new WorldPoint(2898, 5203, 0);
 	public static final WorldArea KC_AREA = WorldAreas.createArea(
 		new WorldPoint(2848, 5194, 0),
 		new WorldPoint(2900, 5228, 0));
