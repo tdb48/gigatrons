@@ -3,17 +3,16 @@ package com.example.nexatron.tasks.nex;
 
 import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
-import com.example.Utility.Combat;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
-import java.util.ArrayList;
 import javax.inject.Inject;
 
 @TaskDescriptor(
-	name = "Nex prayers",
-	priority = -1
+	name = "Nex Abort",
+	priority = 100,
+	blocking = true
 )
 public class NexAbort extends StagedTask
 {
