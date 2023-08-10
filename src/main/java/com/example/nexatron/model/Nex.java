@@ -2,13 +2,17 @@ package com.example.nexatron.model;
 
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
+import com.example.nexatron.model.constants.Stage;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
@@ -38,9 +42,11 @@ public class Nex
 	public WorldPoint slaveDodgeTile = null;
 	public WorldPoint slaveStepUnderTile = null;
 	public int invincibleTick = 0;
+	public int dashTick = 0;
+	public boolean shouldTripleBrew = false;
+	public int brewSipsNeeded = 0;
 	@Inject
 	NexManager nexManager;
-
 	@Inject
 	Client client;
 
@@ -60,6 +66,29 @@ public class Nex
 		this.eventBus.unregister(this);
 	}
 
+	public void bankReset()
+	{
+		nex = null;
+		fumus = null;
+		umbra = null;
+		glacies = null;
+		cruor = null;
+		nexAttackTick = 0;
+		umbraAttackTick = 0;
+		teleportOut = false;
+		invincibleTick = 0;
+		dashTick = 0;
+		shouldTripleBrew = false;
+		brewSipsNeeded = 0;
+	}
+
+	public void fullReset()
+	{
+		bankReset();
+		centerPoint = null;
+		altar = null;
+	}
+
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
@@ -71,33 +100,68 @@ public class Nex
 		{
 			invincibleTick--;
 		}
+		shouldTripleBrew = shouldTripleBrew();
 	}
 
-	public void bankReset()
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
 	{
-		nex = null;
-		fumus = null;
-		umbra = null;
-		glacies = null;
-		cruor = null;
-		nexAttackTick = 0;
-		umbraAttackTick = 0;
-		teleportOut = false;
+		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE || chatMessage.getType() == ChatMessageType.SPAM || chatMessage.getType() == ChatMessageType.CONSOLE || chatMessage.getType() == ChatMessageType.ENGINE)
+		{
+			String message = chatMessage.getMessage().toLowerCase();
+			if (message.contains(NexConst.BREW_MESSAGE.toLowerCase()))
+			{
+				brewSipsNeeded--;
+			}
+		}
 	}
 
-	public void fullReset()
+	public int MISSING_HEALTH = 40;
+	public final int MAX_BREW_HP = 115;
+	public final int BREW_HEAL = 16;
+
+	public boolean shouldTripleBrew()
 	{
-		centerPoint = null;
-//		icePrisonSpike = null;
-		altar = null;
-		nex = null;
-		fumus = null;
-		umbra = null;
-		glacies = null;
-		cruor = null;
-		nexAttackTick = 0;
-		umbraAttackTick = 0;
-		teleportOut = false;
+		if (getMissingHealth() > MISSING_HEALTH)
+		{
+			brewSipsNeeded = brewSipsToFull();
+			nexManager.print("Setting brew sips to " + brewSipsNeeded);
+			return true;
+		}
+		if (brewSipsNeeded == 0)
+		{
+			return false;
+		}
+		return shouldTripleBrew;
+	}
+
+	public int brewSipsToFull()
+	{
+		return getMissingHealth() / BREW_HEAL;
+	}
+
+	public int getMissingHealth()
+	{
+		return MAX_BREW_HP - client.getBoostedSkillLevel(Skill.HITPOINTS);
+	}
+
+	public boolean onRangedPhase()
+	{
+		Stage stage = nexManager.getStage();
+		return stage == Stage.MINION_ICE
+			|| stage == Stage.MINION_BLOOD
+			|| stage == Stage.MINION_SHADOW
+			|| stage == Stage.NEX_SHADOW
+			|| stage == Stage.MINION_SMOKE;
+	}
+
+	public boolean onMeleePhase()
+	{
+		Stage stage = nexManager.getStage();
+		return stage == Stage.NEX_ICE
+			|| stage == Stage.NEX_BLOOD
+			|| stage == Stage.NEX_SMOKE
+			|| stage == Stage.NEX_ZAROS;
 	}
 
 	@Subscribe
