@@ -1,21 +1,14 @@
 package com.example.nexatron.tasks.nex;
 
 
-import com.example.EthanApiPlugin.Collections.Equipment;
-import com.example.Packets.MousePackets;
-import com.example.Packets.NPCPackets;
-import com.example.Utility.Combat;
-import com.example.Utility.Movement;
 import com.example.Utility.Prayer;
 import com.example.Utility.Prayers;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-import net.runelite.api.coords.WorldPoint;
 
 @TaskDescriptor(
 	name = "Nex prayers",
@@ -81,6 +74,12 @@ public class NexPrayers extends StagedTask
 	public Prayer getDefensive()
 	{
 		// TODO: add pray mage logic for minio shadow
+		if (nexManager.getStage() == Stage.NEX_SMOKE
+			&& nexManager.nex.nex.isInteracting()
+			&& nexManager.nex.nex.getInteracting().equals(client.getLocalPlayer()))
+		{
+			return Prayer.PROTECT_FROM_MELEE;
+		}
 		if (nexManager.getStage() == Stage.NEX_SHADOW
 			|| nexManager.getStage() == Stage.MINION_SHADOW)
 		{
