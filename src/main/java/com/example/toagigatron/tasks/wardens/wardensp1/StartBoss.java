@@ -57,15 +57,15 @@ public class StartBoss extends StagedTask
 		}
 
 		// Need one of each: brew, restore, salt, adren and ambrosia(?)
-		Widget brew = Consumables.getBrew();
-		if (brew == null)
+		Widget potionToDrop = Consumables.getBrew();
+		if (potionToDrop == null || (toaManager.config.prayFlick() && Consumables.getRestore() != null))
 		{
-			brew = Consumables.getRestore();
+			potionToDrop = Consumables.getRestore();
 		}
-		if (brew != null && Inventory.getEmptySlots() < invSpaceRequired())
+		if (potionToDrop != null && Inventory.getEmptySlots() < invSpaceRequired())
 		{
 			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(brew, "Drop");
+			WidgetPackets.queueWidgetAction(potionToDrop, "Drop");
 			return true;
 		}
 		if (!withdrawItems())

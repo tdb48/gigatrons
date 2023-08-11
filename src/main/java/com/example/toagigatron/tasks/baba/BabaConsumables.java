@@ -33,6 +33,34 @@ public class BabaConsumables extends StagedTask
 		super(toaManager, Stage.BABA_PUZZLE, Stage.BABA_BOSS);
 	}
 
+	private int scbDoseCount()
+	{
+		int doseCount = 0;
+		int itemID = 0;
+		for (Widget w : InventoryUtil.getAll(ItemID.SUPER_COMBAT_POTION1,
+			ItemID.SUPER_COMBAT_POTION2, ItemID.SUPER_COMBAT_POTION3, ItemID.SUPER_COMBAT_POTION4))
+		{
+			itemID = w.getItemId();
+			if (itemID == ItemID.SUPER_COMBAT_POTION1)
+			{
+				doseCount = doseCount + 1;
+			}
+			if (itemID == ItemID.SUPER_COMBAT_POTION2)
+			{
+				doseCount = doseCount + 2;
+			}
+			if (itemID == ItemID.SUPER_COMBAT_POTION3)
+			{
+				doseCount = doseCount + 3;
+			}
+			if (itemID == ItemID.SUPER_COMBAT_POTION4)
+			{
+				doseCount = doseCount + 4;
+			}
+		}
+		return doseCount > 0 ? doseCount : -1;
+	}
+
 	public boolean execute()
 	{
 		if (gameTickManager.isPotionWaiting())
@@ -128,8 +156,47 @@ public class BabaConsumables extends StagedTask
 			gameTickManager.drinkPotion();
 			return true;
 		}
+		if (toaManager.getStage().equals(Stage.BABA_BOSS) && combatPotion != null)
+		{
+			if (shouldRepot())
+			{
+				toaManager.print("SHOULD REPOT");
+				toaManager.print("Drinking scb");
+				MousePackets.queueClickPacket();
+				WidgetPackets.queueWidgetAction(combatPotion, "Drink");
+				toaManager.reAttack(playerInteracting);
+				gameTickManager.drinkPotion();
+				return true;
+			}
+		}
 
 		return false;
 	}
+
+	private boolean shouldRepot()
+	{
+		int scbDoseCount = scbDoseCount();
+		int fightPhase = toaManager.baba.getPhase();
+		int currStrLvl = client.getBoostedSkillLevel(Skill.STRENGTH);
+		int realStrLvl = client.getRealSkillLevel(Skill.STRENGTH);
+		if (fightPhase == 1)
+		{
+			return (currStrLvl <= realStrLvl + 16) && scbDoseCount == 8 && Combat.getMissingHealth() <= 45
+				|| (currStrLvl <= realStrLvl + 16) && scbDoseCount >= 7 && Combat.getMissingHealth() <= 30;
+		}
+		else if (fightPhase == 2)
+		{
+			return (currStrLvl <= realStrLvl + 16) && scbDoseCount >= 7 && Combat.getMissingHealth() <= 45
+				|| (currStrLvl <= realStrLvl + 16) && scbDoseCount >= 6 && Combat.getMissingHealth() <= 30;
+		}
+		else
+		{
+			return (currStrLvl <= realStrLvl + 17) && scbDoseCount >= 7 && Combat.getMissingHealth() <= 35
+				|| (currStrLvl <= realStrLvl + 16) && scbDoseCount >= 6 && Combat.getMissingHealth() <= 45
+				|| (currStrLvl <= realStrLvl + 16) && scbDoseCount >= 5 && Combat.getMissingHealth() <= 30;
+		}
+	}
+
+
 }
 
