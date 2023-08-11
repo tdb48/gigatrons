@@ -55,10 +55,11 @@ public class AkkhaExitPuzzle extends StagedTask
 			ObjectPackets.queueObjectAction(pickaxeStatue, false, "Deposit-pickaxe");
 			return true;
 		}
-		int[] potentialPotions = Consumables.BREW.stream().mapToInt(i -> i).toArray();
-		int[] potentialPotions2 = Consumables.RESTORE.stream().mapToInt(i -> i).toArray();
-		int[] listPotions = ArrayUtils.addAll(potentialPotions, potentialPotions2);
-		ArrayList<ETileItem> tileItems = TileItemUtil.getAllETileItems(listPotions);
+//		int[] potentialPotions = Consumables.BREW.stream().mapToInt(i -> i).toArray();
+//		int[] potentialPotions2 = Consumables.RESTORE.stream().mapToInt(i -> i).toArray();
+//		int[] listPotions = ArrayUtils.addAll(potentialPotions, potentialPotions2);
+//		ArrayList<ETileItem> tileItems = TileItemUtil.getAllETileItems(listPotions);
+		ArrayList<ETileItem> tileItems = toaManager.getTileItemSupplies();
 		if (!tileItems.isEmpty() && !InventoryUtil.isFull())
 		{
 			if (Reachable.isWalkable(tileItems.get(0).location))
