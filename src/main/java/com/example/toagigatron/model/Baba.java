@@ -226,14 +226,13 @@ public class Baba
 		if (graphicsObjectCreated.getGraphicsObject().getId() == ToaConstants.BABA_ROCKFALL_SHADOW)
 		{
 			int rocks = ObjectUtil.getObjects(ToaConstants.BABA_BOSS_ROCKFALL).size();
-			if (rocks >= 2)
+			WorldPoint refPoint = WorldPoint.fromLocal(client, graphicsObjectCreated.getGraphicsObject().getLocation());
+			if (rocks >= 10)
 			{
-				WorldPoint refPoint = WorldPoint.fromLocal(client, graphicsObjectCreated.getGraphicsObject().getLocation());
 				rockFromCeiling.add(refPoint);
 			}
 			else
 			{
-				WorldPoint refPoint = WorldPoint.fromLocal(client, graphicsObjectCreated.getGraphicsObject().getLocation());
 				WorldPoint southWest = refPoint.dx(-1).dy(-1);
 				WorldPoint northEast = refPoint.dx(2).dy(2);
 				rockFromCeiling.addAll(WorldAreas.createArea(southWest, northEast).toWorldPointList());
@@ -492,9 +491,13 @@ public class Baba
 		// Add corner tiles of the rocks so that it doesn't get bouldered for 90s
 		badTiles.addAll(diagonalRockFallTiles);
 		badTiles.addAll(bananaTiles);
-		// If theres two rocks out, mark tiles 14 away as bad
+		// If theres two rocks out, mark worldpoints 12 or more tiles away as bad
+		// For some reason this tile objects query returns 1 object per tile the rock is on
+		//So each tile = 0 objects in list l0l
+		//Cant be bothered looking into it so added hacky fix of using '10' magic number
+		//as '9' = one rock
 		int rocks = ObjectUtil.getObjects(ToaConstants.BABA_BOSS_ROCKFALL).size();
-		if (rocks >= 2)
+		if (rocks >= 10)
 		{
 			for (WorldPoint wp : babaBossRoom)
 			{
