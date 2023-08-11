@@ -32,7 +32,7 @@ public class ChargesTracker
 	public int ahrimsSkirt = -1;
 	public static final ArrayList<Integer> ATOP =
 		new ArrayList<>(Arrays.asList(
-			ItemID.AHRIMS_ROBETOP_25,
+//			ItemID.AHRIMS_ROBETOP_25,
 			ItemID.AHRIMS_ROBETOP_50,
 			ItemID.AHRIMS_ROBETOP_75,
 			ItemID.AHRIMS_ROBETOP_100,
@@ -41,7 +41,7 @@ public class ChargesTracker
 
 	public static final ArrayList<Integer> ASKIRT =
 		new ArrayList<>(Arrays.asList(
-			ItemID.AHRIMS_ROBESKIRT_25,
+//			ItemID.AHRIMS_ROBESKIRT_25,
 			ItemID.AHRIMS_ROBESKIRT_50,
 			ItemID.AHRIMS_ROBESKIRT_75,
 			ItemID.AHRIMS_ROBESKIRT_100,
