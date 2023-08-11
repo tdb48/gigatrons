@@ -109,7 +109,7 @@ public class Resign extends StagedTask
 			return true;
 		}
 		GameObject wardensPath = ObjectUtil.getObject(ToaConstants.ACTIVE_DOOR_WARDENS);
-		if (wardensPath != null && restoreDoses() <= 18)
+		if (wardensPath != null && ((restoreDoses() <= 18 && !toaManager.config.prayFlick()) || brewDoses() < 16))
 		{
 			toaManager.print("Resigning because not enough prayer");
 			return true;
