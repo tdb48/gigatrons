@@ -673,8 +673,12 @@ public class Zebak
 	public boolean isBlocked(LocalPoint lp)
 	{
 		WorldPoint wp = WorldPoint.fromLocal(client, lp);
-		if (poisonWorldPoints.contains(wp))
+		if (poisonWorldPoints.contains(wp) || rockTiles.contains(lp))
 		{
+			if(rockTiles.contains(lp))
+			{
+				toaManager.print("Jug push or pull tile blocked by a rocktile and successfully detected.");
+			}
 			return true;
 		}
 		return !Reachable.isWalkable(wp);
