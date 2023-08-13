@@ -16,7 +16,8 @@ import net.runelite.client.eventbus.Subscribe;
 @TaskDescriptor(
 	name = "Dodge Smoke Dash",
 	priority = 1,
-	register = true
+	register = true,
+	blocking = true
 )
 public class DodgeSmokeDash extends StagedTask
 {
@@ -25,7 +26,10 @@ public class DodgeSmokeDash extends StagedTask
 	@Inject
 	public DodgeSmokeDash(NexManager nexManager)
 	{
-		super(nexManager, Stage.NEX_SMOKE);
+		super(nexManager,
+			Stage.NEX_SMOKE,
+			Stage.MINION_SMOKE
+		);
 	}
 
 	public boolean execute()
@@ -33,6 +37,10 @@ public class DodgeSmokeDash extends StagedTask
 		if (nexManager.nex.dashTick > 0)
 		{
 			nexManager.nex.dashTick--;
+			if (nexManager.getPlayerPoint().distanceTo(nexManager.nex.centerPoint) > 6)
+			{
+				return false;
+			}
 			if (nexManager.nex.nex.getOverheadText() != null
 				&& nexManager.nex.nex.getOverheadText().toLowerCase().contains("there is.."))
 			{
@@ -60,6 +68,7 @@ public class DodgeSmokeDash extends StagedTask
 				// If dash is west, move to south (dodge tile), otherwise stay on main tile
 				if (activeConstLane == Lanes.WEST)
 				{
+					nexManager.nex.initSmokeNexTiles();
 					tile = nexManager.nex.masterDodgeTile;
 				}
 				else
@@ -71,6 +80,7 @@ public class DodgeSmokeDash extends StagedTask
 			{
 				if (activeConstLane == Lanes.NORTH)
 				{
+					nexManager.nex.initSmokeNexTiles();
 					tile = nexManager.nex.slaveDodgeTile;
 				}
 				else
@@ -81,11 +91,15 @@ public class DodgeSmokeDash extends StagedTask
 			if (tile == null
 				|| client.getLocalPlayer().getWorldLocation().equals(tile))
 			{
-				return true;
+				return false;
 			}
-
 			nexManager.print("Walking to start tile at " + nexManager.worldPointString(tile));
 			Movement.move(tile);
+			// This is to set it back to the minion tiles, because we used the nex tiles
+			if (nexManager.getStage() == Stage.MINION_SMOKE)
+			{
+				nexManager.nex.initSmokeMinionTiles();
+			}
 			return true;
 		}
 		activeConstLane = Lanes.NONE;
