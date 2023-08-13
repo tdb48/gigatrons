@@ -1,14 +1,17 @@
 package com.example.nexatron.model;
 
+import com.example.Utility.WorldAreas;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
+import java.util.ArrayList;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
+import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -189,7 +192,7 @@ public class Nex
 		{
 			altar = gameObject;
 			centerPoint = altar.getWorldLocation().dx(-15);
-			initSmokeTiles();
+			initSmokeNexTiles();
 		}
 	}
 
@@ -201,7 +204,7 @@ public class Nex
 		{
 			altar = null;
 			centerPoint = null;
-			deinitSmokeTiles();
+			deinitTiles();
 		}
 	}
 
@@ -209,11 +212,30 @@ public class Nex
 	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
-		if (npc.getName() != null
-			&& npc.getName().toLowerCase().contains("nex"))
+		if (npc.getName() == null)
 		{
-			nexManager.print("Nex spawned");
+			return;
+		}
+		String npcName = npc.getName().toLowerCase();
+		if (npcName.contains("nex"))
+		{
 			nex = npc;
+		}
+		if (npcName.contains("fumus"))
+		{
+			fumus = npc;
+		}
+		if (npcName.contains("umbra"))
+		{
+			umbra = npc;
+		}
+		if (npcName.contains("cruor"))
+		{
+			cruor = npc;
+		}
+		if (npcName.contains("glacies"))
+		{
+			glacies = npc;
 		}
 	}
 
@@ -221,15 +243,95 @@ public class Nex
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
-		if (npc.getName() != null
-			&& npc.getName().toLowerCase().contains("nex"))
+		if (npc.getName() == null)
 		{
-			nexManager.print("Nex despawned");
+			return;
+		}
+		String npcName = npc.getName().toLowerCase();
+		if (npcName.contains("nex"))
+		{
 			nex = null;
+		}
+		if (npcName.contains("fumus"))
+		{
+			fumus = null;
+		}
+		if (npcName.contains("umbra"))
+		{
+			umbra = null;
+		}
+		if (npcName.contains("cruor"))
+		{
+			cruor = null;
+		}
+		if (npcName.contains("glacies"))
+		{
+			glacies = null;
 		}
 	}
 
-	public void initSmokeTiles()
+	public WorldPoint getUnderNex()
+	{
+		if (nex == null)
+		{
+			return null;
+		}
+		if (isUnderNex(client.getLocalPlayer()))
+		{
+			return WorldAreas.getCenter(nex.getWorldArea());
+		}
+		return nexManager.findClosestTileToPlayer((ArrayList<WorldPoint>) nex.getWorldArea().toWorldPointList());
+	}
+
+	public WorldPoint getStepUnderTile()
+	{
+		return nexManager.socket.isMaster ?
+			nexManager.nex.masterStepUnderTile :
+			nexManager.nex.slaveStepUnderTile;
+	}
+
+	public WorldPoint getMainTile()
+	{
+		return nexManager.socket.isMaster ?
+			nexManager.nex.masterMainTile :
+			nexManager.nex.slaveMainTile;
+	}
+
+	public WorldPoint getDodgeTile()
+	{
+		return nexManager.socket.isMaster ?
+			nexManager.nex.masterDodgeTile :
+			nexManager.nex.slaveDodgeTile;
+	}
+
+	public boolean isNexChasing()
+	{
+		if (nex == null
+			|| !nex.isInteracting())
+		{
+			return false;
+		}
+		Player nexTarget = (Player) nex.getInteracting();
+		if (nex.getWorldArea().toWorldPointList().contains(nexTarget.getWorldLocation())
+			&& nex.isInteracting())
+		{
+			return true;
+		}
+		return nex.getPoseAnimation() == NexConst.NEX_CHASE_POSE_ANIMATION;
+	}
+
+	public boolean isNexChasingUs()
+	{
+		if (nex == null)
+		{
+			return false;
+		}
+		return isNexChasing()
+			&& nex.isInteracting()
+			&& nex.getInteracting().equals(client.getLocalPlayer());
+	}
+
+	public void initSmokeNexTiles()
 	{
 		if (centerPoint == null)
 		{
@@ -243,7 +345,36 @@ public class Nex
 		slaveStepUnderTile = centerPoint.dy(1);
 	}
 
-	public void deinitSmokeTiles()
+	public void initSmokeMinionTiles()
+	{
+		if (centerPoint == null)
+		{
+			return;
+		}
+		masterMainTile = centerPoint.dx(-11).dy(3);
+		slaveMainTile = centerPoint.dx(-3).dy(11);
+		// This tile is for stepping out north out of nex range
+		slaveDodgeTile = centerPoint.dx(-5).dy(12);
+	}
+
+	public boolean outOfNexRange()
+	{
+		return distanceToNex() >= 11;
+	}
+
+	public boolean canStepOut()
+	{
+		if (isNexChasing()
+			&& !isNexChasingUs())
+		{
+			return true;
+		}
+		return nex.isInteracting()
+			&& !nex.getInteracting().equals(client.getLocalPlayer())
+			&& (nexAttackTick == 3 || nexAttackTick == 4);
+	}
+
+	public void deinitTiles()
 	{
 		masterMainTile = null;
 		masterDodgeTile = null;
@@ -253,14 +384,30 @@ public class Nex
 		slaveStepUnderTile = null;
 	}
 
-	public boolean isTargetUnderNex()
+	public int distanceToNex()
 	{
 		if (nex == null
+			|| dashTick > 0)
+		{
+			return 999;
+		}
+		return nexManager.getPlayerPoint().distanceTo(nex.getWorldArea());
+	}
+
+	public int getNPCHP(NPC npc)
+	{
+		return (int) ((double) npc.getHealthRatio() / (double) npc.getHealthScale() * 100);
+	}
+
+	public boolean isUnderNex(Player player)
+	{
+		if (nex == null
+			|| player == null
 			|| !nex.isInteracting())
 		{
 			return false;
 		}
-		WorldPoint nexTarget = nex.getInteracting().getWorldLocation();
-		return nex.getWorldArea().toWorldPointList().contains(nexTarget);
+		return nex.getWorldArea().toWorldPointList().contains(player.getWorldLocation());
 	}
+
 }
