@@ -56,6 +56,7 @@ public class BabaDodgeSpecial extends StagedTask
 			safeTiles.removeAll(toaManager.baba.babaBossRowGap.toWorldPointList());
 			safeTiles.removeIf(n -> !Reachable.isWalkable(n));
 			safeTiles.removeAll(toaManager.baba.badTiles);
+			safeTiles.removeAll(toaManager.baba.rockfallTiles);
 			WorldPoint safeTile = toaManager.findClosestTile(safeTiles, playerPoint);
 			if (playerPoint.equals(safeTile))
 			{
