@@ -60,6 +60,7 @@ public class NexConst
 	public static final int NEX_MELEE_ANIMATION = 9180;
 	public static final int NEX_MAGE_ANIMATION = 9188;
 	public static final int NEX_SHADOW_ANIMATION = 9189;
+	public static final int NEX_CHASE_POSE_ANIMATION = 9175;
 
 	public static final int KC_AREA_DOOR = 42933;
 	public static final int ICE_PRISON = 42944;
