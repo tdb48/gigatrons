@@ -14,6 +14,17 @@ public class Setup
 
 	public int getBolts()
 	{
+		if (nexManager.nex.nex == null)
+		{
+			return NexConst.RUBY_BOLTS;
+		}
+		// If fumus is active and below 200 hp use dia bolts
+		if (nexManager.nex.fumus != null
+			&& nexManager.nex.fumus.getHealthRatio() != -1
+			&& nexManager.nex.getNPCHP(nexManager.nex.fumus) <= 40)
+		{
+			return NexConst.DIA_BOLTS;
+		}
 		if (nexManager.getBossHp() <= 200)
 		{
 			return NexConst.DIA_BOLTS;
