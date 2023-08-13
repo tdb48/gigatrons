@@ -79,6 +79,9 @@ public class NexatronInfoBox extends OverlayPanel
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("Nex tick ").right(String.valueOf(plugin.nexManager.nex.nexAttackTick)).build());
 			panelComponent.getChildren().add(LineComponent.builder().left("brew sips ").right(String.valueOf(plugin.nexManager.nex.brewSipsNeeded)).build());
+			panelComponent.getChildren().add(LineComponent.builder().left("can step out ").right(String.valueOf(plugin.nexManager.nex.canStepOut())).build());
+			panelComponent.getChildren().add(LineComponent.builder().left("out of nex range ").right(String.valueOf(plugin.nexManager.nex.outOfNexRange())).build());
+
 		}
 		return panelComponent.render(graphics);
 	}
