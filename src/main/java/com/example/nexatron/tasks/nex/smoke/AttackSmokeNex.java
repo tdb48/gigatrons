@@ -50,10 +50,7 @@ public class AttackSmokeNex extends StagedTask
 			&& nexManager.nex.nex.isInteracting()
 			&& nexManager.nex.nex.getInteracting().equals(client.getLocalPlayer()))
 		{
-			WorldPoint stepUnderTile = nexManager.socket.isMaster ?
-				nexManager.nex.masterStepUnderTile :
-				nexManager.nex.slaveStepUnderTile;
-
+			WorldPoint stepUnderTile = nexManager.nex.getStepUnderTile();
 			if (stepUnderTile != null)
 			{
 				nexManager.print("Stepping under");
