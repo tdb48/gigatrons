@@ -79,10 +79,12 @@ public class ProgressStage extends Task
 			{
 				nexManager.nex.invincibleTick = 4;
 				nexManager.nex.dashTick = 0;
+				nexManager.nex.initSmokeNexTiles();
 				nexManager.setStage(Stage.NEX_SMOKE);
 			}
 			if (message.contains("fumus, don't fail me!"))
 			{
+				nexManager.nex.initSmokeMinionTiles();
 				nexManager.setStage(Stage.MINION_SMOKE);
 			}
 			if (message.contains("darken my shadow!"))
