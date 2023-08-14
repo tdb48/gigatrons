@@ -1,5 +1,8 @@
 package com.example.nexatron.model;
 
+import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.Utility.Combat;
+import com.example.Utility.ObjectUtil;
 import com.example.Utility.WorldAreas;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
@@ -35,6 +38,7 @@ public class Nex
 	public GameObject altar = null;
 	public WorldPoint centerPoint = null;
 	public int nexAttackTick = 0;
+	public int nexShadowTick = 0;
 	public int umbraAttackTick = 0;
 	public boolean teleportOut = false;
 	public WorldPoint masterMainTile = null;
@@ -77,6 +81,7 @@ public class Nex
 		glacies = null;
 		cruor = null;
 		nexAttackTick = 0;
+		nexShadowTick = 0;
 		umbraAttackTick = 0;
 		teleportOut = false;
 		invincibleTick = 0;
@@ -103,6 +108,18 @@ public class Nex
 		{
 			invincibleTick--;
 		}
+		if (nexShadowTick > 0)
+		{
+			nexShadowTick--;
+		}
+		if (nexManager.getStage().equals(Stage.MINION_SHADOW))
+		{
+			GameObject shadow = ObjectUtil.getNearestGameObject(NexConst.SHADOW);
+			if (shadow == null)
+			{
+				initShadowMinionTiles();
+			}
+		}
 		shouldTripleBrew = shouldTripleBrew();
 	}
 
@@ -119,7 +136,7 @@ public class Nex
 		}
 	}
 
-	public int MISSING_HEALTH = 40;
+	public final int MISSING_HEALTH = 40;
 	public final int MAX_BREW_HP = 115;
 	public final int BREW_HEAL = 16;
 
@@ -181,6 +198,13 @@ public class Nex
 		{
 			nexAttackTick = 5;
 		}
+		if (npc.getAnimation() == NexConst.NEX_DASHBACK_ANIMATION)
+		{
+			if (nexManager.getStage().equals(Stage.NEX_SHADOW))
+			{
+				initShadowNexTiles(true);
+			}
+		}
 	}
 
 
@@ -193,6 +217,14 @@ public class Nex
 			altar = gameObject;
 			centerPoint = altar.getWorldLocation().dx(-15);
 			initSmokeNexTiles();
+		}
+		if (gameObject.getId() == NexConst.SHADOW)
+		{
+			if (nexManager.getStage().equals(Stage.MINION_SHADOW))
+			{
+				initShadowMinionTiles();
+			}
+			nexShadowTick = 5;
 		}
 	}
 
@@ -320,6 +352,28 @@ public class Nex
 		return nex.getPoseAnimation() == NexConst.NEX_CHASE_POSE_ANIMATION;
 	}
 
+	public int hpUntilProc()
+	{
+		Stage stage = nexManager.getStage();
+		if (stage.equals(Stage.NEX_SMOKE))
+		{
+			return nexManager.getBossHp() - NexConst.NEX_SMOKE_PROC;
+		}
+		if (stage.equals(Stage.NEX_SHADOW))
+		{
+			return nexManager.getBossHp() - NexConst.NEX_SHADOW_PROC;
+		}
+		if (stage.equals(Stage.NEX_BLOOD))
+		{
+			return nexManager.getBossHp() - NexConst.NEX_BLOOD_PROC;
+		}
+		if (stage.equals(Stage.NEX_ICE))
+		{
+			return nexManager.getBossHp() - NexConst.NEX_ICE_PROC;
+		}
+		return -1;
+	}
+
 	public boolean isNexChasingUs()
 	{
 		if (nex == null)
@@ -355,6 +409,80 @@ public class Nex
 		slaveMainTile = centerPoint.dx(-3).dy(11);
 		// This tile is for stepping out north out of nex range
 		slaveDodgeTile = centerPoint.dx(-5).dy(12);
+	}
+
+	public NPC getActiveMinion()
+	{
+		if (nexManager.getStage().equals(Stage.MINION_SMOKE))
+		{
+			return nexManager.nex.fumus;
+		}
+		if (nexManager.getStage().equals(Stage.MINION_SHADOW))
+		{
+			return nexManager.nex.umbra;
+		}
+		if (nexManager.getStage().equals(Stage.MINION_BLOOD))
+		{
+			return nexManager.nex.cruor;
+		}
+		if (nexManager.getStage().equals(Stage.MINION_ICE))
+		{
+			return nexManager.nex.glacies;
+		}
+		return null;
+	}
+
+	public void initShadowNexTiles(boolean hasTeleported)
+	{
+		if (centerPoint == null)
+		{
+			return;
+		}
+		slaveMainTile = centerPoint.dx(1).dy(11);
+		slaveDodgeTile = centerPoint.dy(11);
+		if (hasTeleported)
+		{
+			masterMainTile = centerPoint.dx(-1).dy(11);
+			masterDodgeTile = centerPoint.dy(11);
+		}
+		else
+		{
+			masterMainTile = centerPoint.dx(-11).dy(1);
+			masterDodgeTile = centerPoint.dx(-11);
+		}
+	}
+
+	public void initShadowMinionTiles()
+	{
+		if (centerPoint == null)
+		{
+			return;
+		}
+		if (nexShadowTick > 0)
+		{
+			masterMainTile = centerPoint.dx(3).dy(10);
+			slaveMainTile = centerPoint.dx(3).dy(10);
+			masterDodgeTile = centerPoint.dx(1).dy(10);
+			slaveDodgeTile = centerPoint.dx(8).dy(12);
+		}
+		else
+		{
+			masterMainTile = centerPoint.dx(3).dy(11);
+			slaveMainTile = centerPoint.dx(3).dy(11);
+			masterDodgeTile = centerPoint.dx(1).dy(11);
+			slaveDodgeTile = centerPoint.dx(7).dy(12);
+		}
+		slaveStepUnderTile = centerPoint.dx(5).dy(12);
+	}
+
+	public boolean isInteractingWithUs(NPC npc)
+	{
+		if (npc == null)
+		{
+			return false;
+		}
+		return npc.isInteracting()
+			&& npc.getInteracting().equals(client.getLocalPlayer());
 	}
 
 	public boolean outOfNexRange()
