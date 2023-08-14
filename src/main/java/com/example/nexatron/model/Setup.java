@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
 
 public class Setup
 {
@@ -19,13 +20,14 @@ public class Setup
 			return NexConst.RUBY_BOLTS;
 		}
 		// If fumus is active and below 200 hp use dia bolts
-		if (nexManager.nex.fumus != null
-			&& nexManager.nex.fumus.getHealthRatio() != -1
-			&& nexManager.nex.getNPCHP(nexManager.nex.fumus) <= 40)
+		NPC activeMinion = nexManager.nex.getActiveMinion();
+		if (activeMinion != null
+			&& activeMinion.getHealthRatio() != -1
+			&& nexManager.nex.getNPCHP(activeMinion) <= 40)
 		{
 			return NexConst.DIA_BOLTS;
 		}
-		if (nexManager.getBossHp() <= 200)
+		if (nexManager.getBossHp() <= 180)
 		{
 			return NexConst.DIA_BOLTS;
 		}
