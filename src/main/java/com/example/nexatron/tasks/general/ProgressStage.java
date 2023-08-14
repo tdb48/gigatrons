@@ -89,10 +89,13 @@ public class ProgressStage extends Task
 			}
 			if (message.contains("darken my shadow!"))
 			{
+				nexManager.nex.invincibleTick = 4;
+				nexManager.nex.initShadowNexTiles(false);
 				nexManager.setStage(Stage.NEX_SHADOW);
 			}
 			if (message.contains("umbra, don't fail me!"))
 			{
+				nexManager.nex.initShadowMinionTiles();
 				nexManager.setStage(Stage.MINION_SHADOW);
 			}
 			if (message.contains("flood my lungs with blood!"))
