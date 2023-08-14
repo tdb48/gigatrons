@@ -74,13 +74,10 @@ public class NexConsumables extends StagedTask
 			gameTickManager.drinkPotion();
 			return true;
 		}
-
 		if (prayerRestore != null &&
-			(Prayers.getPoints() <= 20
-				|| (nexManager.nex.onMeleePhase() && client.getBoostedSkillLevel(Skill.STRENGTH) < client.getRealSkillLevel(Skill.STRENGTH))
-				|| (nexManager.nex.onRangedPhase() && client.getBoostedSkillLevel(Skill.RANGED) < client.getRealSkillLevel(Skill.RANGED))))
+			(Prayers.getPoints() <= 20))
 		{
-			nexManager.print("Drinking restore");
+			nexManager.print("Drinking restore for prayer");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(prayerRestore, "Drink");
 			gameTickManager.drinkPotion();
@@ -91,6 +88,17 @@ public class NexConsumables extends StagedTask
 			&& client.getLocalPlayer().getOverheadText().toLowerCase().contains("cough"))
 		{
 			return false;
+		}
+
+		if (prayerRestore != null &&
+			((nexManager.nex.onMeleePhase() && client.getBoostedSkillLevel(Skill.STRENGTH) < client.getRealSkillLevel(Skill.STRENGTH))
+				|| (nexManager.nex.onRangedPhase() && client.getBoostedSkillLevel(Skill.RANGED) < client.getRealSkillLevel(Skill.RANGED))))
+		{
+			nexManager.print("Drinking restore for drain");
+			MousePackets.queueClickPacket();
+			WidgetPackets.queueWidgetAction(prayerRestore, "Drink");
+			gameTickManager.drinkPotion();
+			return true;
 		}
 
 		if (combatPotion != null
