@@ -61,7 +61,7 @@ public class NexConst
 	public static final int NEX_MAGE_ANIMATION = 9188;
 	public static final int NEX_SHADOW_ANIMATION = 9189;
 	public static final int NEX_CHASE_POSE_ANIMATION = 9175;
-
+	public static final int NEX_DASHBACK_ANIMATION = 9187;
 	public static final int KC_AREA_DOOR = 42933;
 	public static final int ICE_PRISON = 42944;
 	public static final int DEATH_CHEST = 9168;
@@ -70,6 +70,7 @@ public class NexConst
 	public static final int ACTIVE_BARRIER = 42967;
 	public static final int INACTIVE_BARRIER = 42968;
 	public static final int BANKER = 11289;
+	public static final int SHADOW = 42942;
 	public static final int ANCIENT_KILLCOUNT_VARBIT = 13080;
 	public static final WorldPoint ENTER_BANK_TILE = new WorldPoint(2898, 5203, 0);
 	public static final WorldArea KC_AREA = WorldAreas.createArea(
@@ -81,7 +82,10 @@ public class NexConst
 	public static final WorldArea LOBBY_AREA = WorldAreas.createArea(
 		new WorldPoint(2850, 5216, 0),
 		new WorldPoint(2862, 5231, 0));
-
+	public static final int NEX_SMOKE_PROC = 2720;
+	public static final int NEX_SHADOW_PROC = 2040;
+	public static final int NEX_BLOOD_PROC = 1360;
+	public static final int NEX_ICE_PROC = 680;
 	public static final String BREW_MESSAGE = "You drink some of the foul liquid.";
 	public final String SMOKE_SPAWN_MSG = "Fill my soul with smoke!";
 	public final String COUGH_SPECIAL_MSG = "Let the virus flow through you!";
