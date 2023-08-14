@@ -18,6 +18,8 @@ import com.example.nexatron.tasks.nex.NexAbort;
 import com.example.nexatron.tasks.nex.NexConsumables;
 import com.example.nexatron.tasks.nex.NexPrayers;
 import com.example.nexatron.tasks.nex.NexStart;
+import com.example.nexatron.tasks.nex.shadow.AttackShadowMinion;
+import com.example.nexatron.tasks.nex.shadow.AttackShadowNex;
 import com.example.nexatron.tasks.nex.smoke.AttackSmokeMinion;
 import com.example.nexatron.tasks.nex.smoke.AttackSmokeNex;
 import com.example.nexatron.tasks.nex.smoke.DodgeSmokeDash;
@@ -97,6 +99,8 @@ public class NexatronPlugin extends Plugin
 			NexConsumables.class,
 			DodgeSmokeDash.class,
 			AttackSmokeMinion.class,
+			AttackShadowNex.class,
+			AttackShadowMinion.class,
 		};
 	}
 
