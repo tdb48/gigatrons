@@ -73,7 +73,7 @@ public class NexPrayers extends StagedTask
 
 	public Prayer getDefensive()
 	{
-		// TODO: add pray mage logic for minio shadow
+		// TODO: add pray mage logic for minion shadow
 		if (nexManager.getStage() == Stage.NEX_SMOKE
 			&& nexManager.nex.nex.isInteracting()
 			&& nexManager.nex.nex.getInteracting().equals(client.getLocalPlayer()))
@@ -83,6 +83,15 @@ public class NexPrayers extends StagedTask
 		if (nexManager.getStage() == Stage.NEX_SHADOW
 			|| nexManager.getStage() == Stage.MINION_SHADOW)
 		{
+			// TODO: flick against umbra depending on ticks while setting it up!
+			if (nexManager.nex.nex.isInteracting()
+				&& !nexManager.nex.nex.getInteracting().equals(client.getLocalPlayer())
+				&& nexManager.nex.umbra != null
+				&& nexManager.nex.umbra.isInteracting()
+				&& nexManager.nex.umbra.getInteracting().equals(client.getLocalPlayer()))
+			{
+				return Prayer.PROTECT_FROM_MAGIC;
+			}
 			return Prayer.PROTECT_FROM_MISSILES;
 		}
 		return Prayer.PROTECT_FROM_MAGIC;
