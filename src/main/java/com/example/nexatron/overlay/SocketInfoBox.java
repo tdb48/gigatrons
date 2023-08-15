@@ -48,7 +48,7 @@ public class SocketInfoBox extends OverlayPanel
 		panelComponent.setPreferredSize(new Dimension(graphics.getFontMetrics().stringWidth(title) + 100, 0));
 
 		panelComponent.getChildren().add(LineComponent.builder().left("Master ").right(String.valueOf(plugin.nexManager.socket.isMaster)).build());
-		panelComponent.getChildren().add(LineComponent.builder().left("Other hard ").right(String.valueOf(plugin.nexManager.socket.otherHardDiary)).build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Other player ").right(String.valueOf(plugin.nexManager.socket.otherName)).build());
 		panelComponent.getChildren().add(LineComponent.builder().left("Teleport out ").right(String.valueOf(plugin.nexManager.socket.teleportOut)).build());
 
 		return panelComponent.render(graphics);
