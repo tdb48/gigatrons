@@ -103,13 +103,8 @@ public class Socket
 			return;
 		}
 		otherName = payload.getString("name");
-
 		otherHardDiary = payload.getBoolean("hard");
 		otherTeleportOut = payload.getBoolean("teleport");
-//		if (!isMaster)
-//		{
-//
-//		}
 	}
 
 	public boolean needToKc()
