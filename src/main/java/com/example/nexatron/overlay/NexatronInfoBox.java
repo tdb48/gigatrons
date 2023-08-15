@@ -14,7 +14,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
-import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -78,10 +77,13 @@ public class NexatronInfoBox extends OverlayPanel
 		if (plugin.nexManager.nex.nex != null)
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("Nex tick ").right(String.valueOf(plugin.nexManager.nex.nexAttackTick)).build());
-			panelComponent.getChildren().add(LineComponent.builder().left("brew sips ").right(String.valueOf(plugin.nexManager.nex.brewSipsNeeded)).build());
-			panelComponent.getChildren().add(LineComponent.builder().left("can step out ").right(String.valueOf(plugin.nexManager.nex.canStepOut())).build());
-			panelComponent.getChildren().add(LineComponent.builder().left("out of nex range ").right(String.valueOf(plugin.nexManager.nex.outOfNexRange())).build());
-
+//			panelComponent.getChildren().add(LineComponent.builder().left("brew sips ").right(String.valueOf(plugin.nexManager.nex.brewSipsNeeded)).build());
+			panelComponent.getChildren().add(LineComponent.builder().left("umbra tick ").right(String.valueOf(plugin.nexManager.nex.umbraAttackTick)).build());
+			if (plugin.nexManager.nex.nextSpecial != null)
+			{
+				panelComponent.getChildren().add(LineComponent.builder().left("Next special ").right(String.valueOf(plugin.nexManager.nex.nextSpecial)).build());
+			}
+			panelComponent.getChildren().add(LineComponent.builder().left("special ").right(String.valueOf(plugin.nexManager.nex.attacksUntilSpecial)).build());
 		}
 		return panelComponent.render(graphics);
 	}
