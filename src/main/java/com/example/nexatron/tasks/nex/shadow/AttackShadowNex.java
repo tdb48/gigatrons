@@ -57,7 +57,7 @@ public class AttackShadowNex extends StagedTask
 			Combat.toggleSpec();
 		}
 
-		WorldPoint standTile = nexManager.nex.nexShadowTick > 0 ?
+		WorldPoint standTile = nexManager.nex.shadowTick > 0 ?
 			nexManager.nex.getDodgeTile() :
 			nexManager.nex.getMainTile();
 
