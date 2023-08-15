@@ -36,13 +36,13 @@ public class DodgeSmokeDash extends StagedTask
 	{
 		if (nexManager.nex.dashTick > 0)
 		{
-			nexManager.nex.dashTick--;
 			if (nexManager.getPlayerPoint().distanceTo(nexManager.nex.centerPoint) > 6)
 			{
 				return false;
 			}
 			if (nexManager.nex.nex.getOverheadText() != null
-				&& nexManager.nex.nex.getOverheadText().toLowerCase().contains("there is.."))
+				&& nexManager.nex.nex.getOverheadText().toLowerCase().contains("there is..")
+				&& nexManager.nex.dashTick < 7)
 			{
 				int orientation = nexManager.nex.nex.getOrientation();
 				if (orientation < 250 || orientation > 1780)
@@ -114,8 +114,8 @@ public class DodgeSmokeDash extends StagedTask
 			String message = chatMessage.getMessage().toLowerCase();
 			if (message.contains("there is.."))
 			{
+				nexManager.nex.dashTick = nexManager.getStage().equals(Stage.MINION_SMOKE) ? 13 : 9;
 				nexManager.nex.nexAttackTick = 12;
-				nexManager.nex.dashTick = 9;
 			}
 		}
 	}
