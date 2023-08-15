@@ -4,6 +4,7 @@ import com.example.Utility.Reachable;
 import com.example.Utility.Static;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
+import com.example.nexatron.model.constants.NexSpecial;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.Task;
 import com.example.nexatron.taskformat.TaskDescriptor;
@@ -89,25 +90,34 @@ public class ProgressStage extends Task
 			}
 			if (message.contains("darken my shadow!"))
 			{
+				nexManager.nex.attacksUntilSpecial = 0;
 				nexManager.nex.invincibleTick = 4;
 				nexManager.nex.initShadowNexTiles(false);
 				nexManager.setStage(Stage.NEX_SHADOW);
 			}
 			if (message.contains("umbra, don't fail me!"))
 			{
+				nexManager.nex.attacksUntilSpecial = 0;
 				nexManager.nex.initShadowMinionTiles();
 				nexManager.setStage(Stage.MINION_SHADOW);
 			}
 			if (message.contains("flood my lungs with blood!"))
 			{
+				nexManager.nex.attacksUntilSpecial = 0;
+				nexManager.nex.invincibleTick = 4;
+				nexManager.nex.nextSpecial = nexManager.nex.nextSpecial.equals(NexSpecial.SHADOWS) ?
+					NexSpecial.SACRIFICE :
+					NexSpecial.SIPHON;
 				nexManager.setStage(Stage.NEX_BLOOD);
 			}
 			if (message.contains("cruor, don't fail me!"))
 			{
+				nexManager.nex.attacksUntilSpecial = 0;
 				nexManager.setStage(Stage.MINION_BLOOD);
 			}
 			if (message.contains("infuse me with the power of ice!"))
 			{
+				nexManager.nex.invincibleTick = 4;
 				nexManager.setStage(Stage.NEX_ICE);
 			}
 			if (message.contains("glacies, don't fail me!"))
@@ -116,6 +126,7 @@ public class ProgressStage extends Task
 			}
 			if (message.contains("now, the power of zaros!"))
 			{
+				nexManager.nex.invincibleTick = 4;
 				nexManager.setStage(Stage.NEX_ZAROS);
 			}
 			if (message.contains("my wrath"))
