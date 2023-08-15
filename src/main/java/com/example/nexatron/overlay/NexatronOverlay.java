@@ -61,8 +61,13 @@ public class NexatronOverlay extends Overlay
 			drawPoint(plugin.nexManager.nex.slaveDodgeTile, graphics2D, Color.BLUE);
 			drawPoint(plugin.nexManager.nex.slaveStepUnderTile, graphics2D, Color.GREEN);
 			drawPoint(plugin.nexManager.nex.slaveMainTile, graphics2D, Color.RED);
+			drawPoints(plugin.nexManager.nex.sacrificeTiles, graphics2D, Color.GRAY);
 
-
+			for (Map.Entry<NPC, Integer> entry : plugin.nexManager.nex.reavers.entrySet())
+			{
+				Point textLocation = entry.getKey().getCanvasTextLocation(graphics2D, String.valueOf(entry.getValue()), 0);
+				renderTextLocation(graphics2D, String.valueOf(entry.getValue()), 14, Font.BOLD, Color.PINK, textLocation);
+			}
 		}
 		return null;
 	}
