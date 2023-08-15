@@ -5,6 +5,7 @@ import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
+import com.example.Packets.ObjectPackets;
 import com.example.Packets.WidgetPackets;
 import com.example.Utility.Combat;
 import com.example.Utility.Prayers;
@@ -36,17 +37,30 @@ public class TEMPORARY_KcAttack extends StagedTask
 	{
 		if (!nexManager.config.kcMode())
 		{
+			if (nexManager.nex.teleportOut
+				&& nexManager.kcArea.bankDoor != null)
+			{
+				nexManager.print("Clicking door");
+				MousePackets.queueClickPacket();
+				ObjectPackets.queueObjectAction(nexManager.kcArea.bankDoor, false, "Open");
+			}
 			return false;
 		}
 		Widget restore = Consumable.getRestore();
-		if (!client.getLocalPlayer().isInteracting() && (
-			Prayers.getPoints() == 0
-				|| restore == null))
+		NPC npcInteractingWithUs = NPCs.search().interactingWithLocal().first().orElse(null);
+		if (Prayers.getPoints() == 0
+			|| restore == null)
 		{
+			if (npcInteractingWithUs != null)
+			{
+				nexManager.print("Attacking npc thats attacking us, then stopping");
+				MousePackets.queueClickPacket();
+				NPCPackets.queueNPCAction(npcInteractingWithUs, "Attack");
+			}
 			return false;
 		}
 
-		if (Prayers.getPoints() <= 30 && restore != null)
+		if (Prayers.getPoints() <= 50)
 		{
 			nexManager.print("Drinking restore pot");
 			MousePackets.queueClickPacket();
