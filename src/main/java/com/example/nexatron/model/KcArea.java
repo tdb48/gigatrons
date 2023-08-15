@@ -100,7 +100,6 @@ public class KcArea
 		GameObject gameObject = gameObjectSpawned.getGameObject();
 		if (gameObject.getId() == NexConst.BANK_DOOR)
 		{
-			nexManager.print("bank door spawned");
 			bankDoor = gameObject;
 		}
 	}
@@ -111,7 +110,6 @@ public class KcArea
 		GameObject gameObject = gameObjectDespawned.getGameObject();
 		if (gameObject.getId() == NexConst.BANK_DOOR)
 		{
-			nexManager.print("bank door despawned");
 			bankDoor = null;
 		}
 	}
