@@ -1,13 +1,15 @@
 package com.example.nexatron.model;
 
-import com.example.EthanApiPlugin.Collections.Equipment;
-import com.example.Utility.Combat;
-import com.example.Utility.ObjectUtil;
+import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Utility.WorldAreas;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
+import com.example.nexatron.model.constants.NexSpecial;
 import com.example.nexatron.model.constants.Stage;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
@@ -22,6 +24,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.EventBus;
@@ -38,16 +41,19 @@ public class Nex
 	public GameObject altar = null;
 	public WorldPoint centerPoint = null;
 	public int nexAttackTick = 0;
-	public int nexShadowTick = 0;
+	public int attacksUntilSpecial = 0;
+	public int shadowTick = 0;
 	public int umbraAttackTick = 0;
 	public boolean teleportOut = false;
 	public WorldPoint masterMainTile = null;
 	public WorldPoint masterDodgeTile = null;
 	public WorldPoint masterStepUnderTile = null;
-
 	public WorldPoint slaveMainTile = null;
 	public WorldPoint slaveDodgeTile = null;
 	public WorldPoint slaveStepUnderTile = null;
+	public HashMap<NPC, Integer> reavers = new HashMap<>();
+	public ArrayList<WorldPoint> sacrificeTiles = new ArrayList<>();
+	public NexSpecial nextSpecial = null;
 	public int invincibleTick = 0;
 	public int dashTick = 0;
 	public boolean shouldTripleBrew = false;
@@ -75,13 +81,17 @@ public class Nex
 
 	public void bankReset()
 	{
+		sacrificeTiles = new ArrayList<>();
+		attacksUntilSpecial = 0;
+		nextSpecial = null;
+		reavers = new HashMap<>();
 		nex = null;
 		fumus = null;
 		umbra = null;
 		glacies = null;
 		cruor = null;
 		nexAttackTick = 0;
-		nexShadowTick = 0;
+		shadowTick = 0;
 		umbraAttackTick = 0;
 		teleportOut = false;
 		invincibleTick = 0;
@@ -108,17 +118,17 @@ public class Nex
 		{
 			invincibleTick--;
 		}
-		if (nexShadowTick > 0)
+		if (shadowTick > 0)
 		{
-			nexShadowTick--;
+			shadowTick--;
+		}
+		if (dashTick > 0)
+		{
+			dashTick--;
 		}
 		if (nexManager.getStage().equals(Stage.MINION_SHADOW))
 		{
-			GameObject shadow = ObjectUtil.getNearestGameObject(NexConst.SHADOW);
-			if (shadow == null)
-			{
-				initShadowMinionTiles();
-			}
+			initShadowMinionTiles();
 		}
 		shouldTripleBrew = shouldTripleBrew();
 	}
@@ -133,55 +143,28 @@ public class Nex
 			{
 				brewSipsNeeded--;
 			}
+			if (message.contains(NexConst.SHADOW_DARKNESS_SPECIAL_MSG.toLowerCase()))
+			{
+				attacksUntilSpecial = 5;
+				nextSpecial = NexSpecial.SHADOWS;
+			}
+			if (message.contains(NexConst.SHADOW_POOL_SPECIAL_MSG.toLowerCase()))
+			{
+				attacksUntilSpecial = 5;
+				nextSpecial = NexSpecial.EMBRACE;
+			}
+			if (message.contains(NexConst.BLOOD_SACRIFICE_SPECIAL_MSG.toLowerCase()))
+			{
+				attacksUntilSpecial = 5;
+				nextSpecial = NexSpecial.SIPHON;
+			}
+			if (message.contains(NexConst.BLOOD_SIPHON_SPECIAL_MSG.toLowerCase()))
+			{
+				attacksUntilSpecial = 5;
+				nextSpecial = NexSpecial.SACRIFICE;
+			}
+
 		}
-	}
-
-	public final int MISSING_HEALTH = 40;
-	public final int MAX_BREW_HP = 115;
-	public final int BREW_HEAL = 16;
-
-	public boolean shouldTripleBrew()
-	{
-		if (getMissingHealth() > MISSING_HEALTH)
-		{
-			brewSipsNeeded = brewSipsToFull();
-			nexManager.print("Setting brew sips to " + brewSipsNeeded);
-			return true;
-		}
-		if (brewSipsNeeded == 0)
-		{
-			return false;
-		}
-		return shouldTripleBrew;
-	}
-
-	public int brewSipsToFull()
-	{
-		return getMissingHealth() / BREW_HEAL;
-	}
-
-	public int getMissingHealth()
-	{
-		return MAX_BREW_HP - client.getBoostedSkillLevel(Skill.HITPOINTS);
-	}
-
-	public boolean onRangedPhase()
-	{
-		Stage stage = nexManager.getStage();
-		return stage == Stage.MINION_ICE
-			|| stage == Stage.MINION_BLOOD
-			|| stage == Stage.MINION_SHADOW
-			|| stage == Stage.NEX_SHADOW
-			|| stage == Stage.MINION_SMOKE;
-	}
-
-	public boolean onMeleePhase()
-	{
-		Stage stage = nexManager.getStage();
-		return stage == Stage.NEX_ICE
-			|| stage == Stage.NEX_BLOOD
-			|| stage == Stage.NEX_SMOKE
-			|| stage == Stage.NEX_ZAROS;
 	}
 
 	@Subscribe
@@ -197,6 +180,11 @@ public class Nex
 			|| npc.getAnimation() == NexConst.NEX_MELEE_ANIMATION)
 		{
 			nexAttackTick = 5;
+			attacksUntilSpecial--;
+		}
+		if (npc.getAnimation() == NexConst.UMBRA_ATTACK_ANIMATION)
+		{
+			umbraAttackTick = 6;
 		}
 		if (npc.getAnimation() == NexConst.NEX_DASHBACK_ANIMATION)
 		{
@@ -220,11 +208,7 @@ public class Nex
 		}
 		if (gameObject.getId() == NexConst.SHADOW)
 		{
-			if (nexManager.getStage().equals(Stage.MINION_SHADOW))
-			{
-				initShadowMinionTiles();
-			}
-			nexShadowTick = 5;
+			shadowTick = 5;
 		}
 	}
 
@@ -269,6 +253,10 @@ public class Nex
 		{
 			glacies = npc;
 		}
+		if (npcName.contains("reaver"))
+		{
+			reavers.put(npc, 100);
+		}
 	}
 
 	@Subscribe
@@ -300,6 +288,103 @@ public class Nex
 		{
 			glacies = null;
 		}
+		if (npcName.contains("reaver"))
+		{
+			reavers.remove(npc);
+		}
+	}
+
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
+	{
+		if (hitsplatApplied.getActor().getName() != null
+			&& hitsplatApplied.getActor().getName().toLowerCase().contains("reaver"))
+		{
+			NPC reaver = (NPC) hitsplatApplied.getActor();
+			int hp = nexManager.nex.getNPCHP(reaver);
+			if (hp == 0)
+			{
+				reavers.remove(reaver);
+			}
+			else
+			{
+				reavers.put(reaver, hp);
+			}
+		}
+	}
+
+	// TODO: revisit
+//	public WorldPoint getClosestBloodStepUnder()
+//	{
+//		if (nex == null)
+//		{
+//			return null;
+//		}
+//		WorldPoint nexCenter = WorldAreas.getCenter(nex.getWorldArea());
+//		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
+//		ArrayList<String> directions = (ArrayList<String>) Arrays.asList("west", "north", "east", "south");
+//		for (WorldPoint worldPoint : nex.getWorldArea().toWorldPointList())
+//		{
+//			int x = worldPoint.getX();
+//			int y = worldPoint.getY();
+//			if (y > playerPoint.getY())
+//			{
+//				directions.remove("north");
+//			}
+//			if (y < playerPoint.getY())
+//			{
+//				directions.remove("south");
+//			}
+//			if (x < playerPoint.getX())
+//			{
+//				directions.remove("west");
+//			}
+//			if (x > playerPoint.getX())
+//			{
+//				directions.remove("east");
+//			}
+//		}
+//		String direction = directions.isEmpty() ?
+//			"south" :
+//			directions.get(0);
+//		if (direction.equals("south"))
+//		{
+//
+//		}
+//	}
+
+	public boolean isSacrificeActive()
+	{
+		return client.getLocalPlayer().getGraphic() == NexConst.SACRIFICE_GRAPIHC;
+	}
+
+	public WorldPoint getSacrificeTile()
+	{
+		if (nex == null)
+		{
+			return null;
+		}
+		WorldPoint southWest = WorldAreas.getCenter(nex.getWorldArea()).dx(-10).dy(-10);
+		WorldPoint northEast = WorldAreas.getCenter(nex.getWorldArea()).dx(10).dy(10);
+		sacrificeTiles = (ArrayList<WorldPoint>) WorldAreas.createArea(southWest, northEast).toWorldPointList();
+		sacrificeTiles.removeIf(n -> n.distanceTo(nex.getWorldArea()) != 8);
+		int shortestDistance = 10;
+		WorldPoint shortestPathPoint = null;
+		HashSet<WorldPoint> emptySet = new HashSet<>();
+		for (WorldPoint worldPoint : sacrificeTiles)
+		{
+			ArrayList<WorldPoint> path = EthanApiPlugin.pathToGoal(worldPoint, emptySet);
+			if (path == null)
+			{
+				continue;
+			}
+			if (path.size() < shortestDistance)
+			{
+				shortestDistance = path.size();
+				shortestPathPoint = worldPoint;
+			}
+		}
+		return shortestPathPoint;
 	}
 
 	public WorldPoint getUnderNex()
@@ -320,6 +405,61 @@ public class Nex
 		return nexManager.socket.isMaster ?
 			nexManager.nex.masterStepUnderTile :
 			nexManager.nex.slaveStepUnderTile;
+	}
+
+	public final int MISSING_HEALTH = 50;
+	public final int MAX_BREW_HP = 115;
+	public final int BREW_HEAL = 16;
+
+	public boolean shouldTripleBrew()
+	{
+		if (getMissingHealth() > MISSING_HEALTH)
+		{
+			brewSipsNeeded = brewSipsToFull();
+			nexManager.print("Setting brew sips to " + brewSipsNeeded);
+			return true;
+		}
+		if (brewSipsNeeded == 0)
+		{
+			return false;
+		}
+		return shouldTripleBrew;
+	}
+
+	public int brewSipsToFull()
+	{
+		return getMissingHealth() / BREW_HEAL;
+	}
+
+	public int getMissingHealth()
+	{
+		int hpThreshold = MAX_BREW_HP;
+		if (nexManager.getStage().equals(Stage.NEX_SHADOW)
+			|| nexManager.getStage().equals(Stage.MINION_SMOKE))
+		{
+			hpThreshold = 85;
+		}
+//		return MAX_BREW_HP - client.getBoostedSkillLevel(Skill.HITPOINTS);
+		return hpThreshold - client.getBoostedSkillLevel(Skill.HITPOINTS);
+	}
+
+	public boolean onRangedPhase()
+	{
+		Stage stage = nexManager.getStage();
+		return stage == Stage.MINION_ICE
+			|| stage == Stage.MINION_BLOOD
+			|| stage == Stage.MINION_SHADOW
+			|| stage == Stage.NEX_SHADOW
+			|| stage == Stage.MINION_SMOKE;
+	}
+
+	public boolean onMeleePhase()
+	{
+		Stage stage = nexManager.getStage();
+		return stage == Stage.NEX_ICE
+			|| stage == Stage.NEX_BLOOD
+			|| stage == Stage.NEX_SMOKE
+			|| stage == Stage.NEX_ZAROS;
 	}
 
 	public WorldPoint getMainTile()
@@ -458,7 +598,7 @@ public class Nex
 		{
 			return;
 		}
-		if (nexShadowTick > 0)
+		if (shadowTick > 0)
 		{
 			masterMainTile = centerPoint.dx(3).dy(10);
 			slaveMainTile = centerPoint.dx(3).dy(10);
