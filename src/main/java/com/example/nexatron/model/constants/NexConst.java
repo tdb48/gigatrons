@@ -67,6 +67,7 @@ public class NexConst
 	public static final int DEATH_CHEST = 9168;
 	public static final int BANK_DOOR = 42934;
 	public static final int ALTAR = 42965;
+	public static final int UMBRA_ATTACK_ANIMATION = 1979;
 	public static final int ACTIVE_BARRIER = 42967;
 	public static final int INACTIVE_BARRIER = 42968;
 	public static final int BANKER = 11289;
@@ -86,31 +87,33 @@ public class NexConst
 	public static final int NEX_SHADOW_PROC = 2040;
 	public static final int NEX_BLOOD_PROC = 1360;
 	public static final int NEX_ICE_PROC = 680;
+	public static final int SACRIFICE_GRAPIHC = -1;
+
 	public static final String BREW_MESSAGE = "You drink some of the foul liquid.";
-	public final String SMOKE_SPAWN_MSG = "Fill my soul with smoke!";
-	public final String COUGH_SPECIAL_MSG = "Let the virus flow through you!";
-	public final String DASH_SPECIAL_MSG = "There is...";
-	public final String FUMUS_SPAWN_MSG = "Fumus, don't fail me!";
+	public static final String SMOKE_SPAWN_MSG = "Fill my soul with smoke!";
+	public static final String COUGH_SPECIAL_MSG = "Let the virus flow through you!";
+	public static final String DASH_SPECIAL_MSG = "There is...";
+	public static final String FUMUS_SPAWN_MSG = "Fumus, don't fail me!";
 
 	//Shadow
-	public final String SHADOW_SPAWN_MSG = "Darken my shadow!";
-	public final String SHADOW_DARKNESS_SPECIAL_MSG = "Embrace darkness!";
-	public final String SHADOW_POOL_SPECIAL_MSG = "Fear the shadow!";
-	public final String UMBRA_SPAWN_MSG = "Umbra, don't fail me!";
+	public static final String SHADOW_SPAWN_MSG = "Darken my shadow!";
+	public static final String SHADOW_DARKNESS_SPECIAL_MSG = "Embrace darkness!";
+	public static final String SHADOW_POOL_SPECIAL_MSG = "Fear the shadow!";
+	public static final String UMBRA_SPAWN_MSG = "Umbra, don't fail me!";
 
 	//Blood
-	public final String BLOOD_SPAWN_MSG = "Flood my lungs with blood!";
-	public final String BLOOD_SIPHON_SPECIAL_MSG = "A siphon will solve this!";
-	public final String BLOOD_SACRIFICE_SPECIAL_MSG = "I demand a blood sacrifice!";
-	public final String CRUOR_SPAWN_MSG = "Cruor, don't fail me!";
+	public static final String BLOOD_SPAWN_MSG = "Flood my lungs with blood!";
+	public static  final String BLOOD_SIPHON_SPECIAL_MSG = "A siphon will solve this!";
+	public static final String BLOOD_SACRIFICE_SPECIAL_MSG = "I demand a blood sacrifice!";
+	public static final String CRUOR_SPAWN_MSG = "Cruor, don't fail me!";
 
 	//Ice
-	public final String ICE_SPAWN_MSG = "Infuse me with the power of ice!";
-	public final String ICE_PRISON_SPECIAL_MSG = "Die now, in a prison of ice!";
-	public final String ICE_CONTAIN_SPECIAL_MSG = "Contain this!";
-	public final String GLACIES_SPAWN_MSG = "Glacies, don't fail me!";
+	public static final String ICE_SPAWN_MSG = "Infuse me with the power of ice!";
+	public static final String ICE_PRISON_SPECIAL_MSG = "Die now, in a prison of ice!";
+	public static final String ICE_CONTAIN_SPECIAL_MSG = "Contain this!";
+	public static final String GLACIES_SPAWN_MSG = "Glacies, don't fail me!";
 
 	//Zaros
-	public final String ZAROS_SPAWN_MSG = "NOW, THE POWER OF ZAROS!";
+	public static final String ZAROS_SPAWN_MSG = "NOW, THE POWER OF ZAROS!";
 
 }
