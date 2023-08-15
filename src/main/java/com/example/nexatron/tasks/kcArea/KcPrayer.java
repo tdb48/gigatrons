@@ -1,7 +1,6 @@
 package com.example.nexatron.tasks.kcArea;
 
 
-import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.Utility.Prayer;
 import com.example.Utility.Prayers;
 import com.example.nexatron.manager.NexManager;
@@ -27,6 +26,10 @@ public class KcPrayer extends StagedTask
 
 	public boolean execute()
 	{
+		if (!nexManager.config.kcMode())
+		{
+			return false;
+		}
 		if (Prayers.getPoints() == 0)
 		{
 			return false;
