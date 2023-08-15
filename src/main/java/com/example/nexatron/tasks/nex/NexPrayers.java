@@ -84,13 +84,19 @@ public class NexPrayers extends StagedTask
 			|| nexManager.getStage() == Stage.MINION_SHADOW)
 		{
 			// TODO: flick against umbra depending on ticks while setting it up!
-			if (nexManager.nex.nex.isInteracting()
-				&& !nexManager.nex.nex.getInteracting().equals(client.getLocalPlayer())
-				&& nexManager.nex.umbra != null
+			if (nexManager.nex.umbra != null
 				&& nexManager.nex.umbra.isInteracting()
 				&& nexManager.nex.umbra.getInteracting().equals(client.getLocalPlayer()))
 			{
-				return Prayer.PROTECT_FROM_MAGIC;
+				if (nexManager.nex.nex.isInteracting()
+					&& !nexManager.nex.nex.getInteracting().equals(client.getLocalPlayer()))
+				{
+					return Prayer.PROTECT_FROM_MAGIC;
+				}
+				if (nexManager.nex.umbraAttackTick == 2)
+				{
+					return Prayer.PROTECT_FROM_MAGIC;
+				}
 			}
 			return Prayer.PROTECT_FROM_MISSILES;
 		}
