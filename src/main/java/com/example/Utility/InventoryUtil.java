@@ -2,9 +2,9 @@ package com.example.Utility;
 
 import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.EthanApiPlugin.Collections.Widgets;
-import net.runelite.api.widgets.Widget;
-
 import java.util.ArrayList;
+import net.runelite.api.GameState;
+import net.runelite.api.widgets.Widget;
 
 public class InventoryUtil
 {
@@ -24,6 +24,10 @@ public class InventoryUtil
 
 	public static Widget getFirst(String name)
 	{
+		if (!Static.getClient().getGameState().equals(GameState.LOGGED_IN))
+		{
+			return null;
+		}
 		return Widgets.search().nameContains(name).first().orElse(null);
 	}
 
