@@ -8,7 +8,6 @@ import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import static com.example.PacketUtils.PacketReflection.client;
