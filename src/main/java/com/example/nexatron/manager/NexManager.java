@@ -171,12 +171,6 @@ public class NexManager
 		return client.getVarbitValue(Varbits.RESURRECT_THRALL) == 0;
 	}
 
-	public void castThrall()
-	{
-		MousePackets.queueClickPacket();
-		WidgetPackets.queueWidgetAction(client.getWidget(WidgetInfoExtended.SPELL_RESURRECT_GREATER_GHOST.getPackedId()), "Cast");
-	}
-
 	public void castDeathCharge()
 	{
 		MousePackets.queueClickPacket();
