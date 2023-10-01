@@ -58,6 +58,7 @@ public class Nex
 	public int dashTick = 0;
 	public boolean shouldTripleBrew = false;
 	public int brewSipsNeeded = 0;
+	public boolean sacrificeActive = false;
 	@Inject
 	NexManager nexManager;
 	@Inject
@@ -98,6 +99,7 @@ public class Nex
 		dashTick = 0;
 		shouldTripleBrew = false;
 		brewSipsNeeded = 0;
+		sacrificeActive = false;
 	}
 
 	public void fullReset()
@@ -155,15 +157,21 @@ public class Nex
 			}
 			if (message.contains(NexConst.BLOOD_SACRIFICE_SPECIAL_MSG.toLowerCase()))
 			{
-				attacksUntilSpecial = 5;
 				nextSpecial = NexSpecial.SIPHON;
+			}
+			if (message.contains(NexConst.BLOOD_SACRIFICE_ACTIVE_MSG.toLowerCase()))
+			{
+				sacrificeActive = true;
+			}
+			if (message.contains(NexConst.BLOOD_SACRIFICE_INACTIVE_MSG.toLowerCase()))
+			{
+				sacrificeActive = false;
 			}
 			if (message.contains(NexConst.BLOOD_SIPHON_SPECIAL_MSG.toLowerCase()))
 			{
-				attacksUntilSpecial = 5;
+				attacksUntilSpecial = 8;
 				nextSpecial = NexSpecial.SACRIFICE;
 			}
-
 		}
 	}
 
