@@ -1,6 +1,9 @@
 package com.example.nexatron;
 
-import java.awt.Button;
+import com.example.nexatron.model.setup.Helm;
+import com.example.nexatron.model.setup.MeleeCape;
+import com.example.nexatron.model.setup.MeleeOffhand;
+import com.example.nexatron.model.setup.RangeCape;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -24,20 +27,74 @@ public interface NexatronConfig extends Config
 	)
 	String CONSUME_SETTINGS = "ConsumeOptions";
 
+	@ConfigSection(
+		name = "Setup",
+		description = "Settings for setup",
+		position = 100,
+		closedByDefault = true
+	)
+	String SETUP = "Setup";
+
+	@ConfigItem(
+		position = 101,
+		keyName = "helm",
+		name = "Helm",
+		description = "",
+		section = "Setup"
+	)
+	default Helm helm()
+	{
+		return Helm.MASORI_F;
+	}
+
+	@ConfigItem(
+		position = 102,
+		keyName = "meleeCape",
+		name = "Melee Cape",
+		description = "",
+		section = "Setup"
+	)
+	default MeleeCape meleeCape()
+	{
+		return MeleeCape.INFERNAL_CAPE;
+	}
+
+	@ConfigItem(
+		position = 103,
+		keyName = "rangeCape",
+		name = "Range Cape",
+		description = "",
+		section = "Setup"
+	)
+	default RangeCape rangeCape()
+	{
+		return RangeCape.ASSEMBLER;
+	}
+
+	@ConfigItem(
+		position = 104,
+		keyName = "meleeOffhand",
+		name = "Melee Offhand",
+		description = "",
+		section = "Setup"
+	)
+	default MeleeOffhand meleeOffhand()
+	{
+		return MeleeOffhand.DDEF;
+	}
 
 
-
-//	@ConfigItem(
-//		position = 1,
-//		keyName = "useThralls",
-//		name = "Use Thralls",
-//		description = "Whether to use thralls or not",
-//		section = "General"
-//	)
-//	default boolean useThralls()
-//	{
-//		return false;
-//	}
+	@ConfigItem(
+		position = 1,
+		keyName = "useThralls",
+		name = "Use Thralls",
+		description = "Whether to use thralls or not",
+		section = "General"
+	)
+	default boolean useThralls()
+	{
+		return false;
+	}
 
 
 	@ConfigItem(

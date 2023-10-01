@@ -10,8 +10,6 @@ import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
 import com.example.Packets.WidgetPackets;
 import com.example.Utility.BankUtil;
-import com.example.Utility.Prayer;
-import com.example.Utility.Prayers;
 import com.example.Utility.Static;
 import com.example.Utility.WidgetUtil;
 import com.example.nexatron.NexatronConfig;
@@ -23,11 +21,10 @@ import com.example.nexatron.model.KcArea;
 import com.example.nexatron.model.Lobby;
 import com.example.nexatron.model.Nex;
 import com.example.nexatron.model.Overall;
-import com.example.nexatron.model.Setup;
+import com.example.nexatron.model.setup.Setup;
 import com.example.nexatron.model.Socket;
 import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
-import com.example.toagigatron.model.constants.ToaConstants;
 import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,7 +47,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.game.ItemManager;
 
 @Singleton
 public class NexManager

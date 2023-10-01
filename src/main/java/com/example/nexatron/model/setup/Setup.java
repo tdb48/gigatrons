@@ -1,5 +1,6 @@
-package com.example.nexatron.model;
+package com.example.nexatron.model.setup;
 
+import com.example.nexatron.NexatronConfig;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
 import java.util.ArrayList;
@@ -12,6 +13,9 @@ public class Setup
 {
 	@Inject
 	NexManager nexManager;
+
+	@Inject
+	NexatronConfig config;
 
 	public int getBolts()
 	{
@@ -41,8 +45,10 @@ public class Setup
 				ItemID.ZARYTE_CROSSBOW,
 				ItemID.MASORI_BODY_F,
 				ItemID.MASORI_CHAPS_F,
-				ItemID.AVAS_ASSEMBLER,
-				ItemID.HELM_OF_NEITIZNOT,
+//				ItemID.AVAS_ASSEMBLER,
+				config.rangeCape().itemId,
+				config.helm().itemId,
+//				ItemID.HELM_OF_NEITIZNOT,
 				ItemID.NECKLACE_OF_ANGUISH,
 				ItemID.TWISTED_BUCKLER,
 				ItemID.LIGHTBEARER,
@@ -57,26 +63,15 @@ public class Setup
 				ItemID.OSMUMTENS_FANG,
 				ItemID.BANDOS_CHESTPLATE,
 				ItemID.MASORI_CHAPS_F,
-				ItemID.INFERNAL_CAPE,
-				ItemID.HELM_OF_NEITIZNOT,
+//				ItemID.INFERNAL_CAPE,
+				config.meleeCape().itemId,
+//				ItemID.HELM_OF_NEITIZNOT,
+				config.helm().itemId,
 				ItemID.AMULET_OF_BLOOD_FURY,
-				ItemID.DRAGON_DEFENDER,
+//				ItemID.DRAGON_DEFENDER,
+				config.meleeOffhand().itemId,
 				ItemID.LIGHTBEARER,
 				ItemID.BARROWS_GLOVES,
 				ItemID.PRIMORDIAL_BOOTS));
-	}
-
-	public ArrayList<Integer> rangeKC()
-	{
-		return new ArrayList<>(
-			Arrays.asList(
-				ItemID.TOXIC_BLOWPIPE,
-				ItemID.ARMADYL_CHESTPLATE,
-				ItemID.ARMADYL_CHAINSKIRT,
-				ItemID.AVAS_ASSEMBLER,
-				ItemID.HELM_OF_NEITIZNOT,
-				ItemID.NECKLACE_OF_ANGUISH,
-				ItemID.LIGHTBEARER,
-				ItemID.BARROWS_GLOVES));
 	}
 }
