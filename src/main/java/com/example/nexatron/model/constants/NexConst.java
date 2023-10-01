@@ -88,6 +88,7 @@ public class NexConst
 	public static final int NEX_BLOOD_PROC = 1360;
 	public static final int NEX_ICE_PROC = 680;
 	public static final int SACRIFICE_GRAPIHC = -1;
+	public static final int SPELLBOOK_VARB = 4070;
 
 	public static final String BREW_MESSAGE = "You drink some of the foul liquid.";
 	public static final String SMOKE_SPAWN_MSG = "Fill my soul with smoke!";
@@ -105,6 +106,8 @@ public class NexConst
 	public static final String BLOOD_SPAWN_MSG = "Flood my lungs with blood!";
 	public static  final String BLOOD_SIPHON_SPECIAL_MSG = "A siphon will solve this!";
 	public static final String BLOOD_SACRIFICE_SPECIAL_MSG = "I demand a blood sacrifice!";
+	public static final String BLOOD_SACRIFICE_ACTIVE_MSG = "nex has marked you for a blood sacrifice";
+	public static final String BLOOD_SACRIFICE_INACTIVE_MSG = "you managed to escape from nex";
 	public static final String CRUOR_SPAWN_MSG = "Cruor, don't fail me!";
 
 	//Ice
