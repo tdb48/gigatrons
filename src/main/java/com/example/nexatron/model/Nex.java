@@ -1,6 +1,9 @@
 package com.example.nexatron.model;
 
+import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.EthanApiPlugin.Collections.Players;
 import com.example.EthanApiPlugin.EthanApiPlugin;
+import com.example.Utility.Reachable;
 import com.example.Utility.WorldAreas;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
@@ -82,7 +85,6 @@ public class Nex
 
 	public void bankReset()
 	{
-		sacrificeTiles = new ArrayList<>();
 		attacksUntilSpecial = 0;
 		nextSpecial = null;
 		reavers = new HashMap<>();
@@ -100,6 +102,7 @@ public class Nex
 		shouldTripleBrew = false;
 		brewSipsNeeded = 0;
 		sacrificeActive = false;
+		sacrificeTiles.clear();
 	}
 
 	public void fullReset()
@@ -157,20 +160,22 @@ public class Nex
 			}
 			if (message.contains(NexConst.BLOOD_SACRIFICE_SPECIAL_MSG.toLowerCase()))
 			{
+				attacksUntilSpecial = 5;
 				nextSpecial = NexSpecial.SIPHON;
+			}
+			if (message.contains(NexConst.BLOOD_SIPHON_SPECIAL_MSG.toLowerCase()))
+			{
+				attacksUntilSpecial = 5;
+				nextSpecial = NexSpecial.SACRIFICE;
 			}
 			if (message.contains(NexConst.BLOOD_SACRIFICE_ACTIVE_MSG.toLowerCase()))
 			{
 				sacrificeActive = true;
 			}
-			if (message.contains(NexConst.BLOOD_SACRIFICE_INACTIVE_MSG.toLowerCase()))
+			if (message.contains(NexConst.BLOOD_SACRIFICE_INACTIVE_MSG.toLowerCase())
+				|| message.contains(NexConst.BLOOD_SACRIFICE_INACTIVE_MSG2.toLowerCase()))
 			{
 				sacrificeActive = false;
-			}
-			if (message.contains(NexConst.BLOOD_SIPHON_SPECIAL_MSG.toLowerCase()))
-			{
-				attacksUntilSpecial = 8;
-				nextSpecial = NexSpecial.SACRIFICE;
 			}
 		}
 	}
@@ -321,7 +326,6 @@ public class Nex
 		}
 	}
 
-	// TODO: revisit
 //	public WorldPoint getClosestBloodStepUnder()
 //	{
 //		if (nex == null)
@@ -361,9 +365,44 @@ public class Nex
 //		}
 //	}
 
-	public boolean isSacrificeActive()
+	public WorldPoint getBloodIceStepUnderNEW()
 	{
-		return client.getLocalPlayer().getGraphic() == NexConst.SACRIFICE_GRAPIHC;
+		if (nex == null)
+		{
+			return null;
+		}
+		WorldPoint nexCenter = WorldAreas.getCenter(nex.getWorldArea());
+		ArrayList<WorldPoint> stepUnderTiles = new ArrayList<>();
+		if (Reachable.isWalkable(nexCenter.dx(-2)))
+		{
+			stepUnderTiles.add(nexCenter.dx(-1)); // West
+		}
+		if (Reachable.isWalkable(nexCenter.dx(2)))
+		{
+			stepUnderTiles.add(nexCenter.dx(1)); // East
+		}
+		if (Reachable.isWalkable(nexCenter.dy(-2)))
+		{
+			stepUnderTiles.add(nexCenter.dy(-1)); // South
+		}
+		if (Reachable.isWalkable(nexCenter.dy(2)))
+		{
+			stepUnderTiles.add(nexCenter.dy(1)); // North
+		}
+		WorldPoint closestStepUnder = nexManager.findClosestTileToPlayer(stepUnderTiles);
+		Player otherPlayer = Players.search().withName(nexManager.socket.otherName).first().orElse(null);
+		if (otherPlayer == null)
+		{
+			nexManager.print("Missing other player!");
+			return closestStepUnder;
+		}
+		WorldPoint otherPlayerTile = otherPlayer.getWorldLocation();
+		WorldPoint closestStepUnderOtherPlayer = nexManager.findClosestTileToWorldPoint(stepUnderTiles, otherPlayerTile);
+		if (closestStepUnder.equals(closestStepUnderOtherPlayer))
+		{
+			stepUnderTiles.remove(closestStepUnder);
+		}
+		return nexManager.findClosestTileToPlayer(stepUnderTiles);
 	}
 
 	public WorldPoint getSacrificeTile()
@@ -378,10 +417,9 @@ public class Nex
 		sacrificeTiles.removeIf(n -> n.distanceTo(nex.getWorldArea()) != 8);
 		int shortestDistance = 10;
 		WorldPoint shortestPathPoint = null;
-		HashSet<WorldPoint> emptySet = new HashSet<>();
 		for (WorldPoint worldPoint : sacrificeTiles)
 		{
-			ArrayList<WorldPoint> path = EthanApiPlugin.pathToGoal(worldPoint, emptySet);
+			ArrayList<WorldPoint> path = EthanApiPlugin.pathToGoal(worldPoint, new HashSet<>());
 			if (path == null)
 			{
 				continue;
@@ -415,13 +453,13 @@ public class Nex
 			nexManager.nex.slaveStepUnderTile;
 	}
 
-	public final int MISSING_HEALTH = 50;
 	public final int MAX_BREW_HP = 115;
 	public final int BREW_HEAL = 16;
 
 	public boolean shouldTripleBrew()
 	{
-		if (getMissingHealth() > MISSING_HEALTH)
+		int missingHealth = onRangedPhase() ? 38 : 50;
+		if (getMissingHealth() > missingHealth)
 		{
 			brewSipsNeeded = brewSipsToFull();
 			nexManager.print("Setting brew sips to " + brewSipsNeeded);
@@ -453,12 +491,28 @@ public class Nex
 
 	public boolean onRangedPhase()
 	{
-		Stage stage = nexManager.getStage();
-		return stage == Stage.MINION_ICE
-			|| stage == Stage.MINION_BLOOD
-			|| stage == Stage.MINION_SHADOW
-			|| stage == Stage.NEX_SHADOW
-			|| stage == Stage.MINION_SMOKE;
+		return Equipment.search().nameContains("crossbow").first().orElse(null) != null;
+//		Stage stage = nexManager.getStage();
+//		return stage == Stage.MINION_ICE
+//			|| stage == Stage.MINION_BLOOD
+//			|| stage == Stage.MINION_SHADOW
+//			|| stage == Stage.NEX_SHADOW
+//			|| stage == Stage.MINION_SMOKE;
+	}
+
+	public int wpDistanceToMinion(WorldPoint wp)
+	{
+		NPC activeMinion = getActiveMinion();
+		if (activeMinion == null)
+		{
+			return Integer.MAX_VALUE;
+		}
+		return wp.distanceTo(activeMinion.getWorldLocation());
+	}
+
+	public int distanceToActiveMinion()
+	{
+		return wpDistanceToMinion(nexManager.getPlayerPoint());
 	}
 
 	public boolean onMeleePhase()
@@ -621,6 +675,19 @@ public class Nex
 			slaveDodgeTile = centerPoint.dx(7).dy(12);
 		}
 		slaveStepUnderTile = centerPoint.dx(5).dy(12);
+	}
+
+	// Reference screenshot for the blood minion tile layout
+	public void initBloodMinionTiles()
+	{
+		if (centerPoint == null
+		|| nexManager.nex.cruor == null)
+		{
+			return;
+		}
+		WorldPoint refPoint = nexManager.nex.cruor.getWorldLocation();
+		slaveMainTile = refPoint.dx(-1);
+		masterMainTile = refPoint.dx(-2).dy(2);
 	}
 
 	public boolean isInteractingWithUs(NPC npc)
