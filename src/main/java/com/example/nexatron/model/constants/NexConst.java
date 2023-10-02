@@ -23,6 +23,8 @@ public class NexConst
 	public static final int DIA_BOLTS = ItemID.DIAMOND_DRAGON_BOLTS_E;
 	public static final int RUBY_BOLTS = ItemID.RUBY_DRAGON_BOLTS_E;
 	public static final int FANG_ANIMATION = 9471;
+	public static final int FANG_SLASH_ANIMATION = 390;
+	public static final int FANG_SPEC_ANIMATION = 6118;
 	public static final int ZCB_ANIMATION = 9168;
 	public static final ArrayList<Integer> DARTS = new ArrayList<>(Arrays.asList(1043, 1936, 1122));
 	public static final Set<Integer> HIGH_PRIO_LOOT = Set.of(
