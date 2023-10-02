@@ -19,6 +19,8 @@ import com.example.nexatron.tasks.nex.NexConsumables;
 import com.example.nexatron.tasks.nex.NexPrayers;
 import com.example.nexatron.tasks.nex.NexStart;
 import com.example.nexatron.tasks.nex.NexThrall;
+import com.example.nexatron.tasks.nex.blood.AttackBloodMinion;
+import com.example.nexatron.tasks.nex.blood.AttackBloodNex;
 import com.example.nexatron.tasks.nex.shadow.AttackShadowMinion;
 import com.example.nexatron.tasks.nex.shadow.AttackShadowNex;
 import com.example.nexatron.tasks.nex.smoke.AttackSmokeMinion;
@@ -48,7 +50,6 @@ import net.runelite.client.util.GameEventManager;
 @Slf4j
 public class NexatronPlugin extends Plugin
 {
-
 	@Inject
 	public NexatronConfig config;
 	@Inject
@@ -103,6 +104,8 @@ public class NexatronPlugin extends Plugin
 			AttackShadowNex.class,
 			AttackShadowMinion.class,
 			NexThrall.class,
+			AttackBloodNex.class,
+			AttackBloodMinion.class,
 		};
 	}
 
