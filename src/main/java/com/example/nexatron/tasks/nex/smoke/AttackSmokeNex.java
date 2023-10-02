@@ -62,7 +62,8 @@ public class AttackSmokeNex extends StagedTask
 		// If we have a crossbow equipped, we have 75 spec and spec is not enabled, enable spec
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
 			&& !Combat.isSpecEnabled()
-			&& Combat.getSpecEnergy() >= 75)
+			&& Combat.getSpecEnergy() >= 75
+			&& nexManager.nex.hpUntilProc() >= 120)
 		{
 			nexManager.print("Enabling spec");
 			Combat.toggleSpec();
