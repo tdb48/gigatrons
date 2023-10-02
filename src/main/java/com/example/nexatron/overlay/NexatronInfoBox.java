@@ -47,11 +47,9 @@ public class NexatronInfoBox extends OverlayPanel
 		{
 			return null;
 		}
-
 		Stage stage = plugin.nexManager.getStage();
 		String title = "Nexatron";
 		Duration duration = Duration.between(plugin.nexManager.overall.botTimer, Instant.now());
-
 		panelComponent.getChildren().clear();
 		panelComponent.setBackgroundColor(new Color(16, 24, 32, 150));
 		panelComponent.getChildren().add(TitleComponent.builder().text(title).color(new Color(242, 170, 76)).build());
@@ -77,13 +75,15 @@ public class NexatronInfoBox extends OverlayPanel
 		if (plugin.nexManager.nex.nex != null)
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("Nex tick ").right(String.valueOf(plugin.nexManager.nex.nexAttackTick)).build());
-//			panelComponent.getChildren().add(LineComponent.builder().left("brew sips ").right(String.valueOf(plugin.nexManager.nex.brewSipsNeeded)).build());
-			panelComponent.getChildren().add(LineComponent.builder().left("umbra tick ").right(String.valueOf(plugin.nexManager.nex.umbraAttackTick)).build());
 			if (plugin.nexManager.nex.nextSpecial != null)
 			{
 				panelComponent.getChildren().add(LineComponent.builder().left("Next special ").right(String.valueOf(plugin.nexManager.nex.nextSpecial)).build());
 			}
 			panelComponent.getChildren().add(LineComponent.builder().left("special ").right(String.valueOf(plugin.nexManager.nex.attacksUntilSpecial)).build());
+			if (plugin.nexManager.getStage().equals(Stage.NEX_ICE))
+			{
+				panelComponent.getChildren().add(LineComponent.builder().left("Contain tick ").right(String.valueOf(plugin.nexManager.nex.containTick)).build());
+			}
 		}
 		return panelComponent.render(graphics);
 	}
