@@ -125,7 +125,7 @@ public class GameTickManager
 	public void drinkPotion()
 	{
 		this.foodWait = 3;
-		this.potionWait = 3;
+		this.potionWait = 2;
 	}
 
 	public void eatCombo()
