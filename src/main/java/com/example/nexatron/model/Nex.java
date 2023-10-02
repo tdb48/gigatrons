@@ -35,7 +35,6 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class Nex
 {
-	//	public GameObject icePrisonSpike = null;
 	public NPC nex = null;
 	public NPC fumus = null;
 	public NPC umbra = null;
@@ -46,6 +45,7 @@ public class Nex
 	public int nexAttackTick = 0;
 	public int attacksUntilSpecial = 0;
 	public int shadowTick = 0;
+	public int containTick = 0;
 	public int umbraAttackTick = 0;
 	public boolean teleportOut = false;
 	public WorldPoint masterMainTile = null;
@@ -62,6 +62,8 @@ public class Nex
 	public boolean shouldTripleBrew = false;
 	public int brewSipsNeeded = 0;
 	public boolean sacrificeActive = false;
+	public boolean pisonActive = false;
+	public int stuckInPrisonTick = 0;
 	@Inject
 	NexManager nexManager;
 	@Inject
@@ -95,12 +97,15 @@ public class Nex
 		cruor = null;
 		nexAttackTick = 0;
 		shadowTick = 0;
+		containTick = 0;
 		umbraAttackTick = 0;
 		teleportOut = false;
 		invincibleTick = 0;
 		dashTick = 0;
 		shouldTripleBrew = false;
 		brewSipsNeeded = 0;
+		pisonActive = false;
+		stuckInPrisonTick = 0;
 		sacrificeActive = false;
 		sacrificeTiles.clear();
 	}
@@ -126,6 +131,14 @@ public class Nex
 		if (shadowTick > 0)
 		{
 			shadowTick--;
+		}
+		if (containTick > 0)
+		{
+			containTick--;
+		}
+		if (stuckInPrisonTick > 0)
+		{
+			stuckInPrisonTick--;
 		}
 		if (dashTick > 0)
 		{
@@ -177,6 +190,18 @@ public class Nex
 			{
 				sacrificeActive = false;
 			}
+			if (message.contains(NexConst.ICE_CONTAIN_SPECIAL_MSG.toLowerCase()))
+			{
+				containTick = 15;
+			}
+			if (message.contains(NexConst.PRISON_IMPRISONED.toLowerCase()))
+			{
+				stuckInPrisonTick = 7;
+			}
+			if (message.contains(NexConst.PRISON_FREED.toLowerCase()))
+			{
+				stuckInPrisonTick = 0;
+			}
 		}
 	}
 
@@ -223,6 +248,10 @@ public class Nex
 		{
 			shadowTick = 5;
 		}
+		if (gameObject.getId() == NexConst.ICE_PRISON)
+		{
+			pisonActive = true;
+		}
 	}
 
 	@Subscribe
@@ -234,6 +263,10 @@ public class Nex
 			altar = null;
 			centerPoint = null;
 			deinitTiles();
+		}
+		if (gameObject.getId() == NexConst.ICE_PRISON)
+		{
+			pisonActive = false;
 		}
 	}
 
@@ -681,7 +714,7 @@ public class Nex
 	public void initBloodMinionTiles()
 	{
 		if (centerPoint == null
-		|| nexManager.nex.cruor == null)
+			|| nexManager.nex.cruor == null)
 		{
 			return;
 		}
