@@ -108,6 +108,7 @@ public class NexConst
 	public static final String BLOOD_SACRIFICE_SPECIAL_MSG = "I demand a blood sacrifice!";
 	public static final String BLOOD_SACRIFICE_ACTIVE_MSG = "nex has marked you for a blood sacrifice";
 	public static final String BLOOD_SACRIFICE_INACTIVE_MSG = "you managed to escape from nex";
+	public static final String BLOOD_SACRIFICE_INACTIVE_MSG2 = "you failed to escape from nex";
 	public static final String CRUOR_SPAWN_MSG = "Cruor, don't fail me!";
 
 	//Ice
