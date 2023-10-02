@@ -179,6 +179,7 @@ public class GameTickManager
 		if (animationChanged.getActor().equals(Static.getClient().getLocalPlayer()))
 		{
 			if (animationChanged.getActor().getAnimation() == NexConst.FANG_ANIMATION
+				|| animationChanged.getActor().getAnimation() == NexConst.FANG_SLASH_ANIMATION
 				|| animationChanged.getActor().getAnimation() == NexConst.ZCB_ANIMATION)
 			{
 				attack(5);
