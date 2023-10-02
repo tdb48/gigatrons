@@ -19,11 +19,6 @@ public class Setup
 
 	public int getBolts()
 	{
-		if (nexManager.nex.nex == null)
-		{
-			return NexConst.RUBY_BOLTS;
-		}
-		// If fumus is active and below 200 hp use dia bolts
 		NPC activeMinion = nexManager.nex.getActiveMinion();
 		if (activeMinion != null
 			&& activeMinion.getHealthRatio() != -1
