@@ -1,6 +1,5 @@
 package com.example.Utility;
 
-import com.example.PacketUtils.WidgetInfoExtended;
 import com.example.Packets.MousePackets;
 import com.example.Packets.WidgetPackets;
 import java.util.Arrays;
@@ -57,6 +56,17 @@ public class Combat
 	public static AttackStyle getAttackStyle()
 	{
 		return Combat.AttackStyle.fromIndex(Static.getClient().getVarpValue(43));
+	}
+
+	public static void toggleStyle(AttackStyle attackStyle)
+	{
+		if (getAttackStyle().equals(attackStyle))
+		{
+			return;
+		}
+		int widgetId = attackStyle.getWidgetInfo().getPackedId();
+		MousePackets.queueClickPacket();
+		WidgetPackets.queueWidgetActionPacket(1, widgetId, -1, -1);
 	}
 
 	public enum AttackStyle
