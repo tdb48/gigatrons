@@ -1,10 +1,8 @@
 package com.example.nexatron.tasks.nex.shadow;
 
 
-import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
-import com.example.Utility.Combat;
 import com.example.Utility.Movement;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
@@ -46,43 +44,10 @@ public class AttackShadowMinion extends StagedTask
 			nexManager.swap(setup);
 		}
 
-		WorldPoint standTile;
-		// Slave
-		if (!nexManager.socket.isMaster)
-		{
-			if (nexManager.nex.outOfNexRange() || nexManager.nex.canStepOut())
-			{
-				if (client.getLocalPlayer().getWorldLocation().equals(nexManager.nex.slaveStepUnderTile)
-					|| client.getLocalPlayer().getWorldLocation().equals(nexManager.nex.slaveDodgeTile))
-				{
-					standTile = nexManager.nex.getDodgeTile();
-				}
-				else
-				{
-					standTile = nexManager.nex.getStepUnderTile();
-				}
-			}
-			else
-			{
-				standTile = nexManager.nex.getMainTile();
-			}
-		}
-		// Master
-		else
-		{
-			if (nexManager.nex.umbra.isInteracting()
-				&& nexManager.nex.isInteractingWithUs(nexManager.nex.nex))
-			{
-				standTile = nexManager.nex.getMainTile();
-			}
-			else
-			{
-				standTile = nexManager.nex.getDodgeTile();
-			}
-		}
-
+		WorldPoint standTile = decideStandTile();
 		if (nexManager.nex.isNexChasingUs())
 		{
+			nexManager.enableRun(true);
 			if (nexManager.nex.distanceToNex() <= 3)
 			{
 				nexManager.print("Stepping under nex " + nexManager.worldPointString(nexManager.nex.getUnderNex()));
@@ -100,6 +65,10 @@ public class AttackShadowMinion extends StagedTask
 		if (standTile != null
 			&& !client.getLocalPlayer().getWorldLocation().equals(standTile))
 		{
+			if (nexManager.getPlayerPoint().distanceTo(standTile) > 1)
+			{
+				nexManager.enableRun(true);
+			}
 			nexManager.print("Moving to stand tile v2");
 			Movement.walk(standTile);
 			return true;
@@ -108,6 +77,7 @@ public class AttackShadowMinion extends StagedTask
 		if (!gameTickManager.isAttackWaiting()
 			&& !client.getLocalPlayer().isInteracting())
 		{
+			nexManager.enableRun(false);
 			if ((!nexManager.nex.umbra.isInteracting()
 				|| !nexManager.nex.isInteractingWithUs(nexManager.nex.nex))
 				&& nexManager.socket.isMaster)
@@ -121,5 +91,43 @@ public class AttackShadowMinion extends StagedTask
 			return true;
 		}
 		return false;
+	}
+
+	public WorldPoint decideStandTile()
+	{
+		// Slave
+		if (!nexManager.socket.isMaster)
+		{
+			if (nexManager.nex.outOfNexRange() || nexManager.nex.canStepOut())
+			{
+				if (client.getLocalPlayer().getWorldLocation().equals(nexManager.nex.slaveStepUnderTile)
+					|| client.getLocalPlayer().getWorldLocation().equals(nexManager.nex.slaveDodgeTile))
+				{
+					return nexManager.nex.getDodgeTile();
+				}
+				else
+				{
+					return nexManager.nex.getStepUnderTile();
+				}
+			}
+			else
+			{
+				return nexManager.nex.getMainTile();
+			}
+		}
+
+		// Master
+		else
+		{
+			if (nexManager.nex.umbra.isInteracting()
+				&& nexManager.nex.isInteractingWithUs(nexManager.nex.nex))
+			{
+				return nexManager.nex.getMainTile();
+			}
+			else
+			{
+				return nexManager.nex.getDodgeTile();
+			}
+		}
 	}
 }
