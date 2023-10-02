@@ -17,6 +17,8 @@ import javax.inject.Inject;
 )
 public class NexThrall extends StagedTask
 {
+	int tickCounter = 0;
+
 	@Inject
 	public NexThrall(NexManager nexManager)
 	{
@@ -34,11 +36,17 @@ public class NexThrall extends StagedTask
 
 	public boolean execute()
 	{
+		if (tickCounter > 0)
+		{
+			tickCounter--;
+		}
 		if (client.getVarbitValue(NexConst.SPELLBOOK_VARB) == 3
 			&& Inventory.search().withName("Book of the dead").first().orElse(null) != null
 			&& Inventory.search().nameContains("une pouch").first().orElse(null) != null
+			&& tickCounter == 0
 			&& nexManager.isThrallOffCD())
 		{
+			tickCounter = 10;
 			nexManager.print("Spawning mage thrall");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(client.getWidget(WidgetInfoExtended.SPELL_RESURRECT_GREATER_GHOST.getPackedId()), "Cast");
