@@ -113,6 +113,7 @@ public class ProgressStage extends Task
 			if (message.contains("cruor, don't fail me!"))
 			{
 				nexManager.nex.attacksUntilSpecial = 0;
+				nexManager.nex.initBloodMinionTiles();
 				nexManager.setStage(Stage.MINION_BLOOD);
 			}
 			if (message.contains("infuse me with the power of ice!"))
