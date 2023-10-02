@@ -30,8 +30,8 @@ public interface NexatronConfig extends Config
 	@ConfigSection(
 		name = "Setup",
 		description = "Settings for setup",
-		position = 100,
-		closedByDefault = true
+		position = 100
+//		closedByDefault = true
 	)
 	String SETUP = "Setup";
 
@@ -44,7 +44,7 @@ public interface NexatronConfig extends Config
 	)
 	default Helm helm()
 	{
-		return Helm.MASORI_F;
+		return Helm.GUCCI_NEIT;
 	}
 
 	@ConfigItem(
