@@ -10,21 +10,22 @@ import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
 import com.example.Packets.WidgetPackets;
 import com.example.Utility.BankUtil;
+import com.example.Utility.Movement;
 import com.example.Utility.Static;
 import com.example.Utility.WidgetUtil;
 import com.example.nexatron.NexatronConfig;
 import com.example.nexatron.NexatronPlugin;
 import com.example.nexatron.ReflectBreakHandler;
-import com.example.nexatron.model.NexBank;
 import com.example.nexatron.model.ChargesTracker;
 import com.example.nexatron.model.KcArea;
 import com.example.nexatron.model.Lobby;
 import com.example.nexatron.model.Nex;
+import com.example.nexatron.model.NexBank;
 import com.example.nexatron.model.Overall;
-import com.example.nexatron.model.setup.Setup;
 import com.example.nexatron.model.Socket;
 import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
+import com.example.nexatron.model.setup.Setup;
 import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -156,6 +157,7 @@ public class NexManager
 		}
 		return true;
 	}
+
 	public String worldPointString(WorldPoint wp)
 	{
 		return "(X: " + wp.getX() + ", Y: " + wp.getY() + ") ";
@@ -183,6 +185,32 @@ public class NexManager
 		return possibleTiles.stream().min(Comparator.comparingInt(wp -> wp.distanceTo(playerPoint))).stream().findAny().orElse(null);
 	}
 
+	public WorldPoint findClosestTileToWorldPoint(ArrayList<WorldPoint> possibleTiles, WorldPoint worldPoint)
+	{
+		return possibleTiles.stream().min(Comparator.comparingInt(wp -> wp.distanceTo(worldPoint))).stream().findAny().orElse(null);
+	}
+
+	public NPC findClosestNPC(ArrayList<NPC> npcs)
+	{
+		if (npcs.isEmpty())
+		{
+			return null;
+		}
+		int distance = Integer.MAX_VALUE;
+		WorldPoint playerLoc = getPlayerPoint();
+		NPC returnNPC = npcs.get(0);
+		for (NPC npc : npcs)
+		{
+			WorldPoint wp = npc.getWorldLocation();
+			if (wp.distanceTo(playerLoc) <= distance)
+			{
+				returnNPC = npc;
+				distance = wp.distanceTo(playerLoc);
+			}
+		}
+		return returnNPC;
+	}
+
 	public int getBossHp()
 	{
 		return client.getVarbitValue(Varbits.BOSS_HEALTH_CURRENT);
@@ -196,6 +224,24 @@ public class NexManager
 	public WorldPoint getPlayerPoint()
 	{
 		return client.getLocalPlayer().getWorldLocation();
+	}
+
+	public void enableRun(boolean enable)
+	{
+		if (enable)
+		{
+			if (!Movement.isRunEnabled() && Movement.getRunEnergy() >= 1)
+			{
+				Movement.toggleRun();
+			}
+		}
+		else
+		{
+			if (Movement.isRunEnabled())
+			{
+				Movement.toggleRun();
+			}
+		}
 	}
 
 	public NPC playerInteractingWith()
@@ -231,6 +277,7 @@ public class NexManager
 	{
 		return Static.getClient().getVarpValue(VarPlayer.POISON) < -36;
 	}
+
 	public void swap(ArrayList<Integer> gearList)
 	{
 		int swaps = (int) (3 + (Math.abs(random.nextGaussian() * 1.5)));
