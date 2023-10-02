@@ -55,8 +55,10 @@ public class AttackSmokeMinion extends StagedTask
 		{
 			mainTile = nexManager.nex.getMainTile();
 		}
+
 		if (nexManager.nex.isNexChasingUs())
 		{
+			nexManager.enableRun(true);
 			if (nexManager.nex.distanceToNex() <= 3)
 			{
 				nexManager.print("Stepping under nex " + nexManager.worldPointString(nexManager.nex.getUnderNex()));
@@ -74,6 +76,10 @@ public class AttackSmokeMinion extends StagedTask
 		if (mainTile != null
 			&& !client.getLocalPlayer().getWorldLocation().equals(mainTile))
 		{
+			if (nexManager.getPlayerPoint().distanceTo(mainTile) > 1)
+			{
+				nexManager.enableRun(true);
+			}
 			nexManager.print("Moving to main tile");
 			Movement.walk(mainTile);
 			return true;
@@ -82,6 +88,7 @@ public class AttackSmokeMinion extends StagedTask
 		if (!gameTickManager.isAttackWaiting()
 			&& !client.getLocalPlayer().isInteracting())
 		{
+			nexManager.enableRun(false);
 			nexManager.print("Attacking fumus");
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(nexManager.nex.fumus, "Attack");

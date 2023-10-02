@@ -38,6 +38,7 @@ public class AttackShadowNex extends StagedTask
 		{
 			return false;
 		}
+		nexManager.enableRun(true);
 
 		ArrayList<Integer> setup = nexManager.nex.setup.rangeNex();
 		if (!nexManager.hasGearEquipped(setup))
@@ -80,6 +81,13 @@ public class AttackShadowNex extends StagedTask
 		if (standTile != null
 			&& !client.getLocalPlayer().getWorldLocation().equals(standTile))
 		{
+			if (nexManager.nex.shadowTick > 0
+				&& nexManager.nex.outOfNexRange()
+				&& !nexManager.socket.isMaster)
+			{
+				nexManager.print("Idling while shadow is out on slave");
+				return true;
+			}
 			nexManager.print("Moving to stand tile v2");
 			Movement.walk(standTile);
 			return true;
