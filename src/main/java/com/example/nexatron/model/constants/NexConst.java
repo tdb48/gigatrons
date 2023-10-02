@@ -118,6 +118,8 @@ public class NexConst
 	public static final String ICE_PRISON_SPECIAL_MSG = "Die now, in a prison of ice!";
 	public static final String ICE_CONTAIN_SPECIAL_MSG = "Contain this!";
 	public static final String GLACIES_SPAWN_MSG = "Glacies, don't fail me!";
+	public static final String PRISON_IMPRISONED = "you've been trapped in an ice prison";
+	public static final String PRISON_FREED = "you've been freed from the ice prison";
 
 	//Zaros
 	public static final String ZAROS_SPAWN_MSG = "NOW, THE POWER OF ZAROS!";
