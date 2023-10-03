@@ -45,7 +45,8 @@ public class AttackShadowMinion extends StagedTask
 		}
 
 		WorldPoint standTile = decideStandTile();
-		if (nexManager.nex.isNexChasingUs())
+		if (nexManager.nex.isNexChasingUs()
+			&& nexManager.nex.nex.getWorldArea().distanceTo(nexManager.nex.centerPoint) >= 2)
 		{
 			nexManager.enableRun(true);
 			if (nexManager.nex.distanceToNex() <= 3)

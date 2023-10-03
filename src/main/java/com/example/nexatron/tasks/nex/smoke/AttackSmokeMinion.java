@@ -56,7 +56,8 @@ public class AttackSmokeMinion extends StagedTask
 			mainTile = nexManager.nex.getMainTile();
 		}
 
-		if (nexManager.nex.isNexChasingUs())
+		if (nexManager.nex.isNexChasingUs()
+			&& nexManager.nex.nex.getWorldArea().distanceTo(nexManager.nex.centerPoint) >= 4)
 		{
 			nexManager.enableRun(true);
 			if (nexManager.nex.distanceToNex() <= 3)
