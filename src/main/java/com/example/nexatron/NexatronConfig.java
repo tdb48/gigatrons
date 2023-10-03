@@ -44,7 +44,7 @@ public interface NexatronConfig extends Config
 	)
 	default Helm helm()
 	{
-		return Helm.GUCCI_NEIT;
+		return Helm.FACEGUARD;
 	}
 
 	@ConfigItem(
