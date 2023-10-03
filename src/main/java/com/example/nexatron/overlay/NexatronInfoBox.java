@@ -84,6 +84,7 @@ public class NexatronInfoBox extends OverlayPanel
 			{
 				panelComponent.getChildren().add(LineComponent.builder().left("Contain tick ").right(String.valueOf(plugin.nexManager.nex.containTick)).build());
 			}
+			panelComponent.getChildren().add(LineComponent.builder().left("Zaros attack ").right(String.valueOf(plugin.nexManager.nex.nexZarosAttacks)).build());
 		}
 		return panelComponent.render(graphics);
 	}
