@@ -31,7 +31,8 @@ public class NexStart extends StagedTask
 			nexManager.nex.slaveMainTile;
 
 		if (startTile == null
-			|| client.getLocalPlayer().getWorldLocation().equals(startTile))
+			|| client.getLocalPlayer().getWorldLocation().equals(startTile)
+			|| client.getLocalPlayer().getAnimation() != -1)
 		{
 			return false;
 		}
