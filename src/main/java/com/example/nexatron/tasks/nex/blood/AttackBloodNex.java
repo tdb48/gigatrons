@@ -2,11 +2,12 @@ package com.example.nexatron.tasks.nex.blood;
 
 
 import com.example.EthanApiPlugin.Collections.Equipment;
-import com.example.EthanApiPlugin.Collections.Players;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
+import com.example.Packets.ObjectPackets;
 import com.example.Utility.Combat;
 import com.example.Utility.Movement;
+import com.example.Utility.ObjectUtil;
 import com.example.Utility.Reachable;
 import com.example.Utility.WorldAreas;
 import com.example.nexatron.manager.GameTickManager;
@@ -44,14 +45,14 @@ public class AttackBloodNex extends StagedTask
 			return false;
 		}
 		nexManager.enableRun(true);
-		ArrayList<Integer> setup = decideSetup();
+		NPC target = decideTarget();
+		ArrayList<Integer> setup = decideSetup(target);
 		if (!nexManager.hasGearEquipped(setup))
 		{
 			nexManager.print("Equipping gear");
 			nexManager.swap(setup);
 		}
 
-		NPC target = decideTarget();
 		if (target == null)
 		{
 			nexManager.print("Target somehow null ins attack blood nex");
@@ -61,6 +62,7 @@ public class AttackBloodNex extends StagedTask
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
 			&& !Combat.isSpecEnabled()
 			&& targetIsNex(target)
+			&& nexManager.nex.attacksUntilSpecial > 1
 			&& Combat.getSpecEnergy() >= 75
 			&& nexManager.nex.hpUntilProc() >= 120)
 		{
@@ -91,6 +93,14 @@ public class AttackBloodNex extends StagedTask
 			return true;
 		}
 
+		if (nexManager.nex.shouldPrayAltar())
+		{
+			nexManager.print("Praying at altar");
+			MousePackets.queueClickPacket();
+			ObjectPackets.queueObjectAction(nexManager.nex.altar,false,"Pray");
+			return true;
+		}
+
 		// Step under on tick 2 with designated step under tiles OR if we are far out
 		if ((nexManager.nex.nexAttackTick == 2)
 			&& nexManager.nex.nex.isInteracting()
@@ -113,8 +123,17 @@ public class AttackBloodNex extends StagedTask
 			}
 		}
 
-		Player otherPlayer = Players.search().withName(nexManager.socket.otherName).first().orElse(null);
+		// If we are not interacting, attack target
+		if ((!client.getLocalPlayer().isInteracting() || !client.getLocalPlayer().getInteracting().equals(target))
+			&& nexManager.nex.invincibleTick == 0)
+		{
+			nexManager.print("Attacking " + target.getName());
+			MousePackets.queueClickPacket();
+			NPCPackets.queueNPCAction(target, "Attack");
+			return true;
+		}
 
+		Player otherPlayer = nexManager.socket.getOtherPlayer();
 		// If slave standing next to master attacking reaver, move out
 		if (!nexManager.socket.isMaster
 			&& otherPlayer != null
@@ -130,16 +149,6 @@ public class AttackBloodNex extends StagedTask
 			}
 		}
 
-		// If we are not interacting, attack target
-		if ((!client.getLocalPlayer().isInteracting() || !client.getLocalPlayer().getInteracting().equals(target))
-			&& nexManager.nex.invincibleTick == 0)
-		{
-			nexManager.print("Attacking " + target.getName());
-			MousePackets.queueClickPacket();
-			NPCPackets.queueNPCAction(target, "Attack");
-			return true;
-		}
-
 		return false;
 	}
 
@@ -147,7 +156,7 @@ public class AttackBloodNex extends StagedTask
 	{
 		WorldPoint southWest = reaver.getWorldLocation().dx(-1).dy(-1);
 		WorldPoint northEast = reaver.getWorldLocation().dx(3).dy(3);
-		ArrayList<WorldPoint> possibleTiles = (ArrayList<WorldPoint>) WorldAreas.createArea(southWest,northEast).toWorldPointList();
+		ArrayList<WorldPoint> possibleTiles = (ArrayList<WorldPoint>) WorldAreas.createArea(southWest, northEast).toWorldPointList();
 		possibleTiles.removeIf(n -> reaver.getWorldArea().toWorldPointList().contains(n));
 		possibleTiles.removeIf(n -> n.distanceTo(otherPlayer) <= 1);
 		possibleTiles.removeIf(n -> !Reachable.isWalkable(n));
@@ -155,7 +164,7 @@ public class AttackBloodNex extends StagedTask
 		possibleTiles.remove(southWest);
 		possibleTiles.remove(reaver.getWorldLocation().dx(-1).dy(2));
 		possibleTiles.remove(reaver.getWorldLocation().dx(2).dy(2));
-		possibleTiles.remove(reaver.getWorldLocation().dx(-1).dy(-1));
+		possibleTiles.remove(reaver.getWorldLocation().dx(2).dy(-1));
 		return nexManager.findClosestTileToPlayer(possibleTiles);
 	}
 
@@ -191,13 +200,19 @@ public class AttackBloodNex extends StagedTask
 		return Objects.requireNonNull(target.getName()).toLowerCase().contains("nex");
 	}
 
-	public ArrayList<Integer> decideSetup()
+	public ArrayList<Integer> decideSetup(NPC target)
 	{
 		if (nexManager.nex.sacrificeActive)
 		{
 			return nexManager.nex.setup.rangeNex();
 		}
-		return nexManager.nex.reavers.isEmpty()
+
+		if (nexManager.nex.shouldPrayAltar())
+		{
+			return nexManager.nex.setup.rangeNex();
+		}
+
+		return targetIsNex(target)
 			&& nexManager.nex.hpUntilProc() >= 70
 			&& Combat.getSpecEnergy() >= 75 ?
 			nexManager.nex.setup.rangeNex() :
