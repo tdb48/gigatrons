@@ -1191,6 +1191,7 @@ public class EthanApiPlugin extends Plugin {
         if (impassible.contains(starting.dx(-1).dy(0)) || !walkable.contains(starting.dx(-1).dy(0))) {
             return true;
         }
+		System.out.println("Test");
         return impassible.contains(starting.dx(-1).dy(1)) || !walkable.contains(starting.dx(-1).dy(1));
     }
 
