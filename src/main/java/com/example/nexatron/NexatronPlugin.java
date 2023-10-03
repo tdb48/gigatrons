@@ -7,25 +7,32 @@ import com.example.nexatron.overlay.NexatronInfoBox;
 import com.example.nexatron.overlay.NexatronOverlay;
 import com.example.nexatron.overlay.SocketInfoBox;
 import com.example.nexatron.taskformat.TaskManager;
+import com.example.nexatron.tasks.bank.PickupPet;
 import com.example.nexatron.tasks.general.DisablePrayers;
 import com.example.nexatron.tasks.general.DropVial;
 import com.example.nexatron.tasks.general.ProgressStage;
 import com.example.nexatron.tasks.general.Reattack;
+import com.example.nexatron.tasks.general.SetFangStyle;
 import com.example.nexatron.tasks.general.ToggleRun;
+import com.example.nexatron.tasks.kcArea.EnterBank;
 import com.example.nexatron.tasks.kcArea.KcPrayer;
 import com.example.nexatron.tasks.kcArea.TEMPORARY_KcAttack;
 import com.example.nexatron.tasks.nex.NexAbort;
 import com.example.nexatron.tasks.nex.NexConsumables;
+import com.example.nexatron.tasks.nex.NexFinishUp;
 import com.example.nexatron.tasks.nex.NexPrayers;
 import com.example.nexatron.tasks.nex.NexStart;
 import com.example.nexatron.tasks.nex.NexThrall;
 import com.example.nexatron.tasks.nex.blood.AttackBloodMinion;
 import com.example.nexatron.tasks.nex.blood.AttackBloodNex;
+import com.example.nexatron.tasks.nex.ice.AttackIceMinion;
+import com.example.nexatron.tasks.nex.ice.AttackIceNex;
 import com.example.nexatron.tasks.nex.shadow.AttackShadowMinion;
 import com.example.nexatron.tasks.nex.shadow.AttackShadowNex;
 import com.example.nexatron.tasks.nex.smoke.AttackSmokeMinion;
 import com.example.nexatron.tasks.nex.smoke.AttackSmokeNex;
 import com.example.nexatron.tasks.nex.smoke.DodgeSmokeDash;
+import com.example.nexatron.tasks.nex.zaros.AttackZarosNex;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -106,6 +113,13 @@ public class NexatronPlugin extends Plugin
 			NexThrall.class,
 			AttackBloodNex.class,
 			AttackBloodMinion.class,
+			SetFangStyle.class,
+			AttackIceNex.class,
+			EnterBank.class,
+			AttackIceMinion.class,
+			NexFinishUp.class,
+			AttackZarosNex.class,
+			PickupPet.class,
 		};
 	}
 
