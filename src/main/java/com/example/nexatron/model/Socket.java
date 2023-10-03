@@ -1,5 +1,6 @@
 package com.example.nexatron.model;
 
+import com.example.EthanApiPlugin.Collections.Players;
 import com.example.nexatron.NexatronPlugin;
 import com.example.nexatron.manager.NexManager;
 import com.example.socket.org.json.JSONObject;
@@ -7,6 +8,7 @@ import com.example.socket.packet.SocketBroadcastPacket;
 import com.example.socket.packet.SocketReceivePacket;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;
@@ -134,6 +136,11 @@ public class Socket
 		// "Else" case, where we are not the master
 		// because we don't have hard diary completed
 		return false;
+	}
+
+	public Player getOtherPlayer()
+	{
+		return Players.search().withName(nexManager.socket.otherName).first().orElse(null);
 	}
 
 }
