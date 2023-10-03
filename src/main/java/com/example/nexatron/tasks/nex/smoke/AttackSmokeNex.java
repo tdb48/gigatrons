@@ -45,13 +45,6 @@ public class AttackSmokeNex extends StagedTask
 			nexManager.swap(setup);
 		}
 
-		if (Equipment.search().nameContains("fang").first().orElse(null) != null
-			&& !Combat.getAttackStyle().equals(Combat.AttackStyle.SECOND))
-		{
-			nexManager.print("Putting fang on stab");
-			Combat.toggleStyle(Combat.AttackStyle.SECOND);
-		}
-
 		// Step under on tick 1 if boss is interacting with us
 		if (nexManager.nex.nexAttackTick == 2
 			&& nexManager.nex.nex.isInteracting()
