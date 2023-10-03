@@ -129,6 +129,7 @@ public class ProgressStage extends Task
 			}
 			if (message.contains("glacies, don't fail me!"))
 			{
+				nexManager.nex.initIceMinionTiles();
 				nexManager.setStage(Stage.MINION_ICE);
 			}
 			if (message.contains("now, the power of zaros!"))
@@ -138,6 +139,8 @@ public class ProgressStage extends Task
 			}
 			if (message.contains("my wrath"))
 			{
+				nexManager.nex.initWrathTiles();
+				nexManager.nex.invincibleTick = 10;
 				nexManager.setStage(Stage.NEX_DEAD);
 			}
 		}
