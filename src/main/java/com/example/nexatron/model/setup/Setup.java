@@ -3,6 +3,7 @@ package com.example.nexatron.model.setup;
 import com.example.nexatron.NexatronConfig;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
+import com.example.nexatron.model.constants.Stage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.inject.Inject;
@@ -26,7 +27,11 @@ public class Setup
 		{
 			return NexConst.DIA_BOLTS;
 		}
-		if (nexManager.getBossHp() <= 180)
+		if (nexManager.getStage().equals(Stage.NEX_SHADOW) && nexManager.nex.hpUntilProc() <= 20)
+		{
+			return NexConst.DIA_BOLTS;
+		}
+		if (nexManager.getBossHp() <= 200)
 		{
 			return NexConst.DIA_BOLTS;
 		}
