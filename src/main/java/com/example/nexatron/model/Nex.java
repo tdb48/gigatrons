@@ -1,8 +1,12 @@
 package com.example.nexatron.model;
 
 import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.EthanApiPlugin.Collections.Players;
+import com.example.EthanApiPlugin.Collections.TileObjects;
 import com.example.EthanApiPlugin.EthanApiPlugin;
+import com.example.Utility.Combat;
+import com.example.Utility.ObjectUtil;
 import com.example.Utility.Reachable;
 import com.example.Utility.WorldAreas;
 import com.example.nexatron.manager.NexManager;
@@ -11,8 +15,11 @@ import com.example.nexatron.model.constants.NexSpecial;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.model.setup.Setup;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
@@ -21,13 +28,13 @@ import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.EventBus;
@@ -41,8 +48,10 @@ public class Nex
 	public NPC glacies = null;
 	public NPC cruor = null;
 	public GameObject altar = null;
+	public GameObject bankDoor = null;
 	public WorldPoint centerPoint = null;
 	public int nexAttackTick = 0;
+	public int nexZarosAttacks = 0;
 	public int attacksUntilSpecial = 0;
 	public int shadowTick = 0;
 	public int containTick = 0;
@@ -62,7 +71,7 @@ public class Nex
 	public boolean shouldTripleBrew = false;
 	public int brewSipsNeeded = 0;
 	public boolean sacrificeActive = false;
-	public boolean pisonActive = false;
+	public boolean prisonActive = false;
 	public int stuckInPrisonTick = 0;
 	@Inject
 	NexManager nexManager;
@@ -104,10 +113,11 @@ public class Nex
 		dashTick = 0;
 		shouldTripleBrew = false;
 		brewSipsNeeded = 0;
-		pisonActive = false;
+		prisonActive = false;
 		stuckInPrisonTick = 0;
 		sacrificeActive = false;
 		sacrificeTiles.clear();
+		nexZarosAttacks = 0;
 	}
 
 	public void fullReset()
@@ -115,11 +125,16 @@ public class Nex
 		bankReset();
 		centerPoint = null;
 		altar = null;
+		bankDoor = null;
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
+		if (nex != null)
+		{
+			setReaverHp();
+		}
 		if (nexAttackTick > 0)
 		{
 			nexAttackTick--;
@@ -189,6 +204,7 @@ public class Nex
 				|| message.contains(NexConst.BLOOD_SACRIFICE_INACTIVE_MSG2.toLowerCase()))
 			{
 				sacrificeActive = false;
+				sacrificeTiles.clear();
 			}
 			if (message.contains(NexConst.ICE_CONTAIN_SPECIAL_MSG.toLowerCase()))
 			{
@@ -201,6 +217,10 @@ public class Nex
 			if (message.contains(NexConst.PRISON_FREED.toLowerCase()))
 			{
 				stuckInPrisonTick = 0;
+			}
+			if (message.contains(NexConst.ZAROS_START.toLowerCase()))
+			{
+				nexZarosAttacks = 4;
 			}
 		}
 	}
@@ -218,7 +238,18 @@ public class Nex
 			|| npc.getAnimation() == NexConst.NEX_MELEE_ANIMATION)
 		{
 			nexAttackTick = 5;
-			attacksUntilSpecial--;
+			if (attacksUntilSpecial > 0)
+			{
+				attacksUntilSpecial--;
+			}
+			if (nexManager.getStage().equals(Stage.NEX_ZAROS))
+			{
+				if (nexZarosAttacks >= 12)
+				{
+					nexZarosAttacks = 0;
+				}
+				nexZarosAttacks++;
+			}
 		}
 		if (npc.getAnimation() == NexConst.UMBRA_ATTACK_ANIMATION)
 		{
@@ -244,13 +275,17 @@ public class Nex
 			centerPoint = altar.getWorldLocation().dx(-15);
 			initSmokeNexTiles();
 		}
+		if (gameObject.getId() == NexConst.BANK_DOOR)
+		{
+			bankDoor = gameObject;
+		}
 		if (gameObject.getId() == NexConst.SHADOW)
 		{
 			shadowTick = 5;
 		}
 		if (gameObject.getId() == NexConst.ICE_PRISON)
 		{
-			pisonActive = true;
+			prisonActive = true;
 		}
 	}
 
@@ -264,9 +299,16 @@ public class Nex
 			centerPoint = null;
 			deinitTiles();
 		}
+		if (gameObject.getId() == NexConst.BANK_DOOR)
+		{
+			bankDoor = null;
+		}
 		if (gameObject.getId() == NexConst.ICE_PRISON)
 		{
-			pisonActive = false;
+			// Reset attack tick because fanging the prison will add 5 ticks
+			// because of the animation, but in reality it doesn't cost any ticks
+			nexManager.gameTickManager.attack(0);
+			prisonActive = false;
 		}
 	}
 
@@ -339,25 +381,25 @@ public class Nex
 			reavers.remove(npc);
 		}
 	}
-
-	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
-	{
-		if (hitsplatApplied.getActor().getName() != null
-			&& hitsplatApplied.getActor().getName().toLowerCase().contains("reaver"))
-		{
-			NPC reaver = (NPC) hitsplatApplied.getActor();
-			int hp = nexManager.nex.getNPCHP(reaver);
-			if (hp == 0)
-			{
-				reavers.remove(reaver);
-			}
-			else
-			{
-				reavers.put(reaver, hp);
-			}
-		}
-	}
+//
+//	@Subscribe
+//	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
+//	{
+//		if (hitsplatApplied.getActor().getName() != null
+//			&& hitsplatApplied.getActor().getName().toLowerCase().contains("reaver"))
+//		{
+//			NPC reaver = (NPC) hitsplatApplied.getActor();
+//			int hp = nexManager.nex.getNPCHP(reaver);
+//			if (hp == 0)
+//			{
+//				reavers.remove(reaver);
+//			}
+//			else
+//			{
+//				reavers.put(reaver, hp);
+//			}
+//		}
+//	}
 
 //	public WorldPoint getClosestBloodStepUnder()
 //	{
@@ -431,7 +473,8 @@ public class Nex
 		}
 		WorldPoint otherPlayerTile = otherPlayer.getWorldLocation();
 		WorldPoint closestStepUnderOtherPlayer = nexManager.findClosestTileToWorldPoint(stepUnderTiles, otherPlayerTile);
-		if (closestStepUnder.equals(closestStepUnderOtherPlayer))
+		if (closestStepUnder != null
+			&& closestStepUnder.equals(closestStepUnderOtherPlayer))
 		{
 			stepUnderTiles.remove(closestStepUnder);
 		}
@@ -491,7 +534,12 @@ public class Nex
 
 	public boolean shouldTripleBrew()
 	{
-		int missingHealth = onRangedPhase() ? 38 : 50;
+		int missingHealth = onRangedPhase() ? 40 : 50;
+		if (nexManager.getStage().equals(Stage.NEX_ZAROS)
+			|| nexManager.getStage().equals(Stage.NEX_ICE))
+		{
+			missingHealth = 60;
+		}
 		if (getMissingHealth() > missingHealth)
 		{
 			brewSipsNeeded = brewSipsToFull();
@@ -522,17 +570,6 @@ public class Nex
 		return hpThreshold - client.getBoostedSkillLevel(Skill.HITPOINTS);
 	}
 
-	public boolean onRangedPhase()
-	{
-		return Equipment.search().nameContains("crossbow").first().orElse(null) != null;
-//		Stage stage = nexManager.getStage();
-//		return stage == Stage.MINION_ICE
-//			|| stage == Stage.MINION_BLOOD
-//			|| stage == Stage.MINION_SHADOW
-//			|| stage == Stage.NEX_SHADOW
-//			|| stage == Stage.MINION_SMOKE;
-	}
-
 	public int wpDistanceToMinion(WorldPoint wp)
 	{
 		NPC activeMinion = getActiveMinion();
@@ -548,13 +585,25 @@ public class Nex
 		return wpDistanceToMinion(nexManager.getPlayerPoint());
 	}
 
+	public boolean onRangedPhase()
+	{
+		return Equipment.search().nameContains("crossbow").first().orElse(null) != null;
+//		Stage stage = nexManager.getStage();
+//		return stage == Stage.MINION_ICE
+//			|| stage == Stage.MINION_BLOOD
+//			|| stage == Stage.MINION_SHADOW
+//			|| stage == Stage.NEX_SHADOW
+//			|| stage == Stage.MINION_SMOKE;
+	}
+
 	public boolean onMeleePhase()
 	{
-		Stage stage = nexManager.getStage();
-		return stage == Stage.NEX_ICE
-			|| stage == Stage.NEX_BLOOD
-			|| stage == Stage.NEX_SMOKE
-			|| stage == Stage.NEX_ZAROS;
+		return Equipment.search().nameContains("fang").first().orElse(null) != null;
+//		Stage stage = nexManager.getStage();
+//		return stage == Stage.NEX_ICE
+//			|| stage == Stage.NEX_BLOOD
+//			|| stage == Stage.NEX_SMOKE
+//			|| stage == Stage.NEX_ZAROS;
 	}
 
 	public WorldPoint getMainTile()
@@ -562,6 +611,46 @@ public class Nex
 		return nexManager.socket.isMaster ?
 			nexManager.nex.masterMainTile :
 			nexManager.nex.slaveMainTile;
+	}
+
+	public boolean canPrayAltar()
+	{
+		return client.getVarbitValue(NexConst.ALTAR_VARBIT) == 0;
+	}
+
+	public boolean shouldPrayAltar()
+	{
+		return altar != null
+			&& Combat.getSpecEnergy() <= 65
+			&& canPrayAltar()
+			&& distanceToAltar() <= 8
+			&& nex.getInteracting() != null
+			&& !nex.getInteracting().equals(client.getLocalPlayer());
+	}
+
+	public int distanceToAltar()
+	{
+		if (altar == null)
+		{
+			return Integer.MAX_VALUE;
+		}
+		return Objects.requireNonNull(ObjectUtil.getWorldArea(altar)).distanceTo(nexManager.getPlayerPoint());
+	}
+
+	public void setReaverHp()
+	{
+		List<NPC> reavers = NPCs.search().nameContains("eaver").result();
+		for (NPC reaver : reavers)
+		{
+			if (reaver.getHealthRatio() == 0)
+			{
+				nexManager.nex.reavers.remove(reaver);
+			}
+			else if (reaver.getHealthRatio() != -1)
+			{
+				nexManager.nex.reavers.put(reaver, nexManager.nex.getNPCHP(reaver));
+			}
+		}
 	}
 
 	public WorldPoint getDodgeTile()
@@ -618,6 +707,24 @@ public class Nex
 		return isNexChasing()
 			&& nex.isInteracting()
 			&& nex.getInteracting().equals(client.getLocalPlayer());
+	}
+
+
+	public WorldPoint nearestContainWp(int distance)
+	{
+		WorldPoint playerPoint = nexManager.getPlayerPoint();
+		ArrayList<WorldPoint> possibleTiles = (ArrayList<WorldPoint>) WorldAreas.createArea(playerPoint.dx(-4).dy(-4), playerPoint.dx(5).dy(5)).toWorldPointList();
+		possibleTiles.removeIf(n -> !Reachable.isWalkable(n));
+		possibleTiles.removeIf(n -> n.distanceTo(nexManager.nex.nex.getWorldArea()) <= distance);
+		if (nexManager.socket.isMaster)
+		{
+			Player otherPlayer = nexManager.socket.getOtherPlayer();
+			if (otherPlayer != null)
+			{
+				possibleTiles.remove(otherPlayer.getWorldLocation());
+			}
+		}
+		return nexManager.findClosestTileToPlayer(possibleTiles);
 	}
 
 	public void initSmokeNexTiles()
@@ -698,7 +805,7 @@ public class Nex
 			masterMainTile = centerPoint.dx(3).dy(10);
 			slaveMainTile = centerPoint.dx(3).dy(10);
 			masterDodgeTile = centerPoint.dx(1).dy(10);
-			slaveDodgeTile = centerPoint.dx(8).dy(12);
+			slaveDodgeTile = centerPoint.dx(7).dy(12);
 		}
 		else
 		{
@@ -722,6 +829,60 @@ public class Nex
 		slaveMainTile = refPoint.dx(-1);
 		masterMainTile = refPoint.dx(-2).dy(2);
 	}
+
+	public GameObject findNearestPrisonSpike()
+	{
+		Player otherPlayer = nexManager.socket.getOtherPlayer();
+		WorldPoint playerPoint = nexManager.nex.stuckInPrisonTick == 0 && otherPlayer != null
+			? otherPlayer.getWorldLocation()
+			: nexManager.getPlayerPoint();
+		ArrayList<WorldPoint> adjecantTiles = new ArrayList<>();
+		adjecantTiles.add(playerPoint.dx(-1));
+		adjecantTiles.add(playerPoint.dx(1));
+		adjecantTiles.add(playerPoint.dy(-1));
+		adjecantTiles.add(playerPoint.dy(1));
+		List<TileObject> allSpikes = TileObjects.search().withId(NexConst.ICE_PRISON).result();
+		List<GameObject> bestSpikes = new ArrayList<>();
+		for (TileObject spike : allSpikes)
+		{
+			if (adjecantTiles.contains(spike.getWorldLocation()))
+			{
+				bestSpikes.add((GameObject) spike);
+			}
+		}
+		if (!bestSpikes.isEmpty())
+		{
+			return bestSpikes.stream().min(Comparator.comparingInt(o -> client.getLocalPlayer().getWorldLocation().distanceTo(o.getWorldLocation()))).orElse(null);
+		}
+		return (GameObject) TileObjects.search().withId(NexConst.ICE_PRISON).nearestToPlayer().orElse(null);
+	}
+
+	public void initIceMinionTiles()
+	{
+		if (centerPoint == null
+			|| nexManager.nex.glacies == null)
+		{
+			return;
+		}
+		WorldPoint refPoint = nexManager.nex.glacies.getWorldLocation();
+		slaveMainTile = refPoint.dx(1);
+		masterMainTile = refPoint.dx(1).dy(2);
+	}
+
+	public void initWrathTiles()
+	{
+		if (centerPoint == null)
+		{
+			return;
+		}
+		WorldPoint refPoint = WorldAreas.getCenter(nex.getWorldArea());
+		// Create area around nex
+		ArrayList<WorldPoint> possibleTiles = (ArrayList<WorldPoint>) WorldAreas.createArea(refPoint.dx(-4).dy(-4), refPoint.dx(5).dy(5)).toWorldPointList();
+		possibleTiles.removeIf(n -> !Reachable.isWalkable(n));
+		slaveMainTile = possibleTiles.stream().min(Comparator.comparingInt(o -> altar.getWorldLocation().distanceTo(o))).orElse(null);
+		masterMainTile = slaveMainTile;
+	}
+
 
 	public boolean isInteractingWithUs(NPC npc)
 	{
