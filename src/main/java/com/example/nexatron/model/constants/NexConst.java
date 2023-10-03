@@ -35,26 +35,25 @@ public class NexConst
 		ItemID.NIHIL_HORN,
 		ItemID.ZARYTE_VAMBRACES);
 	public static final Set<Integer> LOW_PRIO_LOOT = Set.of(
-		246, // Noted wine of zamorak
-		2434,
-		454,
-		452,
-		1618,
-		574,
-		21930,
-		26390,
-		9245,
-		1620,
-		560,
-		566,
-		2,
-		451,
-		3024,
-		2444,
-		6685,
-		26388,
-		26231,
-		565);
+		246, // noted wine of zamorak
+		2434, // ppot 4
+		454, // noted coal
+		452, // noted runite ore
+		1618, // noted uncut diamond
+		574, // noted air orb
+		21930, // dragon bolts (unf)
+		26390, // blood essence
+		9245, // onyx bolts (e)
+		1620, // noted uncut ruby
+		560, // death rune
+		566, // soul rune
+		2, // cannonball
+		451, // runite ore?
+		3024, // super restore (4)
+		6685, // saradomin brew (4)
+		26388, // ecu key shards
+		26231, // nihil shards
+		565); // blood runes
 
 	public static final Set<Integer> SUPPLY_LOOT = Set.of(
 		-1);
@@ -74,6 +73,8 @@ public class NexConst
 	public static final int INACTIVE_BARRIER = 42968;
 	public static final int BANKER = 11289;
 	public static final int SHADOW = 42942;
+	public static final int MUSHROOM_GRAPIHC_1 = 2013;
+	public static final int MUSHROOM_GRAPIHC_2 = 2014;
 	public static final int ANCIENT_KILLCOUNT_VARBIT = 13080;
 	public static final WorldPoint ENTER_BANK_TILE = new WorldPoint(2898, 5203, 0);
 	public static final WorldArea KC_AREA = WorldAreas.createArea(
@@ -93,6 +94,9 @@ public class NexConst
 	public static final int SPELLBOOK_VARB = 4070;
 
 	public static final String BREW_MESSAGE = "You drink some of the foul liquid.";
+	public static final String POTION_MESSAGE = "you drink some";
+	public static final int ALTAR_VARBIT = 4099;
+
 	public static final String SMOKE_SPAWN_MSG = "Fill my soul with smoke!";
 	public static final String COUGH_SPECIAL_MSG = "Let the virus flow through you!";
 	public static final String DASH_SPECIAL_MSG = "There is...";
@@ -120,6 +124,7 @@ public class NexConst
 	public static final String GLACIES_SPAWN_MSG = "Glacies, don't fail me!";
 	public static final String PRISON_IMPRISONED = "you've been trapped in an ice prison";
 	public static final String PRISON_FREED = "you've been freed from the ice prison";
+	public static final String ZAROS_START = "the power of zaros";
 
 	//Zaros
 	public static final String ZAROS_SPAWN_MSG = "NOW, THE POWER OF ZAROS!";
