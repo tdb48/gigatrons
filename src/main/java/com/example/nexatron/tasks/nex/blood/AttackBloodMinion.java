@@ -1,10 +1,8 @@
 package com.example.nexatron.tasks.nex.blood;
 
 
-import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
-import com.example.Utility.Combat;
 import com.example.Utility.Movement;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
@@ -12,6 +10,7 @@ import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
+import java.util.Objects;
 import javax.inject.Inject;
 import net.runelite.api.coords.WorldPoint;
 
@@ -46,21 +45,13 @@ public class AttackBloodMinion extends StagedTask
 			nexManager.swap(setup);
 		}
 
-		//Put fang on slash (signicant DPS increase)
-		if (Equipment.search().nameContains("fang").first().orElse(null) != null
-			&& !Combat.getAttackStyle().equals(Combat.AttackStyle.THIRD))
-		{
-			nexManager.print("Putting fang on slash!!");
-			Combat.toggleStyle(Combat.AttackStyle.THIRD);
-		}
-
 		// TODO: add attacking with zcb during sacrifice
-		if (nexManager.nex.sacrificeActive)
+		if (nexManager.nex.sacrificeActive
+			&& nexManager.nex.distanceToNex() <= 10)
 		{
 			WorldPoint sacrificeTile = nexManager.nex.getSacrificeTile();
 			if (!nexManager.nex.sacrificeTiles.contains(nexManager.getPlayerPoint())
-				&& sacrificeTile != null
-				&& !nexManager.nex.outOfNexRange())
+				&& sacrificeTile != null)
 			{
 				nexManager.print("Moving to " + nexManager.worldPointString(sacrificeTile));
 				Movement.walk(sacrificeTile);
@@ -69,9 +60,13 @@ public class AttackBloodMinion extends StagedTask
 		}
 
 		// Attack first, then second prio is moving to our main tile
-		if (!gameTickManager.isAttackWaiting()
-			&& !client.getLocalPlayer().isInteracting())
+		if (!gameTickManager.isAttackWaiting())
 		{
+			if (client.getLocalPlayer().isInteracting()
+				&& Objects.requireNonNull(client.getLocalPlayer().getInteracting().getName()).contains("ruor"))
+			{
+				return true;
+			}
 			nexManager.print("Attacking cruor");
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(nexManager.nex.cruor, "Attack");
@@ -100,6 +95,13 @@ public class AttackBloodMinion extends StagedTask
 		else
 		{
 			distance = nexManager.nex.distanceToActiveMinion();
+		}
+		if (nexManager.socket.isMaster
+			&& nexManager.nex.cruor != null
+			&& nexManager.nex.cruor.getHealthRatio() != -1
+			&& nexManager.nex.getNPCHP(nexManager.nex.cruor) >= 70)
+		{
+			return nexManager.nex.setup.rangeNex();
 		}
 		return distance >= 3 ? nexManager.nex.setup.rangeNex() : nexManager.nex.setup.meleeNex();
 	}
