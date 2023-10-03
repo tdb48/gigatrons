@@ -3,6 +3,7 @@ package com.example.Utility;
 import com.example.EthanApiPlugin.Collections.ETileItem;
 import com.example.EthanApiPlugin.Collections.TileItems;
 import java.util.ArrayList;
+import java.util.Set;
 import net.runelite.api.TileItem;
 
 public class TileItemUtil
@@ -21,7 +22,7 @@ public class TileItemUtil
 		return returnList;
 	}
 
-	public static ArrayList<ETileItem> getAllETileItems(int[] ids)
+	public static ArrayList<ETileItem> getAllETileItems(Set<Integer> ids)
 	{
 		ArrayList<ETileItem> returnList = new ArrayList<>();
 		for (int id : ids)
