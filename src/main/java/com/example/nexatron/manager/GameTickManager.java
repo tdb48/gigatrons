@@ -6,9 +6,11 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.NPC;
 import net.runelite.api.Projectile;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.eventbus.EventBus;
@@ -18,7 +20,6 @@ import net.runelite.client.eventbus.Subscribe;
 public class GameTickManager
 {
 	private final EventBus eventBus;
-	private final Map<NPC, Integer> tornadoes = new HashMap<>();
 	public int attackWait;
 	private int tickCount;
 	private int tickWait;
@@ -37,20 +38,6 @@ public class GameTickManager
 	public void onGameTick(GameTick gameTick)
 	{
 		++this.tickCount;
-
-		for (NPC lightning : this.tornadoes.keySet())
-		{
-			int ticks = this.tornadoes.get(lightning) - 1;
-			if (ticks == 0)
-			{
-				this.tornadoes.remove(lightning);
-			}
-			else
-			{
-				this.tornadoes.put(lightning, ticks);
-			}
-		}
-
 		if (this.isTickWaiting())
 		{
 			--this.tickWait;
@@ -75,12 +62,16 @@ public class GameTickManager
 		{
 			--this.potionWait;
 		}
-
 	}
 
 	public int getTickWaiting()
 	{
 		return this.tickWait;
+	}
+
+	public int getAttackWait()
+	{
+		return this.attackWait;
 	}
 
 	public boolean isTickWaiting()
@@ -124,14 +115,8 @@ public class GameTickManager
 
 	public void drinkPotion()
 	{
-		this.foodWait = 3;
-		this.potionWait = 2;
-	}
-
-	public void eatCombo()
-	{
-		this.drinkPotion();
-		this.comboFoodWait = 3;
+//		this.foodWait = 3;
+//		this.potionWait = 2;
 	}
 
 	public void register()
@@ -148,16 +133,6 @@ public class GameTickManager
 		this.p = null;
 	}
 
-	public void setLightningSpawn(NPC npc)
-	{
-		this.tornadoes.put(npc, 21);
-	}
-
-	public int getLightningTicks(NPC lightning)
-	{
-		return this.tornadoes.getOrDefault(lightning, 0);
-	}
-
 	public int getTickCount()
 	{
 		return this.tickCount;
@@ -171,6 +146,18 @@ public class GameTickManager
 	public void setTickWait(int tickWait)
 	{
 		this.tickWait = tickWait;
+	}
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
+	{
+		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE || chatMessage.getType() == ChatMessageType.SPAM || chatMessage.getType() == ChatMessageType.CONSOLE || chatMessage.getType() == ChatMessageType.ENGINE)
+		{
+			String message = chatMessage.getMessage().toLowerCase();
+			if (message.contains(NexConst.POTION_MESSAGE.toLowerCase()))
+			{
+				this.potionWait = 2;
+			}
+		}
 	}
 
 	@Subscribe
