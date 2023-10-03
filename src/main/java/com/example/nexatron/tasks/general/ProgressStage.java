@@ -140,7 +140,7 @@ public class ProgressStage extends Task
 			if (message.contains("my wrath"))
 			{
 				nexManager.nex.initWrathTiles();
-				nexManager.nex.invincibleTick = 10;
+				nexManager.nex.invincibleTick = 8;
 				nexManager.setStage(Stage.NEX_DEAD);
 			}
 		}
