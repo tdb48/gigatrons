@@ -190,6 +190,16 @@ public class NexManager
 		return possibleTiles.stream().min(Comparator.comparingInt(wp -> wp.distanceTo(worldPoint))).stream().findAny().orElse(null);
 	}
 
+	public boolean isDDd()
+	{
+		Player otherPlayer = socket.getOtherPlayer();
+		if (otherPlayer == null)
+		{
+			return false;
+		}
+		return otherPlayer.getWorldLocation().equals(getPlayerPoint());
+	}
+
 	public NPC findClosestNPC(ArrayList<NPC> npcs)
 	{
 		if (npcs.isEmpty())
@@ -290,12 +300,6 @@ public class NexManager
 				Widget item = Inventory.search().withId(i).first().orElse(null);
 				if (item != null)
 				{
-					// TODO: Swap prayers with equipping weapon
-//					if (!stage.equals(com.example.toagigatron.model.constants.Stage.OUTSIDE) && !stage.equals(com.example.toagigatron.model.constants.Stage.OUTSIDE_TOA) && !stage.equals(com.example.toagigatron.model.constants.Stage.GRAND_EXCHANGE))
-//					{
-//						Prayer p = prayWithId(i);
-//						Prayers.toggle(p);
-//					}
 					int slot = 0;
 					ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
 					if (invent != null)
