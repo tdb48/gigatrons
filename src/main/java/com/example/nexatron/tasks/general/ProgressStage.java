@@ -65,6 +65,12 @@ public class ProgressStage extends Task
 		}
 		else
 		{
+			if (nexManager.getStage().equals(Stage.NEX_ICE)
+				|| nexManager.getStage().equals(Stage.MINION_ICE)
+				|| nexManager.getStage().equals(Stage.NEX_ZAROS))
+			{
+				return false;
+			}
 			nexManager.setStage(Stage.NONE);
 			return false;
 		}
@@ -104,7 +110,7 @@ public class ProgressStage extends Task
 			if (message.contains("flood my lungs with blood!"))
 			{
 				nexManager.nex.attacksUntilSpecial = 0;
-				nexManager.nex.invincibleTick = 4;
+				nexManager.nex.invincibleTick = nexManager.nex.nextSpecial.equals(NexSpecial.SIPHON) ? 8 : 4;
 				nexManager.nex.nextSpecial = nexManager.nex.nextSpecial.equals(NexSpecial.SHADOWS) ?
 					NexSpecial.SACRIFICE :
 					NexSpecial.SIPHON;
