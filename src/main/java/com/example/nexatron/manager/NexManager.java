@@ -298,6 +298,15 @@ public class NexManager
 		}
 	}
 
+	public boolean isPrePotted()
+	{
+		return isBoosted(Skill.STRENGTH)
+			&& isBoosted(Skill.RANGED)
+			&& isBoosted(Skill.HITPOINTS)
+			&& isAntiVenomed()
+			&& Movement.isStaminaBoosted();
+	}
+
 	public void sendIntValue(int amount)
 	{
 		EthanApiPlugin.getClient().setVarcStrValue(359, Integer.toString(amount));
@@ -330,6 +339,26 @@ public class NexManager
 			}
 		}
 		return true;
+	}
+
+	public void bank(ArrayList<Widget> items)
+	{
+		if (!BankUtil.isOpen())
+		{
+			return;
+		}
+		int swaps = (int) (3 + (Math.abs(random.nextGaussian() * 1.5)));
+		int counter = 0;
+		for (Widget item : items)
+		{
+			if (counter == swaps)
+			{
+				return;
+			}
+			print("Banking " + itemManager.getItemComposition(item.getItemId()).getName());
+			BankUtil.depositAll(item.getItemId());
+			counter++;
+		}
 	}
 
 	public boolean isAntiVenomed()
