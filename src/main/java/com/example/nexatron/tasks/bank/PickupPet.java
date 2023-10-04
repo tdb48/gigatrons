@@ -14,12 +14,12 @@ import net.runelite.api.NPC;
 
 @TaskDescriptor(
 	name = "Picking up pet",
-	priority = Integer.MAX_VALUE,
+	priority = Integer.MAX_VALUE - 1,
 	blocking = true
 )
 public class PickupPet extends StagedTask
 {
-
+	@Inject
 	GameTickManager gameTickManager;
 
 	@Inject

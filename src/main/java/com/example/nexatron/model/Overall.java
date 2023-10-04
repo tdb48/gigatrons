@@ -52,7 +52,7 @@ public class Overall
 				deaths++;
 				died = true;
 			}
-			if (message.contains("killcount"))
+			if (message.contains("kill count"))
 			{
 				killCount++;
 			}
