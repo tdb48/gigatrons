@@ -45,14 +45,13 @@ public class Setup
 				ItemID.ZARYTE_CROSSBOW,
 				ItemID.MASORI_BODY_F,
 				ItemID.MASORI_CHAPS_F,
-//				ItemID.AVAS_ASSEMBLER,
 				config.rangeCape().itemId,
 				config.helm().itemId,
-//				ItemID.HELM_OF_NEITIZNOT,
 				ItemID.NECKLACE_OF_ANGUISH,
 				ItemID.TWISTED_BUCKLER,
 				ItemID.LIGHTBEARER,
 				ItemID.BARROWS_GLOVES,
+				ItemID.PRIMORDIAL_BOOTS,
 				getBolts()));
 	}
 
@@ -63,16 +62,14 @@ public class Setup
 				ItemID.OSMUMTENS_FANG,
 				ItemID.MASORI_BODY_F,
 				ItemID.MASORI_CHAPS_F,
-//				ItemID.INFERNAL_CAPE,
 				config.meleeCape().itemId,
-//				ItemID.HELM_OF_NEITIZNOT,
 				config.helm().itemId,
 				ItemID.AMULET_OF_BLOOD_FURY,
-//				ItemID.DRAGON_DEFENDER,
 				config.meleeOffhand().itemId,
 				ItemID.LIGHTBEARER,
 				ItemID.BARROWS_GLOVES,
-				ItemID.PRIMORDIAL_BOOTS));
+				ItemID.PRIMORDIAL_BOOTS,
+				getBolts()));
 	}
 
 	public ArrayList<Integer> defensiveNex()
@@ -84,7 +81,7 @@ public class Setup
 				ItemID.MASORI_CHAPS_F,
 				config.meleeCape().itemId,
 				config.helm().itemId,
-				ItemID.NECKLACE_OF_ANGUISH,
+				ItemID.AMULET_OF_BLOOD_FURY,
 				ItemID.TWISTED_BUCKLER,
 				ItemID.LIGHTBEARER,
 				ItemID.BARROWS_GLOVES));
