@@ -72,7 +72,7 @@ public class AttackIceNex extends StagedTask
 
 		// Dodge contain this special
 		if (nexManager.nex.containTick != 0
-			&& nexManager.nex.containTick <= 12)
+			&& nexManager.nex.containTick <= 14)
 		{
 			WorldPoint containTile = nexManager.nex.nearestContainWp(1);
 			if (containTile != null
@@ -153,7 +153,7 @@ public class AttackIceNex extends StagedTask
 		}
 
 		if (nexManager.nex.containTick != 0
-			&& nexManager.nex.containTick <= 12)
+			&& nexManager.nex.containTick <= 14)
 		{
 			return nexManager.nex.setup.rangeNex();
 		}

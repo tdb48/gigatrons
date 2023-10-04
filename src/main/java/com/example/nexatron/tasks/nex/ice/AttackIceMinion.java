@@ -65,10 +65,13 @@ public class AttackIceMinion extends StagedTask
 
 
 		WorldPoint standTile = nexManager.nex.getMainTile();
-
+		WorldPoint containTile = nexManager.nex.nearestContainWp(2);
+//		int runFromContainTick = nexManager.nex.distanceToTile(containTile) > 2 ? 12 : 14;
 		// Deal with contain this if somehow out of it
 		if (nexManager.nex.containTick != 0
-			&& nexManager.nex.containTick <= 12
+			&& containTile != null
+			&& nexManager.nex.wpDistanceToMinion(nexManager.nex.nex.getWorldLocation()) < 10
+			&& nexManager.nex.containTick <= 14
 			&& nexManager.nex.distanceToNex() <= 2)
 		{
 			// This check is incase nex does contain when we just start moving to the minion
@@ -76,9 +79,7 @@ public class AttackIceMinion extends StagedTask
 			if (!(nexManager.nex.containTick <= 10
 				&& Reachable.isWalkable(standTile)))
 			{
-				WorldPoint containTile = nexManager.nex.nearestContainWp(2);
-				if (containTile != null
-					&& !nexManager.getPlayerPoint().equals(containTile))
+				if (!nexManager.getPlayerPoint().equals(containTile))
 				{
 					nexManager.print("Moving out of contain this to " + nexManager.worldPointString(containTile));
 					Movement.walk(containTile);
