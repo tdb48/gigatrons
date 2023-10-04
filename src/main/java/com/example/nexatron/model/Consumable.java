@@ -16,6 +16,19 @@ public class Consumable
 {
 	@Inject
 	NexManager nexManager;
+	public static final int PREPOT_SCB = ItemID.SUPER_COMBAT_POTION1;
+	public static final int PREPOT_STAM = ItemID.STAMINA_POTION1;
+	public static final int PREPOT_RANGE = ItemID.RANGING_POTION1;
+	public static final int PREPOT_HEART = ItemID.IMBUED_HEART;
+	public static final int PREPOT_SATURATED_HEART = ItemID.SATURATED_HEART;
+	public static final int PREPOT_ANGLER = ItemID.ANGLERFISH;
+	public static final int PREPOT_ANTI = ItemID.ANTIVENOM1_12919;
+	public static ArrayList<Integer> getNecessaryPotions = new ArrayList<>(
+		Arrays.asList(
+			ItemID.RANGING_POTION4,
+			ItemID.SARADOMIN_BREW4,
+			ItemID.SUPER_COMBAT_POTION4,
+			ItemID.SUPER_RESTORE4));
 	public static final ArrayList<Integer> RESTORE =
 		new ArrayList<>(Arrays.asList(
 			ItemID.SUPER_RESTORE1,
