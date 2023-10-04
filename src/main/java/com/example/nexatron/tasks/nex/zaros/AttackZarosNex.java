@@ -72,7 +72,7 @@ public class AttackZarosNex extends StagedTask
 
 		// Dodge contain this special
 		if (nexManager.nex.containTick != 0
-			&& nexManager.nex.containTick <= 12)
+			&& nexManager.nex.containTick <= 14)
 		{
 			WorldPoint containTile = nexManager.nex.nearestContainWp(1);
 			if (containTile != null
@@ -125,7 +125,7 @@ public class AttackZarosNex extends StagedTask
 
 		// Range if we somehow still end up with a contain
 		if (nexManager.nex.containTick != 0
-			&& nexManager.nex.containTick <= 12)
+			&& nexManager.nex.containTick <= 14)
 		{
 			return nexManager.nex.setup.rangeNex();
 		}
@@ -136,13 +136,18 @@ public class AttackZarosNex extends StagedTask
 //		}
 
 		// If its deflecting melee, use range, otherwise use melee
-		if (isDeflectMeleeActive())
-		{
-			return nexManager.setup.rangeNex();
-		}
+
 		if (nexManager.nex.distanceToNex() > 3)
 		{
 			return nexManager.nex.setup.rangeNex();
+		}
+		if (gameTickManager.attackWait > 1)
+		{
+			return nexManager.nex.setup.defensiveNex();
+		}
+		if (isDeflectMeleeActive())
+		{
+			return nexManager.setup.rangeNex();
 		}
 		return nexManager.setup.meleeNex();
 	}
@@ -154,6 +159,7 @@ public class AttackZarosNex extends StagedTask
 		{
 			zarosCounter++;
 		}
-		return zarosCounter >= 9 || zarosCounter == 1;
+		return zarosCounter >= 9;
+//			|| zarosCounter == 1;
 	}
 }
