@@ -92,8 +92,8 @@ public class NexConsumables extends StagedTask
 		}
 
 		if (prayerRestore != null &&
-			((nexManager.nex.onMeleePhase() && Consumable.isDrained(Skill.STRENGTH))
-				|| (nexManager.nex.onRangedPhase() && Consumable.isDrained(Skill.RANGED))))
+			((nexManager.nex.onMeleePhase() && Consumable.isDrainedMore(Skill.STRENGTH, 3))
+				|| (nexManager.nex.onRangedPhase() && Consumable.isDrainedMore(Skill.RANGED,3))))
 		{
 			nexManager.print("Drinking restore for drain");
 			MousePackets.queueClickPacket();

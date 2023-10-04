@@ -72,6 +72,11 @@ public class Consumable
 		return Static.getClient().getBoostedSkillLevel(skill) < Static.getClient().getRealSkillLevel(skill);
 	}
 
+	public static boolean isDrainedMore(Skill skill, int amount)
+	{
+		return Static.getClient().getBoostedSkillLevel(skill) < (Static.getClient().getRealSkillLevel(skill) - amount);
+	}
+
 
 	public static Widget getBrew()
 	{
