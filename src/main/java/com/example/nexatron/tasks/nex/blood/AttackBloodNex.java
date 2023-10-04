@@ -216,7 +216,8 @@ public class AttackBloodNex extends StagedTask
 //			return nexManager.nex.setup.defensiveNex();
 //		}
 
-		if (nexManager.nex.distanceToNex() > 3)
+		if (nexManager.nex.distanceToNex() > 3
+			&& targetIsNex(target))
 		{
 			return nexManager.nex.setup.rangeNex();
 		}
