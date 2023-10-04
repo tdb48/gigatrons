@@ -1,12 +1,20 @@
 package com.example.nexatron.model;
 
+import com.example.EthanApiPlugin.Collections.Bank;
+import com.example.Packets.MousePackets;
+import com.example.Packets.NPCPackets;
+import com.example.Utility.BankUtil;
+import com.example.Utility.InventoryUtil;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -20,6 +28,7 @@ public class NexBank
 {
 	public GameObject barrier = null;
 	public NPC banker = null;
+	public boolean usingGucciRunePouch = false;
 	@Inject
 	NexManager nexManager;
 
@@ -49,15 +58,43 @@ public class NexBank
 		{
 			return;
 		}
+		if (!usingGucciRunePouch &&
+			(InventoryUtil.contains(ItemID.DIVINE_RUNE_POUCH)
+				|| (Bank.isOpen() && BankUtil.contains(ItemID.DIVINE_RUNE_POUCH))))
+		{
+			usingGucciRunePouch = true;
+		}
+	}
+
+	public ArrayList<Integer> requiredItems()
+	{
+		ArrayList<Integer> requiredItems = new ArrayList<>(nexManager.setup.rangeNex());
+		requiredItems.addAll(nexManager.setup.meleeNex());
+		if (nexManager.config.useThralls())
+		{
+			requiredItems.add(ItemID.BOOK_OF_THE_DEAD);
+			if (usingGucciRunePouch)
+			{
+				requiredItems.add(ItemID.DIVINE_RUNE_POUCH);
+			}
+			else
+			{
+				requiredItems.add(ItemID.RUNE_POUCH);
+			}
+		}
+		requiredItems.add(ItemID.RUBY_DRAGON_BOLTS_E);
+		requiredItems.add(ItemID.DIAMOND_DRAGON_BOLTS_E);
+		return (ArrayList<Integer>) requiredItems.stream().distinct().collect(Collectors.toList());
 	}
 
 	public void reset()
 	{
-
+		usingGucciRunePouch = false;
 	}
 
 	public void fullReset()
 	{
+		reset();
 		barrier = null;
 		banker = null;
 	}
@@ -104,5 +141,17 @@ public class NexBank
 			nexManager.print("Banker despawned");
 			banker = null;
 		}
+	}
+
+	public boolean openBank()
+	{
+		if (banker == null)
+		{
+			return false;
+		}
+		nexManager.print("Opening bank");
+		MousePackets.queueClickPacket();
+		NPCPackets.queueNPCAction(banker, "Bank");
+		return true;
 	}
 }
