@@ -75,16 +75,20 @@ public class NexatronInfoBox extends OverlayPanel
 		if (plugin.nexManager.nex.nex != null)
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("Nex tick ").right(String.valueOf(plugin.nexManager.nex.nexAttackTick)).build());
-			if (plugin.nexManager.nex.nextSpecial != null)
-			{
-				panelComponent.getChildren().add(LineComponent.builder().left("Next special ").right(String.valueOf(plugin.nexManager.nex.nextSpecial)).build());
-			}
-			panelComponent.getChildren().add(LineComponent.builder().left("special ").right(String.valueOf(plugin.nexManager.nex.attacksUntilSpecial)).build());
-			if (plugin.nexManager.getStage().equals(Stage.NEX_ICE))
-			{
-				panelComponent.getChildren().add(LineComponent.builder().left("Contain tick ").right(String.valueOf(plugin.nexManager.nex.containTick)).build());
-			}
-			panelComponent.getChildren().add(LineComponent.builder().left("Zaros attack ").right(String.valueOf(plugin.nexManager.nex.nexZarosAttacks)).build());
+			panelComponent.getChildren().add(LineComponent.builder().left("Minion tick ").right(String.valueOf(plugin.nexManager.nex.minionAttackTick)).build());
+			panelComponent.getChildren().add(LineComponent.builder().left("Player tick ").right(String.valueOf(plugin.nexManager.gameTickManager.getAttackWait())).build());
+
+			//if (plugin.nexManager.nex.nextSpecial != null)
+//			{
+//				panelComponent.getChildren().add(LineComponent.builder().left("Next special ").right(String.valueOf(plugin.nexManager.nex.nextSpecial)).build());
+//			}
+//			panelComponent.getChildren().add(LineComponent.builder().left("special ").right(String.valueOf(plugin.nexManager.nex.attacksUntilSpecial)).build());
+//			if (plugin.nexManager.getStage().equals(Stage.NEX_ICE))
+//			{
+//				panelComponent.getChildren().add(LineComponent.builder().left("Contain tick ").right(String.valueOf(plugin.nexManager.nex.containTick)).build());
+//			}
+			panelComponent.getChildren().add(LineComponent.builder().left("Zaros counter ").right(String.valueOf(plugin.nexManager.nex.nexZarosAttacks)).build());
+
 		}
 		return panelComponent.render(graphics);
 	}
