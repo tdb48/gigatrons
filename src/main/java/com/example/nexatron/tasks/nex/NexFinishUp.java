@@ -1,13 +1,14 @@
 package com.example.nexatron.tasks.nex;
 
 import com.example.EthanApiPlugin.Collections.ETileItem;
-import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.Packets.MousePackets;
+import com.example.Packets.NPCPackets;
 import com.example.Packets.TileItemPackets;
 import com.example.Utility.InventoryUtil;
 import com.example.Utility.Movement;
-import com.example.Utility.Prayers;
 import com.example.Utility.TileItemUtil;
+import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
@@ -16,6 +17,7 @@ import com.example.nexatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
 import java.util.Comparator;
 import javax.inject.Inject;
+import net.runelite.api.NPC;
 import net.runelite.client.game.ItemManager;
 
 @TaskDescriptor(
@@ -26,6 +28,9 @@ public class NexFinishUp extends StagedTask
 {
 	@Inject
 	ItemManager itemManager;
+
+	@Inject
+	GameTickManager gameTickManager;
 
 	@Inject
 	public NexFinishUp(NexManager nexManager)
@@ -52,12 +57,22 @@ public class NexFinishUp extends StagedTask
 		}
 
 		ETileItem loot = findLoot();
+		NPC pet = NPCs.search().withAction("Pick-up").interactingWith(client.getLocalPlayer()).first().orElse(null);
 		if (loot != null
 			&& !InventoryUtil.isFull())
 		{
 			nexManager.print("Picking up " + itemManager.getItemComposition(loot.tileItem.getId()).getName());
 			MousePackets.queueClickPacket();
 			TileItemPackets.queueTileItemAction(loot, false);
+		}
+		else if (pet != null
+			&& !gameTickManager.isTickWaiting()
+			&& !InventoryUtil.isFull())
+		{
+			nexManager.print("Attempting to pick up " + pet.getName());
+			MousePackets.queueClickPacket();
+			NPCPackets.queueNPCAction(pet, "Pick-up");
+			gameTickManager.setTickWait(2);
 		}
 		else
 		{
