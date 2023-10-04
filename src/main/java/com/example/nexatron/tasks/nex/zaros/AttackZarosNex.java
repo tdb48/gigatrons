@@ -2,7 +2,6 @@ package com.example.nexatron.tasks.nex.zaros;
 
 
 import com.example.EthanApiPlugin.Collections.Equipment;
-import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
 import com.example.Packets.ObjectPackets;
@@ -15,7 +14,7 @@ import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
 import javax.inject.Inject;
-import net.runelite.api.*;
+import net.runelite.api.GameObject;
 import net.runelite.api.coords.WorldPoint;
 
 @TaskDescriptor(
@@ -50,9 +49,8 @@ public class AttackZarosNex extends StagedTask
 
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
 			&& !Combat.isSpecEnabled()
-			&& client.getLocalPlayer().isInteracting()
 			&& Combat.getSpecEnergy() >= 75
-			&& nexManager.getBossHp() >= 200)
+			&& nexManager.getBossHp() >= 160)
 		{
 			nexManager.print("Enabling spec");
 			Combat.toggleSpec();
@@ -92,7 +90,7 @@ public class AttackZarosNex extends StagedTask
 			&& (nexManager.nex.nexAttackTick == 2
 			&& nexManager.nex.nex.isInteracting()
 			&& nexManager.nex.nex.getInteracting().equals(client.getLocalPlayer())
-			|| nexManager.getPlayerPoint().distanceTo(nexManager.nex.nex.getWorldArea()) > 3
+			|| nexManager.nex.distanceToNex() > 3
 			&& gameTickManager.isAttackWaiting()))
 		{
 			WorldPoint stepUnderTile = nexManager.nex.getBloodIceStepUnderNEW();
@@ -132,22 +130,30 @@ public class AttackZarosNex extends StagedTask
 			return nexManager.nex.setup.rangeNex();
 		}
 
+//		if (gameTickManager.getAttackWait() > 1)
+//		{
+//			return nexManager.nex.setup.defensiveNex();
+//		}
+
 		// If its deflecting melee, use range, otherwise use melee
 		if (isDeflectMeleeActive())
 		{
 			return nexManager.setup.rangeNex();
+		}
+		if (nexManager.nex.distanceToNex() > 3)
+		{
+			return nexManager.nex.setup.rangeNex();
 		}
 		return nexManager.setup.meleeNex();
 	}
 
 	public boolean isDeflectMeleeActive()
 	{
-		return nexManager.nex.nexZarosAttacks >= 9;
-//		HeadIcon nexOverhead = EthanApiPlugin.getHeadIcon(nexManager.nex.nex);
-//		if (nexOverhead == null)
-//		{
-//			return false;
-//		}
-//		return !nexOverhead.equals(HeadIcon.SOUL_SPLIT);
+		int zarosCounter = nexManager.nex.nexZarosAttacks;
+		if (nexManager.nex.nexAttackTick == gameTickManager.getAttackWait())
+		{
+			zarosCounter++;
+		}
+		return zarosCounter >= 9 || zarosCounter == 1;
 	}
 }
