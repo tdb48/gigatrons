@@ -55,7 +55,7 @@ public class Nex
 	public int attacksUntilSpecial = 0;
 	public int shadowTick = 0;
 	public int containTick = 0;
-	public int umbraAttackTick = 0;
+	public int minionAttackTick = 0;
 	public boolean teleportOut = false;
 	public WorldPoint masterMainTile = null;
 	public WorldPoint masterDodgeTile = null;
@@ -107,7 +107,7 @@ public class Nex
 		nexAttackTick = 0;
 		shadowTick = 0;
 		containTick = 0;
-		umbraAttackTick = 0;
+		minionAttackTick = 0;
 		teleportOut = false;
 		invincibleTick = 0;
 		dashTick = 0;
@@ -138,6 +138,10 @@ public class Nex
 		if (nexAttackTick > 0)
 		{
 			nexAttackTick--;
+		}
+		if (minionAttackTick > 0)
+		{
+			minionAttackTick--;
 		}
 		if (invincibleTick > 0)
 		{
@@ -208,7 +212,12 @@ public class Nex
 			}
 			if (message.contains(NexConst.ICE_CONTAIN_SPECIAL_MSG.toLowerCase()))
 			{
+				nextSpecial = NexSpecial.PRISON;
 				containTick = 15;
+			}
+			if (message.contains(NexConst.ICE_PRISON_SPECIAL_MSG.toLowerCase()))
+			{
+				nextSpecial = NexSpecial.CONTAIN;
 			}
 			if (message.contains(NexConst.PRISON_IMPRISONED.toLowerCase()))
 			{
@@ -253,7 +262,7 @@ public class Nex
 		}
 		if (npc.getAnimation() == NexConst.UMBRA_ATTACK_ANIMATION)
 		{
-			umbraAttackTick = 6;
+			minionAttackTick = 6;
 		}
 		if (npc.getAnimation() == NexConst.NEX_DASHBACK_ANIMATION)
 		{
@@ -534,6 +543,10 @@ public class Nex
 
 	public boolean shouldTripleBrew()
 	{
+		if (nexManager.containsStage(Stage.BANK, Stage.KC_AREA))
+		{
+			return false;
+		}
 		int missingHealth = onRangedPhase() ? 40 : 50;
 		if (nexManager.getStage().equals(Stage.NEX_ZAROS)
 			|| nexManager.getStage().equals(Stage.NEX_ICE))
@@ -620,12 +633,16 @@ public class Nex
 
 	public boolean shouldPrayAltar()
 	{
+		if (nextSpecial.equals(NexSpecial.PRISON) && attacksUntilSpecial <= 1)
+		{
+			return false;
+		}
+		NPC interactingNPC = NPCs.search().interactingWithLocal().first().orElse(null);
 		return altar != null
-			&& Combat.getSpecEnergy() <= 65
+			&& Combat.getSpecEnergy() <= 55
 			&& canPrayAltar()
-			&& distanceToAltar() <= 8
-			&& nex.getInteracting() != null
-			&& !nex.getInteracting().equals(client.getLocalPlayer());
+			&& distanceToAltar() <= 10
+			&& interactingNPC == null;
 	}
 
 	public int distanceToAltar()
@@ -837,10 +854,22 @@ public class Nex
 			? otherPlayer.getWorldLocation()
 			: nexManager.getPlayerPoint();
 		ArrayList<WorldPoint> adjecantTiles = new ArrayList<>();
-		adjecantTiles.add(playerPoint.dx(-1));
-		adjecantTiles.add(playerPoint.dx(1));
-		adjecantTiles.add(playerPoint.dy(-1));
-		adjecantTiles.add(playerPoint.dy(1));
+		if (Reachable.isWalkable(playerPoint.dx(-2)))
+		{
+			adjecantTiles.add(playerPoint.dx(-1));
+		}
+		if (Reachable.isWalkable(playerPoint.dx(2)))
+		{
+			adjecantTiles.add(playerPoint.dx(1));
+		}
+		if (Reachable.isWalkable(playerPoint.dy(-2)))
+		{
+			adjecantTiles.add(playerPoint.dy(-1));
+		}
+		if (Reachable.isWalkable(playerPoint.dy(2)))
+		{
+			adjecantTiles.add(playerPoint.dy(1));
+		}
 		List<TileObject> allSpikes = TileObjects.search().withId(NexConst.ICE_PRISON).result();
 		List<GameObject> bestSpikes = new ArrayList<>();
 		for (TileObject spike : allSpikes)
