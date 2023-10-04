@@ -114,6 +114,11 @@ public class Socket
 		return nexManager.getAncientKc() < 100;
 	}
 
+	public boolean isSlave()
+	{
+		return !isMaster;
+	}
+
 	public boolean decideMaster()
 	{
 		// We have hard diary and the other account does not, which means we are the master
