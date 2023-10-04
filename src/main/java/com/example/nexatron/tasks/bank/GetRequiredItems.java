@@ -1,5 +1,7 @@
 package com.example.nexatron.tasks.bank;
 
+import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.Utility.BankUtil;
 import com.example.Utility.InventoryUtil;
 import com.example.nexatron.manager.NexManager;
@@ -12,7 +14,7 @@ import net.runelite.client.game.ItemManager;
 
 @TaskDescriptor(
 	name = "Get required items",
-	priority = Integer.MAX_VALUE,
+	priority = Integer.MAX_VALUE - 100,
 	blocking = true
 )
 public class GetRequiredItems extends StagedTask
@@ -38,6 +40,18 @@ public class GetRequiredItems extends StagedTask
 		{
 			return nexManager.nexBank.openBank();
 		}
+
+		for (int i : requiredItems)
+		{
+			if (Inventory.getItemAmount(i) > 1
+				|| Inventory.getItemAmount(i) >= 1 && Equipment.search().withId(i).result().size() >= 1)
+			{
+				nexManager.print("Depositing too many of " + itemManager.getItemComposition(i).getName());
+				BankUtil.depositAll(i);
+				return true;
+			}
+		}
+
 		ArrayList<Integer> setup = decideSetup();
 		requiredItems.removeAll(InventoryUtil.getAllPlayerItems());
 		if (!nexManager.hasGearEquipped(setup)
