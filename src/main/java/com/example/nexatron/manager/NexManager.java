@@ -254,6 +254,18 @@ public class NexManager
 		}
 	}
 
+	public boolean containsStage(Stage... stages)
+	{
+		for (Stage stage : stages)
+		{
+			if (getStage().equals(stage))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public NPC playerInteractingWith()
 	{
 		Player p = client.getLocalPlayer();
