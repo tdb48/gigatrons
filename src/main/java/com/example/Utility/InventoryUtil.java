@@ -1,5 +1,8 @@
 package com.example.Utility;
 
+import com.example.EthanApiPlugin.Collections.BankInventory;
+import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.EthanApiPlugin.Collections.EquipmentItemWidget;
 import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.EthanApiPlugin.Collections.Widgets;
 import java.util.ArrayList;
@@ -81,5 +84,42 @@ public class InventoryUtil
 			returnList.addAll(Inventory.search().withId(i).result());
 		}
 		return returnList;
+	}
+
+	public static ArrayList<Integer> getAllInventoryItems()
+	{
+		ArrayList<Integer> returnList = new ArrayList<>();
+		for (Widget widget : Inventory.search().result())
+		{
+			returnList.add(widget.getItemId());
+		}
+		returnList.removeIf(n -> n == 0 || n == -1);
+		return returnList;
+	}
+
+	public static ArrayList<Integer> getAllEquippedItems()
+	{
+		ArrayList<Integer> returnList = new ArrayList<>();
+		for (EquipmentItemWidget widget : Equipment.search().result())
+		{
+			returnList.add(widget.getEquipmentItemId());
+		}
+		returnList.removeIf(n -> n == 0 || n == -1);
+		return returnList;
+	}
+
+	public static ArrayList<Integer> getAllPlayerItems()
+	{
+		ArrayList<Integer> returnList = new ArrayList<>(getAllEquippedItems());
+		returnList.addAll(getAllInventoryItems());
+		returnList.removeIf(n -> n == 0 || n == -1);
+		return returnList;
+	}
+
+	public static boolean hasItem(ArrayList<Integer> items)
+	{
+		ArrayList<Integer> inventory = getAllPlayerItems();
+		inventory.removeIf(n -> !items.contains(n));
+		return inventory.size() != 0;
 	}
 }
