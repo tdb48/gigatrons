@@ -94,6 +94,7 @@ public class NexatronPlugin extends Plugin
 	protected Class<?>[] tasks()
 	{
 		return new Class[]{
+			NexConsumables.class,
 			ProgressStage.class,
 			ToggleRun.class,
 			DropVial.class,
@@ -105,7 +106,6 @@ public class NexatronPlugin extends Plugin
 			AttackSmokeNex.class,
 			NexStart.class,
 			NexPrayers.class,
-			NexConsumables.class,
 			DodgeSmokeDash.class,
 			AttackSmokeMinion.class,
 			AttackShadowNex.class,
