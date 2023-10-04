@@ -7,7 +7,6 @@ import com.example.Packets.NPCPackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Utility.Combat;
 import com.example.Utility.Movement;
-import com.example.Utility.ObjectUtil;
 import com.example.Utility.Reachable;
 import com.example.Utility.WorldAreas;
 import com.example.nexatron.manager.GameTickManager;
@@ -64,7 +63,7 @@ public class AttackBloodNex extends StagedTask
 			&& targetIsNex(target)
 			&& nexManager.nex.attacksUntilSpecial > 1
 			&& Combat.getSpecEnergy() >= 75
-			&& nexManager.nex.hpUntilProc() >= 120)
+			&& nexManager.nex.hpUntilProc() >= 80)
 		{
 			nexManager.print("Enabling spec");
 			Combat.toggleSpec();
@@ -97,7 +96,7 @@ public class AttackBloodNex extends StagedTask
 		{
 			nexManager.print("Praying at altar");
 			MousePackets.queueClickPacket();
-			ObjectPackets.queueObjectAction(nexManager.nex.altar,false,"Pray");
+			ObjectPackets.queueObjectAction(nexManager.nex.altar, false, "Pray");
 			return true;
 		}
 
@@ -212,8 +211,19 @@ public class AttackBloodNex extends StagedTask
 			return nexManager.nex.setup.rangeNex();
 		}
 
+//		if (gameTickManager.getAttackWait() > 1)
+//		{
+//			return nexManager.nex.setup.defensiveNex();
+//		}
+
+		if (nexManager.nex.distanceToNex() > 3)
+		{
+			return nexManager.nex.setup.rangeNex();
+		}
+
 		return targetIsNex(target)
-			&& nexManager.nex.hpUntilProc() >= 70
+			&& nexManager.nex.hpUntilProc() >= 80
+			&& nexManager.nex.attacksUntilSpecial > 1
 			&& Combat.getSpecEnergy() >= 75 ?
 			nexManager.nex.setup.rangeNex() :
 			nexManager.nex.setup.meleeNex();

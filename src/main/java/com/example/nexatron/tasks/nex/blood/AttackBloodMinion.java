@@ -45,9 +45,8 @@ public class AttackBloodMinion extends StagedTask
 			nexManager.swap(setup);
 		}
 
-		// TODO: add attacking with zcb during sacrifice
 		if (nexManager.nex.sacrificeActive
-			&& nexManager.nex.distanceToNex() <= 10)
+			&& nexManager.nex.distanceToNex() <= 8)
 		{
 			WorldPoint sacrificeTile = nexManager.nex.getSacrificeTile();
 			if (!nexManager.nex.sacrificeTiles.contains(nexManager.getPlayerPoint())
@@ -96,6 +95,12 @@ public class AttackBloodMinion extends StagedTask
 		{
 			distance = nexManager.nex.distanceToActiveMinion();
 		}
+
+//		if (gameTickManager.getAttackWait() > 1)
+//		{
+//			return nexManager.nex.setup.defensiveNex();
+//		}
+
 		if (nexManager.socket.isMaster
 			&& nexManager.nex.cruor != null
 			&& nexManager.nex.cruor.getHealthRatio() != -1
