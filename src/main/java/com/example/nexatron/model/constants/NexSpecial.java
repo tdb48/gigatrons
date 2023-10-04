@@ -2,5 +2,5 @@ package com.example.nexatron.model.constants;
 
 public enum NexSpecial
 {
-	SHADOWS, EMBRACE, SIPHON, SACRIFICE
+	SHADOWS, EMBRACE, SIPHON, SACRIFICE, PRISON, CONTAIN
 }
