@@ -74,6 +74,7 @@ public class NexConsumables extends StagedTask
 			gameTickManager.drinkPotion();
 			return true;
 		}
+
 		if (prayerRestore != null &&
 			(Prayers.getPoints() <= 20))
 		{
@@ -91,8 +92,8 @@ public class NexConsumables extends StagedTask
 		}
 
 		if (prayerRestore != null &&
-			((nexManager.nex.onMeleePhase() && client.getBoostedSkillLevel(Skill.STRENGTH) < client.getRealSkillLevel(Skill.STRENGTH))
-				|| (nexManager.nex.onRangedPhase() && client.getBoostedSkillLevel(Skill.RANGED) < client.getRealSkillLevel(Skill.RANGED))))
+			((nexManager.nex.onMeleePhase() && Consumable.isDrained(Skill.STRENGTH))
+				|| (nexManager.nex.onRangedPhase() && Consumable.isDrained(Skill.RANGED))))
 		{
 			nexManager.print("Drinking restore for drain");
 			MousePackets.queueClickPacket();
@@ -122,7 +123,6 @@ public class NexConsumables extends StagedTask
 			gameTickManager.drinkPotion();
 			return true;
 		}
-
 		return false;
 	}
 }

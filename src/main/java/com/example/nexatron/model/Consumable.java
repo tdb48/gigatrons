@@ -3,11 +3,13 @@ package com.example.nexatron.model;
 import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.Packets.MousePackets;
 import com.example.Packets.WidgetPackets;
+import com.example.Utility.Static;
 import com.example.nexatron.manager.NexManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
+import net.runelite.api.Skill;
 import net.runelite.api.widgets.Widget;
 
 public class Consumable
@@ -64,6 +66,12 @@ public class Consumable
 //		Arrays.asList(
 //			ItemID.BOOK_OF_THE_DEAD,
 //			ItemID.RUNE_POUCH));
+
+	public static boolean isDrained(Skill skill)
+	{
+		return Static.getClient().getBoostedSkillLevel(skill) < Static.getClient().getRealSkillLevel(skill);
+	}
+
 
 	public static Widget getBrew()
 	{
