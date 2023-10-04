@@ -5,11 +5,13 @@ import com.example.EthanApiPlugin.Collections.Bank;
 import com.example.EthanApiPlugin.Collections.BankInventory;
 import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.PacketUtils.WidgetInfoExtended;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
 import com.example.Packets.WidgetPackets;
 import com.example.Utility.BankUtil;
+import com.example.Utility.InventoryUtil;
 import com.example.Utility.Movement;
 import com.example.Utility.Static;
 import com.example.Utility.WidgetUtil;
@@ -39,6 +41,7 @@ import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
@@ -48,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.game.ItemManager;
 
 @Singleton
 public class NexManager
@@ -56,9 +60,9 @@ public class NexManager
 	private final EventBus eventBus;
 	private final NexatronPlugin plugin;
 	@Inject
+	private ItemManager itemManager;
+	@Inject
 	public GameTickManager gameTickManager;
-	public boolean allowedToBreak = false;
-	public NexatronConfig config;
 	@Inject
 	public ChargesTracker chargesTracker;
 	@Inject
@@ -80,6 +84,9 @@ public class NexManager
 	@Inject
 	public Random random = new Random();
 	private Stage stage = Stage.NONE;
+
+	public boolean allowedToBreak = false;
+	public NexatronConfig config;
 	public boolean shouldReattack;
 
 	@Inject
@@ -149,6 +156,7 @@ public class NexManager
 	{
 		for (int i : gearList)
 		{
+			// If not equipped, but it's in our inventory, return false
 			if (Equipment.search().withId(i).first().orElse(null) == null
 				&& Inventory.search().withId(i).first().orElse(null) != null)
 			{
@@ -290,9 +298,38 @@ public class NexManager
 		}
 	}
 
+	public void sendIntValue(int amount)
+	{
+		EthanApiPlugin.getClient().setVarcStrValue(359, Integer.toString(amount));
+		EthanApiPlugin.getClient().setVarcIntValue(5, 7);
+		EthanApiPlugin.getClient().runScript(681);
+	}
+
+	public void sendStringValue(String value)
+	{
+		EthanApiPlugin.getClient().setVarcStrValue(359, value);
+		EthanApiPlugin.getClient().setVarcIntValue(5, 7);
+		EthanApiPlugin.getClient().runScript(681);
+	}
+
 	public int getAncientKc()
 	{
 		return client.getVarbitValue(NexConst.ANCIENT_KILLCOUNT_VARBIT);
+	}
+
+	public boolean hasAllItems(ArrayList<Integer> items)
+	{
+		items.removeIf(n -> n == 0 || n == -1);
+		ArrayList<Integer> playerItems = InventoryUtil.getAllPlayerItems();
+		for (int i : items)
+		{
+			if (!playerItems.contains(i))
+			{
+				System.out.println("Missing " + itemManager.getItemComposition(i).getName());
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public boolean isAntiVenomed()
@@ -471,6 +508,35 @@ public class NexManager
 						counter++;
 					}
 				}
+			}
+		}
+	}
+
+	public void withdraw(ArrayList<Integer> items)
+	{
+		int swaps = (int) (3 + (Math.abs(random.nextGaussian() * 1.5)));
+		int counter = 0;
+		for (int item : items)
+		{
+			if (counter == swaps)
+			{
+				return;
+			}
+			if (!BankUtil.contains(item))
+			{
+				continue;
+			}
+			if (item == ItemID.RUBY_DRAGON_BOLTS_E || item == ItemID.DIAMOND_DRAGON_BOLTS_E)
+			{
+				print("Withdrawing all" + itemManager.getItemComposition(item).getName());
+				BankUtil.withdrawAll(item);
+				counter++;
+			}
+			else
+			{
+				print("Withdrawing " + itemManager.getItemComposition(item).getName());
+				BankUtil.withdrawOne(item);
+				counter++;
 			}
 		}
 	}
