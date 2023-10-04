@@ -5,8 +5,10 @@ import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Utility.Movement;
+import com.example.Utility.Reachable;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
+import com.example.nexatron.model.constants.NexSpecial;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
@@ -61,36 +63,45 @@ public class AttackIceMinion extends StagedTask
 			}
 		}
 
+
+		WorldPoint standTile = nexManager.nex.getMainTile();
+
 		// Deal with contain this if somehow out of it
 		if (nexManager.nex.containTick != 0
 			&& nexManager.nex.containTick <= 12
 			&& nexManager.nex.distanceToNex() <= 2)
 		{
-			WorldPoint containTile = nexManager.nex.nearestContainWp(2);
-			if (containTile != null
-				&& !nexManager.getPlayerPoint().equals(containTile))
+			// This check is incase nex does contain when we just start moving to the minion
+			// So the bot doesnt stand still near nex and wait for contain to disapper when it still has to run 20 tiles
+			if (!(nexManager.nex.containTick <= 10
+				&& Reachable.isWalkable(standTile)))
 			{
-				nexManager.print("Moving out of contain this to " + nexManager.worldPointString(containTile));
-				Movement.walk(containTile);
-				return true;
+				WorldPoint containTile = nexManager.nex.nearestContainWp(2);
+				if (containTile != null
+					&& !nexManager.getPlayerPoint().equals(containTile))
+				{
+					nexManager.print("Moving out of contain this to " + nexManager.worldPointString(containTile));
+					Movement.walk(containTile);
+					return true;
+				}
 			}
 		}
 
-		// Step out if we are DD'd and theres no specials going on
-		if (nexManager.isDDd()
-			&& nexManager.socket.isMaster
-			&& !nexManager.nex.prisonActive
-			&& nexManager.nex.containTick == 0)
-		{
-			WorldPoint containTile = nexManager.nex.nearestContainWp(1);
-			if (containTile != null
-				&& !nexManager.getPlayerPoint().equals(containTile))
-			{
-				nexManager.print("Moving out of DD to " + nexManager.worldPointString(containTile));
-				Movement.walk(containTile);
-				return true;
-			}
-		}
+//		// Step out if we are DD'd and theres no specials going on
+//		if (nexManager.isDDd()
+//			&& nexManager.socket.isMaster
+//			&& !nexManager.nex.prisonActive
+//			&& nexManager.nex.containTick == 0)
+//		{
+//			WorldPoint containTile = nexManager.nex.nearestContainWp(1);
+//			if (containTile != null
+//				&& !nexManager.getPlayerPoint().equals(containTile))
+//			{
+//				nexManager.print("Moving out of DD to " + nexManager.worldPointString(containTile));
+//				Movement.walk(containTile);
+//				return true;
+//			}
+//		}
 
 		// Attack first, then second prio is moving to our main tile
 		if (!gameTickManager.isAttackWaiting()
@@ -107,9 +118,10 @@ public class AttackIceMinion extends StagedTask
 			return true;
 		}
 
-		// Send nex back to middle
-		if (nexManager.nex.glacies.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 5
-			&& nexManager.nex.isNexChasingUs())
+		// Send nex back to middle when possible
+		if (nexManager.nex.glacies.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 6
+			&& nexManager.nex.isNexChasingUs()
+			&& !(nexManager.nex.nextSpecial.equals(NexSpecial.PRISON) && nexManager.nex.attacksUntilSpecial == 1))
 		{
 			WorldPoint tileUnderNex = nexManager.nex.getUnderNex();
 			nexManager.print("Stepping under nex " + nexManager.worldPointString(tileUnderNex));
@@ -118,7 +130,6 @@ public class AttackIceMinion extends StagedTask
 		}
 
 		// Stand on our correct tiles
-		WorldPoint standTile = nexManager.nex.getMainTile();
 		if (standTile != null
 			&& nexManager.nex.containTick == 0
 			&& !client.getLocalPlayer().getWorldLocation().equals(standTile))
@@ -136,6 +147,13 @@ public class AttackIceMinion extends StagedTask
 			&& nexManager.nex.stuckInPrisonTick == 0)
 		{
 			return nexManager.nex.setup.meleeNex();
+		}
+		if (nexManager.socket.isSlave()
+			&& nexManager.nex.glacies != null
+			&& nexManager.nex.glacies.getHealthRatio() != -1
+			&& nexManager.nex.getNPCHP(nexManager.nex.glacies) <= 60)
+		{
+			return nexManager.setup.meleeNex();
 		}
 		return nexManager.setup.rangeNex();
 	}
