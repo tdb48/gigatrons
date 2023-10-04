@@ -160,6 +160,7 @@ public class NexPrayers extends StagedTask
 		}
 
 		if ((nexManager.getStage() == Stage.NEX_SMOKE || nexManager.getStage() == Stage.NEX_ZAROS)
+			&& nexManager.nex.distanceToNex() < 3
 			&& nexManager.nex.nex.isInteracting()
 			&& nexManager.nex.nex.getInteracting().equals(client.getLocalPlayer()))
 		{
@@ -178,10 +179,10 @@ public class NexPrayers extends StagedTask
 				{
 					return Prayer.PROTECT_FROM_MAGIC;
 				}
-				if (nexManager.nex.umbraAttackTick == 2)
-				{
-					return Prayer.PROTECT_FROM_MAGIC;
-				}
+//				if (nexManager.nex.umbraAttackTick == 2)
+//				{
+//					return Prayer.PROTECT_FROM_MAGIC;
+//				}
 			}
 			return Prayer.PROTECT_FROM_MISSILES;
 		}
