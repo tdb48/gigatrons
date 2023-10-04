@@ -1,8 +1,10 @@
 package com.example.nexatron.tasks.nex;
 
 import com.example.EthanApiPlugin.Collections.ETileItem;
+import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.Packets.MousePackets;
 import com.example.Packets.TileItemPackets;
+import com.example.Utility.InventoryUtil;
 import com.example.Utility.Movement;
 import com.example.Utility.Prayers;
 import com.example.Utility.TileItemUtil;
@@ -37,7 +39,6 @@ public class NexFinishUp extends StagedTask
 		{
 			return false;
 		}
-		Prayers.disableAll();
 		// Dodge mushroom, tick gets set in ProgressStage task
 		if (nexManager.nex.invincibleTick > 0)
 		{
@@ -51,7 +52,8 @@ public class NexFinishUp extends StagedTask
 		}
 
 		ETileItem loot = findLoot();
-		if (loot != null)
+		if (loot != null
+			&& !InventoryUtil.isFull())
 		{
 			nexManager.print("Picking up " + itemManager.getItemComposition(loot.tileItem.getId()).getName());
 			MousePackets.queueClickPacket();
