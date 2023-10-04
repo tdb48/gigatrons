@@ -7,6 +7,7 @@ import com.example.nexatron.overlay.NexatronInfoBox;
 import com.example.nexatron.overlay.NexatronOverlay;
 import com.example.nexatron.overlay.SocketInfoBox;
 import com.example.nexatron.taskformat.TaskManager;
+import com.example.nexatron.tasks.bank.BankJunk;
 import com.example.nexatron.tasks.bank.GetRequiredItems;
 import com.example.nexatron.tasks.bank.PickupPet;
 import com.example.nexatron.tasks.general.DisablePrayers;
@@ -122,6 +123,7 @@ public class NexatronPlugin extends Plugin
 			AttackZarosNex.class,
 			PickupPet.class,
 			GetRequiredItems.class,
+			BankJunk.class
 		};
 	}
 
