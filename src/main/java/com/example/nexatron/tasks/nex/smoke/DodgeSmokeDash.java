@@ -44,29 +44,13 @@ public class DodgeSmokeDash extends StagedTask
 				&& nexManager.nex.nex.getOverheadText().toLowerCase().contains("there is..")
 				&& nexManager.nex.dashTick < 7)
 			{
-				int orientation = nexManager.nex.nex.getOrientation();
-				if (orientation < 250 || orientation > 1780)
-				{
-					activeConstLane = Lanes.SOUTH;
-				}
-				else if (orientation > 250 && orientation < 760)
-				{
-					activeConstLane = Lanes.WEST;
-				}
-				else if (orientation > 760 && orientation < 1250)
-				{
-					activeConstLane = Lanes.NORTH;
-				}
-				else if (orientation > 1250 && orientation < 1780)
-				{
-					activeConstLane = Lanes.EAST;
-				}
+				activeConstLane = findActiveLane();
 			}
 			WorldPoint tile;
 			if (nexManager.socket.isMaster)
 			{
 				// If dash is west, move to south (dodge tile), otherwise stay on main tile
-				if (activeConstLane == Lanes.WEST)
+				if (activeConstLane.equals(Lanes.WEST))
 				{
 					nexManager.nex.initSmokeNexTiles();
 					tile = nexManager.nex.masterDodgeTile;
@@ -78,7 +62,7 @@ public class DodgeSmokeDash extends StagedTask
 			}
 			else
 			{
-				if (activeConstLane == Lanes.NORTH)
+				if (activeConstLane.equals(Lanes.NORTH))
 				{
 					nexManager.nex.initSmokeNexTiles();
 					tile = nexManager.nex.slaveDodgeTile;
@@ -104,6 +88,28 @@ public class DodgeSmokeDash extends StagedTask
 		}
 		activeConstLane = Lanes.NONE;
 		return false;
+	}
+
+	public Lanes findActiveLane()
+	{
+		int orientation = nexManager.nex.nex.getOrientation();
+		if (orientation < 250 || orientation > 1780)
+		{
+			return Lanes.SOUTH;
+		}
+		else if (orientation > 250 && orientation < 760)
+		{
+			return Lanes.WEST;
+		}
+		else if (orientation > 760 && orientation < 1250)
+		{
+			return Lanes.NORTH;
+		}
+		else if (orientation > 1250 && orientation < 1780)
+		{
+			return Lanes.EAST;
+		}
+		return null;
 	}
 
 	@Subscribe
