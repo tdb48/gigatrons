@@ -61,7 +61,7 @@ public class Setup
 		return new ArrayList<>(
 			Arrays.asList(
 				ItemID.OSMUMTENS_FANG,
-				ItemID.BANDOS_CHESTPLATE,
+				ItemID.MASORI_BODY_F,
 				ItemID.MASORI_CHAPS_F,
 //				ItemID.INFERNAL_CAPE,
 				config.meleeCape().itemId,
@@ -73,5 +73,20 @@ public class Setup
 				ItemID.LIGHTBEARER,
 				ItemID.BARROWS_GLOVES,
 				ItemID.PRIMORDIAL_BOOTS));
+	}
+
+	public ArrayList<Integer> defensiveNex()
+	{
+		return new ArrayList<>(
+			Arrays.asList(
+				ItemID.ZARYTE_CROSSBOW,
+				ItemID.MASORI_BODY_F,
+				ItemID.MASORI_CHAPS_F,
+				config.meleeCape().itemId,
+				config.helm().itemId,
+				ItemID.NECKLACE_OF_ANGUISH,
+				ItemID.TWISTED_BUCKLER,
+				ItemID.LIGHTBEARER,
+				ItemID.BARROWS_GLOVES));
 	}
 }
