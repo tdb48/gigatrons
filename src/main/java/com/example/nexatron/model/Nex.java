@@ -260,6 +260,10 @@ public class Nex
 				nexZarosAttacks++;
 			}
 		}
+		if (npc.getAnimation() == NexConst.NEX_NEW_PHASE_ANIMATION)
+		{
+			nexZarosAttacks = 4;
+		}
 		if (npc.getAnimation() == NexConst.UMBRA_ATTACK_ANIMATION)
 		{
 			minionAttackTick = 6;
@@ -726,6 +730,11 @@ public class Nex
 			&& nex.getInteracting().equals(client.getLocalPlayer());
 	}
 
+	public int distanceToTile(WorldPoint worldPoint)
+	{
+		ArrayList<WorldPoint> path = EthanApiPlugin.pathToGoal(worldPoint, new HashSet<>());
+		return path.size();
+	}
 
 	public WorldPoint nearestContainWp(int distance)
 	{
