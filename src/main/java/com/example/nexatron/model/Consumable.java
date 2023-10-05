@@ -1,21 +1,31 @@
 package com.example.nexatron.model;
 
+import com.example.EthanApiPlugin.Collections.Bank;
 import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.Packets.MousePackets;
 import com.example.Packets.WidgetPackets;
+import com.example.Utility.BankUtil;
+import com.example.Utility.InventoryUtil;
 import com.example.Utility.Static;
 import com.example.nexatron.manager.NexManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.inject.Inject;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.game.ItemManager;
 
 public class Consumable
 {
 	@Inject
 	NexManager nexManager;
+	@Inject
+	ItemManager itemManager;
 	public static final int PREPOT_SCB = ItemID.SUPER_COMBAT_POTION1;
 	public static final int PREPOT_STAM = ItemID.STAMINA_POTION1;
 	public static final int PREPOT_RANGE = ItemID.RANGING_POTION1;
@@ -25,9 +35,11 @@ public class Consumable
 	public static final int PREPOT_ANTI = ItemID.ANTIVENOM1_12919;
 	public static ArrayList<Integer> getNecessaryPotions = new ArrayList<>(
 		Arrays.asList(
+			ItemID.ANGLERFISH,
 			ItemID.RANGING_POTION4,
 			ItemID.SARADOMIN_BREW4,
 			ItemID.SUPER_COMBAT_POTION4,
+			ItemID.SUPER_RESTORE1,
 			ItemID.SUPER_RESTORE4));
 	public static final ArrayList<Integer> RESTORE =
 		new ArrayList<>(Arrays.asList(
@@ -175,6 +187,51 @@ public class Consumable
 		MousePackets.queueClickPacket();
 		WidgetPackets.queueWidgetAction(consumable, action);
 		nexManager.shouldReattack = true;
+		return true;
+	}
+
+	public boolean prePot(int item)
+	{
+		if (!InventoryUtil.contains(item))
+		{
+			if (!BankUtil.contains(item))
+			{
+				nexManager.print("Missing " + itemManager.getItemComposition(item).getName());
+			}
+			else
+			{
+				BankUtil.withdrawOne(item);
+			}
+		}
+		else
+		{
+			Widget boost = InventoryUtil.getFirst(item);
+			int slot = 0;
+			ItemContainer invent = Static.getClient().getItemContainer(InventoryID.INVENTORY.getId());
+			if (invent != null)
+			{
+				for (int i = 0; i < 28; i++)
+				{
+					Item inventoryItem = invent.getItem(i);
+					if (inventoryItem != null && inventoryItem.getId() == boost.getItemId())
+					{
+						slot = i;
+						break;
+					}
+				}
+			}
+			if (Bank.isOpen() && boost != null)
+			{
+				MousePackets.queueClickPacket();
+				WidgetPackets.queueWidgetActionPacket(9, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId(), boost.getItemId(), slot);
+			}
+			else
+			{
+				MousePackets.queueClickPacket();
+				WidgetPackets.queueWidgetAction(boost, "Drink");
+			}
+			nexManager.print("Drinking/eating " + boost.getName());
+		}
 		return true;
 	}
 
