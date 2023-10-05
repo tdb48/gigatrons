@@ -547,7 +547,7 @@ public class Nex
 
 	public boolean shouldTripleBrew()
 	{
-		if (nexManager.containsStage(Stage.BANK, Stage.KC_AREA))
+		if (nexManager.containsStage(Stage.BANK, Stage.KC_AREA, Stage.NONE, Stage.LOBBY))
 		{
 			return false;
 		}
@@ -831,15 +831,14 @@ public class Nex
 			masterMainTile = centerPoint.dx(3).dy(10);
 			slaveMainTile = centerPoint.dx(3).dy(10);
 			masterDodgeTile = centerPoint.dx(1).dy(10);
-			slaveDodgeTile = centerPoint.dx(7).dy(12);
 		}
 		else
 		{
 			masterMainTile = centerPoint.dx(3).dy(11);
 			slaveMainTile = centerPoint.dx(3).dy(11);
 			masterDodgeTile = centerPoint.dx(1).dy(11);
-			slaveDodgeTile = centerPoint.dx(7).dy(12);
 		}
+		slaveDodgeTile = centerPoint.dx(7).dy(12);
 		slaveStepUnderTile = centerPoint.dx(5).dy(12);
 	}
 
