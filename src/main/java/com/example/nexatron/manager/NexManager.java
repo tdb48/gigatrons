@@ -30,6 +30,7 @@ import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.model.setup.Setup;
 import com.google.inject.Singleton;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -44,6 +45,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
@@ -320,6 +322,28 @@ public class NexManager
 		EthanApiPlugin.getClient().setVarcStrValue(359, value);
 		EthanApiPlugin.getClient().setVarcIntValue(5, 7);
 		EthanApiPlugin.getClient().runScript(681);
+	}
+
+	public int getOverheadIcon(NPC n)
+	{
+		NPCComposition comp = n.getComposition();
+		for(Field f : n.getComposition().getClass().getDeclaredFields()){
+			if(f.getType().toString().contains("[S")){
+				try {
+					f.setAccessible(true);
+					short[] temp = (short[]) f.get(comp);
+					if(temp != null){
+						for(short s : temp){
+							//System.out.println("Old Overhead value -> " + s);
+							return s;
+						}
+					}
+				} catch (IllegalAccessException e) {
+					//intentionally ignored
+				}
+			}
+		}
+		return -1;
 	}
 
 	public int getAncientKc()

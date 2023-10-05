@@ -62,12 +62,17 @@ public class EnterNex extends StagedTask
 			}
 			return true;
 		}
-		else if (nexManager.socket.isSlave() && nexManager.socket.otherIsInside)
+		else if (nexManager.socket.isSlave())
 		{
 			Widget join = Widgets.search().withTextContains("Join a private fight").hiddenState(false).first().orElse(null);
 			Widget nameInstance = Widgets.search().withTextContains("Whose fight would you like").hiddenState(false).first().orElse(null);
 			if (nameInstance != null)
 			{
+				if (!nexManager.socket.otherIsInside)
+				{
+					nexManager.print("Waiting for master to enter");
+					return true;
+				}
 				nexManager.print("Entering instance of " + nexManager.socket.otherName);
 				Dialog.type(nexManager.socket.otherName, true);
 				gameTickManager.setTickWait(5);

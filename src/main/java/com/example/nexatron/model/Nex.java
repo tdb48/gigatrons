@@ -260,6 +260,10 @@ public class Nex
 				nexZarosAttacks++;
 			}
 		}
+		if (animationChanged.getActor().equals(client.getLocalPlayer()) && client.getLocalPlayer().getAnimation() == NexConst.ALTAR_TELEPORT_ANIM)
+		{
+
+		}
 		if (npc.getAnimation() == NexConst.NEX_NEW_PHASE_ANIMATION)
 		{
 			nexZarosAttacks = 4;
@@ -336,6 +340,7 @@ public class Nex
 		String npcName = npc.getName().toLowerCase();
 		if (npcName.contains("nex"))
 		{
+			nexManager.socket.readyToStart = false;
 			nex = npc;
 		}
 		if (npcName.contains("fumus"))

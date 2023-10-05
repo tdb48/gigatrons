@@ -71,9 +71,10 @@ public class NexatronInfoBox extends OverlayPanel
 			panelComponent.getChildren().add(LineComponent.builder().left("Runtime ").right((duration.toHours() > 0 ? (duration.toHours() + ":") : ("")) + (new SimpleDateFormat("mm:ss").format(new Date(duration.toMillis())))).build());
 		}
 		panelComponent.getChildren().add(LineComponent.builder().left("Stage ").right(String.valueOf(stage)).build());
-		panelComponent.getChildren().add(LineComponent.builder().left("K/D ").right(plugin.nexManager.overall.killCount + " / " + plugin.nexManager.overall.deaths).build());
+		panelComponent.getChildren().add(LineComponent.builder().left("K/D/F ").right(plugin.nexManager.overall.killCount + " / " + plugin.nexManager.overall.deaths + " / " + plugin.nexManager.overall.failedKills).build());
 		if (plugin.nexManager.nex.nex != null)
 		{
+			panelComponent.getChildren().add(LineComponent.builder().left("Overhead int ").right(String.valueOf(plugin.nexManager.getOverheadIcon(plugin.nexManager.nex.nex))).build());
 			panelComponent.getChildren().add(LineComponent.builder().left("Nex tick ").right(String.valueOf(plugin.nexManager.nex.nexAttackTick)).build());
 			panelComponent.getChildren().add(LineComponent.builder().left("Minion tick ").right(String.valueOf(plugin.nexManager.nex.minionAttackTick)).build());
 			panelComponent.getChildren().add(LineComponent.builder().left("Player tick ").right(String.valueOf(plugin.nexManager.gameTickManager.getAttackWait())).build());

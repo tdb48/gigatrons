@@ -98,7 +98,7 @@ public class AttackIceNex extends StagedTask
 		if (nexManager.nex.containTick == 0
 			&& !nexManager.nex.prisonActive
 			&& stepUnderTile != null
-			&& (nexManager.nex.nexAttackTick == 2 || (isFar && nexManager.nex.nexAttackTick == 3)
+			&& ((nexManager.nex.nexAttackTick == 2 || isFar && nexManager.nex.nexAttackTick == 3)
 			&& nexManager.nex.nex.isInteracting()
 			&& nexManager.nex.nex.getInteracting().equals(client.getLocalPlayer())
 			|| nexManager.getPlayerPoint().distanceTo(nexManager.nex.nex.getWorldArea()) > 3

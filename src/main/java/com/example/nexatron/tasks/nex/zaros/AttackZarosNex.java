@@ -90,11 +90,11 @@ public class AttackZarosNex extends StagedTask
 		// Step under on tick 2 with designated step under tiles OR if we are far out
 		if (nexManager.nex.containTick == 0
 			&& !nexManager.nex.prisonActive
-			&& (nexManager.nex.nexAttackTick == 2 || (isFar && nexManager.nex.nexAttackTick == 3)
+			&& (nexManager.nex.nexAttackTick == 2 || isFar && nexManager.nex.nexAttackTick == 3)
 			&& nexManager.nex.nex.isInteracting()
 			&& nexManager.nex.nex.getInteracting().equals(client.getLocalPlayer())
 			|| nexManager.nex.distanceToNex() > 3
-			&& gameTickManager.isAttackWaiting()))
+			&& gameTickManager.isAttackWaiting())
 		{
 			if (stepUnderTile != null)
 			{
@@ -154,6 +154,7 @@ public class AttackZarosNex extends StagedTask
 		return nexManager.setup.meleeNex();
 	}
 
+	// Soulsplit is 11, deflect is 15
 	public boolean isDeflectMeleeActive()
 	{
 		int zarosCounter = nexManager.nex.nexZarosAttacks;

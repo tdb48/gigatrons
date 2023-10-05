@@ -1,14 +1,18 @@
 package com.example.nexatron.model;
 
 
+import com.example.Utility.Static;
 import com.example.nexatron.NexatronPlugin;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
+import com.example.nexatron.model.constants.Stage;
 import java.time.Instant;
 import javax.inject.Inject;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -20,6 +24,7 @@ public class Overall
 {
 	public int killCount = 0;
 	public int deaths = 0;
+	public int failedKills = 0;
 	public boolean died;
 	public Instant botTimer = Instant.now();
 
@@ -60,6 +65,17 @@ public class Overall
 	}
 
 	@Subscribe
+	public void onAnimationChanged(AnimationChanged animationChanged)
+	{
+		if (animationChanged.getActor().equals(Static.getClient().getLocalPlayer())
+			&& Static.getClient().getLocalPlayer().getAnimation() == NexConst.ALTAR_TELEPORT_ANIM
+			&& nexManager.nex.nex != null)
+		{
+			failedKills++;
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
 
@@ -71,6 +87,7 @@ public class Overall
 
 	public void fullReset()
 	{
+		failedKills = 0;
 		died = false;
 		botTimer = Instant.now();
 		killCount = 0;

@@ -23,7 +23,16 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
-
+/*
+banking unused items
+pickup pet
+get required items
+heal back up
+hop world
+prepot
+withdraw pots
+enter instance
+ */
 public class NexBank
 {
 	public GameObject barrier = null;
