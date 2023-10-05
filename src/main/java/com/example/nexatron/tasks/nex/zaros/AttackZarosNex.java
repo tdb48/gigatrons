@@ -49,6 +49,7 @@ public class AttackZarosNex extends StagedTask
 
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
 			&& !Combat.isSpecEnabled()
+			&& isDeflectMeleeActive()
 			&& Combat.getSpecEnergy() >= 75
 			&& nexManager.getBossHp() >= 160)
 		{
@@ -83,17 +84,18 @@ public class AttackZarosNex extends StagedTask
 				return true;
 			}
 		}
-
+		WorldPoint stepUnderTile = nexManager.nex.getBloodIceStepUnderNEW();
+		int distance = nexManager.nex.distanceToTile(stepUnderTile);
+		boolean isFar = distance > 2;
 		// Step under on tick 2 with designated step under tiles OR if we are far out
 		if (nexManager.nex.containTick == 0
 			&& !nexManager.nex.prisonActive
-			&& (nexManager.nex.nexAttackTick == 2
+			&& (nexManager.nex.nexAttackTick == 2 || (isFar && nexManager.nex.nexAttackTick == 3)
 			&& nexManager.nex.nex.isInteracting()
 			&& nexManager.nex.nex.getInteracting().equals(client.getLocalPlayer())
 			|| nexManager.nex.distanceToNex() > 3
 			&& gameTickManager.isAttackWaiting()))
 		{
-			WorldPoint stepUnderTile = nexManager.nex.getBloodIceStepUnderNEW();
 			if (stepUnderTile != null)
 			{
 				nexManager.print("Stepping under at " + nexManager.worldPointString(stepUnderTile));
@@ -158,6 +160,10 @@ public class AttackZarosNex extends StagedTask
 		if (nexManager.nex.nexAttackTick == gameTickManager.getAttackWait())
 		{
 			zarosCounter++;
+		}
+		if (zarosCounter == 8 && gameTickManager.getAttackWait() - nexManager.nex.nexAttackTick == 1)
+		{
+			return true;
 		}
 		return zarosCounter >= 9;
 //			|| zarosCounter == 1;

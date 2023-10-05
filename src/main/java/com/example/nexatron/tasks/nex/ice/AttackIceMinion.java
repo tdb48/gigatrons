@@ -66,7 +66,6 @@ public class AttackIceMinion extends StagedTask
 
 		WorldPoint standTile = nexManager.nex.getMainTile();
 		WorldPoint containTile = nexManager.nex.nearestContainWp(2);
-//		int runFromContainTick = nexManager.nex.distanceToTile(containTile) > 2 ? 12 : 14;
 		// Deal with contain this if somehow out of it
 		if (nexManager.nex.containTick != 0
 			&& containTile != null
@@ -88,22 +87,6 @@ public class AttackIceMinion extends StagedTask
 			}
 		}
 
-//		// Step out if we are DD'd and theres no specials going on
-//		if (nexManager.isDDd()
-//			&& nexManager.socket.isMaster
-//			&& !nexManager.nex.prisonActive
-//			&& nexManager.nex.containTick == 0)
-//		{
-//			WorldPoint containTile = nexManager.nex.nearestContainWp(1);
-//			if (containTile != null
-//				&& !nexManager.getPlayerPoint().equals(containTile))
-//			{
-//				nexManager.print("Moving out of DD to " + nexManager.worldPointString(containTile));
-//				Movement.walk(containTile);
-//				return true;
-//			}
-//		}
-
 		// Attack first, then second prio is moving to our main tile
 		if (!gameTickManager.isAttackWaiting()
 			&& nexManager.nex.distanceToActiveMinion() <= 10)
@@ -120,9 +103,7 @@ public class AttackIceMinion extends StagedTask
 		}
 
 		// Send nex back to middle when possible
-		if (nexManager.nex.glacies.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 6
-			&& nexManager.nex.isNexChasingUs()
-			&& !(nexManager.nex.nextSpecial.equals(NexSpecial.PRISON) && nexManager.nex.attacksUntilSpecial == 1))
+		if (shouldStepUnderNex())
 		{
 			WorldPoint tileUnderNex = nexManager.nex.getUnderNex();
 			nexManager.print("Stepping under nex " + nexManager.worldPointString(tileUnderNex));
@@ -142,12 +123,23 @@ public class AttackIceMinion extends StagedTask
 		return false;
 	}
 
+	public boolean shouldStepUnderNex()
+	{
+		return nexManager.nex.glacies.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 6
+			&& nexManager.nex.isNexChasingUs()
+			&& !(nexManager.nex.nextSpecial.equals(NexSpecial.PRISON) && nexManager.nex.attacksUntilSpecial == 1);
+	}
+
 	public ArrayList<Integer> decideSetup()
 	{
 		if (nexManager.nex.prisonActive
 			&& nexManager.nex.stuckInPrisonTick == 0)
 		{
 			return nexManager.nex.setup.meleeNex();
+		}
+		if (shouldStepUnderNex())
+		{
+			return nexManager.setup.rangeNex();
 		}
 		if (nexManager.socket.isSlave()
 			&& nexManager.nex.glacies != null

@@ -100,16 +100,18 @@ public class AttackBloodNex extends StagedTask
 			return true;
 		}
 
+		WorldPoint stepUnderTile = nexManager.nex.getBloodIceStepUnderNEW();
+		int distance = nexManager.nex.distanceToTile(stepUnderTile);
+		boolean isFar = distance > 2;
 		// Step under on tick 2 with designated step under tiles OR if we are far out
-		if ((nexManager.nex.nexAttackTick == 2)
+		if ((nexManager.nex.nexAttackTick == 2 || (isFar && nexManager.nex.nexAttackTick == 3)
 			&& nexManager.nex.nex.isInteracting()
 			&& targetIsNex(target)
 			&& nexManager.nex.nex.getInteracting().equals(client.getLocalPlayer())
 			|| nexManager.getPlayerPoint().distanceTo(nexManager.nex.nex.getWorldArea()) > 3
 			&& gameTickManager.isAttackWaiting()
-			&& targetIsNex(target))
+			&& targetIsNex(target)))
 		{
-			WorldPoint stepUnderTile = nexManager.nex.getBloodIceStepUnderNEW();
 			if (stepUnderTile != null)
 			{
 				nexManager.print("Stepping under at " + nexManager.worldPointString(stepUnderTile));
