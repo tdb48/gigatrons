@@ -327,18 +327,25 @@ public class NexManager
 	public int getOverheadIcon(NPC n)
 	{
 		NPCComposition comp = n.getComposition();
-		for(Field f : n.getComposition().getClass().getDeclaredFields()){
-			if(f.getType().toString().contains("[S")){
-				try {
+		for (Field f : n.getComposition().getClass().getDeclaredFields())
+		{
+			if (f.getType().toString().contains("[S"))
+			{
+				try
+				{
 					f.setAccessible(true);
 					short[] temp = (short[]) f.get(comp);
-					if(temp != null){
-						for(short s : temp){
+					if (temp != null)
+					{
+						for (short s : temp)
+						{
 							//System.out.println("Old Overhead value -> " + s);
 							return s;
 						}
 					}
-				} catch (IllegalAccessException e) {
+				}
+				catch (IllegalAccessException e)
+				{
 					//intentionally ignored
 				}
 			}
@@ -388,7 +395,7 @@ public class NexManager
 
 	public boolean isAntiPoisoned()
 	{
-		return Static.getClient().getVarpValue(VarPlayer.POISON) < 0;
+		return Static.getClient().getVarpValue(VarPlayer.POISON) < -35;
 	}
 
 	public void swap(ArrayList<Integer> gearList)
@@ -567,16 +574,22 @@ public class NexManager
 	}
 
 
-
 	public ArrayList<Widget> getJunk()
 	{
 		ArrayList<Integer> requiredItems = nexBank.requiredItems();
 		ArrayList<Widget> unNecessaryItems = (ArrayList<Widget>) Inventory.search().result();
+		if (Consumable.isDrained(Skill.HITPOINTS))
+		{
+			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_ANGLER);
+		}
+		if (Consumable.isDrainedMore(Skill.PRAYER, 5))
+		{
+			unNecessaryItems.removeIf(n -> n.getItemId() == ItemID.SUPER_RESTORE1);
+
+		}
 		if (!isPrePotted())
 		{
 			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_SCB);
-			unNecessaryItems.removeIf(n -> n.getItemId() == ItemID.SUPER_RESTORE1);
-			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_ANGLER);
 			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_RANGE);
 			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_STAM);
 			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_ANTI);

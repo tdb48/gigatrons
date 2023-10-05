@@ -104,7 +104,7 @@ public class AttackBloodMinion extends StagedTask
 		if (nexManager.socket.isMaster
 			&& nexManager.nex.cruor != null
 			&& nexManager.nex.cruor.getHealthRatio() != -1
-			&& nexManager.nex.getNPCHP(nexManager.nex.cruor) >= 70)
+			&& nexManager.nex.getNPCHP(nexManager.nex.cruor) >= 80)
 		{
 			return nexManager.nex.setup.rangeNex();
 		}

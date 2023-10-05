@@ -95,6 +95,7 @@ public class ProgressStage extends Task
 				nexManager.nex.invincibleTick = 4;
 				nexManager.nex.dashTick = 0;
 				nexManager.nex.initSmokeNexTiles();
+				nexManager.socket.readyToStart = false;
 				nexManager.setStage(Stage.NEX_SMOKE);
 			}
 			if (message.contains("fumus, don't fail me!"))
@@ -118,7 +119,7 @@ public class ProgressStage extends Task
 			if (message.contains("flood my lungs with blood!"))
 			{
 				nexManager.nex.attacksUntilSpecial = 0;
-				nexManager.nex.invincibleTick = nexManager.nex.nextSpecial.equals(NexSpecial.SIPHON) ? 8 : 4;
+				nexManager.nex.invincibleTick = 4;
 				nexManager.nex.nextSpecial = nexManager.nex.nextSpecial.equals(NexSpecial.SHADOWS) ?
 					NexSpecial.SACRIFICE :
 					NexSpecial.SIPHON;
@@ -132,6 +133,9 @@ public class ProgressStage extends Task
 			}
 			if (message.contains("infuse me with the power of ice!"))
 			{
+				nexManager.nex.nextSpecial = nexManager.nex.nextSpecial.equals(NexSpecial.SIPHON) ?
+					NexSpecial.PRISON :
+					NexSpecial.SACRIFICE;
 				nexManager.nex.invincibleTick = 4;
 				nexManager.setStage(Stage.NEX_ICE);
 			}

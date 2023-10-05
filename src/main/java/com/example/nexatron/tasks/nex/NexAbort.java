@@ -5,7 +5,10 @@ import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Utility.Combat;
+import com.example.Utility.Prayer;
+import com.example.Utility.Prayers;
 import com.example.nexatron.manager.NexManager;
+import com.example.nexatron.model.Consumable;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
@@ -58,9 +61,11 @@ public class NexAbort extends StagedTask
 
 	public boolean shouldTeleport()
 	{
-		Widget brew = Inventory.search().nameContains("omin brew").first().orElse(null);
+		Widget brew = Consumable.getBrew();
+		Widget restore = Consumable.getRestore();
 		Player otherPlayer = nexManager.socket.getOtherPlayer();
 		return nexManager.nex.teleportOut
+			|| (restore == null && Prayers.getPoints() <= 5)
 			|| (brew == null && Combat.getCurrentHealth() <= 60)
 			|| (otherPlayer == null
 			&& !nexManager.getStage().equals(Stage.NEX_ZAROS)

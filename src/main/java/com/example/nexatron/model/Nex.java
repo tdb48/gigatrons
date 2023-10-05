@@ -212,11 +212,13 @@ public class Nex
 			}
 			if (message.contains(NexConst.ICE_CONTAIN_SPECIAL_MSG.toLowerCase()))
 			{
+				attacksUntilSpecial = 5;
 				nextSpecial = NexSpecial.PRISON;
 				containTick = 15;
 			}
 			if (message.contains(NexConst.ICE_PRISON_SPECIAL_MSG.toLowerCase()))
 			{
+				attacksUntilSpecial = 5;
 				nextSpecial = NexSpecial.CONTAIN;
 			}
 			if (message.contains(NexConst.PRISON_IMPRISONED.toLowerCase()))
@@ -919,7 +921,7 @@ public class Nex
 		}
 		WorldPoint refPoint = WorldAreas.getCenter(nex.getWorldArea());
 		// Create area around nex
-		ArrayList<WorldPoint> possibleTiles = (ArrayList<WorldPoint>) WorldAreas.createArea(refPoint.dx(-4).dy(-4), refPoint.dx(5).dy(5)).toWorldPointList();
+		ArrayList<WorldPoint> possibleTiles = (ArrayList<WorldPoint>) WorldAreas.createArea(refPoint.dx(-5).dy(-5), refPoint.dx(6).dy(6)).toWorldPointList();
 		possibleTiles.removeIf(n -> !Reachable.isWalkable(n));
 		slaveMainTile = possibleTiles.stream().min(Comparator.comparingInt(o -> altar.getWorldLocation().distanceTo(o))).orElse(null);
 		masterMainTile = slaveMainTile;

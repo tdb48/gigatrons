@@ -8,11 +8,13 @@ import com.example.Utility.Combat;
 import com.example.Utility.Movement;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
+import com.example.nexatron.model.Consumable;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
 import javax.inject.Inject;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @TaskDescriptor(
@@ -52,6 +54,7 @@ public class AttackShadowNex extends StagedTask
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
 			&& !Combat.isSpecEnabled()
 			&& Combat.getSpecEnergy() >= 75
+			&& !Consumable.isDrained(Skill.RANGED)
 			&& nexManager.nex.hpUntilProc() >= 120)
 		{
 			nexManager.print("Enabling spec");

@@ -9,12 +9,14 @@ import com.example.Utility.Combat;
 import com.example.Utility.Movement;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
+import com.example.nexatron.model.Consumable;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import net.runelite.api.GameObject;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @TaskDescriptor(
@@ -56,6 +58,17 @@ public class AttackZarosNex extends StagedTask
 			nexManager.print("Enabling spec");
 			Combat.toggleSpec();
 		}
+		else if (Equipment.search().nameContains("fang").first().orElse(null) != null
+			&& !Combat.isSpecEnabled()
+			&& !isDeflectMeleeActive()
+			&& !Consumable.isDrained(Skill.STRENGTH)
+			&& Combat.getSpecEnergy() >= 25
+			&& Combat.getSpecEnergy() <= 60
+			&& nexManager.getBossHp() <= 160)
+		{
+			nexManager.print("Enabling spec");
+			Combat.toggleSpec();
+		}
 
 		// If there's a prison, and it's not on us, free the other person
 		if (nexManager.nex.prisonActive
@@ -84,6 +97,7 @@ public class AttackZarosNex extends StagedTask
 				return true;
 			}
 		}
+
 		WorldPoint stepUnderTile = nexManager.nex.getBloodIceStepUnderNEW();
 		int distance = nexManager.nex.distanceToTile(stepUnderTile);
 		boolean isFar = distance > 2;
