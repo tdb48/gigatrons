@@ -13,7 +13,7 @@ import net.runelite.client.game.ItemManager;
 
 @TaskDescriptor(
 	name = "Heal Up",
-	priority = Integer.MAX_VALUE - 90,
+	priority = Integer.MAX_VALUE - 20,
 	blocking = true
 )
 public class HealUp extends StagedTask

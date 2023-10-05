@@ -14,7 +14,7 @@ import net.runelite.client.game.ItemManager;
 
 @TaskDescriptor(
 	name = "Get required items",
-	priority = Integer.MAX_VALUE - 100,
+	priority = Integer.MAX_VALUE - 10,
 	blocking = true
 )
 public class GetRequiredItems extends StagedTask
@@ -31,9 +31,11 @@ public class GetRequiredItems extends StagedTask
 	public boolean execute()
 	{
 		ArrayList<Integer> requiredItems = nexManager.nexBank.requiredItems();
-		if (nexManager.hasAllItems(requiredItems))
+		ArrayList<Integer> setup = decideSetup();
+		if (nexManager.hasAllItems(requiredItems)
+			&& nexManager.hasGearEquipped(setup))
 		{
-			nexManager.print("We have all required items");
+			nexManager.socket.readyToStart = true;
 			return false;
 		}
 		if (!BankUtil.isOpen())
@@ -52,7 +54,6 @@ public class GetRequiredItems extends StagedTask
 			}
 		}
 
-		ArrayList<Integer> setup = decideSetup();
 		requiredItems.removeAll(InventoryUtil.getAllPlayerItems());
 		if (!nexManager.hasGearEquipped(setup)
 			&& InventoryUtil.hasItem(setup))
