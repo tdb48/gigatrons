@@ -29,10 +29,8 @@ public class Consumable
 	public static final int PREPOT_SCB = ItemID.SUPER_COMBAT_POTION1;
 	public static final int PREPOT_STAM = ItemID.STAMINA_POTION1;
 	public static final int PREPOT_RANGE = ItemID.RANGING_POTION1;
-	public static final int PREPOT_HEART = ItemID.IMBUED_HEART;
-	public static final int PREPOT_SATURATED_HEART = ItemID.SATURATED_HEART;
 	public static final int PREPOT_ANGLER = ItemID.ANGLERFISH;
-	public static final int PREPOT_ANTI = ItemID.ANTIVENOM1_12919;
+	public static final int PREPOT_ANTI = ItemID.ANTIDOTE1_5958;
 	public static ArrayList<Integer> getNecessaryPotions = new ArrayList<>(
 		Arrays.asList(
 			ItemID.ANGLERFISH,
@@ -178,7 +176,8 @@ public class Consumable
 		String action = "Drink";
 		for (String s : consumable.getActions())
 		{
-			if (s.equalsIgnoreCase("eat"))
+			if (s != null
+				&& s.equalsIgnoreCase("eat"))
 			{
 				action = "Eat";
 				break;
