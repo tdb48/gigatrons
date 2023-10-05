@@ -123,12 +123,12 @@ public interface NexatronConfig extends Config
 
 	@ConfigItem(
 		position = 20,
-		keyName = "brewCount",
-		name = "Brews #",
+		keyName = "restoreCount",
+		name = "Restore #",
 		description = "",
 		section = "ConsumeOptions"
 	)
-	default int brewCount()
+	default int restoreCount()
 	{
 		return 5;
 	}
