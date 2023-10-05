@@ -22,6 +22,8 @@ public class NexConsumables extends StagedTask
 {
 	@Inject
 	GameTickManager gameTickManager;
+	@Inject
+	Consumable consumable;
 
 	@Inject
 	public NexConsumables(NexManager nexManager)
@@ -60,18 +62,14 @@ public class NexConsumables extends StagedTask
 		if (Prayers.getPoints() <= 5 && prayerRestore != null)
 		{
 			nexManager.print("Drinking restore (panic)");
-			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(prayerRestore, "Drink");
-			gameTickManager.drinkPotion();
+			consumable.consume(prayerRestore);
 			return true;
 		}
 
 		if (nexManager.nex.shouldTripleBrew && healingPotion != null)
 		{
 			nexManager.print("Drinking brew");
-			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(healingPotion, "Drink");
-			gameTickManager.drinkPotion();
+			consumable.consume(healingPotion);
 			return true;
 		}
 
@@ -79,9 +77,7 @@ public class NexConsumables extends StagedTask
 			(Prayers.getPoints() <= 20))
 		{
 			nexManager.print("Drinking restore for prayer");
-			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(prayerRestore, "Drink");
-			gameTickManager.drinkPotion();
+			consumable.consume(prayerRestore);
 			return true;
 		}
 
@@ -96,9 +92,7 @@ public class NexConsumables extends StagedTask
 				|| (nexManager.nex.onRangedPhase() && Consumable.isDrainedMore(Skill.RANGED,3))))
 		{
 			nexManager.print("Drinking restore for drain");
-			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(prayerRestore, "Drink");
-			gameTickManager.drinkPotion();
+			consumable.consume(prayerRestore);
 			return true;
 		}
 
@@ -107,9 +101,7 @@ public class NexConsumables extends StagedTask
 			&& client.getBoostedSkillLevel(Skill.STRENGTH) < client.getRealSkillLevel(Skill.STRENGTH) + 10)
 		{
 			nexManager.print("Drinking scb");
-			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(combatPotion, "Drink");
-			gameTickManager.drinkPotion();
+			consumable.consume(combatPotion);
 			return true;
 		}
 
@@ -118,9 +110,7 @@ public class NexConsumables extends StagedTask
 			&& client.getBoostedSkillLevel(Skill.RANGED) < client.getRealSkillLevel(Skill.RANGED) + 6)
 		{
 			nexManager.print("Drinking ranged");
-			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(rangePotion, "Drink");
-			gameTickManager.drinkPotion();
+			consumable.consume(rangePotion);
 			return true;
 		}
 		return false;
