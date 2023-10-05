@@ -1,7 +1,7 @@
 package com.example.nexatron.model;
 
 import com.example.EthanApiPlugin.Collections.Players;
-import com.example.nexatron.NexatronPlugin;
+import com.example.Utility.Reachable;
 import com.example.nexatron.manager.NexManager;
 import com.example.socket.org.json.JSONObject;
 import com.example.socket.packet.SocketBroadcastPacket;
@@ -17,8 +17,6 @@ import net.runelite.client.eventbus.Subscribe;
 public class Socket
 {
 	@Inject
-	NexatronPlugin nexatronPlugin;
-	@Inject
 	NexManager nexManager;
 	@Inject
 	EventBus eventBus;
@@ -32,6 +30,7 @@ public class Socket
 	public boolean needsToBreak;
 	public boolean stopPlugin;
 	public boolean teleportOut;
+	public boolean readyToStart;
 
 	// Other account/Socket variables
 	public String otherName = "";
@@ -39,6 +38,8 @@ public class Socket
 	public boolean otherTeleportOut;
 	public int otherNeedToKc;
 	public boolean otherReadyToPrepot;
+	public boolean otherReadyToStart;
+	public boolean otherIsInside;
 
 	public void register()
 	{
@@ -59,6 +60,9 @@ public class Socket
 		needsToBreak = false;
 		teleportOut = false;
 		otherTeleportOut = false;
+		readyToStart = false;
+		otherReadyToStart = false;
+		otherIsInside = false;
 	}
 
 	@Subscribe(priority = -1)
@@ -66,6 +70,11 @@ public class Socket
 	{
 		isMaster = decideMaster();
 		sendSocketPacket();
+	}
+
+	public boolean inRightWorld()
+	{
+		return true;
 	}
 
 	public void sendSocketPacket()
@@ -87,8 +96,15 @@ public class Socket
 			// TODO: figure out breaking logic at some point
 			payload.put("break", needsToBreak);
 		}
+		payload.put("readyToStart", readyToStart);
+		payload.put("isInside", nexManager.nex.nex != null || isCenterReachable());
 		payload.put("teleport", teleportOut);
 		eventBus.post(new SocketBroadcastPacket(payload));
+	}
+
+	public boolean isCenterReachable()
+	{
+		return Reachable.isWalkable(nexManager.nex.centerPoint);
 	}
 
 	@Subscribe
@@ -104,6 +120,8 @@ public class Socket
 		{
 			return;
 		}
+		otherIsInside = payload.getBoolean("isInside");
+		otherReadyToStart = payload.getBoolean("readyToStart");
 		otherName = payload.getString("name");
 		otherHardDiary = payload.getBoolean("hard");
 		otherTeleportOut = payload.getBoolean("teleport");

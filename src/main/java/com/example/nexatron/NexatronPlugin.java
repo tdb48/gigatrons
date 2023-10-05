@@ -8,9 +8,12 @@ import com.example.nexatron.overlay.NexatronOverlay;
 import com.example.nexatron.overlay.SocketInfoBox;
 import com.example.nexatron.taskformat.TaskManager;
 import com.example.nexatron.tasks.bank.BankJunk;
+import com.example.nexatron.tasks.bank.EnterNex;
 import com.example.nexatron.tasks.bank.GetRequiredItems;
 import com.example.nexatron.tasks.bank.HealUp;
 import com.example.nexatron.tasks.bank.PickupPet;
+import com.example.nexatron.tasks.bank.PrePot;
+import com.example.nexatron.tasks.bank.WithdrawSupplies;
 import com.example.nexatron.tasks.general.DisablePrayers;
 import com.example.nexatron.tasks.general.DropVial;
 import com.example.nexatron.tasks.general.ProgressStage;
@@ -126,6 +129,9 @@ public class NexatronPlugin extends Plugin
 			GetRequiredItems.class,
 			BankJunk.class,
 			HealUp.class,
+			PrePot.class,
+			WithdrawSupplies.class,
+			EnterNex.class,
 		};
 	}
 

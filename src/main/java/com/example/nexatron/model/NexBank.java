@@ -111,7 +111,10 @@ public class NexBank
 		GameObject gameObject = gameObjectSpawned.getGameObject();
 		if (gameObject.getId() == NexConst.ACTIVE_BARRIER)
 		{
-			nexManager.print("active barrier spawned");
+			barrier = gameObject;
+		}
+		if (gameObject.getId() == NexConst.INACTIVE_BARRIER)
+		{
 			barrier = gameObject;
 		}
 	}
@@ -122,7 +125,10 @@ public class NexBank
 		GameObject gameObject = gameObjectDespawned.getGameObject();
 		if (gameObject.getId() == NexConst.ACTIVE_BARRIER)
 		{
-			nexManager.print("active barrier despawned");
+			barrier = null;
+		}
+		if (gameObject.getId() == NexConst.INACTIVE_BARRIER)
+		{
 			barrier = null;
 		}
 	}

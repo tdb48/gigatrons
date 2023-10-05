@@ -49,7 +49,10 @@ public class SocketInfoBox extends OverlayPanel
 
 		panelComponent.getChildren().add(LineComponent.builder().left("Master ").right(String.valueOf(plugin.nexManager.socket.isMaster)).build());
 		panelComponent.getChildren().add(LineComponent.builder().left("Other player ").right(String.valueOf(plugin.nexManager.socket.otherName)).build());
-		panelComponent.getChildren().add(LineComponent.builder().left("Teleport out ").right(String.valueOf(plugin.nexManager.socket.teleportOut)).build());
+//		panelComponent.getChildren().add(LineComponent.builder().left("Teleport out ").right(String.valueOf(plugin.nexManager.socket.teleportOut)).build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Is ready out ").right(String.valueOf(plugin.nexManager.socket.readyToStart)).build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Other ready ").right(String.valueOf(plugin.nexManager.socket.otherReadyToStart)).build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Other inside ").right(String.valueOf(plugin.nexManager.socket.otherIsInside)).build());
 
 		return panelComponent.render(graphics);
 	}

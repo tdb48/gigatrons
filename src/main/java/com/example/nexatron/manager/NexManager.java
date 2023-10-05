@@ -304,7 +304,7 @@ public class NexManager
 		return isBoosted(Skill.STRENGTH)
 			&& isBoosted(Skill.RANGED)
 			&& isBoosted(Skill.HITPOINTS)
-			&& isAntiVenomed()
+			&& isAntiPoisoned()
 			&& Movement.isStaminaBoosted();
 	}
 
@@ -362,9 +362,9 @@ public class NexManager
 		}
 	}
 
-	public boolean isAntiVenomed()
+	public boolean isAntiPoisoned()
 	{
-		return Static.getClient().getVarpValue(VarPlayer.POISON) < -36;
+		return Static.getClient().getVarpValue(VarPlayer.POISON) < 0;
 	}
 
 	public void swap(ArrayList<Integer> gearList)
@@ -541,6 +541,8 @@ public class NexManager
 			}
 		}
 	}
+
+
 
 	public ArrayList<Widget> getJunk()
 	{
