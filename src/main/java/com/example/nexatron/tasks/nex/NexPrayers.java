@@ -20,14 +20,13 @@ import net.runelite.api.widgets.Widget;
 
 @TaskDescriptor(
 	name = "Nex prayers",
-	priority = 1
+	priority = Integer.MAX_VALUE
 )
 public class NexPrayers extends StagedTask
 {
 	public static final int AUGURY_UNLOCKED = 5452;
 	@Inject
 	GameTickManager gameTickManager;
-
 	@Inject
 	public NexPrayers(NexManager nexManager)
 	{

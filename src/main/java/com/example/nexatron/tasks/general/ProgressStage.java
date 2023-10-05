@@ -44,14 +44,22 @@ public class ProgressStage extends Task
 		}
 		if (NexConst.KC_AREA.contains(nexManager.getPlayerPoint()))
 		{
+			if (!nexManager.containsStage(Stage.KC_AREA))
+			{
+				nexManager.setStage(Stage.KC_AREA);
+				nexManager.socket.readyToStart = false;
+			}
 			nexManager.nex.teleportOut = false;
-			nexManager.setStage(Stage.KC_AREA);
 			return true;
 		}
 		if (NexConst.BANK_AREA.contains(nexManager.getPlayerPoint()))
 		{
+			if (!nexManager.containsStage(Stage.BANK))
+			{
+				nexManager.setStage(Stage.BANK);
+				nexManager.socket.readyToStart = false;
+			}
 			nexManager.nex.bankReset();
-			nexManager.setStage(Stage.BANK);
 			return true;
 		}
 		if (Reachable.isWalkable(nexManager.nex.centerPoint))
@@ -140,7 +148,7 @@ public class ProgressStage extends Task
 			if (message.contains("my wrath"))
 			{
 				nexManager.nex.initWrathTiles();
-				nexManager.nex.invincibleTick = 8;
+				nexManager.nex.invincibleTick = nexManager.socket.isMaster ? 8 : 12;
 				nexManager.setStage(Stage.NEX_DEAD);
 			}
 		}

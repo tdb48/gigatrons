@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 @TaskDescriptor(
 	name = "Reattack",
-	priority = Integer.MAX_VALUE
+	priority = -Integer.MAX_VALUE
 )
 public class Reattack extends Task
 {

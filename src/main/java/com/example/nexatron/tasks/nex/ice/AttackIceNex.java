@@ -91,23 +91,22 @@ public class AttackIceNex extends StagedTask
 			ObjectPackets.queueObjectAction(nexManager.nex.altar, false, "Pray");
 			return true;
 		}
-
+		WorldPoint stepUnderTile = nexManager.nex.getBloodIceStepUnderNEW();
+		int distance = nexManager.nex.distanceToTile(stepUnderTile);
+		boolean isFar = distance > 2;
 		// Step under on tick 2 with designated step under tiles OR if we are far out
 		if (nexManager.nex.containTick == 0
 			&& !nexManager.nex.prisonActive
-			&& (nexManager.nex.nexAttackTick == 2
+			&& stepUnderTile != null
+			&& (nexManager.nex.nexAttackTick == 2 || (isFar && nexManager.nex.nexAttackTick == 3)
 			&& nexManager.nex.nex.isInteracting()
 			&& nexManager.nex.nex.getInteracting().equals(client.getLocalPlayer())
 			|| nexManager.getPlayerPoint().distanceTo(nexManager.nex.nex.getWorldArea()) > 3
 			&& gameTickManager.isAttackWaiting()))
 		{
-			WorldPoint stepUnderTile = nexManager.nex.getBloodIceStepUnderNEW();
-			if (stepUnderTile != null)
-			{
-				nexManager.print("Stepping under at " + nexManager.worldPointString(stepUnderTile));
-				Movement.move(stepUnderTile);
-				return true;
-			}
+			nexManager.print("Stepping under at " + nexManager.worldPointString(stepUnderTile));
+			Movement.move(stepUnderTile);
+			return true;
 		}
 
 		// Step out if we are DD'd and theres no specials going on

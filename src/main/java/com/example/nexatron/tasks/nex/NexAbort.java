@@ -6,7 +6,6 @@ import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Utility.Combat;
 import com.example.nexatron.manager.NexManager;
-import com.example.nexatron.model.Consumable;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
@@ -63,7 +62,10 @@ public class NexAbort extends StagedTask
 		Player otherPlayer = nexManager.socket.getOtherPlayer();
 		return nexManager.nex.teleportOut
 			|| (brew == null && Combat.getCurrentHealth() <= 60)
-			|| (otherPlayer == null && !nexManager.getStage().equals(Stage.NEX_DEAD) && !nexManager.getStage().equals(Stage.NEX_START));
+			|| (otherPlayer == null
+			&& !nexManager.getStage().equals(Stage.NEX_ZAROS)
+			&& !nexManager.getStage().equals(Stage.NEX_DEAD)
+			&& !nexManager.getStage().equals(Stage.NEX_START));
 	}
 
 }

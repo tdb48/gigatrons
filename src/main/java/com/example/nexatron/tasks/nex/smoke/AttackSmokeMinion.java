@@ -47,7 +47,8 @@ public class AttackSmokeMinion extends StagedTask
 
 		WorldPoint mainTile;
 		if (!nexManager.socket.isMaster
-			&& (nexManager.nex.outOfNexRange() || (nexManager.nex.canStepOut() && nexManager.nex.dashTick == 0)))
+			&& nexManager.nex.nex.isInteracting()
+			&& (nexManager.nex.outOfNexRange() || (nexManager.nex.getDodgeTile().distanceTo(nexManager.nex.nex.getWorldArea()) >= 11 && nexManager.nex.canStepOut() && nexManager.nex.dashTick == 0)))
 		{
 			mainTile = nexManager.nex.getDodgeTile();
 		}
