@@ -58,6 +58,12 @@ public class NexBank
 		{
 			return;
 		}
+		if (BankUtil.isOpen()
+			&& !BankUtil.isMainTabOpen())
+		{
+			nexManager.print("Opening main tab");
+			BankUtil.openMainTab();
+		}
 		if (!usingGucciRunePouch &&
 			(InventoryUtil.contains(ItemID.DIVINE_RUNE_POUCH)
 				|| (Bank.isOpen() && BankUtil.contains(ItemID.DIVINE_RUNE_POUCH))))
