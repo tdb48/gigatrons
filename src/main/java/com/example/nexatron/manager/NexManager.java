@@ -19,6 +19,7 @@ import com.example.nexatron.NexatronConfig;
 import com.example.nexatron.NexatronPlugin;
 import com.example.nexatron.ReflectBreakHandler;
 import com.example.nexatron.model.ChargesTracker;
+import com.example.nexatron.model.Consumable;
 import com.example.nexatron.model.KcArea;
 import com.example.nexatron.model.Lobby;
 import com.example.nexatron.model.Nex;
@@ -539,6 +540,27 @@ public class NexManager
 				}
 			}
 		}
+	}
+
+	public ArrayList<Widget> getJunk()
+	{
+		ArrayList<Integer> requiredItems = nexBank.requiredItems();
+		ArrayList<Widget> unNecessaryItems = (ArrayList<Widget>) Inventory.search().result();
+		if (!isPrePotted())
+		{
+			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_SCB);
+			unNecessaryItems.removeIf(n -> n.getItemId() == ItemID.SUPER_RESTORE1);
+			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_ANGLER);
+			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_RANGE);
+			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_STAM);
+			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_ANTI);
+		}
+		else
+		{
+			unNecessaryItems.removeIf(n -> Consumable.getNecessaryPotions.contains(n.getItemId()));
+		}
+		unNecessaryItems.removeIf(n -> requiredItems.contains(n.getItemId()));
+		return unNecessaryItems;
 	}
 
 	public void withdraw(ArrayList<Integer> items)

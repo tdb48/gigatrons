@@ -22,7 +22,6 @@ public class BankJunk extends StagedTask
 {
 	@Inject
 	ItemManager itemManager;
-
 	@Inject
 	public BankJunk(NexManager nexManager)
 	{
@@ -31,7 +30,7 @@ public class BankJunk extends StagedTask
 
 	public boolean execute()
 	{
-		ArrayList<Widget> junk = getJunk();
+		ArrayList<Widget> junk = nexManager.getJunk();
 		if (junk.isEmpty())
 		{
 			return false;
@@ -41,27 +40,7 @@ public class BankJunk extends StagedTask
 			return nexManager.nexBank.openBank();
 		}
 		nexManager.bank(junk);
-		return false;
+		return true;
 
-	}
-
-	public ArrayList<Widget> getJunk()
-	{
-		ArrayList<Integer> requiredItems = nexManager.nexBank.requiredItems();
-		ArrayList<Widget> unNecessaryItems = (ArrayList<Widget>) Inventory.search().result();
-		if (!nexManager.isPrePotted())
-		{
-			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_SCB);
-			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_ANGLER);
-			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_RANGE);
-			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_STAM);
-			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_ANTI);
-		}
-		else
-		{
-			unNecessaryItems.removeIf(n -> Consumable.getNecessaryPotions.contains(n.getItemId()));
-		}
-		unNecessaryItems.removeIf(n -> requiredItems.contains(n.getItemId()));
-		return unNecessaryItems;
 	}
 }
