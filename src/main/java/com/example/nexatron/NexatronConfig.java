@@ -142,7 +142,7 @@ public interface NexatronConfig extends Config
 	)
 	default int scbCount()
 	{
-		return 2;
+		return 3;
 	}
 
 	@ConfigItem(
