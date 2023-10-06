@@ -16,6 +16,7 @@ import com.example.nexatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import net.runelite.api.GameObject;
+import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
@@ -53,6 +54,7 @@ public class AttackZarosNex extends StagedTask
 			&& !Combat.isSpecEnabled()
 			&& isDeflectMeleeActive()
 			&& Combat.getSpecEnergy() >= 75
+			&& Equipment.search().withId(ItemID.RUBY_DRAGON_BOLTS_E).first().orElse(null) != null
 			&& nexManager.getBossHp() >= 160)
 		{
 			nexManager.print("Enabling spec");
@@ -63,7 +65,6 @@ public class AttackZarosNex extends StagedTask
 			&& !isDeflectMeleeActive()
 			&& !Consumable.isDrained(Skill.STRENGTH)
 			&& Combat.getSpecEnergy() >= 25
-			&& Combat.getSpecEnergy() <= 60
 			&& nexManager.getBossHp() <= 160)
 		{
 			nexManager.print("Enabling spec");
