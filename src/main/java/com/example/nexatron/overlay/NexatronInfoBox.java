@@ -79,10 +79,11 @@ public class NexatronInfoBox extends OverlayPanel
 			panelComponent.getChildren().add(LineComponent.builder().left("Minion tick ").right(String.valueOf(plugin.nexManager.nex.minionAttackTick)).build());
 			panelComponent.getChildren().add(LineComponent.builder().left("Player tick ").right(String.valueOf(plugin.nexManager.gameTickManager.getAttackWait())).build());
 
-			//if (plugin.nexManager.nex.nextSpecial != null)
-//			{
-//				panelComponent.getChildren().add(LineComponent.builder().left("Next special ").right(String.valueOf(plugin.nexManager.nex.nextSpecial)).build());
-//			}
+			if (plugin.nexManager.nex.nextSpecial != null)
+			{
+				panelComponent.getChildren().add(LineComponent.builder().left("attacks until spec ").right(String.valueOf(plugin.nexManager.nex.attacksUntilSpecial)).build());
+				panelComponent.getChildren().add(LineComponent.builder().left("Next special ").right(String.valueOf(plugin.nexManager.nex.nextSpecial)).build());
+			}
 //			panelComponent.getChildren().add(LineComponent.builder().left("special ").right(String.valueOf(plugin.nexManager.nex.attacksUntilSpecial)).build());
 //			if (plugin.nexManager.getStage().equals(Stage.NEX_ICE))
 //			{

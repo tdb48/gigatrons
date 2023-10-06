@@ -72,6 +72,14 @@ public class AttackBloodMinion extends StagedTask
 			return true;
 		}
 
+		if (shouldStepUnderNex())
+		{
+			WorldPoint tileUnderNex = nexManager.nex.getUnderNex();
+			nexManager.print("Stepping under nex " + nexManager.worldPointString(tileUnderNex));
+			Movement.walk(tileUnderNex);
+			return true;
+		}
+
 		WorldPoint standTile = nexManager.nex.getMainTile();
 		if (standTile != null
 			&& !client.getLocalPlayer().getWorldLocation().equals(standTile))
@@ -81,6 +89,12 @@ public class AttackBloodMinion extends StagedTask
 			return true;
 		}
 		return false;
+	}
+
+	public boolean shouldStepUnderNex()
+	{
+		return nexManager.nex.cruor.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 6
+			&& nexManager.nex.isNexChasingUs();
 	}
 
 	public ArrayList<Integer> decideSetup()
@@ -96,6 +110,10 @@ public class AttackBloodMinion extends StagedTask
 			distance = nexManager.nex.distanceToActiveMinion();
 		}
 
+		if (shouldStepUnderNex())
+		{
+			return nexManager.setup.rangeNex();
+		}
 //		if (gameTickManager.getAttackWait() > 1)
 //		{
 //			return nexManager.nex.setup.defensiveNex();

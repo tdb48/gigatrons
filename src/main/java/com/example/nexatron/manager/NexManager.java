@@ -589,6 +589,7 @@ public class NexManager
 		}
 		if (!isPrePotted())
 		{
+			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_ANGLER);
 			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_SCB);
 			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_RANGE);
 			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_STAM);

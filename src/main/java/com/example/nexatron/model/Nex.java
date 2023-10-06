@@ -223,7 +223,7 @@ public class Nex
 			}
 			if (message.contains(NexConst.PRISON_IMPRISONED.toLowerCase()))
 			{
-				stuckInPrisonTick = 7;
+				stuckInPrisonTick = 9;
 			}
 			if (message.contains(NexConst.PRISON_FREED.toLowerCase()))
 			{
@@ -644,7 +644,7 @@ public class Nex
 
 	public boolean shouldPrayAltar()
 	{
-		if (nextSpecial.equals(NexSpecial.PRISON) && attacksUntilSpecial <= 1)
+		if (nextSpecial.equals(NexSpecial.PRISON) && attacksUntilSpecial <= 2)
 		{
 			return false;
 		}
@@ -652,7 +652,8 @@ public class Nex
 		return altar != null
 			&& Combat.getSpecEnergy() <= 55
 			&& canPrayAltar()
-			&& distanceToAltar() <= 10
+			&& nexManager.nex.containTick == 0
+			&& distanceToAltar() <= 8
 			&& interactingNPC == null;
 	}
 

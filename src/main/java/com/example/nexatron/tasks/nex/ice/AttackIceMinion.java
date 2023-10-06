@@ -127,7 +127,7 @@ public class AttackIceMinion extends StagedTask
 	{
 		return nexManager.nex.glacies.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 6
 			&& nexManager.nex.isNexChasingUs()
-			&& !(nexManager.nex.nextSpecial.equals(NexSpecial.PRISON) && nexManager.nex.attacksUntilSpecial == 1);
+			&& !(nexManager.nex.nextSpecial.equals(NexSpecial.PRISON) && nexManager.nex.attacksUntilSpecial <= 2);
 	}
 
 	public ArrayList<Integer> decideSetup()

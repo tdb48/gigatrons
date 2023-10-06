@@ -8,3 +8,8 @@
 
 ## To discuss
 - Make Blood Nex TP back to middle on the minion, similar to ice
+
+
+
+## Quick thoughts
+- check zcb accuracy when brewed down vs range potted

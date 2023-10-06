@@ -1,7 +1,6 @@
 package com.example.nexatron.tasks.nex;
 
-import com.example.Packets.MousePackets;
-import com.example.Packets.WidgetPackets;
+import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.Utility.Prayers;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
@@ -89,7 +88,7 @@ public class NexConsumables extends StagedTask
 
 		if (prayerRestore != null &&
 			((nexManager.nex.onMeleePhase() && Consumable.isDrainedMore(Skill.STRENGTH, 3))
-				|| (nexManager.nex.onRangedPhase() && Consumable.isDrainedMore(Skill.RANGED,3))))
+				|| (nexManager.nex.onRangedPhase() && Consumable.isDrainedMore(Skill.RANGED, 3))))
 		{
 			nexManager.print("Drinking restore for drain");
 			consumable.consume(prayerRestore);
@@ -105,7 +104,18 @@ public class NexConsumables extends StagedTask
 			return true;
 		}
 
-		if (rangePotion != null
+		if (nexManager.containsStage(Stage.NEX_ZAROS))
+		{
+			if (rangePotion != null
+				&& Equipment.search().nameContains("anguish").first().orElse(null) != null
+				&& client.getBoostedSkillLevel(Skill.RANGED) < client.getRealSkillLevel(Skill.RANGED) + 6)
+			{
+				nexManager.print("Drinking ranged");
+				consumable.consume(rangePotion);
+				return true;
+			}
+		}
+		else if (rangePotion != null
 			&& nexManager.nex.onRangedPhase()
 			&& client.getBoostedSkillLevel(Skill.RANGED) < client.getRealSkillLevel(Skill.RANGED) + 6)
 		{

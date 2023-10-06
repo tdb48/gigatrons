@@ -101,6 +101,17 @@ public class AttackBloodNex extends StagedTask
 		}
 
 		WorldPoint stepUnderTile = nexManager.nex.getBloodIceStepUnderNEW();
+		if (stepUnderTile != null
+			&& nexManager.nex.invincibleTick > 0
+			&& targetIsNex(target)
+			&& !nexManager.nex.sacrificeActive
+			&& !nexManager.getPlayerPoint().equals(stepUnderTile))
+		{
+			nexManager.print("Prepathing to " + nexManager.worldPointString(stepUnderTile));
+			Movement.move(stepUnderTile);
+			return true;
+		}
+
 		int distance = nexManager.nex.distanceToTile(stepUnderTile);
 		boolean isFar = distance > 2;
 		// Step under on tick 2 with designated step under tiles OR if we are far out

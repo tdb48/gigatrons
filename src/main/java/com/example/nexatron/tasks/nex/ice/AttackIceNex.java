@@ -91,9 +91,11 @@ public class AttackIceNex extends StagedTask
 			ObjectPackets.queueObjectAction(nexManager.nex.altar, false, "Pray");
 			return true;
 		}
+
 		WorldPoint stepUnderTile = nexManager.nex.getBloodIceStepUnderNEW();
 		int distance = nexManager.nex.distanceToTile(stepUnderTile);
 		boolean isFar = distance > 2;
+
 		// Step under on tick 2 with designated step under tiles OR if we are far out
 		if (nexManager.nex.containTick == 0
 			&& !nexManager.nex.prisonActive
