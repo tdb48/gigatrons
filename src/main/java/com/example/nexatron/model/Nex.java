@@ -741,6 +741,10 @@ public class Nex
 	public int distanceToTile(WorldPoint worldPoint)
 	{
 		ArrayList<WorldPoint> path = EthanApiPlugin.pathToGoal(worldPoint, new HashSet<>());
+		if (path == null || path.isEmpty())
+		{
+			return Integer.MAX_VALUE;
+		}
 		return path.size();
 	}
 
