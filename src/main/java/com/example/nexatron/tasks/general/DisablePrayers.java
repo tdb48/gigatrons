@@ -9,7 +9,8 @@ import com.example.nexatron.taskformat.TaskDescriptor;
 import javax.inject.Inject;
 
 @TaskDescriptor(
-	name = "Disable prayers"
+	name = "Disable prayers",
+	priority = Integer.MAX_VALUE
 )
 public class DisablePrayers extends StagedTask
 {
