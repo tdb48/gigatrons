@@ -51,7 +51,7 @@ public class NexatronInfoBox extends OverlayPanel
 		String title = "Nexatron";
 		Duration duration = Duration.between(plugin.nexManager.overall.botTimer, Instant.now());
 		panelComponent.getChildren().clear();
-		panelComponent.setBackgroundColor(new Color(16, 24, 32, 150));
+		panelComponent.setBackgroundColor(new Color(16, 24, 32, 75));
 		panelComponent.getChildren().add(TitleComponent.builder().text(title).color(new Color(242, 170, 76)).build());
 		panelComponent.setPreferredSize(new Dimension(graphics.getFontMetrics().stringWidth(title) + 100, 0));
 		if (plugin.nexManager.nex.teleportOut)

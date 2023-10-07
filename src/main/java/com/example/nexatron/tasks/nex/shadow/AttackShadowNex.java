@@ -69,14 +69,15 @@ public class AttackShadowNex extends StagedTask
 			{
 				nexManager.print("Stepping under nex " + nexManager.worldPointString(nexManager.nex.getUnderNex()));
 				Movement.walk(nexManager.nex.getUnderNex());
+				return true;
 			}
 			else if (standTile != null
 				&& !client.getLocalPlayer().getWorldLocation().equals(standTile))
 			{
 				nexManager.print("Moving to stand tile");
 				Movement.walk(standTile);
+				return true;
 			}
-			return true;
 		}
 
 		if (standTile != null

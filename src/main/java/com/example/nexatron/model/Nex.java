@@ -625,7 +625,7 @@ public class Nex
 
 	public boolean onRangedPhase()
 	{
-		return Equipment.search().nameContains("crossbow").first().orElse(null) != null;
+		return Equipment.search().nameContains("anguish").first().orElse(null) != null;
 //		Stage stage = nexManager.getStage();
 //		return stage == Stage.MINION_ICE
 //			|| stage == Stage.MINION_BLOOD
