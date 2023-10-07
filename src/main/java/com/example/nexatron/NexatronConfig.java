@@ -100,7 +100,7 @@ public interface NexatronConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "prayFlick",
-		name = "Pray flick",
+		name = "Pray Flick",
 		description = "Whether to 1 tick flick or not (only at nex itself)",
 		section = "General"
 	)
@@ -112,11 +112,23 @@ public interface NexatronConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "kcMode",
-		name = "KC mode",
+		name = "KC Mode",
 		description = "If this is true, the bot will only do tasks to get kc",
 		section = "General"
 	)
 	default boolean kcMode()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "prayFlickKc",
+		name = "Pray Flick KC",
+		description = "Whether to 1 tick flick or not (only at KC itself)",
+		section = "General"
+	)
+	default boolean prayFlickKc()
 	{
 		return false;
 	}
