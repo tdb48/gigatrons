@@ -73,6 +73,7 @@ public class Nex
 	public boolean sacrificeActive = false;
 	public boolean prisonActive = false;
 	public int stuckInPrisonTick = 0;
+	public int lastSeenHeadIcon = -1;
 	@Inject
 	NexManager nexManager;
 	@Inject
@@ -118,6 +119,7 @@ public class Nex
 		sacrificeActive = false;
 		sacrificeTiles.clear();
 		nexZarosAttacks = 0;
+		lastSeenHeadIcon = -1;
 	}
 
 	public void fullReset()
@@ -162,6 +164,12 @@ public class Nex
 		if (dashTick > 0)
 		{
 			dashTick--;
+		}
+		if (nexManager.containsStage(Stage.NEX_ZAROS)
+			&& lastSeenHeadIcon != nexManager.getOverheadIcon(nexManager.nex.nex))
+		{
+			nexZarosAttacks = 0;
+			lastSeenHeadIcon = nexManager.getOverheadIcon(nexManager.nex.nex);
 		}
 		if (nexManager.getStage().equals(Stage.MINION_SHADOW))
 		{
@@ -231,7 +239,7 @@ public class Nex
 			}
 			if (message.contains(NexConst.ZAROS_START.toLowerCase()))
 			{
-				nexZarosAttacks = 4;
+				nexZarosAttacks = 0;
 			}
 		}
 	}
@@ -255,20 +263,16 @@ public class Nex
 			}
 			if (nexManager.getStage().equals(Stage.NEX_ZAROS))
 			{
-				if (nexZarosAttacks >= 12)
-				{
-					nexZarosAttacks = 0;
-				}
+//				if (nexZarosAttacks == 4)
+//				{
+//					nexZarosAttacks = 0;
+//				}
 				nexZarosAttacks++;
 			}
 		}
-		if (animationChanged.getActor().equals(client.getLocalPlayer()) && client.getLocalPlayer().getAnimation() == NexConst.ALTAR_TELEPORT_ANIM)
-		{
-
-		}
 		if (npc.getAnimation() == NexConst.NEX_NEW_PHASE_ANIMATION)
 		{
-			nexZarosAttacks = 4;
+			nexZarosAttacks = 0;
 		}
 		if (npc.getAnimation() == NexConst.UMBRA_ATTACK_ANIMATION)
 		{

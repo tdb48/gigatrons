@@ -31,7 +31,7 @@ public class Setup
 		{
 			return NexConst.DIA_BOLTS;
 		}
-		if (nexManager.getBossHp() <= 200)
+		if (nexManager.getBossHp() <= 220)
 		{
 			return NexConst.DIA_BOLTS;
 		}

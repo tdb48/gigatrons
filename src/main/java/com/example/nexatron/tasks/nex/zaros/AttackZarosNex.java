@@ -55,7 +55,7 @@ public class AttackZarosNex extends StagedTask
 			&& isDeflectMeleeActive()
 			&& Combat.getSpecEnergy() >= 75
 			&& Equipment.search().withId(ItemID.RUBY_DRAGON_BOLTS_E).first().orElse(null) != null
-			&& nexManager.getBossHp() >= 160)
+			&& nexManager.getBossHp() >= 220)
 		{
 			nexManager.print("Enabling spec");
 			Combat.toggleSpec();
@@ -65,7 +65,7 @@ public class AttackZarosNex extends StagedTask
 			&& !isDeflectMeleeActive()
 			&& !Consumable.isDrained(Skill.STRENGTH)
 			&& Combat.getSpecEnergy() >= 25
-			&& nexManager.getBossHp() <= 160)
+			&& nexManager.getBossHp() < 220)
 		{
 			nexManager.print("Enabling spec");
 			Combat.toggleSpec();
@@ -103,7 +103,7 @@ public class AttackZarosNex extends StagedTask
 		if (stepUnderTile != null
 			&& nexManager.nex.invincibleTick > 0
 			&& nexManager.nex.containTick == 0
-			&& nexManager.nex.prisonActive
+			&& !nexManager.nex.prisonActive
 			&& !nexManager.getPlayerPoint().equals(stepUnderTile))
 		{
 			nexManager.print("Prepathing to " + nexManager.worldPointString(stepUnderTile));
@@ -185,15 +185,32 @@ public class AttackZarosNex extends StagedTask
 	public boolean isDeflectMeleeActive()
 	{
 		int zarosCounter = nexManager.nex.nexZarosAttacks;
-		if (nexManager.nex.nexAttackTick == gameTickManager.getAttackWait())
-		{
-			zarosCounter++;
-		}
-		if (zarosCounter == 8 && gameTickManager.getAttackWait() - nexManager.nex.nexAttackTick == 1)
+		int playerTick = gameTickManager.attackWait;
+		int nexTick = nexManager.nex.nexAttackTick;
+		int headIcon = nexManager.nex.lastSeenHeadIcon;
+
+		if (headIcon == 15
+			&& zarosCounter < 4)
 		{
 			return true;
 		}
-		return zarosCounter >= 9;
+		if (headIcon == 15
+			&& zarosCounter == 4)
+		{
+			return playerTick > nexTick;
+		}
+
+		return false;
+
+//		if (nexManager.nex.nexAttackTick == gameTickManager.getAttackWait())
+//		{
+//			zarosCounter++;
+//		}
+//		if (zarosCounter == 8 && gameTickManager.getAttackWait() - nexManager.nex.nexAttackTick == 1)
+//		{
+//			return true;
+//		}
+//		return zarosCounter >= 9;
 //			|| zarosCounter == 1;
 	}
 }

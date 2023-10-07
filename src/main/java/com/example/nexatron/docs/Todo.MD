@@ -7,8 +7,6 @@
 
 
 ## To discuss
-- Make Blood Nex TP back to middle on the minion, similar to ice
-
 
 
 ## Quick thoughts

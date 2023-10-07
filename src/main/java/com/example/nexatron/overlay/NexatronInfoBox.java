@@ -76,7 +76,7 @@ public class NexatronInfoBox extends OverlayPanel
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("Overhead int ").right(String.valueOf(plugin.nexManager.getOverheadIcon(plugin.nexManager.nex.nex))).build());
 			panelComponent.getChildren().add(LineComponent.builder().left("Nex tick ").right(String.valueOf(plugin.nexManager.nex.nexAttackTick)).build());
-			panelComponent.getChildren().add(LineComponent.builder().left("Minion tick ").right(String.valueOf(plugin.nexManager.nex.minionAttackTick)).build());
+//			panelComponent.getChildren().add(LineComponent.builder().left("Minion tick ").right(String.valueOf(plugin.nexManager.nex.minionAttackTick)).build());
 			panelComponent.getChildren().add(LineComponent.builder().left("Player tick ").right(String.valueOf(plugin.nexManager.gameTickManager.getAttackWait())).build());
 
 			if (plugin.nexManager.nex.nextSpecial != null)

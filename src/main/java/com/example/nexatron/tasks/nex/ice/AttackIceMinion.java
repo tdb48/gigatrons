@@ -63,7 +63,6 @@ public class AttackIceMinion extends StagedTask
 			}
 		}
 
-
 		WorldPoint standTile = nexManager.nex.getMainTile();
 		WorldPoint containTile = nexManager.nex.nearestContainWp(2);
 		// Deal with contain this if somehow out of it
