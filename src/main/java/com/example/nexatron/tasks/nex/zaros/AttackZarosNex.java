@@ -111,7 +111,6 @@ public class AttackZarosNex extends StagedTask
 			return true;
 		}
 
-
 		int distance = nexManager.nex.distanceToTile(stepUnderTile);
 		boolean isFar = distance > 2;
 		// Step under on tick 2 with designated step under tiles OR if we are far out

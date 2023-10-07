@@ -141,7 +141,7 @@ public class AttackIceMinion extends StagedTask
 		{
 			return nexManager.setup.rangeNex();
 		}
-		if (nexManager.socket.isSlave()
+		if (nexManager.socket.isMaster
 			&& nexManager.nex.glacies != null
 			&& nexManager.nex.glacies.getHealthRatio() != -1
 			&& nexManager.nex.getNPCHP(nexManager.nex.glacies) <= 60)

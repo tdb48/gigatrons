@@ -93,9 +93,9 @@ public class AttackBloodMinion extends StagedTask
 
 	public WorldPoint decideStandTile()
 	{
-		if (nexManager.nex.slaveMainTile.distanceTo(nexManager.nex.nex.getWorldArea()) > 11)
+		if (nexManager.nex.masterMainTile.distanceTo(nexManager.nex.nex.getWorldArea()) > 11)
 		{
-			return nexManager.nex.slaveMainTile;
+			return nexManager.nex.masterMainTile;
 		}
 		return nexManager.nex.getMainTile();
 	}
@@ -128,7 +128,7 @@ public class AttackBloodMinion extends StagedTask
 //			return nexManager.nex.setup.defensiveNex();
 //		}
 
-		if (nexManager.socket.isMaster
+		if (nexManager.socket.isSlave()
 			&& nexManager.nex.cruor != null
 			&& nexManager.nex.cruor.getHealthRatio() != -1
 			&& nexManager.nex.getNPCHP(nexManager.nex.cruor) >= 80)

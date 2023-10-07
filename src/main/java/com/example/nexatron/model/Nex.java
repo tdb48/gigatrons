@@ -863,8 +863,8 @@ public class Nex
 			return;
 		}
 		WorldPoint refPoint = nexManager.nex.cruor.getWorldLocation();
-		slaveMainTile = refPoint.dx(-1);
-		masterMainTile = refPoint.dx(-2).dy(2);
+		masterMainTile = refPoint.dx(-1);
+		slaveMainTile = refPoint.dx(-2).dy(2);
 	}
 
 	public GameObject findNearestPrisonSpike()
@@ -914,8 +914,8 @@ public class Nex
 			return;
 		}
 		WorldPoint refPoint = nexManager.nex.glacies.getWorldLocation();
-		slaveMainTile = refPoint.dx(1);
-		masterMainTile = refPoint.dx(1).dy(2);
+		masterMainTile = refPoint.dx(1);
+		slaveMainTile = refPoint.dx(1).dy(2);
 	}
 
 	public void initWrathTiles()
