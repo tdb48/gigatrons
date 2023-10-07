@@ -47,13 +47,13 @@ public class TEMPORARY_KcAttack extends StagedTask
 			return false;
 		}
 		Widget restore = Consumable.getRestore();
-		NPC npcInteractingWithUs = NPCs.search().interactingWithLocal().first().orElse(null);
+		NPC npcInteractingWithUs = NPCs.search().alive().interactingWithLocal().first().orElse(null);
 		if (Prayers.getPoints() == 0
 			|| restore == null)
 		{
 			if (npcInteractingWithUs != null)
 			{
-				nexManager.print("Attacking npc thats attacking us, then stopping");
+				nexManager.print("Attacking npc that's attacking us, then stopping");
 				MousePackets.queueClickPacket();
 				NPCPackets.queueNPCAction(npcInteractingWithUs, "Attack");
 			}
@@ -114,7 +114,7 @@ public class TEMPORARY_KcAttack extends StagedTask
 
 	public NPC getNPC()
 	{
-		NPC returnNPC = NPCs.search().interactingWithLocal().first().orElse(null);
+		NPC returnNPC = NPCs.search().interactingWithLocal().alive().first().orElse(null);
 		if (returnNPC != null)
 		{
 			return returnNPC;
