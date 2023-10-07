@@ -80,7 +80,7 @@ public class AttackBloodMinion extends StagedTask
 			return true;
 		}
 
-		WorldPoint standTile = nexManager.nex.getMainTile();
+		WorldPoint standTile = decideStandTile();
 		if (standTile != null
 			&& !client.getLocalPlayer().getWorldLocation().equals(standTile))
 		{
@@ -89,6 +89,15 @@ public class AttackBloodMinion extends StagedTask
 			return true;
 		}
 		return false;
+	}
+
+	public WorldPoint decideStandTile()
+	{
+		if (nexManager.nex.slaveMainTile.distanceTo(nexManager.nex.nex.getWorldArea()) > 11)
+		{
+			return nexManager.nex.slaveMainTile;
+		}
+		return nexManager.nex.getMainTile();
 	}
 
 	public boolean shouldStepUnderNex()
