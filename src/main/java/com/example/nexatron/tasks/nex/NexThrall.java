@@ -10,6 +10,7 @@ import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
 import javax.inject.Inject;
+import net.runelite.api.Skill;
 
 @TaskDescriptor(
 	name = "Nex Thrall",
@@ -17,7 +18,7 @@ import javax.inject.Inject;
 )
 public class NexThrall extends StagedTask
 {
-	int tickCounter = 0;
+	private int tickCounter = 0;
 
 	@Inject
 	public NexThrall(NexManager nexManager)
@@ -43,10 +44,11 @@ public class NexThrall extends StagedTask
 		if (client.getVarbitValue(NexConst.SPELLBOOK_VARB) == 3
 			&& Inventory.search().withName("Book of the dead").first().orElse(null) != null
 			&& Inventory.search().nameContains("une pouch").first().orElse(null) != null
-			&& tickCounter == 0
-			&& nexManager.isThrallOffCD())
+			&& tickCounter <= 0
+			&& client.getBoostedSkillLevel(Skill.MAGIC) >= 76)
+//			&& nexManager.isThrallOffCD())
 		{
-			tickCounter = 10;
+			tickCounter = 60;
 			nexManager.print("Spawning mage thrall");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(client.getWidget(WidgetInfoExtended.SPELL_RESURRECT_GREATER_GHOST.getPackedId()), "Cast");
