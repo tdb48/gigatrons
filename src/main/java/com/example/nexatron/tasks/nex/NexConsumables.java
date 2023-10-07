@@ -67,8 +67,18 @@ public class NexConsumables extends StagedTask
 
 		if (nexManager.nex.shouldTripleBrew && healingPotion != null)
 		{
-			nexManager.print("Drinking brew");
-			consumable.consume(healingPotion);
+			if (prayerRestore != null &&
+				((nexManager.nex.onMeleePhase() && Consumable.isDrainedMore(Skill.STRENGTH, 29))
+					|| (nexManager.nex.onRangedPhase() && Consumable.isDrainedMore(Skill.RANGED, 29))))
+			{
+				nexManager.print("Drinking restore for drain in triple brew");
+				consumable.consume(prayerRestore);
+			}
+			else
+			{
+				nexManager.print("Drinking brew");
+				consumable.consume(healingPotion);
+			}
 			return true;
 		}
 
@@ -104,18 +114,7 @@ public class NexConsumables extends StagedTask
 			return true;
 		}
 
-		if (nexManager.containsStage(Stage.NEX_ZAROS))
-		{
-			if (rangePotion != null
-				&& Equipment.search().nameContains("anguish").first().orElse(null) != null
-				&& client.getBoostedSkillLevel(Skill.RANGED) < client.getRealSkillLevel(Skill.RANGED) + 6)
-			{
-				nexManager.print("Drinking ranged");
-				consumable.consume(rangePotion);
-				return true;
-			}
-		}
-		else if (rangePotion != null
+		if (rangePotion != null
 			&& nexManager.nex.onRangedPhase()
 			&& client.getBoostedSkillLevel(Skill.RANGED) < client.getRealSkillLevel(Skill.RANGED) + 6)
 		{
