@@ -188,6 +188,16 @@ public class Nex
 			{
 				brewSipsNeeded--;
 			}
+			if (message.contains(NexConst.COUGH_SPECIAL_MSG.toLowerCase()))
+			{
+				attacksUntilSpecial = 5;
+				nextSpecial = NexSpecial.DASH;
+			}
+			if (message.contains(NexConst.DASH_SPECIAL_MSG.toLowerCase()))
+			{
+				attacksUntilSpecial = 5;
+				nextSpecial = NexSpecial.COUGH;
+			}
 			if (message.contains(NexConst.SHADOW_DARKNESS_SPECIAL_MSG.toLowerCase()))
 			{
 				attacksUntilSpecial = 5;
@@ -675,7 +685,7 @@ public class Nex
 		List<NPC> reavers = NPCs.search().nameContains("eaver").result();
 		for (NPC reaver : reavers)
 		{
-			if (reaver.getHealthRatio() == 0)
+			if (reaver.getHealthRatio() == 0 || reaver.isDead())
 			{
 				nexManager.nex.reavers.remove(reaver);
 			}

@@ -15,7 +15,6 @@ import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
-import java.util.Comparator;
 import javax.inject.Inject;
 import net.runelite.api.NPC;
 import net.runelite.client.game.ItemManager;
@@ -76,7 +75,16 @@ public class NexFinishUp extends StagedTask
 		}
 		else
 		{
-			nexManager.print("Setting teleport out to true");
+			String why = "";
+			if (loot == null)
+			{
+				why = "no loot left";
+			}
+			if (InventoryUtil.isFull())
+			{
+				why = "inventory is full";
+			}
+			nexManager.print("Setting teleport out to true because " + why);
 			nexManager.nex.teleportOut = true;
 		}
 		return true;
@@ -87,10 +95,14 @@ public class NexFinishUp extends StagedTask
 		ArrayList<ETileItem> potentialLoot = TileItemUtil.getAllETileItems(NexConst.HIGH_PRIO_LOOT);
 		if (!potentialLoot.isEmpty())
 		{
-			return potentialLoot.stream().min(Comparator.comparingInt(o -> nexManager.getPlayerPoint().distanceTo(o.getLocation()))).orElse(null);
+			return potentialLoot.get(0);
 		}
 		potentialLoot = TileItemUtil.getAllETileItems(NexConst.LOW_PRIO_LOOT);
-		return potentialLoot.stream().min(Comparator.comparingInt(o -> nexManager.getPlayerPoint().distanceTo(o.getLocation()))).orElse(null);
+		if (!potentialLoot.isEmpty())
+		{
+			return potentialLoot.get(0);
+		}
+		return null;
 	}
 
 }
