@@ -49,8 +49,6 @@ public class AttackShadowNex extends StagedTask
 			nexManager.swap(setup);
 		}
 
-		// TODO: disable spec if its toggled and the hp dropped a lot or something along those lines
-
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
 			&& !Combat.isSpecEnabled()
 			&& Combat.getSpecEnergy() >= 75

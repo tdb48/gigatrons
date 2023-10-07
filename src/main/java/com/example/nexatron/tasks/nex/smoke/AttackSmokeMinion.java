@@ -37,7 +37,6 @@ public class AttackSmokeMinion extends StagedTask
 			return false;
 		}
 
-		// TODO: add blowpipe or fang
 		ArrayList<Integer> setup = nexManager.nex.setup.rangeNex();
 		if (!nexManager.hasGearEquipped(setup))
 		{

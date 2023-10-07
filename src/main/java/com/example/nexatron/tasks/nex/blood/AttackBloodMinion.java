@@ -93,7 +93,7 @@ public class AttackBloodMinion extends StagedTask
 
 	public WorldPoint decideStandTile()
 	{
-		if (nexManager.nex.masterMainTile.distanceTo(nexManager.nex.nex.getWorldArea()) > 11)
+		if (nexManager.nex.masterMainTile.distanceTo(nexManager.nex.nex.getWorldArea()) >= 11)
 		{
 			return nexManager.nex.masterMainTile;
 		}

@@ -9,12 +9,14 @@ import com.example.Utility.Combat;
 import com.example.Utility.Movement;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
+import com.example.nexatron.model.Consumable;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import net.runelite.api.GameObject;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @TaskDescriptor(
@@ -49,6 +51,7 @@ public class AttackIceNex extends StagedTask
 
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
 			&& !Combat.isSpecEnabled()
+			&& !Consumable.isDrained(Skill.RANGED)
 			&& Combat.getSpecEnergy() >= 75
 			&& nexManager.nex.hpUntilProc() >= 120)
 		{

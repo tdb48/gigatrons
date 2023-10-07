@@ -115,8 +115,8 @@ public class GameTickManager
 
 	public void drinkPotion()
 	{
-//		this.foodWait = 3;
-//		this.potionWait = 2;
+		this.foodWait = 3;
+		this.potionWait = 2;
 	}
 
 	public void register()
@@ -147,18 +147,20 @@ public class GameTickManager
 	{
 		this.tickWait = tickWait;
 	}
-	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
-	{
-		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE || chatMessage.getType() == ChatMessageType.SPAM || chatMessage.getType() == ChatMessageType.CONSOLE || chatMessage.getType() == ChatMessageType.ENGINE)
-		{
-			String message = chatMessage.getMessage().toLowerCase();
-			if (message.contains(NexConst.POTION_MESSAGE.toLowerCase()))
-			{
-				this.potionWait = 2;
-			}
-		}
-	}
+
+//	@Subscribe
+//	public void onChatMessage(ChatMessage chatMessage)
+//	{
+//		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE || chatMessage.getType() == ChatMessageType.SPAM || chatMessage.getType() == ChatMessageType.CONSOLE || chatMessage.getType() == ChatMessageType.ENGINE)
+//		{
+//			String message = chatMessage.getMessage().toLowerCase();
+//			if (message.contains(NexConst.POTION_MESSAGE.toLowerCase()))
+//			{
+//				System.out.println("Drinking potion!");
+//				this.potionWait = 3;
+//			}
+//		}
+//	}
 
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged animationChanged)

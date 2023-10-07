@@ -11,6 +11,7 @@ import com.example.Utility.Reachable;
 import com.example.Utility.WorldAreas;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
+import com.example.nexatron.model.Consumable;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
@@ -19,6 +20,7 @@ import java.util.Objects;
 import javax.inject.Inject;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @TaskDescriptor(
@@ -61,6 +63,7 @@ public class AttackBloodNex extends StagedTask
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
 			&& !Combat.isSpecEnabled()
 			&& targetIsNex(target)
+			&& !Consumable.isDrained(Skill.RANGED)
 			&& nexManager.nex.attacksUntilSpecial > 1
 			&& Combat.getSpecEnergy() >= 75
 			&& nexManager.nex.hpUntilProc() >= 80)

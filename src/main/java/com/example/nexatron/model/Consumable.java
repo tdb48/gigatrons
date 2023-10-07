@@ -7,6 +7,7 @@ import com.example.Packets.WidgetPackets;
 import com.example.Utility.BankUtil;
 import com.example.Utility.InventoryUtil;
 import com.example.Utility.Static;
+import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +27,8 @@ public class Consumable
 	NexManager nexManager;
 	@Inject
 	ItemManager itemManager;
+	@Inject
+	GameTickManager gameTickManager;
 	public static final int PREPOT_SCB = ItemID.SUPER_COMBAT_POTION1;
 	public static final int PREPOT_STAM = ItemID.STAMINA_POTION1;
 	public static final int PREPOT_RANGE = ItemID.RANGING_POTION1;
@@ -186,6 +189,7 @@ public class Consumable
 		MousePackets.queueClickPacket();
 		WidgetPackets.queueWidgetAction(consumable, action);
 		nexManager.shouldReattack = true;
+		gameTickManager.drinkPotion();
 		return true;
 	}
 
