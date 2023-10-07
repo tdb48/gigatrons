@@ -22,7 +22,7 @@ public class Reattack extends Task
 	{
 		if (nexManager.shouldReattack)
 		{
-			nexManager.reattackInteracting();
+//			nexManager.reattackInteracting();
 		}
 		nexManager.shouldReattack = false;
 		return false;
