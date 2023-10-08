@@ -8,7 +8,6 @@ import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Packets.TileItemPackets;
-import com.example.Packets.WidgetPackets;
 import com.example.Utility.Combat;
 import com.example.Utility.InventoryUtil;
 import com.example.Utility.Prayers;
@@ -19,7 +18,6 @@ import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
-import java.util.ArrayList;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
@@ -32,12 +30,12 @@ import net.runelite.client.game.ItemManager;
 	priority = 1,
 	register = true
 )
-public class TEMPORARY_KcAttack extends StagedTask
+public class KcAttack extends StagedTask
 {
 	@Inject
 	ItemManager itemManager;
 	@Inject
-	public TEMPORARY_KcAttack(NexManager nexManager)
+	public KcAttack(NexManager nexManager)
 	{
 		super(nexManager, Stage.KC_AREA);
 	}
@@ -81,34 +79,6 @@ public class TEMPORARY_KcAttack extends StagedTask
 				TileItemPackets.queueTileItemAction(loot, false);
 				return true;
 			}
-		}
-
-		if (Prayers.getPoints() <= 50)
-		{
-			nexManager.print("Drinking restore pot");
-			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(restore, "Drink");
-			return true;
-		}
-
-		Widget rangePot = Consumable.getRange();
-		if (client.getBoostedSkillLevel(Skill.RANGED) - client.getRealSkillLevel(Skill.RANGED) <= 5
-			&& rangePot != null)
-		{
-			nexManager.print("Drinking range pot");
-			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(rangePot, "Drink");
-			return true;
-		}
-
-		Widget anti = Consumable.getAnti();
-		if (Combat.isPoisoned()
-			&& anti != null)
-		{
-			nexManager.print("Drinking anti pot");
-			MousePackets.queueClickPacket();
-			WidgetPackets.queueWidgetAction(anti, "Drink");
-			return true;
 		}
 
 		if (Combat.getSpecEnergy() >= 50

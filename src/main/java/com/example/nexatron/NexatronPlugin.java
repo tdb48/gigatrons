@@ -22,8 +22,9 @@ import com.example.nexatron.tasks.general.Reattack;
 import com.example.nexatron.tasks.general.SetFangStyle;
 import com.example.nexatron.tasks.general.ToggleRun;
 import com.example.nexatron.tasks.kcArea.EnterBank;
+import com.example.nexatron.tasks.kcArea.KcConsumables;
 import com.example.nexatron.tasks.kcArea.KcPrayer;
-import com.example.nexatron.tasks.kcArea.TEMPORARY_KcAttack;
+import com.example.nexatron.tasks.kcArea.KcAttack;
 import com.example.nexatron.tasks.nex.NexAbort;
 import com.example.nexatron.tasks.nex.NexConsumables;
 import com.example.nexatron.tasks.nex.NexFinishUp;
@@ -108,7 +109,7 @@ public class NexatronPlugin extends Plugin
 			DisablePrayers.class,
 			Reattack.class,
 			KcPrayer.class,
-			TEMPORARY_KcAttack.class,
+			KcAttack.class,
 			NexAbort.class,
 			AttackSmokeNex.class,
 			NexStart.class,
@@ -134,6 +135,7 @@ public class NexatronPlugin extends Plugin
 			WithdrawSupplies.class,
 			EnterNex.class,
 			EnterKcArea.class,
+			KcConsumables.class,
 		};
 	}
 
