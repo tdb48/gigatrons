@@ -112,6 +112,10 @@ public class WithdrawSupplies extends StagedTask
 	{
 		// We use 4 slots for gear and 1 for bolts
 		int brewCount = 23;
+		if (nexManager.config.rangeCape().itemId == nexManager.config.meleeCape().itemId)
+		{
+			brewCount = 24;
+		}
 
 		// Remove 2 slots if we are using thralls
 		if (nexManager.config.useThralls())
