@@ -57,6 +57,7 @@ public class Nex
 	public int shadowTick = 0;
 	public int containTick = 0;
 	public int minionAttackTick = 0;
+	public int startAncientKc = -1;
 	public boolean teleportOut = false;
 	public WorldPoint masterMainTile = null;
 	public WorldPoint masterDodgeTile = null;
@@ -130,6 +131,7 @@ public class Nex
 		altar = null;
 		bankDoor = null;
 		kcDoor = null;
+		startAncientKc = -1;
 	}
 
 	@Subscribe
@@ -138,6 +140,10 @@ public class Nex
 		if (nex != null)
 		{
 			setReaverHp();
+		}
+		if (startAncientKc == -1)
+		{
+			startAncientKc = nexManager.getAncientKc();
 		}
 		if (nexAttackTick > 0)
 		{

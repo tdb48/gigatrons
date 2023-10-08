@@ -71,25 +71,32 @@ public class NexatronInfoBox extends OverlayPanel
 			panelComponent.getChildren().add(LineComponent.builder().left("Runtime ").right((duration.toHours() > 0 ? (duration.toHours() + ":") : ("")) + (new SimpleDateFormat("mm:ss").format(new Date(duration.toMillis())))).build());
 		}
 		panelComponent.getChildren().add(LineComponent.builder().left("Stage ").right(String.valueOf(stage)).build());
-		panelComponent.getChildren().add(LineComponent.builder().left("K/D/F ").right(plugin.nexManager.overall.killCount + " / " + plugin.nexManager.overall.deaths + " / " + plugin.nexManager.overall.failedKills).build());
+		panelComponent.getChildren().add(LineComponent.builder().left("K / D / Fail ").right(plugin.nexManager.overall.killCount + " / " + plugin.nexManager.overall.deaths + " / " + plugin.nexManager.overall.failedKills).build());
+		int ancientKcDifference = plugin.nexManager.getAncientKc() - plugin.nexManager.nex.startAncientKc;
+		if (ancientKcDifference > 0)
+		{
+			panelComponent.getChildren().add(LineComponent.builder().left("KC Gained").right("+" + ancientKcDifference).rightColor(Color.GREEN).build());
+		}
+		else
+		{
+			panelComponent.getChildren().add(LineComponent.builder().left("KC Lost").right("-" + ancientKcDifference).rightColor(Color.RED).build());
+		}
 		if (plugin.nexManager.nex.nex != null)
 		{
-			panelComponent.getChildren().add(LineComponent.builder().left("Overhead int ").right(String.valueOf(plugin.nexManager.getOverheadIcon(plugin.nexManager.nex.nex))).build());
 			panelComponent.getChildren().add(LineComponent.builder().left("Nex tick ").right(String.valueOf(plugin.nexManager.nex.nexAttackTick)).build());
 //			panelComponent.getChildren().add(LineComponent.builder().left("Minion tick ").right(String.valueOf(plugin.nexManager.nex.minionAttackTick)).build());
-//			panelComponent.getChildren().add(LineComponent.builder().left("Player tick ").right(String.valueOf(plugin.nexManager.gameTickManager.getAttackWait())).build());
+			panelComponent.getChildren().add(LineComponent.builder().left("Player tick ").right(String.valueOf(plugin.nexManager.gameTickManager.getAttackWait())).build());
 
 //			if (plugin.nexManager.nex.nextSpecial != null)
 //			{
 //				panelComponent.getChildren().add(LineComponent.builder().left("attacks until spec ").right(String.valueOf(plugin.nexManager.nex.attacksUntilSpecial)).build());
 //				panelComponent.getChildren().add(LineComponent.builder().left("Next special ").right(String.valueOf(plugin.nexManager.nex.nextSpecial)).build());
 //			}
-//			panelComponent.getChildren().add(LineComponent.builder().left("Zaros counter ").right(String.valueOf(plugin.nexManager.nex.nexZarosAttacks)).build());
+			panelComponent.getChildren().add(LineComponent.builder().left("Zaros counter ").right(String.valueOf(plugin.nexManager.nex.nexZarosAttacks)).build());
 			if (plugin.nexManager.containsStage(Stage.MINION_ICE, Stage.NEX_ICE))
 			{
 				panelComponent.getChildren().add(LineComponent.builder().left("Prison active ").right(String.valueOf(plugin.nexManager.nex.prisonActive)).build());
 				panelComponent.getChildren().add(LineComponent.builder().left("Prison tick?").right(String.valueOf(plugin.nexManager.nex.stuckInPrisonTick)).build());
-
 			}
 		}
 		return panelComponent.render(graphics);
