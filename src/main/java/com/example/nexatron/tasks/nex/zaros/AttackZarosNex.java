@@ -138,7 +138,7 @@ public class AttackZarosNex extends StagedTask
 		}
 
 		// If we are not interacting, attack target
-		if (!client.getLocalPlayer().isInteracting()
+		if (!gameTickManager.isAttackWaiting()
 			&& nexManager.nex.invincibleTick == 0)
 		{
 			nexManager.print("Attacking " + nexManager.nex.nex.getName());
