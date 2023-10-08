@@ -1,6 +1,5 @@
 package com.example.nexatron.tasks.nex;
 
-import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.Utility.Prayers;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
@@ -37,7 +36,6 @@ public class NexConsumables extends StagedTask
 			Stage.NEX_BLOOD,
 			Stage.MINION_ICE,
 			Stage.NEX_ICE,
-			// TODO: come back to zaros consumables
 			Stage.NEX_ZAROS);
 	}
 
@@ -67,9 +65,12 @@ public class NexConsumables extends StagedTask
 
 		if (nexManager.nex.shouldTripleBrew && healingPotion != null)
 		{
-			if (prayerRestore != null &&
-				((nexManager.nex.onMeleePhase() && Consumable.isDrainedMore(Skill.STRENGTH, 29))
-					|| (nexManager.nex.onRangedPhase() && Consumable.isDrainedMore(Skill.RANGED, 29))))
+			if ((prayerRestore != null
+				&& nexManager.nex.onMeleePhase()
+				&& Consumable.isDrainedMore(Skill.STRENGTH, 29))
+				|| prayerRestore != null
+				&& nexManager.nex.onRangedPhase()
+				&& Consumable.isDrainedMore(Skill.RANGED, 29))
 			{
 				nexManager.print("Drinking restore for drain in triple brew");
 				consumable.consume(prayerRestore);
