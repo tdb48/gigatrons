@@ -49,6 +49,7 @@ public class Nex
 	public NPC cruor = null;
 	public GameObject altar = null;
 	public GameObject bankDoor = null;
+	public GameObject kcDoor = null;
 	public WorldPoint centerPoint = null;
 	public int nexAttackTick = 0;
 	public int nexZarosAttacks = 0;
@@ -128,6 +129,7 @@ public class Nex
 		centerPoint = null;
 		altar = null;
 		bankDoor = null;
+		kcDoor = null;
 	}
 
 	@Subscribe
@@ -312,6 +314,10 @@ public class Nex
 		{
 			bankDoor = gameObject;
 		}
+		if (gameObject.getId() == NexConst.KC_AREA_DOOR)
+		{
+			kcDoor = gameObject;
+		}
 		if (gameObject.getId() == NexConst.SHADOW)
 		{
 			shadowTick = 5;
@@ -335,6 +341,10 @@ public class Nex
 		if (gameObject.getId() == NexConst.BANK_DOOR)
 		{
 			bankDoor = null;
+		}
+		if (gameObject.getId() == NexConst.KC_AREA_DOOR)
+		{
+			kcDoor = null;
 		}
 		if (gameObject.getId() == NexConst.ICE_PRISON)
 		{
