@@ -62,23 +62,21 @@ public class NexFinishUp extends StagedTask
 			return true;
 		}
 
-		if (nexManager.socket.isMaster)
+		if (nexManager.socket.isMaster && !gameTickManager.isPotionWaiting())
 		{
 			Widget healingPotion = Consumable.getBrew();
 			Widget prayerRestore = Consumable.getRestore();
-			if (Consumable.isDrained(Skill.PRAYER)
-				&& prayerRestore != null
-				&& !gameTickManager.isPotionWaiting())
+			if (Consumable.isDrained(Skill.HITPOINTS)
+				&& healingPotion != null)
 			{
-				nexManager.print("Drinking restore (panic)");
-				consumable.consume(prayerRestore);
-			}
-			else if (Consumable.isDrained(Skill.HITPOINTS)
-				&& healingPotion != null
-				&& !gameTickManager.isPotionWaiting())
-			{
-				nexManager.print("Drinking brew");
+				nexManager.print("Drinking brew to full");
 				consumable.consume(healingPotion);
+			}
+			else if (Consumable.isDrained(Skill.PRAYER)
+				&& prayerRestore != null)
+			{
+				nexManager.print("Drinking restore for pray");
+				consumable.consume(prayerRestore);
 			}
 		}
 
