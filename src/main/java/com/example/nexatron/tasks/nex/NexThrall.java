@@ -55,7 +55,7 @@ public class NexThrall extends StagedTask
 			&& client.getBoostedSkillLevel(Skill.MAGIC) >= 76)
 //			&& nexManager.isThrallOffCD())
 		{
-			tickCounter = 100 + nexManager.random.nextInt(5);
+			tickCounter = (client.getBoostedSkillLevel(Skill.MAGIC) - 5) + nexManager.random.nextInt(5);
 			nexManager.print("Spawning mage thrall");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(client.getWidget(WidgetInfoExtended.SPELL_RESURRECT_GREATER_GHOST.getPackedId()), "Cast");
