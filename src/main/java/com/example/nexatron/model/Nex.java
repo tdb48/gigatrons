@@ -78,6 +78,10 @@ public class Nex
 	public boolean prisonActive = false;
 	public int stuckInPrisonTick = 0;
 	public int lastSeenHeadIcon = -1;
+	public int rangeCape = -1;
+	public int meleeCape = -1;
+	public int helm = -1;
+	public int meleeOffhand = -1;
 	@Inject
 	public Setup setup;
 	@Inject
@@ -132,6 +136,10 @@ public class Nex
 		bankDoor = null;
 		kcDoor = null;
 		startAncientKc = -1;
+		rangeCape = -1;
+		meleeCape = -1;
+		helm = -1;
+		meleeOffhand = -1;
 	}
 
 	@Subscribe

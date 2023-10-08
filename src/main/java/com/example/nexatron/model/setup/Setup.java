@@ -36,10 +36,6 @@ public class Setup
 			ItemID.NEITIZNOT_FACEGUARD,
 			ItemID.HELM_OF_NEITIZNOT
 		));
-	public int rangeCape = -1;
-	public int meleeCape = -1;
-	public int helm = -1;
-	public int meleeOffhand = -1;
 	@Inject
 	NexManager nexManager;
 	@Inject
@@ -47,18 +43,14 @@ public class Setup
 
 	public void reset()
 	{
-		rangeCape = -1;
-		meleeCape = -1;
-		helm = -1;
-		meleeOffhand = -1;
+//		rangeCape = -1;
+//		meleeCape = -1;
+//		helm = -1;
+//		meleeOffhand = -1;
 	}
 
 	public int findBestSlot(ArrayList<Integer> potentialItems)
 	{
-		if (!Bank.isOpen())
-		{
-			return -1;
-		}
 		for (int i : potentialItems)
 		{
 			if (Bank.search().withId(i).first().orElse(null) != null)
@@ -74,7 +66,7 @@ public class Setup
 				return i;
 			}
 		}
-		return -1;
+		return -2;
 	}
 
 
@@ -100,13 +92,14 @@ public class Setup
 
 	public ArrayList<Integer> rangeNex()
 	{
-		int cape = rangeCape == -1 ? config.rangeCape().itemId : rangeCape;
-		int rangeHelm = helm == -1 ? config.helm().itemId : helm;
-		if (!config.autoDecide())
+		int cape = config.rangeCape().itemId;
+		int rangeHelm = config.helm().itemId;
+		if (config.autoDecide())
 		{
-			cape = config.rangeCape().itemId;
-			rangeHelm = config.helm().itemId;
+			cape = nexManager.nex.rangeCape;
+			rangeHelm = nexManager.nex.helm;
 		}
+		System.out.println("Range cape: " + cape);
 		return new ArrayList<>(
 			Arrays.asList(
 				ItemID.ZARYTE_CROSSBOW,
@@ -124,15 +117,17 @@ public class Setup
 
 	public ArrayList<Integer> meleeNex()
 	{
-		int cape = meleeCape == -1 ? config.meleeCape().itemId : meleeCape;
-		int helm = this.helm == -1 ? config.helm().itemId : this.helm;
-		int offhand = meleeOffhand == -1 ? config.meleeOffhand().itemId : meleeOffhand;
-		if (!config.autoDecide())
+		int cape = config.meleeCape().itemId;
+		int helm = config.helm().itemId;
+		int offhand = config.meleeOffhand().itemId;
+		if (config.autoDecide())
 		{
-			cape = config.meleeCape().itemId;
-			helm = config.helm().itemId;
-			offhand = config.meleeOffhand().itemId;
+			cape = nexManager.nex.meleeCape;
+			helm = nexManager.nex.helm;
+			offhand = nexManager.nex.meleeOffhand;
 		}
+		System.out.println("Melee cape: " + cape);
+		System.out.println("Melee offhand: " + offhand);
 		return new ArrayList<>(
 			Arrays.asList(
 				ItemID.OSMUMTENS_FANG,
@@ -150,13 +145,20 @@ public class Setup
 
 	public ArrayList<Integer> defensiveNex()
 	{
+		int cape = config.meleeCape().itemId;
+		int helm = config.helm().itemId;
+		if (config.autoDecide())
+		{
+			cape = nexManager.nex.meleeCape;
+			helm = nexManager.nex.helm;
+		}
 		return new ArrayList<>(
 			Arrays.asList(
 				ItemID.ZARYTE_CROSSBOW,
 				ItemID.MASORI_BODY_F,
 				ItemID.MASORI_CHAPS_F,
-				config.meleeCape().itemId,
-				config.helm().itemId,
+				cape,
+				helm,
 				ItemID.AMULET_OF_BLOOD_FURY,
 				ItemID.TWISTED_BUCKLER,
 				ItemID.LIGHTBEARER,

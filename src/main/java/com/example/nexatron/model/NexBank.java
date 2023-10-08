@@ -24,6 +24,7 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 
 /*
 banking unused items
@@ -46,6 +47,8 @@ public class NexBank
 	@Inject
 	Client client;
 
+	@Inject
+	ItemManager itemManager;
 	@Inject
 	EventBus eventBus;
 
@@ -82,23 +85,28 @@ public class NexBank
 		{
 			usingGucciRunePouch = true;
 		}
-		if (Bank.isOpen())
+		if (Bank.isOpen() && nexManager.config.autoDecide())
 		{
-			if (nexManager.setup.helm == -1 && nexManager.config.autoDecide())
+			if (nexManager.nex.helm == -1)
 			{
-				nexManager.setup.helm = nexManager.setup.findBestSlot(Setup.HELM);
+				nexManager.nex.helm = nexManager.setup.findBestSlot(Setup.HELM);
+				nexManager.print("Set helm as " + itemManager.getItemComposition(nexManager.nex.helm).getName());
 			}
-			if (nexManager.setup.meleeCape == -1 && nexManager.config.autoDecide())
+			if (nexManager.nex.meleeCape == -1)
 			{
-				nexManager.setup.meleeCape = nexManager.setup.findBestSlot(Setup.MELEE_CAPE);
+				nexManager.nex.meleeCape = nexManager.setup.findBestSlot(Setup.MELEE_CAPE);
+				nexManager.print("Set melee cape as " + itemManager.getItemComposition(nexManager.nex.meleeCape).getName());
 			}
-			if (nexManager.setup.rangeCape == -1 && nexManager.config.autoDecide())
+			if (nexManager.nex.rangeCape == -1)
 			{
-				nexManager.setup.rangeCape = nexManager.setup.findBestSlot(Setup.RANGE_CAPE);
+				nexManager.nex.rangeCape = nexManager.setup.findBestSlot(Setup.RANGE_CAPE);
+				nexManager.print("Set range cape as " + itemManager.getItemComposition(nexManager.nex.rangeCape).getName());
 			}
-			if (nexManager.setup.meleeOffhand == -1 && nexManager.config.autoDecide())
+			if (nexManager.nex.meleeOffhand == -1)
 			{
-				nexManager.setup.meleeOffhand = nexManager.setup.findBestSlot(Setup.MELEE_OFFHAND);
+				nexManager.nex.meleeOffhand = nexManager.setup.findBestSlot(Setup.MELEE_OFFHAND);
+				nexManager.print("Set melee offhand as " + itemManager.getItemComposition(nexManager.nex.meleeOffhand).getName());
+
 			}
 		}
 	}

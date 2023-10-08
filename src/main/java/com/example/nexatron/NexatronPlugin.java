@@ -204,9 +204,9 @@ public class NexatronPlugin extends Plugin
 		this.nexManager.lobby.unregister();
 		this.nexManager.socket.unregister();
 		this.nexManager.socket.reset();
-		this.nexManager.setup.reset();
 		this.nexManager.unregister();
 		this.nexManager.fullReset();
+		this.nexManager.setup.reset();
 	}
 
 	@Subscribe

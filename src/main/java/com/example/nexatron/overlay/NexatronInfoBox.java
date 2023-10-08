@@ -79,7 +79,7 @@ public class NexatronInfoBox extends OverlayPanel
 		}
 		else
 		{
-			panelComponent.getChildren().add(LineComponent.builder().left("KC since start").right("-" + ancientKcDifference).rightColor(Color.RED).build());
+			panelComponent.getChildren().add(LineComponent.builder().left("KC since start").right("" + ancientKcDifference).rightColor(Color.RED).build());
 		}
 		if (plugin.nexManager.nex.nex != null)
 		{
