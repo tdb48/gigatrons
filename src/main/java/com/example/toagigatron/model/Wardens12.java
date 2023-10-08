@@ -18,6 +18,7 @@ import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
 import net.runelite.api.Projectile;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -168,7 +169,8 @@ public class Wardens12
 		int id = p.getId();
 		if (id == ToaConstants.WARDEN_P2_SKULL_PROJECTILE_ID)
 		{
-			ArrayList<WorldPoint> dangerTiles = generateDangerTiles(p);
+//			ArrayList<WorldPoint> dangerTiles = generateDangerTiles(p);
+			ArrayList<WorldPoint> dangerTiles = generateDangerTilesNew(projectileMoved.getPosition());
 			for (WorldPoint wp : dangerTiles)
 			{
 				this.dangerTiles.put(wp, (p.getRemainingCycles() / 30) + 3);
@@ -176,13 +178,13 @@ public class Wardens12
 		}
 		if (id == ToaConstants.WARDENS_P2_PRISON)
 		{
-			WorldPoint target = WorldPoint.fromLocal(client, p.getTarget());
+			WorldPoint target = WorldPoint.fromLocal(client, projectileMoved.getPosition());
 			if (!prisonTiles.contains(target))
 			{
 				prisonTiles.add(target);
 			}
 			prisonTick = (p.getRemainingCycles() / 30) + 2;
-			dangerTiles.put(WorldPoint.fromLocal(client, p.getTarget()), (p.getRemainingCycles() / 30) + 2);
+			dangerTiles.put(target, (p.getRemainingCycles() / 30) + 2);
 		}
 	}
 
@@ -205,6 +207,17 @@ public class Wardens12
 		{
 			obeliskObject = null;
 		}
+	}
+
+	public ArrayList<WorldPoint> generateDangerTilesNew(LocalPoint lp)
+	{
+		WorldPoint refPoint = WorldPoint.fromLocal(client, lp);
+		toaManager.print("Skull spawned at " + toaManager.worldPointString(refPoint));
+		WorldPoint southWest = refPoint.dx(-3).dy(-3);
+		WorldPoint northEast = refPoint.dx(4).dy(4);
+		ArrayList<WorldPoint> returnList = (ArrayList<WorldPoint>) WorldAreas.createArea(southWest, northEast).toWorldPointList();
+		returnList.removeAll(generateWorldPoints(refPoint));
+		return returnList;
 	}
 
 	public ArrayList<WorldPoint> generateDangerTiles(Projectile p)

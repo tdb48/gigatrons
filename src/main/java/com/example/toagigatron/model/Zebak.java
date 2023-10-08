@@ -25,6 +25,7 @@ import net.runelite.api.Projectile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
@@ -129,23 +130,26 @@ public class Zebak
 		zebakEastTiles = new ArrayList<>();
 	}
 
+
 	@Subscribe
 	public void onProjectileMoved(ProjectileMoved projectilemoved)
 	{
 		Projectile projectile = projectilemoved.getProjectile();
 		LocalPoint targetTile = projectile.getTarget();
+		LocalPoint eventPosition = projectilemoved.getPosition();
 		int id = projectile.getId();
-		if (id == ToaConstants.ZEBAK_JUG_PROJECTILE && !staticJugs.contains(targetTile))
+
+		if (id == ToaConstants.ZEBAK_JUG_PROJECTILE && !staticJugs.contains(eventPosition))
 		{
-			staticJugs.add(targetTile);
+			staticJugs.add(eventPosition);
 		}
-		if (id == ToaConstants.ZEBAK_ROCK_PROJECTILE && !rockTiles.contains(targetTile))
+		if (id == ToaConstants.ZEBAK_ROCK_PROJECTILE && !rockTiles.contains(eventPosition))
 		{
-			rockTiles.add(targetTile);
+			rockTiles.add(eventPosition);
 		}
-		if (ToaConstants.ZEBAK_POISON_PROJECTILE.contains(id) && !poisonTiles.contains(targetTile))
+		if (ToaConstants.ZEBAK_POISON_PROJECTILE.contains(id) && !poisonTiles.contains(eventPosition))
 		{
-			poisonTiles.add(targetTile);
+			poisonTiles.add(eventPosition);
 		}
 
 	}
@@ -675,7 +679,7 @@ public class Zebak
 		WorldPoint wp = WorldPoint.fromLocal(client, lp);
 		if (poisonWorldPoints.contains(wp) || rockTiles.contains(lp))
 		{
-			if(rockTiles.contains(lp))
+			if (rockTiles.contains(lp))
 			{
 				toaManager.print("Jug push or pull tile blocked by a rocktile and successfully detected.");
 			}
@@ -981,7 +985,6 @@ public class Zebak
 		{
 			if (poisonTiles.contains(localRefPoint))
 			{
-				System.out.println("Removing dead poison tile");
 				poisonTiles.remove(localRefPoint);
 			}
 			else
