@@ -42,6 +42,8 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class Nex
 {
+	public final int MAX_BREW_HP = 115;
+	public final int BREW_HEAL = 16;
 	public NPC nex = null;
 	public NPC fumus = null;
 	public NPC umbra = null;
@@ -77,15 +79,13 @@ public class Nex
 	public int stuckInPrisonTick = 0;
 	public int lastSeenHeadIcon = -1;
 	@Inject
+	public Setup setup;
+	@Inject
 	NexManager nexManager;
 	@Inject
 	Client client;
-
 	@Inject
 	EventBus eventBus;
-
-	@Inject
-	public Setup setup;
 
 	public void register()
 	{
@@ -305,7 +305,6 @@ public class Nex
 		}
 	}
 
-
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned gameObjectSpawned)
 	{
@@ -360,6 +359,64 @@ public class Nex
 			prisonActive = false;
 		}
 	}
+//
+//	@Subscribe
+//	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
+//	{
+//		if (hitsplatApplied.getActor().getName() != null
+//			&& hitsplatApplied.getActor().getName().toLowerCase().contains("reaver"))
+//		{
+//			NPC reaver = (NPC) hitsplatApplied.getActor();
+//			int hp = nexManager.nex.getNPCHP(reaver);
+//			if (hp == 0)
+//			{
+//				reavers.remove(reaver);
+//			}
+//			else
+//			{
+//				reavers.put(reaver, hp);
+//			}
+//		}
+//	}
+
+//	public WorldPoint getClosestBloodStepUnder()
+//	{
+//		if (nex == null)
+//		{
+//			return null;
+//		}
+//		WorldPoint nexCenter = WorldAreas.getCenter(nex.getWorldArea());
+//		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
+//		ArrayList<String> directions = (ArrayList<String>) Arrays.asList("west", "north", "east", "south");
+//		for (WorldPoint worldPoint : nex.getWorldArea().toWorldPointList())
+//		{
+//			int x = worldPoint.getX();
+//			int y = worldPoint.getY();
+//			if (y > playerPoint.getY())
+//			{
+//				directions.remove("north");
+//			}
+//			if (y < playerPoint.getY())
+//			{
+//				directions.remove("south");
+//			}
+//			if (x < playerPoint.getX())
+//			{
+//				directions.remove("west");
+//			}
+//			if (x > playerPoint.getX())
+//			{
+//				directions.remove("east");
+//			}
+//		}
+//		String direction = directions.isEmpty() ?
+//			"south" :
+//			directions.get(0);
+//		if (direction.equals("south"))
+//		{
+//
+//		}
+//	}
 
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned npcSpawned)
@@ -431,64 +488,6 @@ public class Nex
 			reavers.remove(npc);
 		}
 	}
-//
-//	@Subscribe
-//	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
-//	{
-//		if (hitsplatApplied.getActor().getName() != null
-//			&& hitsplatApplied.getActor().getName().toLowerCase().contains("reaver"))
-//		{
-//			NPC reaver = (NPC) hitsplatApplied.getActor();
-//			int hp = nexManager.nex.getNPCHP(reaver);
-//			if (hp == 0)
-//			{
-//				reavers.remove(reaver);
-//			}
-//			else
-//			{
-//				reavers.put(reaver, hp);
-//			}
-//		}
-//	}
-
-//	public WorldPoint getClosestBloodStepUnder()
-//	{
-//		if (nex == null)
-//		{
-//			return null;
-//		}
-//		WorldPoint nexCenter = WorldAreas.getCenter(nex.getWorldArea());
-//		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
-//		ArrayList<String> directions = (ArrayList<String>) Arrays.asList("west", "north", "east", "south");
-//		for (WorldPoint worldPoint : nex.getWorldArea().toWorldPointList())
-//		{
-//			int x = worldPoint.getX();
-//			int y = worldPoint.getY();
-//			if (y > playerPoint.getY())
-//			{
-//				directions.remove("north");
-//			}
-//			if (y < playerPoint.getY())
-//			{
-//				directions.remove("south");
-//			}
-//			if (x < playerPoint.getX())
-//			{
-//				directions.remove("west");
-//			}
-//			if (x > playerPoint.getX())
-//			{
-//				directions.remove("east");
-//			}
-//		}
-//		String direction = directions.isEmpty() ?
-//			"south" :
-//			directions.get(0);
-//		if (direction.equals("south"))
-//		{
-//
-//		}
-//	}
 
 	public WorldPoint getBloodIceStepUnderNEW()
 	{
@@ -578,9 +577,6 @@ public class Nex
 			nexManager.nex.masterStepUnderTile :
 			nexManager.nex.slaveStepUnderTile;
 	}
-
-	public final int MAX_BREW_HP = 115;
-	public final int BREW_HEAL = 16;
 
 	public boolean shouldTripleBrew()
 	{

@@ -2,20 +2,13 @@ package com.example.nexatron.model;
 
 
 import com.example.Utility.Static;
-import com.example.nexatron.NexatronPlugin;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
-import com.example.nexatron.model.constants.Stage;
 import java.time.Instant;
 import javax.inject.Inject;
-import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.GameObject;
-import net.runelite.api.NPC;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameObjectDespawned;
-import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -27,9 +20,6 @@ public class Overall
 	public int failedKills = 0;
 	public boolean died;
 	public Instant botTimer = Instant.now();
-
-	@Inject
-	NexatronPlugin nexatronPlugin;
 	@Inject
 	NexManager nexManager;
 	@Inject

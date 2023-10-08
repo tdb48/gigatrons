@@ -23,25 +23,11 @@ import net.runelite.client.game.ItemManager;
 
 public class Consumable
 {
-	@Inject
-	NexManager nexManager;
-	@Inject
-	ItemManager itemManager;
-	@Inject
-	GameTickManager gameTickManager;
 	public static final int PREPOT_SCB = ItemID.SUPER_COMBAT_POTION1;
 	public static final int PREPOT_STAM = ItemID.STAMINA_POTION1;
 	public static final int PREPOT_RANGE = ItemID.RANGING_POTION1;
 	public static final int PREPOT_ANGLER = ItemID.ANGLERFISH;
 	public static final int PREPOT_ANTI = ItemID.ANTIDOTE1_5958;
-	public static ArrayList<Integer> getNecessaryPotions = new ArrayList<>(
-		Arrays.asList(
-			ItemID.ANGLERFISH,
-			ItemID.RANGING_POTION4,
-			ItemID.SARADOMIN_BREW4,
-			ItemID.SUPER_COMBAT_POTION4,
-			ItemID.SUPER_RESTORE1,
-			ItemID.SUPER_RESTORE4));
 	public static final ArrayList<Integer> RESTORE =
 		new ArrayList<>(Arrays.asList(
 			ItemID.SUPER_RESTORE1,
@@ -88,10 +74,20 @@ public class Consumable
 			ItemID.SARADOMIN_BREW3,
 			ItemID.SARADOMIN_BREW4)
 		);
-//	public static ArrayList<Integer> getThrallItems = new ArrayList<>(
-//		Arrays.asList(
-//			ItemID.BOOK_OF_THE_DEAD,
-//			ItemID.RUNE_POUCH));
+	public static ArrayList<Integer> getNecessaryPotions = new ArrayList<>(
+		Arrays.asList(
+			ItemID.ANGLERFISH,
+			ItemID.RANGING_POTION4,
+			ItemID.SARADOMIN_BREW4,
+			ItemID.SUPER_COMBAT_POTION4,
+			ItemID.SUPER_RESTORE1,
+			ItemID.SUPER_RESTORE4));
+	@Inject
+	NexManager nexManager;
+	@Inject
+	ItemManager itemManager;
+	@Inject
+	GameTickManager gameTickManager;
 
 	public static boolean isDrained(Skill skill)
 	{

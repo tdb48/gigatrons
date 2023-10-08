@@ -11,13 +11,6 @@ import net.runelite.api.coords.WorldPoint;
 
 public class NexConst
 {
-	public static List<Integer> WEAPONS =
-		List.of(
-			ItemID.OSMUMTENS_FANG,
-			ItemID.OSMUMTENS_FANG_OR,
-			ItemID.ZARYTE_CROSSBOW,
-			ItemID.ARMADYL_CROSSBOW,
-			ItemID.TOXIC_BLOWPIPE);
 	public static final int ALTAR_TELEPORT_ANIM = 714;
 	public static final int TROLLHEIM_TAB = ItemID.TROLLHEIM_TELEPORT;
 	public static final int DIA_BOLTS = ItemID.DIAMOND_DRAGON_BOLTS_E;
@@ -59,10 +52,8 @@ public class NexConst
 		26231, // nihil shards
 		ItemID.COINS,
 		565); // blood runes
-
 	public static final Set<Integer> SUPPLY_LOOT = Set.of(
 		-1);
-
 	public static final int NEX_MELEE_ANIMATION = 9180;
 	public static final int NEX_MAGE_ANIMATION = 9188;
 	public static final int NEX_SHADOW_ANIMATION = 9189;
@@ -98,31 +89,26 @@ public class NexConst
 	public static final int NEX_ICE_PROC = 680;
 	public static final int SACRIFICE_GRAPIHC = -1;
 	public static final int SPELLBOOK_VARB = 4070;
-
 	public static final String BREW_MESSAGE = "You drink some of the foul liquid.";
 	public static final String POTION_MESSAGE = "you drink some";
 	public static final int ALTAR_VARBIT = 4099;
-
 	public static final String SMOKE_SPAWN_MSG = "Fill my soul with smoke!";
 	public static final String COUGH_SPECIAL_MSG = "Let the virus flow through you!";
 	public static final String DASH_SPECIAL_MSG = "There is...";
 	public static final String FUMUS_SPAWN_MSG = "Fumus, don't fail me!";
-
 	//Shadow
 	public static final String SHADOW_SPAWN_MSG = "Darken my shadow!";
 	public static final String SHADOW_DARKNESS_SPECIAL_MSG = "Embrace darkness!";
 	public static final String SHADOW_POOL_SPECIAL_MSG = "Fear the shadow!";
 	public static final String UMBRA_SPAWN_MSG = "Umbra, don't fail me!";
-
 	//Blood
 	public static final String BLOOD_SPAWN_MSG = "Flood my lungs with blood!";
-	public static  final String BLOOD_SIPHON_SPECIAL_MSG = "A siphon will solve this!";
+	public static final String BLOOD_SIPHON_SPECIAL_MSG = "A siphon will solve this!";
 	public static final String BLOOD_SACRIFICE_SPECIAL_MSG = "I demand a blood sacrifice!";
 	public static final String BLOOD_SACRIFICE_ACTIVE_MSG = "nex has marked you for a blood sacrifice";
 	public static final String BLOOD_SACRIFICE_INACTIVE_MSG = "you managed to escape from nex";
 	public static final String BLOOD_SACRIFICE_INACTIVE_MSG2 = "you failed to escape from nex";
 	public static final String CRUOR_SPAWN_MSG = "Cruor, don't fail me!";
-
 	//Ice
 	public static final String ICE_SPAWN_MSG = "Infuse me with the power of ice!";
 	public static final String ICE_PRISON_SPECIAL_MSG = "Die now, in a prison of ice!";
@@ -131,8 +117,14 @@ public class NexConst
 	public static final String PRISON_IMPRISONED = "you've been trapped in an ice prison";
 	public static final String PRISON_FREED = "you've been freed from the ice prison";
 	public static final String ZAROS_START = "the power of zaros";
-
 	//Zaros
 	public static final String ZAROS_SPAWN_MSG = "NOW, THE POWER OF ZAROS!";
+	public static List<Integer> WEAPONS =
+		List.of(
+			ItemID.OSMUMTENS_FANG,
+			ItemID.OSMUMTENS_FANG_OR,
+			ItemID.ZARYTE_CROSSBOW,
+			ItemID.ARMADYL_CROSSBOW,
+			ItemID.TOXIC_BLOWPIPE);
 
 }

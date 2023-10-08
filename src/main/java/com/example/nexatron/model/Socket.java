@@ -16,13 +16,6 @@ import net.runelite.client.eventbus.Subscribe;
 
 public class Socket
 {
-	@Inject
-	NexManager nexManager;
-	@Inject
-	EventBus eventBus;
-	@Inject
-	Client client;
-
 	// Local variables
 	public boolean isMaster;
 	public int world = 0;
@@ -31,7 +24,6 @@ public class Socket
 	public boolean stopPlugin;
 	public boolean teleportOut;
 	public boolean readyToStart;
-
 	// Other account/Socket variables
 	public String otherName = "";
 	public boolean otherHardDiary;
@@ -40,6 +32,12 @@ public class Socket
 	public boolean otherReadyToPrepot;
 	public boolean otherReadyToStart;
 	public boolean otherIsInside;
+	@Inject
+	NexManager nexManager;
+	@Inject
+	EventBus eventBus;
+	@Inject
+	Client client;
 
 	public void register()
 	{

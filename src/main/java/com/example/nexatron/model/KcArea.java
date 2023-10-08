@@ -14,28 +14,29 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
-	/*
-	* Tasks:
-	* 1. KcPrayer
-	* - pray against whatever is attacking us
-	* - if we are not in combat, disable prayers
-	*
-	*
-	*
-	* 2. KcConsume
-	*
-	*
-	*
-	* 3. KcAttack
-	*
-	*
-	*
-	* 4. EnterBank
-	* - cant enter bank if on kc mode
-	* - enter bank when we have enough kc (config?)
-	*
-	*
-	* */
+
+/*
+ * Tasks:
+ * 1. KcPrayer
+ * - pray against whatever is attacking us
+ * - if we are not in combat, disable prayers
+ *
+ *
+ *
+ * 2. KcConsume
+ *
+ *
+ *
+ * 3. KcAttack
+ *
+ *
+ *
+ * 4. EnterBank
+ * - cant enter bank if on kc mode
+ * - enter bank when we have enough kc (config?)
+ *
+ *
+ * */
 public class KcArea
 {
 	public GameObject bankDoor = null;

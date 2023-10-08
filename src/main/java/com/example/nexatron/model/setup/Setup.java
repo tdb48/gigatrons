@@ -15,49 +15,43 @@ import net.runelite.api.NPC;
 
 public class Setup
 {
-	@Inject
-	NexManager nexManager;
-
-	@Inject
-	NexatronConfig config;
-
-	public int rangeCape = -1;
-	public int meleeCape = -1;
-	public int helm = -1;
-	public int meleeOffhand = -1;
-
-	public void reset()
-	{
-		 rangeCape = -1;
-		 meleeCape = -1;
-		 helm = -1;
-		 meleeOffhand = -1;
-	}
-
 	public static final ArrayList<Integer> RANGE_CAPE =
 		new ArrayList<>(Arrays.asList(
 			ItemID.MASORI_ASSEMBLER,
 			ItemID.AVAS_ASSEMBLER,
 			ItemID.AVAS_ACCUMULATOR
 		));
-
 	public static final ArrayList<Integer> MELEE_CAPE =
 		new ArrayList<>(Arrays.asList(
 			ItemID.INFERNAL_CAPE,
 			ItemID.FIRE_CAPE
 		));
-
 	public static final ArrayList<Integer> MELEE_OFFHAND =
 		new ArrayList<>(Arrays.asList(
 			ItemID.AVERNIC_DEFENDER,
 			ItemID.DRAGON_DEFENDER
 		));
-
 	public static final ArrayList<Integer> HELM =
 		new ArrayList<>(Arrays.asList(
 			ItemID.NEITIZNOT_FACEGUARD,
 			ItemID.HELM_OF_NEITIZNOT
 		));
+	public int rangeCape = -1;
+	public int meleeCape = -1;
+	public int helm = -1;
+	public int meleeOffhand = -1;
+	@Inject
+	NexManager nexManager;
+	@Inject
+	NexatronConfig config;
+
+	public void reset()
+	{
+		rangeCape = -1;
+		meleeCape = -1;
+		helm = -1;
+		meleeOffhand = -1;
+	}
 
 	public int findBestSlot(ArrayList<Integer> potentialItems)
 	{
