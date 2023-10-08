@@ -23,8 +23,6 @@ public class GameTickManager
 	public int attackWait;
 	private int tickCount;
 	private int tickWait;
-	private int foodWait;
-	private int comboFoodWait;
 	private int potionWait;
 	private Projectile p;
 
@@ -43,19 +41,9 @@ public class GameTickManager
 			--this.tickWait;
 		}
 
-		if (this.isFoodWaiting())
-		{
-			--this.foodWait;
-		}
-
 		if (this.isAttackWaiting())
 		{
 			--this.attackWait;
-		}
-
-		if (this.isComboFoodWaiting())
-		{
-			--this.comboFoodWait;
 		}
 
 		if (this.isPotionWaiting())
@@ -79,15 +67,6 @@ public class GameTickManager
 		return this.tickWait > 0;
 	}
 
-	public boolean isFoodWaiting()
-	{
-		return this.foodWait > 0;
-	}
-
-	public boolean isComboFoodWaiting()
-	{
-		return this.comboFoodWait > 0;
-	}
 
 	public boolean isPotionWaiting()
 	{
@@ -102,21 +81,11 @@ public class GameTickManager
 	public void attack(int attackSpeed)
 	{
 		this.attackWait = attackSpeed;
-		this.foodWait = 2;
-		this.comboFoodWait = 2;
-		this.potionWait = 2;
-	}
-
-	public void eat()
-	{
-		this.attackWait = 4;
-		this.foodWait = 3;
 	}
 
 	public void drinkPotion()
 	{
-		this.foodWait = 3;
-		this.potionWait = 2;
+		this.potionWait = 3;
 	}
 
 	public void register()
