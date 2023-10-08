@@ -16,6 +16,7 @@ import com.example.nexatron.tasks.bank.PrePot;
 import com.example.nexatron.tasks.bank.WithdrawSupplies;
 import com.example.nexatron.tasks.general.DisablePrayers;
 import com.example.nexatron.tasks.general.DropVial;
+import com.example.nexatron.tasks.general.EnterKcArea;
 import com.example.nexatron.tasks.general.ProgressStage;
 import com.example.nexatron.tasks.general.Reattack;
 import com.example.nexatron.tasks.general.SetFangStyle;
@@ -132,6 +133,7 @@ public class NexatronPlugin extends Plugin
 			PrePot.class,
 			WithdrawSupplies.class,
 			EnterNex.class,
+			EnterKcArea.class,
 		};
 	}
 
