@@ -89,7 +89,7 @@ public class AttackSmokeMinion extends StagedTask
 		if (!gameTickManager.isAttackWaiting()
 			&& !client.getLocalPlayer().isInteracting())
 		{
-			nexManager.enableRun(false);
+			nexManager.enableRun(!nexManager.socket.isMaster);
 			nexManager.print("Attacking fumus");
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(nexManager.nex.fumus, "Attack");

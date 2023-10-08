@@ -78,7 +78,7 @@ public class AttackShadowMinion extends StagedTask
 		if (!gameTickManager.isAttackWaiting()
 			&& !client.getLocalPlayer().isInteracting())
 		{
-			nexManager.enableRun(false);
+			nexManager.enableRun(!nexManager.socket.isMaster);
 			if ((!nexManager.nex.umbra.isInteracting()
 				|| !nexManager.nex.isInteractingWithUs(nexManager.nex.nex))
 				&& nexManager.socket.isMaster)
