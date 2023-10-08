@@ -41,10 +41,7 @@ public class NexThrall extends StagedTask
 	{
 		if (nexManager.containsStage(Stage.NEX_DEAD, Stage.NEX_START))
 		{
-			if (tickCounter > 0)
-			{
-				tickCounter--;
-			}
+			tickCounter = 0;
 			return true;
 		}
 		if (tickCounter > 0)
