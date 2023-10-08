@@ -62,21 +62,24 @@ public class NexFinishUp extends StagedTask
 			return true;
 		}
 
-		Widget healingPotion = Consumable.getBrew();
-		Widget prayerRestore = Consumable.getRestore();
-		if (Consumable.isDrained(Skill.PRAYER)
-			&& prayerRestore != null
-			&& !gameTickManager.isPotionWaiting())
+		if (nexManager.socket.isMaster)
 		{
-			nexManager.print("Drinking restore (panic)");
-			consumable.consume(prayerRestore);
-		}
-		else if (Consumable.isDrained(Skill.HITPOINTS)
-			&& healingPotion != null
-			&& !gameTickManager.isPotionWaiting())
-		{
-			nexManager.print("Drinking brew");
-			consumable.consume(healingPotion);
+			Widget healingPotion = Consumable.getBrew();
+			Widget prayerRestore = Consumable.getRestore();
+			if (Consumable.isDrained(Skill.PRAYER)
+				&& prayerRestore != null
+				&& !gameTickManager.isPotionWaiting())
+			{
+				nexManager.print("Drinking restore (panic)");
+				consumable.consume(prayerRestore);
+			}
+			else if (Consumable.isDrained(Skill.HITPOINTS)
+				&& healingPotion != null
+				&& !gameTickManager.isPotionWaiting())
+			{
+				nexManager.print("Drinking brew");
+				consumable.consume(healingPotion);
+			}
 		}
 
 		ETileItem loot = findLoot();
