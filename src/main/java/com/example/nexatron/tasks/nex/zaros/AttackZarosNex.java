@@ -42,12 +42,17 @@ public class AttackZarosNex extends StagedTask
 		{
 			return false;
 		}
+		boolean usingFang = false;
 
 		ArrayList<Integer> setup = decideSetup();
 		if (!nexManager.hasGearEquipped(setup))
 		{
 			nexManager.print("Equipping gear");
 			nexManager.swap(setup);
+			if (setup.contains(ItemID.OSMUMTENS_FANG))
+			{
+				usingFang = true;
+			}
 		}
 
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
@@ -61,7 +66,7 @@ public class AttackZarosNex extends StagedTask
 			nexManager.print("Enabling spec");
 			Combat.toggleSpec();
 		}
-		else if (Equipment.search().nameContains("fang").first().orElse(null) != null
+		else if (usingFang
 			&& !Combat.isSpecEnabled()
 			&& !isDeflectMeleeActive()
 			&& !Consumable.isDrained(Skill.STRENGTH)
