@@ -672,6 +672,10 @@ public class Nex
 		{
 			return false;
 		}
+		if (nextSpecial.equals(NexSpecial.CONTAIN) && attacksUntilSpecial >= 4)
+		{
+			return false;
+		}
 		NPC interactingNPC = NPCs.search().interactingWithLocal().first().orElse(null);
 		return altar != null
 			&& Combat.getSpecEnergy() <= 55
