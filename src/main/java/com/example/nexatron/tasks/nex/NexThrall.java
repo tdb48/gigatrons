@@ -32,11 +32,21 @@ public class NexThrall extends StagedTask
 			Stage.NEX_BLOOD,
 			Stage.MINION_ICE,
 			Stage.NEX_ICE,
-			Stage.NEX_ZAROS);
+			Stage.NEX_ZAROS,
+			Stage.NEX_DEAD,
+			Stage.NEX_START);
 	}
 
 	public boolean execute()
 	{
+		if (nexManager.containsStage(Stage.NEX_DEAD, Stage.NEX_START))
+		{
+			if (tickCounter > 0)
+			{
+				tickCounter--;
+			}
+			return true;
+		}
 		if (tickCounter > 0)
 		{
 			tickCounter--;
@@ -48,7 +58,7 @@ public class NexThrall extends StagedTask
 			&& client.getBoostedSkillLevel(Skill.MAGIC) >= 76)
 //			&& nexManager.isThrallOffCD())
 		{
-			tickCounter = 60;
+			tickCounter = 100;
 			nexManager.print("Spawning mage thrall");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(client.getWidget(WidgetInfoExtended.SPELL_RESURRECT_GREATER_GHOST.getPackedId()), "Cast");
