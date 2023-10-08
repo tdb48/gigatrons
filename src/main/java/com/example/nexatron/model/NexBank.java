@@ -85,7 +85,7 @@ public class NexBank
 	{
 		ArrayList<Integer> requiredItems = new ArrayList<>(nexManager.setup.rangeNex());
 		requiredItems.addAll(nexManager.setup.meleeNex());
-		if (nexManager.config.useThralls())
+		if (nexManager.useThralls())
 		{
 			requiredItems.add(ItemID.BOOK_OF_THE_DEAD);
 			if (usingGucciRunePouch)

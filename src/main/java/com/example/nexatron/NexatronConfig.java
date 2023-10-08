@@ -1,5 +1,6 @@
 package com.example.nexatron;
 
+import com.example.nexatron.model.constants.ThrallMode;
 import com.example.nexatron.model.setup.Helm;
 import com.example.nexatron.model.setup.MeleeCape;
 import com.example.nexatron.model.setup.MeleeOffhand;
@@ -86,14 +87,14 @@ public interface NexatronConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "useThralls",
-		name = "Use Thralls",
-		description = "Whether to use thralls or not",
+		keyName = "thralls",
+		name = "Thralls",
+		description = "Whether to use thralls or not, auto means it will look at quest completion",
 		section = "General"
 	)
-	default boolean useThralls()
+	default ThrallMode thralls()
 	{
-		return false;
+		return ThrallMode.No;
 	}
 
 

@@ -118,7 +118,7 @@ public class WithdrawSupplies extends StagedTask
 		}
 
 		// Remove 2 slots if we are using thralls
-		if (nexManager.config.useThralls())
+		if (nexManager.useThralls())
 		{
 			brewCount -= 2;
 		}

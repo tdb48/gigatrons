@@ -28,6 +28,7 @@ import com.example.nexatron.model.Overall;
 import com.example.nexatron.model.Socket;
 import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
+import com.example.nexatron.model.constants.ThrallMode;
 import com.example.nexatron.model.setup.Setup;
 import com.google.inject.Singleton;
 import java.lang.reflect.Field;
@@ -47,6 +48,8 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
@@ -177,11 +180,6 @@ public class NexManager
 	public boolean isDeathChargeOffCD()
 	{
 		return client.getVarbitValue(Varbits.DEATH_CHARGE_COOLDOWN) == 0;
-	}
-
-	public boolean isThrallOffCD()
-	{
-		return client.getVarbitValue(Varbits.RESURRECT_THRALL) == 0;
 	}
 
 	public void castDeathCharge()
@@ -327,6 +325,16 @@ public class NexManager
 		EthanApiPlugin.getClient().setVarcStrValue(359, value);
 		EthanApiPlugin.getClient().setVarcIntValue(5, 7);
 		EthanApiPlugin.getClient().runScript(681);
+	}
+
+	public boolean useThralls()
+	{
+		if (config.thralls().equals(ThrallMode.Yes))
+		{
+			return true;
+		}
+		return config.thralls().equals(ThrallMode.Auto)
+			&& Quest.A_KINGDOM_DIVIDED.getState(client).equals(QuestState.FINISHED);
 	}
 
 	public int getOverheadIcon(NPC n)

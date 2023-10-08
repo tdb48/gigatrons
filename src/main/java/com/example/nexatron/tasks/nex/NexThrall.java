@@ -53,7 +53,6 @@ public class NexThrall extends StagedTask
 			&& Inventory.search().nameContains("une pouch").first().orElse(null) != null
 			&& tickCounter <= 0
 			&& client.getBoostedSkillLevel(Skill.MAGIC) >= 76)
-//			&& nexManager.isThrallOffCD())
 		{
 			tickCounter = (client.getBoostedSkillLevel(Skill.MAGIC) - 5) + nexManager.random.nextInt(5);
 			nexManager.print("Spawning mage thrall");
