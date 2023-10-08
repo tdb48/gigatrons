@@ -22,9 +22,9 @@ import com.example.nexatron.tasks.general.Reattack;
 import com.example.nexatron.tasks.general.SetFangStyle;
 import com.example.nexatron.tasks.general.ToggleRun;
 import com.example.nexatron.tasks.kcArea.EnterBank;
+import com.example.nexatron.tasks.kcArea.KcAttack;
 import com.example.nexatron.tasks.kcArea.KcConsumables;
 import com.example.nexatron.tasks.kcArea.KcPrayer;
-import com.example.nexatron.tasks.kcArea.KcAttack;
 import com.example.nexatron.tasks.nex.NexAbort;
 import com.example.nexatron.tasks.nex.NexConsumables;
 import com.example.nexatron.tasks.nex.NexFinishUp;
@@ -69,6 +69,8 @@ public class NexatronPlugin extends Plugin
 	public NexatronConfig config;
 	@Inject
 	public NexManager nexManager;
+	public boolean stopPlugin = false;
+	public boolean finishKill = false;
 	@Inject
 	Client client;
 	@Inject
@@ -89,9 +91,6 @@ public class NexatronPlugin extends Plugin
 	private GameTickManager gameTickManager;
 	@Inject
 	private ReflectBreakHandler chinBreakHandler;
-
-	public boolean stopPlugin = false;
-	public boolean finishKill = false;
 
 	@Provides
 	NexatronConfig provideConfig(ConfigManager configManager)

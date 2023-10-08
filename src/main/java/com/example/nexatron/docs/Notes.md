@@ -9,15 +9,18 @@
 - Zaros, step under 5t, track nex attack tick so we can preswitch, track nex attack tick and our own attack tick
 
 #### Socket
+
 - Master-slave system, hard CA account is the master, look at varbit
 - Socket packet includes the following:
 
 NEX:
+
 - (optional) Both: resign logic
 - Master: send WorldPoint to slave
 
 Bank/KC/Misc:
-- Both: Boolean needsToKc 
+
+- Both: Boolean needsToKc
 - Both: Name of account
 - Both: Hard CA diary
 - Master: World variable

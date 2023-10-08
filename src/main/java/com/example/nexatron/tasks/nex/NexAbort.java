@@ -1,11 +1,9 @@
 package com.example.nexatron.tasks.nex;
 
 
-import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Utility.Combat;
-import com.example.Utility.Prayer;
 import com.example.Utility.Prayers;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.Consumable;

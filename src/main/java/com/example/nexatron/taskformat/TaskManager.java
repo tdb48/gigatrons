@@ -20,11 +20,11 @@ public class TaskManager
 	private final CopyOnWriteArrayList<Task> tasks = new CopyOnWriteArrayList<>();
 	private final HashMap<Task, TaskDescriptor> descriptorHashMap = new HashMap<>();
 	private final EventBus eventBus;
+	private final long lastTaskRun = System.currentTimeMillis();
 	int tickCounter = 0;
 	int randomSleep = 0;
 	int randomSleepCounter = 0;
 	int previousTick = 0;
-	private final long lastTaskRun = System.currentTimeMillis();
 	private Task currentTask;
 
 	@Inject

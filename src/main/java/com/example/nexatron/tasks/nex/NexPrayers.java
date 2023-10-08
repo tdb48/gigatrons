@@ -8,9 +8,9 @@ import com.example.Utility.Static;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.Stage;
+import com.example.nexatron.model.constants.WeaponMap;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
-import com.example.nexatron.model.constants.WeaponMap;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.InventoryID;
@@ -27,6 +27,7 @@ public class NexPrayers extends StagedTask
 	public static final int AUGURY_UNLOCKED = 5452;
 	@Inject
 	GameTickManager gameTickManager;
+
 	@Inject
 	public NexPrayers(NexManager nexManager)
 	{

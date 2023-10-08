@@ -25,13 +25,13 @@ import net.runelite.api.coords.WorldPoint;
 public class AttackIceMinion extends StagedTask
 {
 	@Inject
+	GameTickManager gameTickManager;
+
+	@Inject
 	public AttackIceMinion(NexManager nexManager)
 	{
 		super(nexManager, Stage.MINION_ICE);
 	}
-
-	@Inject
-	GameTickManager gameTickManager;
 
 	public boolean execute()
 	{

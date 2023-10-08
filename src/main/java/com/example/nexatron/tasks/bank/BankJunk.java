@@ -19,6 +19,7 @@ public class BankJunk extends StagedTask
 {
 	@Inject
 	ItemManager itemManager;
+
 	@Inject
 	public BankJunk(NexManager nexManager)
 	{

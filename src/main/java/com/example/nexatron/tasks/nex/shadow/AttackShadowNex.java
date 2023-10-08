@@ -24,13 +24,13 @@ import net.runelite.api.coords.WorldPoint;
 public class AttackShadowNex extends StagedTask
 {
 	@Inject
+	GameTickManager gameTickManager;
+
+	@Inject
 	public AttackShadowNex(NexManager nexManager)
 	{
 		super(nexManager, Stage.NEX_SHADOW);
 	}
-
-	@Inject
-	GameTickManager gameTickManager;
 
 	public boolean execute()
 	{

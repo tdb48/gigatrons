@@ -34,6 +34,7 @@ public class KcAttack extends StagedTask
 {
 	@Inject
 	ItemManager itemManager;
+
 	@Inject
 	public KcAttack(NexManager nexManager)
 	{

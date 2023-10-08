@@ -66,8 +66,6 @@ public class NexManager
 	private final EventBus eventBus;
 	private final NexatronPlugin plugin;
 	@Inject
-	private ItemManager itemManager;
-	@Inject
 	public GameTickManager gameTickManager;
 	@Inject
 	public ChargesTracker chargesTracker;
@@ -86,14 +84,15 @@ public class NexManager
 	@Inject
 	public Setup setup;
 	@Inject
-	private ReflectBreakHandler chinBreakHandler;
-	@Inject
 	public Random random = new Random();
-	private Stage stage = Stage.NONE;
-
 	public boolean allowedToBreak = false;
 	public NexatronConfig config;
 	public boolean shouldReattack;
+	@Inject
+	private ItemManager itemManager;
+	@Inject
+	private ReflectBreakHandler chinBreakHandler;
+	private Stage stage = Stage.NONE;
 
 	@Inject
 	public NexManager(EventBus eventBus, Client client, NexatronConfig config, NexatronPlugin plugin)
