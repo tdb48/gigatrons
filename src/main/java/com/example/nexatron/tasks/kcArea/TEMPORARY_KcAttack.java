@@ -1,24 +1,31 @@
 package com.example.nexatron.tasks.kcArea;
 
 
+import com.example.EthanApiPlugin.Collections.ETileItem;
 import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
 import com.example.Packets.ObjectPackets;
+import com.example.Packets.TileItemPackets;
 import com.example.Packets.WidgetPackets;
 import com.example.Utility.Combat;
+import com.example.Utility.InventoryUtil;
 import com.example.Utility.Prayers;
+import com.example.Utility.TileItemUtil;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.Consumable;
+import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
+import java.util.ArrayList;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.game.ItemManager;
 
 @TaskDescriptor(
 	name = "KC Attack",
@@ -27,6 +34,8 @@ import net.runelite.api.widgets.Widget;
 )
 public class TEMPORARY_KcAttack extends StagedTask
 {
+	@Inject
+	ItemManager itemManager;
 	@Inject
 	public TEMPORARY_KcAttack(NexManager nexManager)
 	{
@@ -58,6 +67,20 @@ public class TEMPORARY_KcAttack extends StagedTask
 				NPCPackets.queueNPCAction(npcInteractingWithUs, "Attack");
 			}
 			return false;
+		}
+
+		if (npcInteractingWithUs == null
+			&& client.getLocalPlayer().getInteracting() == null)
+		{
+			ETileItem loot = TileItemUtil.getClosestETileItem(NexConst.KC_LOOT);
+			if (loot != null
+				&& !InventoryUtil.isFull())
+			{
+				nexManager.print("Picking up " + itemManager.getItemComposition(loot.tileItem.getId()).getName());
+				MousePackets.queueClickPacket();
+				TileItemPackets.queueTileItemAction(loot, false);
+				return true;
+			}
 		}
 
 		if (Prayers.getPoints() <= 50)

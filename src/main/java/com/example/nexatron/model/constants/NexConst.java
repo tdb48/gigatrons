@@ -27,6 +27,10 @@ public class NexConst
 	public static final int FANG_SPEC_ANIMATION = 6118;
 	public static final int ZCB_ANIMATION = 9168;
 	public static final ArrayList<Integer> DARTS = new ArrayList<>(Arrays.asList(1043, 1936, 1122));
+	public static final Set<Integer> KC_LOOT = Set.of(
+		ItemID.SUPER_RESTORE3,
+		ItemID.DRAGON_BOOTS,
+		ItemID.BLOOD_ESSENCE);
 	public static final Set<Integer> HIGH_PRIO_LOOT = Set.of(
 		ItemID.TORVA_FULL_HELM_DAMAGED,
 		ItemID.TORVA_PLATEBODY_DAMAGED,

@@ -3,6 +3,7 @@ package com.example.Utility;
 import com.example.EthanApiPlugin.Collections.ETileItem;
 import com.example.EthanApiPlugin.Collections.TileItems;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Set;
 import net.runelite.api.TileItem;
 
@@ -30,6 +31,16 @@ public class TileItemUtil
 			returnList.addAll(TileItems.search().withId(id).result());
 		}
 		return returnList;
+	}
+
+	public static ETileItem getClosestETileItem(Set<Integer> ids)
+	{
+		ArrayList<ETileItem> returnList = new ArrayList<>();
+		for (int id : ids)
+		{
+			returnList.addAll(TileItems.search().withId(id).result());
+		}
+		return returnList.stream().min(Comparator.comparingInt(n -> n.getLocation().distanceTo(Static.getClient().getLocalPlayer().getWorldLocation()))).stream().findAny().orElse(null);
 	}
 
 	public static ArrayList<ETileItem> getAllETileItems(String... name)
