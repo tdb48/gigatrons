@@ -27,7 +27,7 @@ public class NexAbort extends StagedTask
 	public NexAbort(NexManager nexManager)
 	{
 		super(nexManager,
-			Stage.NEX_DEAD,
+//			Stage.NEX_DEAD,
 			Stage.MINION_SMOKE,
 			Stage.NEX_SMOKE,
 			Stage.MINION_SHADOW,
