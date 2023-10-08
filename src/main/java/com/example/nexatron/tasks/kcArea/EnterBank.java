@@ -27,7 +27,7 @@ public class EnterBank extends StagedTask
 
 	public boolean execute()
 	{
-		if (!nexManager.config.kcMode()
+		if (!nexManager.shouldKc()
 			&& nexManager.nex.bankDoor != null)
 		{
 			if (!nexManager.getPlayerPoint().equals(BANK_TILE))

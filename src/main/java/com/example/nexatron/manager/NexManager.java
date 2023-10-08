@@ -201,6 +201,11 @@ public class NexManager
 		return possibleTiles.stream().min(Comparator.comparingInt(wp -> wp.distanceTo(worldPoint))).stream().findAny().orElse(null);
 	}
 
+	public boolean shouldKc()
+	{
+		return config.kcMode();
+	}
+
 	public boolean isDDd()
 	{
 		Player otherPlayer = socket.getOtherPlayer();

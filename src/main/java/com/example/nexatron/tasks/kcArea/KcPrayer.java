@@ -26,7 +26,7 @@ public class KcPrayer extends StagedTask
 
 	public boolean execute()
 	{
-		if (!nexManager.config.kcMode())
+		if (!nexManager.shouldKc())
 		{
 			return false;
 		}

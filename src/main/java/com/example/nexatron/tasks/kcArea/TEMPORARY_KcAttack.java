@@ -44,7 +44,7 @@ public class TEMPORARY_KcAttack extends StagedTask
 
 	public boolean execute()
 	{
-		if (!nexManager.config.kcMode())
+		if (!nexManager.shouldKc())
 		{
 			if (nexManager.nex.teleportOut
 				&& nexManager.kcArea.bankDoor != null)
