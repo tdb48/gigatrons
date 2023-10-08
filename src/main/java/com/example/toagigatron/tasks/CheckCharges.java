@@ -106,7 +106,7 @@ public class CheckCharges extends Task
 			if (InventoryUtil.contains(ItemID.TOXIC_BLOWPIPE))
 			{
 				Widget bp = InventoryUtil.getFirst(ItemID.TOXIC_BLOWPIPE);
-				if (bp != null)
+				if (bp != null && bp.getActions() != null)
 				{
 					MousePackets.queueClickPacket();
 					WidgetPackets.queueWidgetAction(bp, "Check");
@@ -116,7 +116,7 @@ public class CheckCharges extends Task
 			else if (Equipment.search().withId(ItemID.TOXIC_BLOWPIPE).first().orElse(null) != null)
 			{
 				Widget bp = Equipment.search().withId(ItemID.TOXIC_BLOWPIPE).first().orElse(null);
-				if (bp != null)
+				if (bp != null && bp.getActions() != null)
 				{
 					MousePackets.queueClickPacket();
 					WidgetPackets.queueWidgetAction(bp, "Check");
@@ -138,7 +138,7 @@ public class CheckCharges extends Task
 				if (InventoryUtil.contains(i))
 				{
 					Widget sang = InventoryUtil.getFirst(i);
-					if (sang != null)
+					if (sang != null && sang.getActions() != null)
 					{
 						MousePackets.queueClickPacket();
 						WidgetPackets.queueWidgetAction(sang, "Check");
@@ -148,7 +148,7 @@ public class CheckCharges extends Task
 				else if (Equipment.search().withId(i).first().orElse(null) != null)
 				{
 					Widget sang = Equipment.search().withId(i).first().orElse(null);
-					if (sang != null)
+					if (sang != null && sang.getActions() != null)
 					{
 						MousePackets.queueClickPacket();
 						WidgetPackets.queueWidgetAction(sang, "Check");

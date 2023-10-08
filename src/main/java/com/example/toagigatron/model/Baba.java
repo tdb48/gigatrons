@@ -14,8 +14,10 @@ import com.example.toagigatron.model.constants.Stage;
 import com.example.toagigatron.model.constants.ToaConstants;
 import com.example.toagigatron.model.puzzlemodel.BabaPuzzleSpecial;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -25,6 +27,7 @@ import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
 import net.runelite.api.Projectile;
 import net.runelite.api.TileObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -69,6 +72,7 @@ public class Baba
 	public ArrayList<WorldPoint> bananaTiles = new ArrayList<>();
 	public ArrayList<WorldPoint> rockFromCeiling = new ArrayList<>();
 	public HashSet<Projectile> sarcophagusProjectiles = new HashSet<>();
+	public HashMap<Projectile, LocalPoint> sarcophagusProjectilesHashMap = new HashMap<>();
 	public ArrayList<WorldPoint> badTiles = new ArrayList<>();
 	public ArrayList<WorldPoint> sarcophagusProjectilesTiles = new ArrayList<>();
 	public int shockwaveTick = 0;
@@ -149,6 +153,7 @@ public class Baba
 		prePathTile = null;
 		puzzleSpecialTickTimer = 0;
 		touchedPrePathTile = false;
+		sarcophagusProjectilesHashMap = new HashMap<>();
 	}
 
 	@Subscribe
@@ -171,6 +176,7 @@ public class Baba
 		if (p.getId() == ToaConstants.BABA_SARCOPHAGUS_ATTACK_PROJECTILE_ID)
 		{
 			sarcophagusProjectiles.add(p);
+			sarcophagusProjectilesHashMap.put(p, projectileSpawned.getPosition());
 		}
 	}
 
@@ -307,11 +313,16 @@ public class Baba
 		{
 			return;
 		}
+		sarcophagusProjectilesHashMap.entrySet().removeIf(entries -> entries.getKey().getRemainingCycles() <= 0);
 		sarcophagusProjectiles.removeIf(n -> n.getRemainingCycles() <= 0);
 		sarcophagusProjectilesTiles.clear();
-		for (Projectile p : sarcophagusProjectiles)
+//		for (Projectile p : sarcophagusProjectiles)
+//		{
+//			sarcophagusProjectilesTiles.add(WorldPoint.fromLocal(client, p.getTarget()));
+//		}
+		for(Map.Entry<Projectile, LocalPoint> entry : sarcophagusProjectilesHashMap.entrySet())
 		{
-			sarcophagusProjectilesTiles.add(WorldPoint.fromLocal(client, p.getTarget()));
+			sarcophagusProjectilesTiles.add(WorldPoint.fromLocal(client, entry.getValue()));
 		}
 		shouldTripleBrew = shouldTripleBrew();
 
