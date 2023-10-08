@@ -11,6 +11,7 @@ import com.example.Utility.Movement;
 import com.example.Utility.TileItemUtil;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
+import com.example.nexatron.model.Consumable;
 import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
@@ -18,6 +19,8 @@ import com.example.nexatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import net.runelite.api.NPC;
+import net.runelite.api.Skill;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 
 @TaskDescriptor(
@@ -31,6 +34,9 @@ public class NexFinishUp extends StagedTask
 
 	@Inject
 	GameTickManager gameTickManager;
+
+	@Inject
+	Consumable consumable;
 
 	@Inject
 	public NexFinishUp(NexManager nexManager)
@@ -54,6 +60,23 @@ public class NexFinishUp extends StagedTask
 			}
 			nexManager.print("Waiting for wrath to disappear");
 			return true;
+		}
+
+		Widget healingPotion = Consumable.getBrew();
+		Widget prayerRestore = Consumable.getRestore();
+		if (Consumable.isDrained(Skill.PRAYER)
+			&& prayerRestore != null
+			&& !gameTickManager.isPotionWaiting())
+		{
+			nexManager.print("Drinking restore (panic)");
+			consumable.consume(prayerRestore);
+		}
+		else if (Consumable.isDrained(Skill.HITPOINTS)
+			&& healingPotion != null
+			&& !gameTickManager.isPotionWaiting())
+		{
+			nexManager.print("Drinking brew");
+			consumable.consume(healingPotion);
 		}
 
 		ETileItem loot = findLoot();
