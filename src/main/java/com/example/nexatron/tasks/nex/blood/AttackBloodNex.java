@@ -193,7 +193,7 @@ public class AttackBloodNex extends StagedTask
 		{
 			// If we are the master, we only want to hit reavers until they are about half hp,
 			// slave hits anything above 10%
-			int threshHold = nexManager.socket.isMaster ? 50 : 10;
+			int threshHold = nexManager.socket.isMaster ? 50 : 20;
 			ArrayList<NPC> targets = new ArrayList<>();
 			for (NPC reaver : nexManager.nex.reavers.keySet())
 			{
