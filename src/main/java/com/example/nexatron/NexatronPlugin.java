@@ -170,6 +170,7 @@ public class NexatronPlugin extends Plugin
 		this.nexManager.lobby.register();
 		this.nexManager.socket.register();
 		this.nexManager.socket.reset();
+		this.nexManager.setup.reset();
 		gameEventManager.simulateGameEvents(this.nexManager.overall);
 		gameEventManager.simulateGameEvents(this.nexManager.nex);
 		gameEventManager.simulateGameEvents(this.nexManager.nexBank);
@@ -204,6 +205,7 @@ public class NexatronPlugin extends Plugin
 		this.nexManager.lobby.unregister();
 		this.nexManager.socket.unregister();
 		this.nexManager.socket.reset();
+		this.nexManager.setup.reset();
 		this.nexManager.unregister();
 		this.nexManager.fullReset();
 	}

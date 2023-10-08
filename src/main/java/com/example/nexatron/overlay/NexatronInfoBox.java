@@ -73,13 +73,13 @@ public class NexatronInfoBox extends OverlayPanel
 		panelComponent.getChildren().add(LineComponent.builder().left("Stage ").right(String.valueOf(stage)).build());
 		panelComponent.getChildren().add(LineComponent.builder().left("K / D / Fail ").right(plugin.nexManager.overall.killCount + " / " + plugin.nexManager.overall.deaths + " / " + plugin.nexManager.overall.failedKills).build());
 		int ancientKcDifference = plugin.nexManager.getAncientKc() - plugin.nexManager.nex.startAncientKc;
-		if (ancientKcDifference > 0)
+		if (ancientKcDifference >= 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder().left("KC Gained").right("+" + ancientKcDifference).rightColor(Color.GREEN).build());
+			panelComponent.getChildren().add(LineComponent.builder().left("KC since start").right("+" + ancientKcDifference).rightColor(Color.GREEN).build());
 		}
 		else
 		{
-			panelComponent.getChildren().add(LineComponent.builder().left("KC Lost").right("-" + ancientKcDifference).rightColor(Color.RED).build());
+			panelComponent.getChildren().add(LineComponent.builder().left("KC since start").right("-" + ancientKcDifference).rightColor(Color.RED).build());
 		}
 		if (plugin.nexManager.nex.nex != null)
 		{

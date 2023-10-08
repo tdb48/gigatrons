@@ -37,6 +37,18 @@ public interface NexatronConfig extends Config
 	String SETUP = "Setup";
 
 	@ConfigItem(
+		position = 1,
+		keyName = "autoDecide",
+		name = "Auto decide setup",
+		description = "Automatically decides the setup based on items in inventory, bank and what's equipped",
+		section = "Setup"
+	)
+	default boolean autoDecide()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		position = 101,
 		keyName = "helm",
 		name = "Helm",

@@ -9,6 +9,7 @@ import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
+import com.example.nexatron.model.setup.Setup;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -23,6 +24,7 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+
 /*
 banking unused items
 pickup pet
@@ -49,6 +51,7 @@ public class NexBank
 
 	@Inject
 	GameTickManager gameTickManager;
+
 
 	public void register()
 	{
@@ -78,6 +81,25 @@ public class NexBank
 				|| (Bank.isOpen() && BankUtil.contains(ItemID.DIVINE_RUNE_POUCH))))
 		{
 			usingGucciRunePouch = true;
+		}
+		if (Bank.isOpen())
+		{
+			if (nexManager.setup.helm == -1 && nexManager.config.autoDecide())
+			{
+				nexManager.setup.helm = nexManager.setup.findBestSlot(Setup.HELM);
+			}
+			if (nexManager.setup.meleeCape == -1 && nexManager.config.autoDecide())
+			{
+				nexManager.setup.meleeCape = nexManager.setup.findBestSlot(Setup.MELEE_CAPE);
+			}
+			if (nexManager.setup.rangeCape == -1 && nexManager.config.autoDecide())
+			{
+				nexManager.setup.rangeCape = nexManager.setup.findBestSlot(Setup.RANGE_CAPE);
+			}
+			if (nexManager.setup.meleeOffhand == -1 && nexManager.config.autoDecide())
+			{
+				nexManager.setup.meleeOffhand = nexManager.setup.findBestSlot(Setup.MELEE_OFFHAND);
+			}
 		}
 	}
 

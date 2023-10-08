@@ -1,5 +1,8 @@
 package com.example.nexatron.model.setup;
 
+import com.example.EthanApiPlugin.Collections.Bank;
+import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.nexatron.NexatronConfig;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
@@ -17,6 +20,69 @@ public class Setup
 
 	@Inject
 	NexatronConfig config;
+
+	public int rangeCape = -1;
+	public int meleeCape = -1;
+	public int helm = -1;
+	public int meleeOffhand = -1;
+
+	public void reset()
+	{
+		 rangeCape = -1;
+		 meleeCape = -1;
+		 helm = -1;
+		 meleeOffhand = -1;
+	}
+
+	public static final ArrayList<Integer> RANGE_CAPE =
+		new ArrayList<>(Arrays.asList(
+			ItemID.MASORI_ASSEMBLER,
+			ItemID.AVAS_ASSEMBLER,
+			ItemID.AVAS_ACCUMULATOR
+		));
+
+	public static final ArrayList<Integer> MELEE_CAPE =
+		new ArrayList<>(Arrays.asList(
+			ItemID.INFERNAL_CAPE,
+			ItemID.FIRE_CAPE
+		));
+
+	public static final ArrayList<Integer> MELEE_OFFHAND =
+		new ArrayList<>(Arrays.asList(
+			ItemID.AVERNIC_DEFENDER,
+			ItemID.DRAGON_DEFENDER
+		));
+
+	public static final ArrayList<Integer> HELM =
+		new ArrayList<>(Arrays.asList(
+			ItemID.NEITIZNOT_FACEGUARD,
+			ItemID.HELM_OF_NEITIZNOT
+		));
+
+	public int findBestSlot(ArrayList<Integer> potentialItems)
+	{
+		if (!Bank.isOpen())
+		{
+			return -1;
+		}
+		for (int i : potentialItems)
+		{
+			if (Bank.search().withId(i).first().orElse(null) != null)
+			{
+				return i;
+			}
+			if (Inventory.search().withId(i).first().orElse(null) != null)
+			{
+				return i;
+			}
+			if (Equipment.search().withId(i).first().orElse(null) != null)
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+
 
 	public int getBolts()
 	{
@@ -40,13 +106,20 @@ public class Setup
 
 	public ArrayList<Integer> rangeNex()
 	{
+		int cape = rangeCape == -1 ? config.rangeCape().itemId : rangeCape;
+		int rangeHelm = helm == -1 ? config.helm().itemId : helm;
+		if (!config.autoDecide())
+		{
+			cape = config.rangeCape().itemId;
+			rangeHelm = config.helm().itemId;
+		}
 		return new ArrayList<>(
 			Arrays.asList(
 				ItemID.ZARYTE_CROSSBOW,
 				ItemID.MASORI_BODY_F,
 				ItemID.MASORI_CHAPS_F,
-				config.rangeCape().itemId,
-				config.helm().itemId,
+				cape,
+				rangeHelm,
 				ItemID.NECKLACE_OF_ANGUISH,
 				ItemID.TWISTED_BUCKLER,
 				ItemID.LIGHTBEARER,
@@ -57,15 +130,24 @@ public class Setup
 
 	public ArrayList<Integer> meleeNex()
 	{
+		int cape = meleeCape == -1 ? config.meleeCape().itemId : meleeCape;
+		int helm = this.helm == -1 ? config.helm().itemId : this.helm;
+		int offhand = meleeOffhand == -1 ? config.meleeOffhand().itemId : meleeOffhand;
+		if (!config.autoDecide())
+		{
+			cape = config.meleeCape().itemId;
+			helm = config.helm().itemId;
+			offhand = config.meleeOffhand().itemId;
+		}
 		return new ArrayList<>(
 			Arrays.asList(
 				ItemID.OSMUMTENS_FANG,
 				ItemID.MASORI_BODY_F,
 				ItemID.MASORI_CHAPS_F,
-				config.meleeCape().itemId,
-				config.helm().itemId,
+				cape,
+				helm,
 				ItemID.AMULET_OF_BLOOD_FURY,
-				config.meleeOffhand().itemId,
+				offhand,
 				ItemID.LIGHTBEARER,
 				ItemID.BARROWS_GLOVES,
 				ItemID.PRIMORDIAL_BOOTS,
