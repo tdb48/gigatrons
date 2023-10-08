@@ -40,8 +40,9 @@ public class KcConsumables extends StagedTask
 			WidgetPackets.queueWidgetAction(restore, "Drink");
 			return true;
 		}
+
 		Widget rangePot = Consumable.getRange();
-		if (Consumable.isDrainedMore(Skill.RANGED, 6)
+		if (client.getBoostedSkillLevel(Skill.RANGED) < (client.getRealSkillLevel(Skill.RANGED) + 6)
 			&& rangePot != null)
 		{
 			nexManager.print("Drinking range pot");
