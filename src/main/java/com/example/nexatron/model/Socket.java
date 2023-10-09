@@ -24,14 +24,14 @@ public class Socket
 	public boolean stopPlugin;
 	public boolean teleportOut;
 	public boolean readyToStart;
+
 	// Other account/Socket variables
 	public String otherName = "";
 	public boolean otherHardDiary;
-	public boolean otherTeleportOut;
 	public int otherNeedToKc;
-	public boolean otherReadyToPrepot;
 	public boolean otherReadyToStart;
 	public boolean otherIsInside;
+	public int otherWorld;
 	@Inject
 	NexManager nexManager;
 	@Inject
@@ -57,7 +57,6 @@ public class Socket
 		otherHardDiary = false;
 		needsToBreak = false;
 		teleportOut = false;
-		otherTeleportOut = false;
 		readyToStart = false;
 		otherReadyToStart = false;
 		otherIsInside = false;
@@ -68,6 +67,7 @@ public class Socket
 	{
 		isMaster = decideMaster();
 		sendSocketPacket();
+		world = nexManager.hopping.getCurrentWorldNumber();
 	}
 
 	public boolean inRightWorld()
@@ -79,21 +79,9 @@ public class Socket
 	{
 		JSONObject payload = new JSONObject();
 		payload.put("overall-packet", "This is but a test.");
-
-		// We need a name to know the instance to enter and to decide the master role
 		payload.put("name", client.getLocalPlayer().getName());
-		// Need diary to decide master role
 		payload.put("hard", client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_HARD) == 2);
-		if (isMaster)
-		{
-			// TODO: Master decides the world, only when stage == bank
-			payload.put("world", world);
-		}
-		if (isMaster)
-		{
-			// TODO: figure out breaking logic at some point
-			payload.put("break", needsToBreak);
-		}
+		payload.put("world", world);
 		payload.put("readyToStart", readyToStart);
 		payload.put("isInside", nexManager.nex.nex != null || isCenterReachable());
 		payload.put("teleport", teleportOut);
@@ -122,7 +110,7 @@ public class Socket
 		otherReadyToStart = payload.getBoolean("readyToStart");
 		otherName = payload.getString("name");
 		otherHardDiary = payload.getBoolean("hard");
-		otherTeleportOut = payload.getBoolean("teleport");
+		otherWorld = payload.getInt("world");
 	}
 
 	public boolean needToKc()
