@@ -99,7 +99,6 @@ public class Setup
 			cape = nexManager.nex.rangeCape;
 			rangeHelm = nexManager.nex.helm;
 		}
-		System.out.println("Range cape: " + cape);
 		return new ArrayList<>(
 			Arrays.asList(
 				ItemID.ZARYTE_CROSSBOW,
@@ -126,8 +125,6 @@ public class Setup
 			helm = nexManager.nex.helm;
 			offhand = nexManager.nex.meleeOffhand;
 		}
-		System.out.println("Melee cape: " + cape);
-		System.out.println("Melee offhand: " + offhand);
 		return new ArrayList<>(
 			Arrays.asList(
 				ItemID.OSMUMTENS_FANG,
