@@ -45,14 +45,14 @@ public class AttackZarosNex extends StagedTask
 		boolean usingFang = false;
 
 		ArrayList<Integer> setup = decideSetup();
+		if (setup.contains(ItemID.OSMUMTENS_FANG))
+		{
+			usingFang = true;
+		}
 		if (!nexManager.hasGearEquipped(setup))
 		{
 			nexManager.print("Equipping gear");
 			nexManager.swap(setup);
-			if (setup.contains(ItemID.OSMUMTENS_FANG))
-			{
-				usingFang = true;
-			}
 		}
 
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
