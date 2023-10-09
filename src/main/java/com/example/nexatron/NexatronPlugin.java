@@ -141,8 +141,8 @@ public class NexatronPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		chinBreakHandler.registerPlugin(this);
-		chinBreakHandler.startPlugin(this);
+//		chinBreakHandler.registerPlugin(this);
+//		chinBreakHandler.startPlugin(this);
 		nexManager.allowedToBreak = false;
 		finishKill = false;
 		stopPlugin = false;
@@ -180,8 +180,8 @@ public class NexatronPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		chinBreakHandler.unregisterPlugin(this);
-		chinBreakHandler.stopPlugin(this);
+//		chinBreakHandler.unregisterPlugin(this);
+//		chinBreakHandler.stopPlugin(this);
 		nexManager.allowedToBreak = false;
 		finishKill = false;
 		stopPlugin = false;
@@ -217,10 +217,10 @@ public class NexatronPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState().equals(GameState.LOGIN_SCREEN) && chinBreakHandler.isBreakActive(this))
-		{
-			nexManager.allowedToBreak = false;
-		}
+//		if (event.getGameState().equals(GameState.LOGIN_SCREEN) && chinBreakHandler.isBreakActive(this))
+//		{
+//			nexManager.allowedToBreak = false;
+//		}
 	}
 
 	@Subscribe

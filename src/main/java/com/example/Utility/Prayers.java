@@ -2,7 +2,6 @@ package com.example.Utility;
 
 import com.example.Packets.MousePackets;
 import com.example.Packets.WidgetPackets;
-import com.example.toagigatron.model.constants.WeaponMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
