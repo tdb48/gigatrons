@@ -61,7 +61,7 @@ public class AttackZarosNex extends StagedTask
 			&& Combat.getSpecEnergy() >= 75
 			&& !Consumable.isDrained(Skill.RANGED)
 			&& Equipment.search().withId(ItemID.RUBY_DRAGON_BOLTS_E).first().orElse(null) != null
-			&& nexManager.getBossHp() >= 220)
+			&& nexManager.getBossHp() >= 250)
 		{
 			nexManager.print("Enabling spec");
 			Combat.toggleSpec();
