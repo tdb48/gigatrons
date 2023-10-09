@@ -92,7 +92,11 @@ public class KcArea
 	{
 		return client.getBoostedSkillLevel(Skill.SLAYER) >= 83;
 	}
-
+/*
+* hopping thoughts:
+* if theres more than 2 players killing NPCs in our world
+* just hop, to be safe even though we are only looking for NPCs that other people arent hitting
+*/
 	public NPC getTarget()
 	{
 		NPC target = NPCs.search().interactingWithLocal().first().orElse(null);
