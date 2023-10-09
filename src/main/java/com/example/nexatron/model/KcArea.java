@@ -11,6 +11,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -52,6 +53,8 @@ public class KcArea
 	@Inject
 	GameTickManager gameTickManager;
 
+	public boolean shouldHop = false;
+
 	public void register()
 	{
 		this.eventBus.register(this);
@@ -74,7 +77,20 @@ public class KcArea
 
 	public void fullReset()
 	{
+		shouldHop = false;
+		reset();
 		bankDoor = null;
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		shouldHop = false;
+	}
+
+	public boolean canKillMage()
+	{
+		return client.getBoostedSkillLevel(Skill.SLAYER) >= 83;
 	}
 
 	public NPC getTarget()
@@ -84,15 +100,17 @@ public class KcArea
 		{
 			return target;
 		}
-		if (client.getBoostedSkillLevel(Skill.SLAYER) >= 83)
+		if (canKillMage())
 		{
-			target = NPCs.search().nameContains("Mage").alive().notInteracting().first().orElse(null);
+			target = NPCs.search().nameContains("Mage").alive().noOneInteractingWith().nearestToPlayer().orElse(null);
 			if (target != null)
 			{
 				return target;
 			}
+			nexManager.print("Can't find any mages that no one is hitting, let's hop");
+			shouldHop = true;
 		}
-		return NPCs.search().nameContains("Reaver").alive().notInteracting().first().orElse(null);
+		return NPCs.search().nameContains("Reaver").alive().noOneInteractingWith().first().orElse(null);
 	}
 
 	@Subscribe

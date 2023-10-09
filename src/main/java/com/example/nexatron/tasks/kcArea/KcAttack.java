@@ -27,8 +27,7 @@ import net.runelite.client.game.ItemManager;
 
 @TaskDescriptor(
 	name = "KC Attack",
-	priority = 1,
-	register = true
+	priority = 1
 )
 public class KcAttack extends StagedTask
 {
@@ -45,13 +44,13 @@ public class KcAttack extends StagedTask
 	{
 		if (!nexManager.shouldKc())
 		{
-			if (nexManager.nex.teleportOut
-				&& nexManager.kcArea.bankDoor != null)
-			{
-				nexManager.print("Clicking door");
-				MousePackets.queueClickPacket();
-				ObjectPackets.queueObjectAction(nexManager.kcArea.bankDoor, false, "Open");
-			}
+//			if (nexManager.nex.teleportOut
+//				&& nexManager.kcArea.bankDoor != null)
+//			{
+//				nexManager.print("Clicking door");
+//				MousePackets.queueClickPacket();
+//				ObjectPackets.queueObjectAction(nexManager.kcArea.bankDoor, false, "Open");
+//			}
 			return false;
 		}
 		Widget restore = Consumable.getRestore();
@@ -102,19 +101,19 @@ public class KcAttack extends StagedTask
 			NPCPackets.queueNPCAction(targetNPC, "Attack");
 			return true;
 		}
-
 		return false;
 	}
 
 	public NPC getNPC()
 	{
-		NPC returnNPC = NPCs.search().interactingWithLocal().alive().first().orElse(null);
-		if (returnNPC != null)
-		{
-			return returnNPC;
-		}
-		String npcName = client.getBoostedSkillLevel(Skill.SLAYER) >= 83 ? "Mage" : "Reaver";
-		return NPCs.search().nameContains(npcName).alive().nearestToPlayer().orElse(null);
+		return nexManager.kcArea.getTarget();
+//		NPC returnNPC = NPCs.search().interactingWithLocal().alive().first().orElse(null);
+//		if (returnNPC != null)
+//		{
+//			return returnNPC;
+//		}
+//		String npcName = nexManager.kcArea.canKillMage() ? "Mage" : "Reaver";
+//		return NPCs.search().nameContains(npcName).alive().nearestToPlayer().orElse(null);
 	}
 
 
