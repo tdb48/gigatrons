@@ -11,6 +11,7 @@ import com.example.Packets.MousePackets;
 import com.example.Packets.NPCPackets;
 import com.example.Packets.WidgetPackets;
 import com.example.Utility.BankUtil;
+import com.example.Utility.Hopping;
 import com.example.Utility.InventoryUtil;
 import com.example.Utility.Movement;
 import com.example.Utility.Static;
@@ -35,6 +36,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -88,6 +90,8 @@ public class NexManager
 	public boolean allowedToBreak = false;
 	public NexatronConfig config;
 	public boolean shouldReattack;
+	@Inject
+	public Hopping hopping;
 	@Inject
 	private ItemManager itemManager;
 	@Inject
@@ -233,6 +237,27 @@ public class NexManager
 		}
 		return returnNPC;
 	}
+
+	public WorldPoint findActualClosest(ArrayList<WorldPoint> worldPoints)
+	{
+		int shortestDistance = Integer.MAX_VALUE;
+		WorldPoint shortestPathPoint = null;
+		for (WorldPoint worldPoint : worldPoints)
+		{
+			ArrayList<WorldPoint> path = EthanApiPlugin.pathToGoal(worldPoint, new HashSet<>());
+			if (path == null)
+			{
+				continue;
+			}
+			if (path.size() < shortestDistance)
+			{
+				shortestDistance = path.size();
+				shortestPathPoint = worldPoint;
+			}
+		}
+		return shortestPathPoint;
+	}
+
 
 	public int getBossHp()
 	{

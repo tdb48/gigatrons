@@ -48,7 +48,7 @@ public class AttackBloodMinion extends StagedTask
 		if (nexManager.nex.sacrificeActive
 			&& nexManager.nex.distanceToNex() <= 8)
 		{
-			WorldPoint sacrificeTile = nexManager.nex.getSacrificeTile();
+			WorldPoint sacrificeTile = nexManager.nex.getBloodMinionSacrificeTile();
 			if (!nexManager.nex.sacrificeTiles.contains(nexManager.getPlayerPoint())
 				&& sacrificeTile != null)
 			{
@@ -111,7 +111,7 @@ public class AttackBloodMinion extends StagedTask
 		int distance;
 		if (nexManager.nex.sacrificeActive)
 		{
-			WorldPoint sacrificeTile = nexManager.nex.getSacrificeTile();
+			WorldPoint sacrificeTile = nexManager.nex.getBloodMinionSacrificeTile();
 			distance = nexManager.nex.wpDistanceToMinion(sacrificeTile);
 		}
 		else

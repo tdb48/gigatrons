@@ -548,20 +548,25 @@ public class Nex
 		WorldPoint northEast = WorldAreas.getCenter(nex.getWorldArea()).dx(10).dy(10);
 		sacrificeTiles = (ArrayList<WorldPoint>) WorldAreas.createArea(southWest, northEast).toWorldPointList();
 		sacrificeTiles.removeIf(n -> n.distanceTo(nex.getWorldArea()) != 8);
-		int shortestDistance = 10;
-		WorldPoint shortestPathPoint = null;
-		for (WorldPoint worldPoint : sacrificeTiles)
+		return nexManager.findActualClosest(sacrificeTiles);
+	}
+
+	public WorldPoint getBloodMinionSacrificeTile()
+	{
+		if (nex == null
+			|| nexManager.nex.cruor == null)
 		{
-			ArrayList<WorldPoint> path = EthanApiPlugin.pathToGoal(worldPoint, new HashSet<>());
-			if (path == null)
-			{
-				continue;
-			}
-			if (path.size() < shortestDistance)
-			{
-				shortestDistance = path.size();
-				shortestPathPoint = worldPoint;
-			}
+			return null;
+		}
+		WorldPoint southWest = WorldAreas.getCenter(nex.getWorldArea()).dx(-10).dy(-10);
+		WorldPoint northEast = WorldAreas.getCenter(nex.getWorldArea()).dx(10).dy(10);
+		sacrificeTiles = (ArrayList<WorldPoint>) WorldAreas.createArea(southWest, northEast).toWorldPointList();
+		sacrificeTiles.removeIf(n -> n.distanceTo(nex.getWorldArea()) != 8);
+		sacrificeTiles.removeIf(n -> !nexManager.nex.cruor.getWorldArea().hasLineOfSightTo(client, n));
+		WorldPoint shortestPathPoint = nexManager.findActualClosest(sacrificeTiles);
+		if (shortestPathPoint == null)
+		{
+			return getSacrificeTile();
 		}
 		return shortestPathPoint;
 	}
