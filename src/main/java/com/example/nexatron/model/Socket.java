@@ -1,6 +1,7 @@
 package com.example.nexatron.model;
 
 import com.example.EthanApiPlugin.Collections.Players;
+import com.example.Utility.Hopping;
 import com.example.Utility.Reachable;
 import com.example.nexatron.manager.NexManager;
 import com.example.socket.org.json.JSONObject;
@@ -18,8 +19,7 @@ public class Socket
 {
 	// Local variables
 	public boolean isMaster;
-	public int world = 0;
-	public boolean needToKc;
+	public int world = -1;
 	public boolean needsToBreak;
 	public boolean stopPlugin;
 	public boolean teleportOut;
@@ -28,7 +28,6 @@ public class Socket
 	// Other account/Socket variables
 	public String otherName = "";
 	public boolean otherHardDiary;
-	public int otherNeedToKc;
 	public boolean otherReadyToStart;
 	public boolean otherIsInside;
 	public int otherWorld;
@@ -52,14 +51,18 @@ public class Socket
 	public void reset()
 	{
 		isMaster = false;
-		world = 0;
-		otherName = "";
-		otherHardDiary = false;
+		world = -1;
 		needsToBreak = false;
+		stopPlugin = false;
 		teleportOut = false;
 		readyToStart = false;
+
+		// Other account/Socket variables
+		otherName = "";
+		otherHardDiary = false;
 		otherReadyToStart = false;
 		otherIsInside = false;
+		otherWorld = -1;
 	}
 
 	@Subscribe(priority = -1)
@@ -67,7 +70,7 @@ public class Socket
 	{
 		isMaster = decideMaster();
 		sendSocketPacket();
-		world = nexManager.hopping.getCurrentWorldNumber();
+		world = Hopping.getCurrentWorldNumber();
 	}
 
 	public boolean inRightWorld()
