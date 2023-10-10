@@ -33,7 +33,8 @@ public class KcConsumables extends StagedTask
 			return false;
 		}
 		Widget restore = Consumable.getRestore();
-		if (Consumable.isDrainedMore(Skill.PRAYER, 32))
+		if (Consumable.isDrainedMore(Skill.PRAYER, 32)
+			&& restore != null)
 		{
 			nexManager.print("Drinking restore pot");
 			MousePackets.queueClickPacket();
