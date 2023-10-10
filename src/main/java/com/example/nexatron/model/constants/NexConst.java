@@ -50,6 +50,7 @@ public class NexConst
 		6685, // saradomin brew (4)
 		26388, // ecu key shards
 		26231, // nihil shards
+		995, // coins
 		ItemID.COINS,
 		565); // blood runes
 	public static final Set<Integer> SUPPLY_LOOT = Set.of(
