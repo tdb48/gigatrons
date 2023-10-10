@@ -706,7 +706,7 @@ public class Nex
 		{
 			return Integer.MAX_VALUE;
 		}
-		return Objects.requireNonNull(ObjectUtil.getWorldArea(altar)).distanceTo(nexManager.getPlayerPoint());
+		return Objects.requireNonNull(ObjectUtil.getWorldArea(altar)).distanceTo(nexManager.nex.nex.getWorldArea());
 	}
 
 	public void setReaverHp()
