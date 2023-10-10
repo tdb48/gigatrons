@@ -66,14 +66,13 @@ public class AttackIceMinion extends StagedTask
 		WorldPoint standTile = nexManager.nex.getMainTile();
 		WorldPoint containTile = nexManager.nex.nearestContainWp(2);
 		// Deal with contain this if somehow out of it
-		if (nexManager.nex.containTick != 0
+		if (nexManager.nex.containTick > 0
 			&& containTile != null
-			&& nexManager.nex.wpDistanceToMinion(nexManager.nex.nex.getWorldLocation()) < 10
-			&& nexManager.nex.containTick <= 14
+			&& nexManager.nex.distanceToActiveMinion() < 10
 			&& nexManager.nex.distanceToNex() <= 2)
 		{
-			// This check is incase nex does contain when we just start moving to the minion
-			// So the bot doesnt stand still near nex and wait for contain to disapper when it still has to run 20 tiles
+			// This check is in case nex does contain when we just start moving to the minion
+			// So the bot doesn't stand still near nex and wait for contain to disappear when it still has to run 20 tiles
 			if (!(nexManager.nex.containTick <= 10
 				&& Reachable.isWalkable(standTile)))
 			{
@@ -124,7 +123,7 @@ public class AttackIceMinion extends StagedTask
 
 	public boolean shouldStepUnderNex()
 	{
-		return nexManager.nex.glacies.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 6
+		return nexManager.nex.glacies.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 7
 			&& nexManager.nex.isNexChasingUs()
 			&& !(nexManager.nex.nextSpecial.equals(NexSpecial.PRISON) && nexManager.nex.attacksUntilSpecial <= 2);
 	}

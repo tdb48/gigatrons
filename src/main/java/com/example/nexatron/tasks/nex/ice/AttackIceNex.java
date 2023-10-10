@@ -118,14 +118,13 @@ public class AttackIceNex extends StagedTask
 		if (nexManager.isDDd()
 			&& nexManager.socket.isMaster
 			&& !nexManager.nex.prisonActive
+			&& stepUnderTile != null
 			&& nexManager.nex.containTick == 0)
 		{
-			WorldPoint containTile = nexManager.nex.nearestContainWp(1);
-			if (containTile != null
-				&& !nexManager.getPlayerPoint().equals(containTile))
+			if (!nexManager.getPlayerPoint().equals(stepUnderTile))
 			{
-				nexManager.print("Moving out of DD to " + nexManager.worldPointString(containTile));
-				Movement.walk(containTile);
+				nexManager.print("Moving out of DD to " + nexManager.worldPointString(stepUnderTile));
+				Movement.walk(stepUnderTile);
 				return true;
 			}
 		}
