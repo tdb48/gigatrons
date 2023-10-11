@@ -32,8 +32,8 @@ public interface NexatronConfig extends Config
 	@ConfigSection(
 		name = "Setup",
 		description = "Settings for setup",
-		position = 100
-//		closedByDefault = true
+		position = 100,
+		closedByDefault = true
 	)
 	String SETUP = "Setup";
 
@@ -117,7 +117,8 @@ public interface NexatronConfig extends Config
 		name = "Force Master",
 		description = "YES forces master to be this account. NO forces master to NOT be this account. " +
 			"AUTO leaves it up to the plugin logic to determine master. " +
-			"DON'T change this from AUTO unless you know how it works or bad things might happen."
+			"DON'T change this from AUTO unless you know how it works or bad things might happen.",
+		section = "General"
 	)
 	default MasterMode forceMaster()
 	{
