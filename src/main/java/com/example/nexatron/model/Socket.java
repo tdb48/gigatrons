@@ -25,6 +25,7 @@ public class Socket
 	public boolean stopPlugin;
 	public boolean teleportOut;
 	public boolean readyToStart;
+	public boolean needKc = false;
 
 	// Other account/Socket variables
 	public String otherName = "";
@@ -33,6 +34,7 @@ public class Socket
 	public boolean otherIsInside;
 	public int otherWorld;
 	public String otherForcedMaster;
+	public boolean otherNeedKc = false;
 	@Inject
 	NexManager nexManager;
 	@Inject
@@ -58,6 +60,7 @@ public class Socket
 		stopPlugin = false;
 		teleportOut = false;
 		readyToStart = false;
+		needKc = false;
 
 		// Other account/Socket variables
 		otherName = "";
@@ -66,6 +69,7 @@ public class Socket
 		otherIsInside = false;
 		otherWorld = -1;
 		otherForcedMaster = "";
+		otherNeedKc = false;
 	}
 
 	@Subscribe(priority = -1)
