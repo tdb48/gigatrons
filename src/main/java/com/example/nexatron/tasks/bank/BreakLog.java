@@ -2,13 +2,20 @@ package com.example.nexatron.tasks.bank;
 
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Utility.Game;
+import com.example.Utility.Movement;
+import com.example.Utility.WorldAreas;
 import com.example.nexatron.NexatronPlugin;
+import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
+import java.util.ArrayList;
+import java.util.Collections;
 import javax.inject.Inject;
 import net.runelite.api.GameState;
+import net.runelite.api.coords.WorldArea;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -20,8 +27,15 @@ import net.runelite.client.eventbus.Subscribe;
 )
 public class BreakLog extends StagedTask
 {
+	public static final WorldPoint SOUTH_WEST = new WorldPoint(2902, 5200, 0);
+	public static final WorldPoint NORTH_EAST = new WorldPoint(2908, 5206, 0);
+	public static final WorldArea BREAK_AREA = WorldAreas.createArea(SOUTH_WEST, NORTH_EAST);
+	WorldPoint logOutTile = new WorldPoint(2902, 5200, 0);
 	@Inject
 	NexatronPlugin plugin;
+
+	@Inject
+	GameTickManager gameTickManager;
 
 	@Inject
 	public BreakLog(NexManager nexManager)
@@ -33,8 +47,25 @@ public class BreakLog extends StagedTask
 	{
 		if (plugin.finishKill)
 		{
-			nexManager.print("Logging out");
-			Game.logout();
+			if (!gameTickManager.isTickWaiting())
+			{
+				ArrayList<WorldPoint> potentialTiles = (ArrayList<WorldPoint>) BREAK_AREA.toWorldPointList();
+				Collections.shuffle(potentialTiles);
+				logOutTile = potentialTiles.get(0);
+				gameTickManager.setTickWait(5);
+			}
+			if (!BREAK_AREA.contains(nexManager.getPlayerPoint())
+				&& logOutTile != null
+				&& nexManager.socket.isSlave())
+			{
+				Movement.walk(logOutTile);
+				nexManager.print("Walking to log out tile " + nexManager.worldPointString(logOutTile));
+			}
+			else
+			{
+				nexManager.print("Logging out");
+				Game.logout();
+			}
 			return true;
 		}
 		return false;
