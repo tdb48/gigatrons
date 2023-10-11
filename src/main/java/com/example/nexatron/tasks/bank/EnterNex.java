@@ -85,7 +85,7 @@ public class EnterNex extends StagedTask
 				gameTickManager.setTickWait(2);
 				nexManager.print("Attempting to join instance");
 			}
-			else
+			else if(nexManager.socket.otherIsInside)
 			{
 				nexManager.print("Interacting with barrier");
 				MousePackets.queueClickPacket();
