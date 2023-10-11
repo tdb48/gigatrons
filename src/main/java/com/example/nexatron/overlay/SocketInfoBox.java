@@ -54,6 +54,8 @@ public class SocketInfoBox extends OverlayPanel
 		panelComponent.getChildren().add(LineComponent.builder().left("Other Ready ").right(String.valueOf(plugin.nexManager.socket.otherReadyToStart)).rightColor(plugin.nexManager.socket.otherReadyToStart ? Color.GREEN : Color.RED).build());
 		panelComponent.getChildren().add(LineComponent.builder().left("Other Inside ").right(String.valueOf(plugin.nexManager.socket.otherIsInside)).rightColor(plugin.nexManager.socket.otherIsInside ? Color.GREEN : Color.RED).build());
 		panelComponent.getChildren().add(LineComponent.builder().left("Other World ").right(String.valueOf(plugin.nexManager.socket.otherWorld)).build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Need kc ").right(String.valueOf(plugin.nexManager.socket.needKc)).rightColor(plugin.nexManager.socket.needKc ? Color.GREEN : Color.RED).build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Other need kc ").right(String.valueOf(plugin.nexManager.socket.otherNeedKc)).rightColor(plugin.nexManager.socket.otherNeedKc ? Color.GREEN : Color.RED).build());
 
 		return panelComponent.render(graphics);
 	}
