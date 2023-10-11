@@ -77,7 +77,7 @@ public class AttackIceNex extends StagedTask
 		if (nexManager.nex.containTick != 0
 			&& nexManager.nex.containTick <= 14)
 		{
-			WorldPoint containTile = nexManager.nex.nearestContainIceNex(1);
+			WorldPoint containTile = nexManager.nex.nearestContainIceNex(2);
 			if (containTile != null
 				&& !nexManager.getPlayerPoint().equals(containTile))
 			{

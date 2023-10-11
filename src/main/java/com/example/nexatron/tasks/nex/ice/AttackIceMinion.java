@@ -111,7 +111,7 @@ public class AttackIceMinion extends StagedTask
 
 		// Stand on our correct tiles
 		if (standTile != null
-			&& nexManager.nex.containTick == 0
+//			&& nexManager.nex.containTick == 0
 			&& !client.getLocalPlayer().getWorldLocation().equals(standTile))
 		{
 			nexManager.print("Moving to set tile");
