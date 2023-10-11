@@ -240,6 +240,7 @@ public class AttackBloodNex extends StagedTask
 
 		return targetIsNex(target)
 			&& nexManager.nex.hpUntilProc() >= 80
+			&& !Consumable.isDrained(Skill.RANGED)
 			&& nexManager.nex.attacksUntilSpecial > 1
 			&& Combat.getSpecEnergy() >= 75 ?
 			nexManager.nex.setup.rangeNex() :
