@@ -176,8 +176,8 @@ public class Socket
 				}
 				return false;
 			default:
-				System.out.println("Unexpected socket state");
-				nexManager.print("Unexpected socket state (socket debug)");
+//				System.out.println("Unexpected socket state");
+//				nexManager.print("Unexpected socket state (socket debug)");
 				return client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_HARD) == 2;
 		}
 	}
