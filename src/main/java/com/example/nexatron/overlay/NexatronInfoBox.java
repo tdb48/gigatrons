@@ -34,10 +34,9 @@ public class NexatronInfoBox extends OverlayPanel
 		setPosition(OverlayPosition.BOTTOM_LEFT);
 		this.plugin = plugin;
 		this.config = config;
-//		this.setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		this.setPriority(OverlayPriority.LOW);
 		addMenuEntry(RUNELITE_OVERLAY, "TELEPORT OUT", "Nexatron", e -> plugin.teleportOut());
-
+		addMenuEntry(RUNELITE_OVERLAY, "FINISH KILL THEN LOG", "Nexatron", e -> plugin.setFinishKill());
 	}
 
 	@Override
@@ -57,10 +56,6 @@ public class NexatronInfoBox extends OverlayPanel
 		if (plugin.nexManager.nex.teleportOut)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder().text("TELEPORTING OUT").color(Color.red).build());
-		}
-		if (plugin.stopPlugin)
-		{
-			panelComponent.getChildren().add(TitleComponent.builder().text("Stopping ASAP").color(Color.red).build());
 		}
 		if (plugin.finishKill)
 		{
@@ -85,14 +80,14 @@ public class NexatronInfoBox extends OverlayPanel
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("Nex tick ").right(String.valueOf(plugin.nexManager.nex.nexAttackTick)).build());
 //			panelComponent.getChildren().add(LineComponent.builder().left("Minion tick ").right(String.valueOf(plugin.nexManager.nex.minionAttackTick)).build());
-			panelComponent.getChildren().add(LineComponent.builder().left("Player tick ").right(String.valueOf(plugin.nexManager.gameTickManager.getAttackWait())).build());
+//			panelComponent.getChildren().add(LineComponent.builder().left("Player tick ").right(String.valueOf(plugin.nexManager.gameTickManager.getAttackWait())).build());
 
-//			if (plugin.nexManager.nex.nextSpecial != null)
-//			{
-//				panelComponent.getChildren().add(LineComponent.builder().left("attacks until spec ").right(String.valueOf(plugin.nexManager.nex.attacksUntilSpecial)).build());
-//				panelComponent.getChildren().add(LineComponent.builder().left("Next special ").right(String.valueOf(plugin.nexManager.nex.nextSpecial)).build());
-//			}
-			panelComponent.getChildren().add(LineComponent.builder().left("Zaros counter ").right(String.valueOf(plugin.nexManager.nex.nexZarosAttacks)).build());
+			if (plugin.nexManager.nex.nextSpecial != null)
+			{
+				panelComponent.getChildren().add(LineComponent.builder().left("Attacks til special ").right(String.valueOf(plugin.nexManager.nex.attacksUntilSpecial)).build());
+				panelComponent.getChildren().add(LineComponent.builder().left("Next special ").right(String.valueOf(plugin.nexManager.nex.nextSpecial)).build());
+			}
+//			panelComponent.getChildren().add(LineComponent.builder().left("Zaros counter ").right(String.valueOf(plugin.nexManager.nex.nexZarosAttacks)).build());
 			if (plugin.nexManager.containsStage(Stage.MINION_ICE, Stage.NEX_ICE))
 			{
 				panelComponent.getChildren().add(LineComponent.builder().left("Prison active ").right(String.valueOf(plugin.nexManager.nex.prisonActive)).build());

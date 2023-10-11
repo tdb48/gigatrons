@@ -14,7 +14,7 @@ import net.runelite.api.NPC;
 
 @TaskDescriptor(
 	name = "Picking up pet",
-	priority = Integer.MAX_VALUE - 1,
+	priority = Integer.MAX_VALUE - 5,
 	blocking = true
 )
 public class PickupPet extends StagedTask

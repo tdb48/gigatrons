@@ -1,44 +1,44 @@
 package com.example.nexatron.tasks.bank;
 
-import com.example.Utility.BankUtil;
+import com.example.EthanApiPlugin.EthanApiPlugin;
+import com.example.Utility.Game;
+import com.example.nexatron.NexatronPlugin;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
-import java.util.ArrayList;
 import javax.inject.Inject;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 
 @TaskDescriptor(
-	name = "Bank junk",
-	priority = Integer.MAX_VALUE - 2,
+	name = "Break or log",
+	priority = Integer.MAX_VALUE,
 	blocking = true
 )
-public class BankJunk extends StagedTask
+public class BreakLog extends StagedTask
 {
 	@Inject
 	ItemManager itemManager;
 
 	@Inject
-	public BankJunk(NexManager nexManager)
+	NexatronPlugin plugin;
+
+	@Inject
+	public BreakLog(NexManager nexManager)
 	{
 		super(nexManager, Stage.BANK);
 	}
 
 	public boolean execute()
 	{
-		ArrayList<Widget> junk = nexManager.getJunk();
-		if (junk.isEmpty())
+		if (plugin.finishKill)
 		{
-			return false;
+			nexManager.print("Logging out");
+			Game.logout();
+			EthanApiPlugin.stopPlugin(plugin);
+			return true;
 		}
-		if (!BankUtil.isOpen())
-		{
-			return nexManager.nexBank.openBank();
-		}
-		nexManager.bank(junk);
-		return true;
+		return false;
 
 	}
 }

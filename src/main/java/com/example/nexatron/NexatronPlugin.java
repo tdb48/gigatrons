@@ -8,6 +8,7 @@ import com.example.nexatron.overlay.NexatronOverlay;
 import com.example.nexatron.overlay.SocketInfoBox;
 import com.example.nexatron.taskformat.TaskManager;
 import com.example.nexatron.tasks.bank.BankJunk;
+import com.example.nexatron.tasks.bank.BreakLog;
 import com.example.nexatron.tasks.bank.EnterNex;
 import com.example.nexatron.tasks.bank.GetRequiredItems;
 import com.example.nexatron.tasks.bank.HealUp;
@@ -135,6 +136,7 @@ public class NexatronPlugin extends Plugin
 			EnterNex.class,
 			EnterKcArea.class,
 			KcConsumables.class,
+			BreakLog.class,
 		};
 	}
 
@@ -236,6 +238,11 @@ public class NexatronPlugin extends Plugin
 	public void teleportOut()
 	{
 		nexManager.nex.teleportOut = !nexManager.nex.teleportOut;
+	}
+
+	public void setFinishKill()
+	{
+		finishKill = !finishKill;
 	}
 }
 
