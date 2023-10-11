@@ -156,7 +156,6 @@ public class Socket
 	public boolean decideMaster()
 	{
 		MasterMode ourMode = nexManager.config.forceMaster();
-		System.out.println("Other forced master -> " + otherForcedMaster);
 		switch (otherForcedMaster)
 		{
 			case "Auto":
