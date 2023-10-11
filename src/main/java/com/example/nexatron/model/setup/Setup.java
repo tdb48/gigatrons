@@ -90,6 +90,33 @@ public class Setup
 		return NexConst.RUBY_BOLTS;
 	}
 
+	public ArrayList<Integer> rangeKc()
+	{
+		int cape = config.rangeCape().itemId;
+		int rangeHelm = config.helm().itemId;
+		if (config.autoDecide())
+		{
+			cape = nexManager.nex.rangeCape;
+			rangeHelm = nexManager.nex.helm;
+		}
+		if (!nexManager.kcArea.canKillMage())
+		{
+			rangeHelm = ItemID.SERPENTINE_HELM;
+		}
+		return new ArrayList<>(
+			Arrays.asList(
+				ItemID.TOXIC_BLOWPIPE,
+				ItemID.MASORI_BODY_F,
+				ItemID.MASORI_CHAPS_F,
+				cape,
+				rangeHelm,
+				ItemID.NECKLACE_OF_ANGUISH,
+				ItemID.LIGHTBEARER,
+				ItemID.ANCIENT_BRACERS,
+				ItemID.PRIMORDIAL_BOOTS,
+				getBolts()));
+	}
+
 	public ArrayList<Integer> rangeNex()
 	{
 		int cape = config.rangeCape().itemId;
