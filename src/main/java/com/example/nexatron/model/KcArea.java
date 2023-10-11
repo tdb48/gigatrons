@@ -90,13 +90,14 @@ public class KcArea
 
 	public boolean canKillMage()
 	{
-		return client.getBoostedSkillLevel(Skill.SLAYER) >= 83;
+		return client.getRealSkillLevel(Skill.SLAYER) >= 83;
 	}
-/*
-* hopping thoughts:
-* if theres more than 2 players killing NPCs in our world
-* just hop, to be safe even though we are only looking for NPCs that other people arent hitting
-*/
+
+	/*
+	 * hopping thoughts:
+	 * if theres more than 2 players killing NPCs in our world
+	 * just hop, to be safe even though we are only looking for NPCs that other people arent hitting
+	 */
 	public NPC getTarget()
 	{
 		NPC target = NPCs.search().interactingWithLocal().first().orElse(null);
@@ -106,7 +107,7 @@ public class KcArea
 		}
 		if (canKillMage())
 		{
-			target = NPCs.search().nameContains("Mage").alive().noOneInteractingWith().nearestToPlayer().orElse(null);
+			target = NPCs.search().nameContains("Mage").alive().notInteracting().nearestToPlayer().orElse(null);
 			if (target != null)
 			{
 				return target;
