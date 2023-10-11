@@ -102,6 +102,13 @@ public class AttackBloodMinion extends StagedTask
 
 	public boolean shouldStepUnderNex()
 	{
+		// Dont step under if minion is about to die, so nex is close to the altar and we can use it on ice phase
+		if (nexManager.nex.getActiveMinion() != null
+			&& nexManager.nex.getActiveMinion().getHealthRatio() != -1
+			&& nexManager.nex.getNPCHP(nexManager.nex.getActiveMinion()) <= 20)
+		{
+			return false;
+		}
 		return nexManager.nex.cruor.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 6
 			&& nexManager.nex.isNexChasingUs();
 	}
