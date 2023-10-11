@@ -202,15 +202,9 @@ public class NexManager
 		return possibleTiles.stream().min(Comparator.comparingInt(wp -> wp.distanceTo(worldPoint))).stream().findAny().orElse(null);
 	}
 
-
-	/*
-	 * If any account drops below 100kc, kc back up to 600
-	 *
-	 * */
 	public boolean shouldKc()
 	{
-//		int ancientKc = getAncientKc();
-//		if (ancientKc > 600)
+//		if (socket.needToKc() || socket.otherNeedKc)
 //		{
 //			return true;
 //		}

@@ -95,6 +95,7 @@ public class Socket
 		payload.put("readyToStart", readyToStart);
 		payload.put("isInside", nexManager.nex.nex != null || isCenterReachable());
 		payload.put("teleport", teleportOut);
+		payload.put("needKc", needKc);
 		payload.put("forcedMaster", nexManager.config.forceMaster().name());
 		eventBus.post(new SocketBroadcastPacket(payload));
 	}
@@ -122,12 +123,21 @@ public class Socket
 		otherName = payload.getString("name");
 		otherHardDiary = payload.getBoolean("hard");
 		otherWorld = payload.getInt("world");
+		otherNeedKc = payload.getBoolean("needKc");
 		otherForcedMaster = payload.getString("forcedMaster");
 	}
 
 	public boolean needToKc()
 	{
-		return nexManager.getAncientKc() < 100;
+		if (nexManager.getAncientKc() >= 600)
+		{
+			return false;
+		}
+		if (nexManager.getAncientKc() < 100)
+		{
+			return true;
+		}
+		return nexManager.socket.needKc;
 	}
 
 	public boolean isSlave()
