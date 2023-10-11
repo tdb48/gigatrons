@@ -4,6 +4,7 @@ import com.example.EthanApiPlugin.Collections.Players;
 import com.example.Utility.Hopping;
 import com.example.Utility.Reachable;
 import com.example.nexatron.manager.NexManager;
+import com.example.nexatron.model.constants.MasterMode;
 import com.example.socket.org.json.JSONObject;
 import com.example.socket.packet.SocketBroadcastPacket;
 import com.example.socket.packet.SocketReceivePacket;
@@ -31,6 +32,7 @@ public class Socket
 	public boolean otherReadyToStart;
 	public boolean otherIsInside;
 	public int otherWorld;
+	public String otherForcedMaster;
 	@Inject
 	NexManager nexManager;
 	@Inject
@@ -63,6 +65,7 @@ public class Socket
 		otherReadyToStart = false;
 		otherIsInside = false;
 		otherWorld = -1;
+		otherForcedMaster = "";
 	}
 
 	@Subscribe(priority = -1)
@@ -88,6 +91,7 @@ public class Socket
 		payload.put("readyToStart", readyToStart);
 		payload.put("isInside", nexManager.nex.nex != null || isCenterReachable());
 		payload.put("teleport", teleportOut);
+		payload.put("forcedMaster", nexManager.config.forceMaster().name());
 		eventBus.post(new SocketBroadcastPacket(payload));
 	}
 
@@ -114,6 +118,7 @@ public class Socket
 		otherName = payload.getString("name");
 		otherHardDiary = payload.getBoolean("hard");
 		otherWorld = payload.getInt("world");
+		otherForcedMaster = payload.getString("forcedMaster");
 	}
 
 	public boolean needToKc()
@@ -126,7 +131,7 @@ public class Socket
 		return !isMaster;
 	}
 
-	public boolean decideMaster()
+	public boolean comparePotentialMasters()
 	{
 		// We have hard diary and the other account does not, which means we are the master
 		if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_HARD) == 2
@@ -134,7 +139,6 @@ public class Socket
 		{
 			return true;
 		}
-
 		// If both accounts have hard diary completed
 		// compare them alphabetically, the name that comes first is the master
 		if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_HARD) == 2
@@ -144,10 +148,39 @@ public class Socket
 			return ourName != null
 				&& ourName.compareTo(otherName) < 0;
 		}
-
 		// "Else" case, where we are not the master
 		// because we don't have hard diary completed
 		return false;
+	}
+
+	public boolean decideMaster()
+	{
+		MasterMode ourMode = nexManager.config.forceMaster();
+		System.out.println("Other forced master -> " + otherForcedMaster);
+		switch (otherForcedMaster)
+		{
+			case "Auto":
+				//Figure out which account should be master if both set to Auto
+				if (ourMode.equals(MasterMode.Auto))
+				{
+					return comparePotentialMasters();
+				}
+				//Return yes or no based on config
+				return ourMode.equals(MasterMode.Yes);
+			case "No":
+				return ourMode.equals(MasterMode.Yes);
+			case "Yes":
+				//Both yes, same result as both being 'auto' - compare the two
+				if (ourMode.equals(MasterMode.Yes))
+				{
+					return comparePotentialMasters();
+				}
+				return false;
+			default:
+				System.out.println("Unexpected socket state");
+				nexManager.print("Unexpected socket state (socket debug)");
+				return client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_HARD) == 2;
+		}
 	}
 
 	public Player getOtherPlayer()

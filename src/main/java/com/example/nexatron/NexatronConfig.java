@@ -1,5 +1,6 @@
 package com.example.nexatron;
 
+import com.example.nexatron.model.constants.MasterMode;
 import com.example.nexatron.model.constants.ThrallMode;
 import com.example.nexatron.model.setup.Helm;
 import com.example.nexatron.model.setup.MeleeCape;
@@ -109,6 +110,19 @@ public interface NexatronConfig extends Config
 		return ThrallMode.No;
 	}
 
+
+	@ConfigItem(
+		position = 0,
+		keyName = "forceMaster",
+		name = "Force Master",
+		description = "YES forces master to be this account. NO forces master to NOT be this account. " +
+			"AUTO leaves it up to the plugin logic to determine master. " +
+			"DON'T change this from AUTO unless you know how it works or bad things might happen."
+	)
+	default MasterMode forceMaster()
+	{
+		return MasterMode.Auto;
+	}
 
 	@ConfigItem(
 		position = 1,
