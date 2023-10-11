@@ -8,18 +8,18 @@ import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
 import javax.inject.Inject;
-import net.runelite.client.game.ItemManager;
+import net.runelite.api.GameState;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.eventbus.Subscribe;
 
 @TaskDescriptor(
 	name = "Break or log",
 	priority = Integer.MAX_VALUE,
-	blocking = true
+	blocking = true,
+	register = true
 )
 public class BreakLog extends StagedTask
 {
-	@Inject
-	ItemManager itemManager;
-
 	@Inject
 	NexatronPlugin plugin;
 
@@ -35,10 +35,21 @@ public class BreakLog extends StagedTask
 		{
 			nexManager.print("Logging out");
 			Game.logout();
-			EthanApiPlugin.stopPlugin(plugin);
 			return true;
 		}
 		return false;
+	}
 
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			if (plugin.finishKill)
+			{
+				plugin.finishKill = false;
+				EthanApiPlugin.stopPlugin(plugin);
+			}
+		}
 	}
 }
