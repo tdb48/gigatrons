@@ -109,7 +109,7 @@ public class NexatronPlugin extends Plugin
 			ToggleRun.class,
 			DropVial.class,
 			DisablePrayers.class,
-			Reattack.class,
+//			Reattack.class,
 			KcPrayer.class,
 			KcAttack.class,
 			NexAbort.class,
