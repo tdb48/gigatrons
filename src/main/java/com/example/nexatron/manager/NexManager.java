@@ -624,12 +624,14 @@ public class NexManager
 	{
 		ArrayList<Integer> requiredItems = nexBank.requiredItems();
 		ArrayList<Widget> unNecessaryItems = (ArrayList<Widget>) Inventory.search().result();
-		unNecessaryItems.removeIf(n -> Consumable.getNecessaryPotions.contains(n.getItemId()));
 		unNecessaryItems.removeIf(n -> requiredItems.contains(n.getItemId()));
 		if (shouldKc())
 		{
+			unNecessaryItems.removeIf(n -> Consumable.getNecessaryKcPotions.contains(n.getItemId()));
 			return unNecessaryItems;
 		}
+		unNecessaryItems.removeIf(n -> Consumable.getNecessaryPotions.contains(n.getItemId()));
+
 		if (Consumable.isDrained(Skill.HITPOINTS))
 		{
 			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_ANGLER);

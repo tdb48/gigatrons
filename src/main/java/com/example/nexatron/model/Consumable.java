@@ -83,6 +83,11 @@ public class Consumable
 			ItemID.SUPER_RESTORE1,
 			ItemID.ANTIDOTE4_5952,
 			ItemID.SUPER_RESTORE4));
+	public static ArrayList<Integer> getNecessaryKcPotions = new ArrayList<>(
+		Arrays.asList(
+			ItemID.RANGING_POTION4,
+			ItemID.ANTIDOTE4_5952,
+			ItemID.SUPER_RESTORE4));
 	@Inject
 	NexManager nexManager;
 	@Inject
@@ -244,7 +249,10 @@ public class Consumable
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueWidgetAction(boost, "Drink");
 			}
-			nexManager.print("Drinking/eating " + boost.getName());
+			if (boost != null)
+			{
+				nexManager.print("Drinking/eating " + boost.getName());
+			}
 			return 1;
 		}
 	}
