@@ -113,15 +113,6 @@ public class NexManager
 		shouldReattack = false;
 	}
 
-	public boolean needsBreak()
-	{
-		return chinBreakHandler.shouldBreak(plugin);
-	}
-
-	public boolean onBreak()
-	{
-		return chinBreakHandler.isBreakActive(plugin);
-	}
 
 	public NexatronConfig getConfig()
 	{
@@ -155,12 +146,6 @@ public class NexManager
 			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", msg, "");
 		}
 	}
-
-	public boolean hasEquipped(int itemId)
-	{
-		return Equipment.search().withId(itemId).first().orElse(null) != null;
-	}
-
 	public boolean hasGearEquipped(ArrayList<Integer> gearList)
 	{
 		for (int i : gearList)
@@ -342,20 +327,6 @@ public class NexManager
 			&& isBoosted(Skill.HITPOINTS)
 			&& isAntiPoisoned()
 			&& Movement.isStaminaBoosted();
-	}
-
-	public void sendIntValue(int amount)
-	{
-		EthanApiPlugin.getClient().setVarcStrValue(359, Integer.toString(amount));
-		EthanApiPlugin.getClient().setVarcIntValue(5, 7);
-		EthanApiPlugin.getClient().runScript(681);
-	}
-
-	public void sendStringValue(String value)
-	{
-		EthanApiPlugin.getClient().setVarcStrValue(359, value);
-		EthanApiPlugin.getClient().setVarcIntValue(5, 7);
-		EthanApiPlugin.getClient().runScript(681);
 	}
 
 	public boolean useThralls()

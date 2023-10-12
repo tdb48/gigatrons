@@ -256,30 +256,5 @@ public class Consumable
 			return 1;
 		}
 	}
-
-	public int consumeBrew()
-	{
-		return consume(getBrew());
-	}
-
-	public int consumeRestore()
-	{
-		return consume(getRestore());
-	}
-
-	public int consumeSCB()
-	{
-		return consume(getSCB());
-	}
-
-	public int consumeRange()
-	{
-		return consume(getRange());
-	}
-
-	public int consumeAnglerf()
-	{
-		return consume(getAngler());
-	}
 }
 
