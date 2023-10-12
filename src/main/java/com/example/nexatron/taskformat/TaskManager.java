@@ -2,7 +2,6 @@ package com.example.nexatron.taskformat;
 
 import com.example.Utility.Static;
 import com.google.inject.Injector;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -69,14 +68,15 @@ public class TaskManager
 	{
 		return this.currentTask == null ? "None" : this.descriptorHashMap.get(this.currentTask).name();
 	}
+
 	public String getCurrentTaskNew()
 	{
-		if(this.currentTaskNew == null)
+		if (this.currentTaskNew == null)
 		{
 			return "None";
 		}
 		String name = this.descriptorHashMap.get(this.currentTaskNew).name();
-		if(name == null || name.length() == 0)
+		if (name == null || name.length() == 0)
 		{
 			return "None";
 		}
@@ -137,16 +137,16 @@ public class TaskManager
 			TaskDescriptor descriptor = this.descriptorHashMap.get(currentTaskNew);
 			//resetting the action counter to 0 for this task, it will be incremented based on how many actions are performed during the tasks run() call
 			currentTaskNew.setActionCount(0);
-			if(currentTaskNew.run())
+			if (currentTaskNew.run())
 			{
 				//System.out.println("Running task: " + descriptor.name() + " - Current task actions -> " + currentTaskNew.getActionCount() + " - Total actions: " + (actionCounter+currentTaskNew.getActionCount()));
-				if(descriptor.blocking())
+				if (descriptor.blocking())
 				{
 					currentTasks.clear();
 				}
 			}
 			actionCounter += currentTaskNew.getActionCount();
-			if(actionCounter >= 10)
+			if (actionCounter >= 10)
 			{
 				System.out.println("Clearing current task list as we have sent " + actionCounter + " actions to the server on this gametick.");
 				currentTasks.clear();
@@ -223,7 +223,7 @@ public class TaskManager
 		//System.out.println();
 		int tasksSize = currentTasks.size();
 		//Upper limit of sleep is between 0 and 25-number of tasks (leaving 5 ticks at the end of the game tick for overhead).
-		int upperBound = tasksSize >= 25 ? 0 : 25-tasksSize;
+		int upperBound = tasksSize >= 25 ? 0 : 25 - tasksSize;
 		tickCounter++;
 		randomSleep = ThreadLocalRandom.current().nextInt(0, upperBound);
 		//System.out.println("Our next random sleep will be " + randomSleep + " client ticks.");

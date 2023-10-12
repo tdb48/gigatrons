@@ -5,6 +5,7 @@ import com.example.Utility.Combat;
 import com.example.Utility.Prayer;
 import com.example.Utility.Prayers;
 import com.example.Utility.Static;
+import com.example.nexatron.NexatronPlugin;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.Stage;
@@ -29,6 +30,9 @@ public class NexPrayers extends StagedTask
 	GameTickManager gameTickManager;
 
 	@Inject
+	NexatronPlugin plugin;
+
+	@Inject
 	public NexPrayers(NexManager nexManager)
 	{
 		super(nexManager,
@@ -51,7 +55,9 @@ public class NexPrayers extends StagedTask
 		}
 		if (!this.getPrayers().isEmpty())
 		{
-			if (nexManager.config.prayFlick() && Prayers.hasEnabled(getPrayers()))
+			if (nexManager.config.prayFlick()
+				&& plugin.getManager().actionCounter < 8
+				&& Prayers.hasEnabled(getPrayers()))
 			{
 				for (Prayer prayer : getPrayers())
 				{
