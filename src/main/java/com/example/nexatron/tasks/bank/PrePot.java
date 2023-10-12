@@ -31,6 +31,7 @@ public class PrePot extends StagedTask
 	{
 		if (!nexManager.socket.readyToStart
 			|| !nexManager.socket.otherReadyToStart
+			|| nexManager.shouldKc()
 			|| nexManager.isPrePotted())
 		{
 			return false;

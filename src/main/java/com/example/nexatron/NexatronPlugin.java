@@ -12,6 +12,7 @@ import com.example.nexatron.tasks.bank.BreakLog;
 import com.example.nexatron.tasks.bank.EnterNex;
 import com.example.nexatron.tasks.bank.GetRequiredItems;
 import com.example.nexatron.tasks.bank.HealUp;
+import com.example.nexatron.tasks.bank.LeaveBank;
 import com.example.nexatron.tasks.bank.PickupPet;
 import com.example.nexatron.tasks.bank.PrePot;
 import com.example.nexatron.tasks.bank.WithdrawSupplies;
@@ -139,6 +140,7 @@ public class NexatronPlugin extends Plugin
 			EnterKcArea.class,
 			KcConsumables.class,
 			BreakLog.class,
+			LeaveBank.class,
 		};
 	}
 

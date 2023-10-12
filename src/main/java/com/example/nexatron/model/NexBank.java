@@ -113,6 +113,10 @@ public class NexBank
 
 	public ArrayList<Integer> requiredItems()
 	{
+		if (nexManager.shouldKc())
+		{
+			return nexManager.setup.rangeKc();
+		}
 		ArrayList<Integer> requiredItems = new ArrayList<>(nexManager.setup.rangeNex());
 		requiredItems.addAll(nexManager.setup.meleeNex());
 		if (nexManager.useThralls())

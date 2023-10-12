@@ -79,6 +79,10 @@ public class GetRequiredItems extends StagedTask
 
 	public ArrayList<Integer> decideSetup()
 	{
+		if (nexManager.shouldKc())
+		{
+			return nexManager.setup.rangeKc();
+		}
 		return nexManager.socket.isMaster ? nexManager.setup.rangeNex() : nexManager.setup.meleeNex();
 	}
 }

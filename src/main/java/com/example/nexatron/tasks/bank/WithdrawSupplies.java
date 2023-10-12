@@ -5,14 +5,12 @@ import com.example.EthanApiPlugin.Collections.Inventory;
 import com.example.InteractionApi.BankInteraction;
 import com.example.Utility.BankUtil;
 import com.example.nexatron.manager.NexManager;
-import com.example.nexatron.model.Consumable;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.game.ItemManager;
 
 @TaskDescriptor(
 	name = "Withdraw supplies",
@@ -25,11 +23,7 @@ public class WithdrawSupplies extends StagedTask
 	public static final int BREW = ItemID.SARADOMIN_BREW4;
 	public static final int SCB = ItemID.SUPER_COMBAT_POTION4;
 	public static final int RPOT = ItemID.RANGING_POTION4;
-
-	@Inject
-	Consumable consumable;
-	@Inject
-	ItemManager itemManager;
+	public static final int ANTI = ItemID.ANTIDOTE4_5952;
 
 	@Inject
 	public WithdrawSupplies(NexManager nexManager)
@@ -40,8 +34,8 @@ public class WithdrawSupplies extends StagedTask
 	public boolean execute()
 	{
 		if (!nexManager.socket.readyToStart
-			|| !nexManager.socket.otherReadyToStart
-			|| !nexManager.isPrePotted())
+			|| (!nexManager.socket.otherReadyToStart && !nexManager.shouldKc())
+			|| (!nexManager.isPrePotted()) && !nexManager.shouldKc())
 		{
 			return false;
 		}
@@ -49,8 +43,25 @@ public class WithdrawSupplies extends StagedTask
 		int requiredBrew = requiredBrews();
 		int requiredRpot = nexManager.config.rangeCount() - Inventory.getItemAmount(RPOT);
 		int requiredScb = nexManager.config.scbCount() - Inventory.getItemAmount(SCB);
-		int missingId = getMissingSupplyId(nexManager.config.restoreCount(), nexManager.config.scbCount(), nexManager.config.rangeCount());
-		if (requiredRpot == 0 && requiredBrew == 0 && requiredScb == 0 && requiredRestore == 0 && missingId == -1)
+		int requiredAnti = 0;
+		if (nexManager.shouldKc())
+		{
+			if (nexManager.kcArea.canKillMage())
+			{
+				requiredAnti = 2 - Inventory.getItemAmount(ANTI);
+			}
+			requiredScb = 0;
+			requiredBrew = 0;
+			requiredRpot = 3 - Inventory.getItemAmount(RPOT);
+			requiredRestore = (28 - 3 - 2) - Inventory.getItemAmount(RESTORE);
+		}
+//			int missingId = getMissingSupplyId(nexManager.config.restoreCount(), nexManager.config.scbCount(), nexManager.config.rangeCount());
+		if (requiredRpot == 0
+			&& requiredBrew == 0
+			&& requiredScb == 0
+			&& requiredRestore == 0
+			&& requiredAnti == 0)
+//				&& missingId == -1
 		{
 			return false;
 		}
@@ -65,25 +76,26 @@ public class WithdrawSupplies extends StagedTask
 			return true;
 		}
 		// If we have too many of a resource, this will return the item id, so we can bank it all and start over
-		if (missingId != -1)
-		{
-			nexManager.print("Wrong supply count, depositing all of " + itemManager.getItemComposition(missingId).getName());
-			BankUtil.depositAll(missingId);
-			incrementActionCount();
-			return true;
-		}
-		return withdrawMissingSupplies(requiredRpot, requiredScb, requiredRestore, requiredBrew);
+//			if (missingId != -1)
+//			{
+//				nexManager.print("Wrong supply count, depositing all of " + itemManager.getItemComposition(missingId).getName());
+//				BankUtil.depositAll(missingId);
+//				incrementActionCount();
+//				return true;
+//			}
+		return withdrawMissingSupplies(requiredRpot, requiredScb, requiredRestore, requiredBrew, requiredAnti);
 	}
 
 	//Incrementing the action count by 1 per withdrawX call (im not sure if its 2 actions for
 	// clicking the X button and then running the script to set value but i've left it as 1 for now
-	public boolean withdrawMissingSupplies(int requiredRpot, int requiredScb, int requiredRestore, int requiredBrew)
+	public boolean withdrawMissingSupplies(int requiredRpot, int requiredScb, int requiredRestore, int requiredBrew, int requiredAnti)
 	{
 		Widget bankRestores = Bank.search().withId(RESTORE).first().orElse(null);
 		Widget bankBrews = Bank.search().withId(BREW).first().orElse(null);
 		Widget bankRpots = Bank.search().withId(RPOT).first().orElse(null);
 		Widget bankScbs = Bank.search().withId(SCB).first().orElse(null);
-		if (bankRestores == null || bankBrews == null || bankRpots == null || bankScbs == null)
+		Widget bankAntis = Bank.search().withId(ANTI).first().orElse(null);
+		if (bankRestores == null || bankBrews == null || bankRpots == null || bankScbs == null || bankAntis == null)
 		{
 			nexManager.print("We are somehow missing bank widgets?");
 			return true;
@@ -114,6 +126,13 @@ public class WithdrawSupplies extends StagedTask
 		{
 			nexManager.print("Withdrawing " + requiredBrew + " Saradomin brews");
 			BankInteraction.withdrawX(bankBrews, requiredBrew);
+			incrementActionCount();
+			returnValue = true;
+		}
+		if (requiredAnti > 0)
+		{
+			nexManager.print("Withdrawing " + requiredAnti + " Antidote++");
+			BankInteraction.withdrawX(bankAntis, requiredAnti);
 			incrementActionCount();
 			returnValue = true;
 		}

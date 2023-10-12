@@ -81,6 +81,7 @@ public class Consumable
 			ItemID.SARADOMIN_BREW4,
 			ItemID.SUPER_COMBAT_POTION4,
 			ItemID.SUPER_RESTORE1,
+			ItemID.ANTIDOTE4_5952,
 			ItemID.SUPER_RESTORE4));
 	@Inject
 	NexManager nexManager;

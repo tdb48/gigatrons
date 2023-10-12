@@ -22,8 +22,6 @@ import net.runelite.api.widgets.Widget;
 public class EnterNex extends StagedTask
 {
 	@Inject
-	Consumable consumable;
-	@Inject
 	GameTickManager gameTickManager;
 
 	@Inject
@@ -37,6 +35,7 @@ public class EnterNex extends StagedTask
 		if (!nexManager.socket.readyToStart
 			|| !nexManager.socket.otherReadyToStart
 			|| !nexManager.isPrePotted()
+			|| nexManager.shouldKc()
 			|| nexManager.nexBank.barrier == null)
 		{
 			return false;

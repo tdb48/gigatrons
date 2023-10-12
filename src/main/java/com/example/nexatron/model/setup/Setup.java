@@ -112,9 +112,7 @@ public class Setup
 				rangeHelm,
 				ItemID.NECKLACE_OF_ANGUISH,
 				ItemID.LIGHTBEARER,
-				ItemID.ANCIENT_BRACERS,
-				ItemID.PRIMORDIAL_BOOTS,
-				getBolts()));
+				ItemID.ANCIENT_BRACERS));
 	}
 
 	public ArrayList<Integer> rangeNex()

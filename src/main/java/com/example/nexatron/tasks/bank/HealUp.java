@@ -32,9 +32,12 @@ public class HealUp extends StagedTask
 
 	public boolean execute()
 	{
+		if (nexManager.shouldKc())
+		{
+			return false;
+		}
 		if (Consumable.isDrained(Skill.HITPOINTS) || Consumable.isDrainedMore(Skill.PRAYER, 5))
 		{
-
 			if (!BankUtil.isOpen())
 			{
 				if (nexManager.nexBank.openBank() == 0)
@@ -46,7 +49,7 @@ public class HealUp extends StagedTask
 			}
 			if (Consumable.isDrained(Skill.HITPOINTS))
 			{
-				if(consumable.prePot(ItemID.ANGLERFISH) == 0)
+				if (consumable.prePot(ItemID.ANGLERFISH) == 0)
 				{
 					return false;
 				}
@@ -56,7 +59,7 @@ public class HealUp extends StagedTask
 			}
 			else if (Consumable.isDrainedMore(Skill.PRAYER, 5))
 			{
-				if(consumable.prePot(ItemID.SUPER_RESTORE1) == 0)
+				if (consumable.prePot(ItemID.SUPER_RESTORE1) == 0)
 				{
 					return false;
 				}
