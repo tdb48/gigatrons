@@ -52,7 +52,7 @@ public class AttackZarosNex extends StagedTask
 		if (!nexManager.hasGearEquipped(setup))
 		{
 			nexManager.print("Equipping gear");
-			nexManager.swap(setup);
+			setActionCount(getActionCount() + nexManager.swap(setup));
 		}
 
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
@@ -64,7 +64,8 @@ public class AttackZarosNex extends StagedTask
 			&& nexManager.getBossHp() >= 250)
 		{
 			nexManager.print("Enabling spec");
-			Combat.toggleSpec();
+			setActionCount(getActionCount() + Combat.toggleSpec());
+//			Combat.toggleSpec();
 		}
 		else if (usingFang
 			&& !Combat.isSpecEnabled()
@@ -74,7 +75,8 @@ public class AttackZarosNex extends StagedTask
 			&& nexManager.getBossHp() < 220)
 		{
 			nexManager.print("Enabling spec");
-			Combat.toggleSpec();
+			setActionCount(getActionCount() + Combat.toggleSpec());
+//			Combat.toggleSpec();
 		}
 
 		// If there's a prison, and it's not on us, free the other person
@@ -87,6 +89,7 @@ public class AttackZarosNex extends StagedTask
 				nexManager.print("Freeing ice prison");
 				MousePackets.queueClickPacket();
 				ObjectPackets.queueObjectAction(nearestSpike, false, "Attack");
+				incrementActionCount();
 				return true;
 			}
 		}
@@ -101,6 +104,7 @@ public class AttackZarosNex extends StagedTask
 			{
 				nexManager.print("Moving out of contain this to " + nexManager.worldPointString(containTile));
 				Movement.walk(containTile);
+				incrementActionCount();
 				return true;
 			}
 		}
@@ -114,6 +118,7 @@ public class AttackZarosNex extends StagedTask
 		{
 			nexManager.print("Prepathing to " + nexManager.worldPointString(stepUnderTile));
 			Movement.move(stepUnderTile);
+			incrementActionCount();
 			return true;
 		}
 
@@ -133,6 +138,7 @@ public class AttackZarosNex extends StagedTask
 			{
 				nexManager.print("Stepping under at " + nexManager.worldPointString(stepUnderTile));
 				Movement.move(stepUnderTile);
+				incrementActionCount();
 				return true;
 			}
 		}
@@ -144,6 +150,7 @@ public class AttackZarosNex extends StagedTask
 			nexManager.print("Attacking " + nexManager.nex.nex.getName());
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(nexManager.nex.nex, "Attack");
+			incrementActionCount();
 			return true;
 		}
 		return false;

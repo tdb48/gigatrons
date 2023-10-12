@@ -51,15 +51,18 @@ public class NexAbort extends StagedTask
 		{
 			return false;
 		}
-		nexManager.enableRun(true);
+		setActionCount(getActionCount() + nexManager.enableRun(true));
+//		nexManager.enableRun(true);
 		// To make sure we have an ancient item equipped when leaving!
 		if (!nexManager.hasGearEquipped(nexManager.nex.setup.rangeNex()))
 		{
 			nexManager.print("Equipping range gear");
-			nexManager.swap(nexManager.nex.setup.rangeNex());
+			setActionCount(getActionCount() + nexManager.swap(nexManager.nex.setup.rangeNex()));
+			//nexManager.swap(nexManager.nex.setup.rangeNex());
 		}
 		MousePackets.queueClickPacket();
 		ObjectPackets.queueObjectAction(nexManager.nex.altar, false, "Teleport");
+		incrementActionCount();
 		return true;
 	}
 

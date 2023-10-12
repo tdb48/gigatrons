@@ -46,7 +46,7 @@ public class AttackIceMinion extends StagedTask
 		if (!nexManager.hasGearEquipped(setup))
 		{
 			nexManager.print("Equipping gear");
-			nexManager.swap(setup);
+			setActionCount(getActionCount() + nexManager.swap(setup));
 		}
 
 		// If there's a prison, and it's not on us, free the other person
@@ -59,6 +59,7 @@ public class AttackIceMinion extends StagedTask
 				nexManager.print("Freeing ice prison");
 				MousePackets.queueClickPacket();
 				ObjectPackets.queueObjectAction(nearestSpike, false, "Attack");
+				incrementActionCount();
 				return true;
 			}
 		}
@@ -80,6 +81,7 @@ public class AttackIceMinion extends StagedTask
 				{
 					nexManager.print("Moving out of contain this to " + nexManager.worldPointString(containTile));
 					Movement.walk(containTile);
+					incrementActionCount();
 					return true;
 				}
 			}
@@ -97,6 +99,7 @@ public class AttackIceMinion extends StagedTask
 			nexManager.print("Attacking glacies");
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(nexManager.nex.glacies, "Attack");
+			incrementActionCount();
 			return true;
 		}
 
@@ -106,6 +109,7 @@ public class AttackIceMinion extends StagedTask
 			WorldPoint tileUnderNex = nexManager.nex.getUnderNex();
 			nexManager.print("Stepping under nex " + nexManager.worldPointString(tileUnderNex));
 			Movement.walk(tileUnderNex);
+			incrementActionCount();
 			return true;
 		}
 
@@ -116,6 +120,7 @@ public class AttackIceMinion extends StagedTask
 		{
 			nexManager.print("Moving to set tile");
 			Movement.walk(standTile);
+			incrementActionCount();
 			return true;
 		}
 		return false;

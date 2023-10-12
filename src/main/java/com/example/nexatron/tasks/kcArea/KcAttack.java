@@ -63,6 +63,7 @@ public class KcAttack extends StagedTask
 				nexManager.print("Attacking npc that's attacking us, then stopping");
 				MousePackets.queueClickPacket();
 				NPCPackets.queueNPCAction(npcInteractingWithUs, "Attack");
+				incrementActionCount();
 			}
 			return false;
 		}
@@ -77,6 +78,7 @@ public class KcAttack extends StagedTask
 				nexManager.print("Picking up " + itemManager.getItemComposition(loot.tileItem.getId()).getName());
 				MousePackets.queueClickPacket();
 				TileItemPackets.queueTileItemAction(loot, false);
+				incrementActionCount();
 				return true;
 			}
 		}
@@ -86,7 +88,7 @@ public class KcAttack extends StagedTask
 			&& Equipment.search().withId(ItemID.TOXIC_BLOWPIPE).first().orElse(null) != null)
 		{
 			nexManager.print("Toggling spec");
-			Combat.toggleSpec();
+			setActionCount(getActionCount() + Combat.toggleSpec());
 		}
 
 		NPC targetNPC = getNPC();
@@ -99,6 +101,7 @@ public class KcAttack extends StagedTask
 			nexManager.print("Attacking " + targetNPC.getName());
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(targetNPC, "Attack");
+			incrementActionCount();
 			return true;
 		}
 		return false;

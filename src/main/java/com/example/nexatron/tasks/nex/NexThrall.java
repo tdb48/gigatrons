@@ -58,6 +58,7 @@ public class NexThrall extends StagedTask
 			nexManager.print("Spawning mage thrall");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(client.getWidget(WidgetInfoExtended.SPELL_RESURRECT_GREATER_GHOST.getPackedId()), "Cast");
+			incrementActionCount();
 			return true;
 		}
 		return false;

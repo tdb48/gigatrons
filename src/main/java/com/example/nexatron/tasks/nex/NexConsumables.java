@@ -59,7 +59,7 @@ public class NexConsumables extends StagedTask
 		if (Prayers.getPoints() <= 5 && prayerRestore != null)
 		{
 			nexManager.print("Drinking restore (panic)");
-			consumable.consume(prayerRestore);
+			setActionCount(getActionCount() + consumable.consume(prayerRestore));
 			return true;
 		}
 
@@ -73,12 +73,12 @@ public class NexConsumables extends StagedTask
 				&& Consumable.isDrainedMore(Skill.RANGED, 29))
 			{
 				nexManager.print("Drinking restore for drain in triple brew");
-				consumable.consume(prayerRestore);
+				setActionCount(getActionCount() + consumable.consume(prayerRestore));
 			}
 			else
 			{
 				nexManager.print("Drinking brew");
-				consumable.consume(healingPotion);
+				setActionCount(getActionCount() + consumable.consume(healingPotion));
 			}
 			return true;
 		}
@@ -87,7 +87,7 @@ public class NexConsumables extends StagedTask
 			(Prayers.getPoints() <= 20))
 		{
 			nexManager.print("Drinking restore for prayer");
-			consumable.consume(prayerRestore);
+			setActionCount(getActionCount() + consumable.consume(prayerRestore));
 			return true;
 		}
 
@@ -102,7 +102,7 @@ public class NexConsumables extends StagedTask
 				|| (nexManager.nex.onRangedPhase() && Consumable.isDrainedMore(Skill.RANGED, 3))))
 		{
 			nexManager.print("Drinking restore for drain");
-			consumable.consume(prayerRestore);
+			setActionCount(getActionCount() + consumable.consume(prayerRestore));
 			return true;
 		}
 
@@ -111,7 +111,7 @@ public class NexConsumables extends StagedTask
 			&& client.getBoostedSkillLevel(Skill.STRENGTH) < client.getRealSkillLevel(Skill.STRENGTH) + 10)
 		{
 			nexManager.print("Drinking scb");
-			consumable.consume(combatPotion);
+			setActionCount(getActionCount() + consumable.consume(combatPotion));
 			return true;
 		}
 
@@ -120,7 +120,7 @@ public class NexConsumables extends StagedTask
 			&& client.getBoostedSkillLevel(Skill.RANGED) < client.getRealSkillLevel(Skill.RANGED) + 6)
 		{
 			nexManager.print("Drinking ranged");
-			consumable.consume(rangePotion);
+			setActionCount(getActionCount() + consumable.consume(rangePotion));
 			return true;
 		}
 		return false;

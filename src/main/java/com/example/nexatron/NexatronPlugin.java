@@ -44,6 +44,7 @@ import com.example.nexatron.tasks.nex.smoke.DodgeSmokeDash;
 import com.example.nexatron.tasks.nex.zaros.AttackZarosNex;
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -87,6 +88,7 @@ public class NexatronPlugin extends Plugin
 	@Inject
 	GameEventManager gameEventManager;
 	@Inject
+	@Getter
 	private TaskManager manager;
 	@Inject
 	private GameTickManager gameTickManager;

@@ -47,6 +47,7 @@ public class SetFangStyle extends StagedTask
 		{
 			nexManager.print("Switching fang style ");
 			Combat.toggleStyle(attackStyle);
+			incrementActionCount();
 			return true;
 		}
 		return false;

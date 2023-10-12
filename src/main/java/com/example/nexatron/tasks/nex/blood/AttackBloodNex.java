@@ -45,13 +45,14 @@ public class AttackBloodNex extends StagedTask
 		{
 			return false;
 		}
-		nexManager.enableRun(true);
+		setActionCount(getActionCount() + nexManager.enableRun(true));
+//		nexManager.enableRun(true);
 		NPC target = decideTarget();
 		ArrayList<Integer> setup = decideSetup(target);
 		if (!nexManager.hasGearEquipped(setup))
 		{
 			nexManager.print("Equipping gear");
-			nexManager.swap(setup);
+			setActionCount(getActionCount() + nexManager.swap(setup));
 		}
 
 		if (target == null)
@@ -69,7 +70,8 @@ public class AttackBloodNex extends StagedTask
 			&& nexManager.nex.hpUntilProc() >= 80)
 		{
 			nexManager.print("Enabling spec");
-			Combat.toggleSpec();
+			setActionCount(getActionCount() + Combat.toggleSpec());
+//			Combat.toggleSpec();
 		}
 
 		if (nexManager.nex.sacrificeActive)
@@ -81,6 +83,7 @@ public class AttackBloodNex extends StagedTask
 			{
 				nexManager.print("Moving to " + nexManager.worldPointString(sacrificeTile));
 				Movement.walk(sacrificeTile);
+				incrementActionCount();
 			}
 
 			// Attack our target if we are out of sacrifice range
@@ -91,6 +94,7 @@ public class AttackBloodNex extends StagedTask
 				nexManager.print("Attacking " + target.getName());
 				MousePackets.queueClickPacket();
 				NPCPackets.queueNPCAction(target, "Attack");
+				incrementActionCount();
 			}
 			return true;
 		}
@@ -100,6 +104,7 @@ public class AttackBloodNex extends StagedTask
 			nexManager.print("Praying at altar");
 			MousePackets.queueClickPacket();
 			ObjectPackets.queueObjectAction(nexManager.nex.altar, false, "Pray");
+			incrementActionCount();
 			return true;
 		}
 
@@ -112,6 +117,7 @@ public class AttackBloodNex extends StagedTask
 		{
 			nexManager.print("Prepathing to " + nexManager.worldPointString(stepUnderTile));
 			Movement.move(stepUnderTile);
+			incrementActionCount();
 			return true;
 		}
 
@@ -130,6 +136,7 @@ public class AttackBloodNex extends StagedTask
 			{
 				nexManager.print("Stepping under at " + nexManager.worldPointString(stepUnderTile));
 				Movement.move(stepUnderTile);
+				incrementActionCount();
 				return true;
 			}
 			else
@@ -145,6 +152,7 @@ public class AttackBloodNex extends StagedTask
 			nexManager.print("Attacking " + target.getName());
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(target, "Attack");
+			incrementActionCount();
 			return true;
 		}
 
@@ -160,6 +168,7 @@ public class AttackBloodNex extends StagedTask
 			{
 				nexManager.print("Moving away from other player while attacking reavers");
 				Movement.walk(reaverTile);
+				incrementActionCount();
 				return true;
 			}
 		}

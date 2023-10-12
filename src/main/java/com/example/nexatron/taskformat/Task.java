@@ -8,6 +8,8 @@ public abstract class Task
 	private int tickSleepIncrement;
 	private BooleanSupplier condition;
 
+	private int actionCount = 0;
+
 	public abstract boolean run();
 
 	public void sleep(int ticks)
@@ -58,5 +60,19 @@ public abstract class Task
 	public BooleanSupplier getCondition()
 	{
 		return this.condition;
+	}
+
+	public int getActionCount()
+	{
+		return this.actionCount;
+	}
+
+	public void incrementActionCount()
+	{
+		this.actionCount++;
+	}
+	public void setActionCount(int actionCount)
+	{
+		this.actionCount = actionCount;
 	}
 }

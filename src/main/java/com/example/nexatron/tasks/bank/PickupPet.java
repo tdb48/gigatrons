@@ -44,6 +44,7 @@ public class PickupPet extends StagedTask
 		MousePackets.queueClickPacket();
 		NPCPackets.queueNPCAction(pet, "Pick-up");
 		gameTickManager.setTickWait(2);
+		incrementActionCount();
 		return true;
 	}
 }

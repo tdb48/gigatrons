@@ -194,15 +194,15 @@ public class NexBank
 		}
 	}
 
-	public boolean openBank()
+	public int openBank()
 	{
 		if (banker == null)
 		{
-			return false;
+			return 0;
 		}
 		nexManager.print("Opening bank");
 		MousePackets.queueClickPacket();
 		NPCPackets.queueNPCAction(banker, "Bank");
-		return true;
+		return 1;
 	}
 }

@@ -20,6 +20,7 @@ public class Reattack extends Task
 		if (nexManager.shouldReattack)
 		{
 //			nexManager.reattackInteracting();
+//			incrementActionCount();
 		}
 		nexManager.shouldReattack = false;
 		return false;

@@ -40,13 +40,14 @@ public class AttackShadowNex extends StagedTask
 		{
 			return false;
 		}
-		nexManager.enableRun(true);
+		setActionCount(getActionCount() + nexManager.enableRun(true));
+//		nexManager.enableRun(true);
 
 		ArrayList<Integer> setup = nexManager.nex.setup.rangeNex();
 		if (!nexManager.hasGearEquipped(setup))
 		{
 			nexManager.print("Equipping gear");
-			nexManager.swap(setup);
+			setActionCount(getActionCount() + nexManager.swap(setup));
 		}
 
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
@@ -56,7 +57,8 @@ public class AttackShadowNex extends StagedTask
 			&& nexManager.nex.hpUntilProc() >= 120)
 		{
 			nexManager.print("Enabling spec");
-			Combat.toggleSpec();
+			setActionCount(getActionCount() + Combat.toggleSpec());
+//			Combat.toggleSpec();
 		}
 
 		WorldPoint standTile = nexManager.nex.shadowTick > 0 ?
@@ -69,6 +71,7 @@ public class AttackShadowNex extends StagedTask
 			{
 				nexManager.print("Stepping under nex " + nexManager.worldPointString(nexManager.nex.getUnderNex()));
 				Movement.walk(nexManager.nex.getUnderNex());
+				incrementActionCount();
 				return true;
 			}
 			else if (standTile != null
@@ -76,6 +79,7 @@ public class AttackShadowNex extends StagedTask
 			{
 				nexManager.print("Moving to stand tile");
 				Movement.walk(standTile);
+				incrementActionCount();
 				return true;
 			}
 		}
@@ -92,6 +96,7 @@ public class AttackShadowNex extends StagedTask
 			}
 			nexManager.print("Moving to stand tile v2");
 			Movement.walk(standTile);
+			incrementActionCount();
 			return true;
 		}
 
@@ -102,6 +107,7 @@ public class AttackShadowNex extends StagedTask
 			nexManager.print("Attacking nex");
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(nexManager.nex.nex, "Attack");
+			incrementActionCount();
 			return true;
 		}
 		return false;

@@ -42,7 +42,7 @@ public class AttackSmokeNex extends StagedTask
 		if (!nexManager.hasGearEquipped(setup))
 		{
 			nexManager.print("Equipping gear");
-			nexManager.swap(setup);
+			setActionCount(getActionCount() + nexManager.swap(setup));
 		}
 
 		// Step under on tick 1 if boss is interacting with us
@@ -55,6 +55,7 @@ public class AttackSmokeNex extends StagedTask
 			{
 				nexManager.print("Stepping under");
 				Movement.move(stepUnderTile);
+				incrementActionCount();
 				return true;
 			}
 		}
@@ -66,7 +67,8 @@ public class AttackSmokeNex extends StagedTask
 			&& nexManager.nex.hpUntilProc() >= 120)
 		{
 			nexManager.print("Enabling spec");
-			Combat.toggleSpec();
+			setActionCount(getActionCount() + Combat.toggleSpec());
+//			Combat.toggleSpec();
 		}
 
 		// If we are not interacting, attack nex
@@ -77,6 +79,7 @@ public class AttackSmokeNex extends StagedTask
 			nexManager.print("Attacking Nex");
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(nexManager.nex.nex, "Attack");
+			incrementActionCount();
 			return true;
 		}
 

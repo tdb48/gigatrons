@@ -50,17 +50,18 @@ public class NexPrayers extends StagedTask
 			return false;
 		}
 		if (!this.getPrayers().isEmpty())
-
 		{
 			if (nexManager.config.prayFlick() && Prayers.hasEnabled(getPrayers()))
 			{
 				for (Prayer prayer : getPrayers())
 				{
 					Prayers.toggle(prayer);
+					incrementActionCount();
 				}
 				for (Prayer prayer : getPrayers())
 				{
 					Prayers.toggle(prayer);
+					incrementActionCount();
 				}
 			}
 			else
@@ -70,14 +71,16 @@ public class NexPrayers extends StagedTask
 					if (!Prayers.isEnabled(prayer))
 					{
 						Prayers.toggle(prayer);
+						incrementActionCount();
 					}
 				}
-				return true;
 			}
+			return true;
 		}
 		else if (this.getPrayers().isEmpty() && Prayers.anyActive())
 		{
 			Prayers.disableAll();
+			setActionCount(getActionCount() + Prayers.getActivePrayers().size());
 			return true;
 		}
 		return false;

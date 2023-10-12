@@ -40,7 +40,12 @@ public class GetRequiredItems extends StagedTask
 		}
 		if (!BankUtil.isOpen())
 		{
-			return nexManager.nexBank.openBank();
+			if (nexManager.nexBank.openBank() == 0)
+			{
+				return false;
+			}
+			incrementActionCount();
+			return true;
 		}
 
 		for (int i : requiredItems)
@@ -50,6 +55,7 @@ public class GetRequiredItems extends StagedTask
 			{
 				nexManager.print("Depositing too many of " + itemManager.getItemComposition(i).getName());
 				BankUtil.depositAll(i);
+				incrementActionCount();
 				return true;
 			}
 		}
@@ -59,13 +65,13 @@ public class GetRequiredItems extends StagedTask
 			&& InventoryUtil.hasItem(setup))
 		{
 			nexManager.print("Equipping gear");
-			nexManager.swap(setup);
+			setActionCount(getActionCount() + nexManager.swap(setup));
 		}
 
 		if (!nexManager.hasAllItems(requiredItems))
 		{
 			nexManager.print("Withdrawing necessary items");
-			nexManager.withdraw(requiredItems);
+			setActionCount(getActionCount() + nexManager.withdraw(requiredItems));
 			return true;
 		}
 		return false;

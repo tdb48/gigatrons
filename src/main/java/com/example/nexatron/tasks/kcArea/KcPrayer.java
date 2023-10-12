@@ -41,10 +41,12 @@ public class KcPrayer extends StagedTask
 				for (Prayer prayer : getPrayers())
 				{
 					Prayers.toggle(prayer);
+					incrementActionCount();
 				}
 				for (Prayer prayer : getPrayers())
 				{
 					Prayers.toggle(prayer);
+					incrementActionCount();
 				}
 			}
 			for (Prayer prayer : getPrayers())
@@ -52,12 +54,14 @@ public class KcPrayer extends StagedTask
 				if (!Prayers.isEnabled(prayer))
 				{
 					Prayers.toggle(prayer);
+					incrementActionCount();
 				}
 			}
 			return true;
 		}
 		else if (this.getPrayers().isEmpty() && Prayers.anyActive())
 		{
+			setActionCount(getActionCount() + Prayers.getActivePrayers().size());
 			Prayers.disableAll();
 			return true;
 		}

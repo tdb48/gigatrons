@@ -8,6 +8,7 @@ import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
 import javax.inject.Inject;
+import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 
 @TaskDescriptor(
@@ -36,32 +37,63 @@ public class PrePot extends StagedTask
 		}
 		if (!BankUtil.isOpen())
 		{
-			return nexManager.nexBank.openBank();
+			if (nexManager.nexBank.openBank() == 0)
+			{
+				return false;
+			}
+			incrementActionCount();
+			return true;
+			//return nexManager.nexBank.openBank();
 		}
 		if (!nexManager.isBoosted(Skill.HITPOINTS))
 		{
 			nexManager.print("Angler prepot");
-			return consumable.prePot(Consumable.PREPOT_ANGLER);
+			if(consumable.prePot(Consumable.PREPOT_ANGLER) == 0)
+			{
+				return false;
+			}
+			incrementActionCount();
+			return true;
 		}
 		if (!nexManager.isAntiPoisoned())
 		{
 			nexManager.print("anti prepot");
-			return consumable.prePot(Consumable.PREPOT_ANTI);
+			if(consumable.prePot(Consumable.PREPOT_ANTI) == 0)
+			{
+				return false;
+			}
+			incrementActionCount();
+			return true;
 		}
 		if (!nexManager.isBoosted(Skill.STRENGTH))
 		{
 			nexManager.print("Scb prepot");
-			return consumable.prePot(Consumable.PREPOT_SCB);
+			if(consumable.prePot(Consumable.PREPOT_SCB) == 0)
+			{
+				return false;
+			}
+			incrementActionCount();
+			return true;
 		}
 		if (!nexManager.isBoosted(Skill.RANGED))
 		{
 			nexManager.print("Range prepot");
-			return consumable.prePot(Consumable.PREPOT_RANGE);
+			if(consumable.prePot(Consumable.PREPOT_RANGE) == 0)
+			{
+				return false;
+			}
+			incrementActionCount();
+			return true;
 		}
 		if (!Movement.isStaminaBoosted())
 		{
 			nexManager.print("Stamina prepot");
-			return consumable.prePot(Consumable.PREPOT_STAM);
+			if(consumable.prePot(Consumable.PREPOT_STAM) == 0)
+			{
+				return false;
+			}
+			incrementActionCount();
+			return true;
 		}
 		return false;
 	}

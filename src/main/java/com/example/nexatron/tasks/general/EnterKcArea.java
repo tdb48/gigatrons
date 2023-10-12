@@ -42,6 +42,7 @@ public class EnterKcArea extends StagedTask
 				{
 					nexManager.print("Walking to KC door");
 					Movement.walk(KC_TILE);
+					incrementActionCount();
 				}
 			}
 			else
@@ -49,6 +50,7 @@ public class EnterKcArea extends StagedTask
 				nexManager.print("Opening door");
 				MousePackets.queueClickPacket();
 				ObjectPackets.queueObjectAction(nexManager.nex.kcDoor, false, "Open");
+				incrementActionCount();
 			}
 			return true;
 		}

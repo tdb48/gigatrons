@@ -34,17 +34,34 @@ public class HealUp extends StagedTask
 	{
 		if (Consumable.isDrained(Skill.HITPOINTS) || Consumable.isDrainedMore(Skill.PRAYER, 5))
 		{
+
 			if (!BankUtil.isOpen())
 			{
-				return nexManager.nexBank.openBank();
+				if (nexManager.nexBank.openBank() == 0)
+				{
+					return false;
+				}
+				incrementActionCount();
+				return true;
 			}
 			if (Consumable.isDrained(Skill.HITPOINTS))
 			{
-				return consumable.prePot(ItemID.ANGLERFISH);
+				if(consumable.prePot(ItemID.ANGLERFISH) == 0)
+				{
+					return false;
+				}
+				incrementActionCount();
+				return true;
+				//return consumable.prePot(ItemID.ANGLERFISH);
 			}
 			else if (Consumable.isDrainedMore(Skill.PRAYER, 5))
 			{
-				return consumable.prePot(ItemID.SUPER_RESTORE1);
+				if(consumable.prePot(ItemID.SUPER_RESTORE1) == 0)
+				{
+					return false;
+				}
+				incrementActionCount();
+				return true;
 			}
 			return true;
 		}

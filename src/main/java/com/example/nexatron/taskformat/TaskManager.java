@@ -2,6 +2,7 @@ package com.example.nexatron.taskformat;
 
 import com.example.Utility.Static;
 import com.google.inject.Injector;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -26,6 +27,12 @@ public class TaskManager
 	int randomSleepCounter = 0;
 	int previousTick = 0;
 	private Task currentTask;
+
+	private Task currentTaskNew = null;
+
+	private final CopyOnWriteArrayList<Task> currentTasks = new CopyOnWriteArrayList<>();
+
+	public int actionCounter = 0;
 
 	@Inject
 	public TaskManager(EventBus eventBus)
@@ -62,6 +69,19 @@ public class TaskManager
 	{
 		return this.currentTask == null ? "None" : this.descriptorHashMap.get(this.currentTask).name();
 	}
+	public String getCurrentTaskNew()
+	{
+		if(this.currentTaskNew == null)
+		{
+			return "None";
+		}
+		String name = this.descriptorHashMap.get(this.currentTaskNew).name();
+		if(name == null || name.length() == 0)
+		{
+			return "None";
+		}
+		return name;
+	}
 
 	private void registerTask(Task task, TaskDescriptor descriptor)
 	{
@@ -82,56 +102,131 @@ public class TaskManager
 	@Subscribe
 	public void onClientTick(ClientTick event)
 	{
-		//If a game tick has not yet passed since our last iteration, return
+		/**
+		 * Random sleep code to be added back later if we want
+		 */
+		//If a game tick has passed since our last iteration, we are allowed to do our random sleep
+		if (tickCounter > previousTick)
+		{
+			randomSleepCounter++;
+			//If we have not yet slept enough client ticks, return
+			if (randomSleepCounter < randomSleep)
+			{
+				//System.out.println("Randomly sleeping before attempting to execute tasks.");
+				return;
+			}
+		}
 
-		if (tickCounter <= previousTick)
-		{
-			return;
-		}
-		randomSleepCounter++;
-		//If we have not yet slept enough client ticks, return
-		if (randomSleepCounter < randomSleep)
-		{
-			return;
-		}
 		randomSleepCounter = 0;
 		previousTick = tickCounter;
+
+		//DONT run tasks while phasing into instances which is what i think this pose anim is
 		if (Static.getClient().getLocalPlayer().getPoseAnimation() == 5538)
 		{
 			return;
 		}
+
+		if (!currentTasks.isEmpty())
+		{
+			currentTaskNew = currentTasks.get(0);
+			currentTasks.remove(currentTaskNew);
+			if (currentTaskNew.sleeping())
+			{
+				return;
+			}
+			TaskDescriptor descriptor = this.descriptorHashMap.get(currentTaskNew);
+			//resetting the action counter to 0 for this task, it will be incremented based on how many actions are performed during the tasks run() call
+			currentTaskNew.setActionCount(0);
+			if(currentTaskNew.run())
+			{
+				//System.out.println("Running task: " + descriptor.name() + " - Current task actions -> " + currentTaskNew.getActionCount() + " - Total actions: " + (actionCounter+currentTaskNew.getActionCount()));
+				if(descriptor.blocking())
+				{
+					currentTasks.clear();
+				}
+			}
+			actionCounter += currentTaskNew.getActionCount();
+			if(actionCounter >= 10)
+			{
+				System.out.println("Clearing current task list as we have sent " + actionCounter + " actions to the server on this gametick.");
+				currentTasks.clear();
+			}
+			//Moved the blocking check into the run() check because i think it should only block if it runs
+//			currentTaskNew.run();
+//			if (descriptor.blocking())
+//			{
+//				currentTasks.clear();
+//			}
+		}
+
+		/**
+		 * LEGACY TASK SYSTEM
+		 */
+
+//		for (Task task : this.tasks)
+//		{
+////            System.out.println("Iterating tasks");
+//			if (task.sleeping())
+//			{
+//				continue;
+//			}
+//
+//			TaskDescriptor descriptor = this.descriptorHashMap.get(task);
+//			if (descriptor.client() || !task.run())
+//			{
+//				//System.out.println("Not running task -> " + descriptor.name());
+//				continue;
+//			}
+//
+//			this.currentTask = task;
+//			//System.out.println("Current task -> " + descriptor.name());
+//			if (!descriptor.blocking())
+//			{
+//				//System.out.println("Task is not blocking, continuing to next task.");
+//				continue;
+//			}
+//			//System.out.println("Task IS blocking, ending the task loop here until next game tick.");
+//			break;
+//		}
+	}
+
+
+	public void decideTasks()
+	{
 		for (Task task : this.tasks)
 		{
-//            System.out.println("Iterating tasks");
-			if (task.sleeping())
+			if (task instanceof StagedTask)
 			{
-				continue;
+				if (((StagedTask) task).activated())
+				{
+					currentTasks.add(task);
+				}
 			}
-
-			TaskDescriptor descriptor = this.descriptorHashMap.get(task);
-			if (descriptor.client() || !task.run())
+			else
 			{
-				//System.out.println("Not running task -> " + descriptor.name());
-				continue;
+				currentTasks.add(task);
 			}
-
-			this.currentTask = task;
-			//System.out.println("Current task -> " + descriptor.name());
-			if (!descriptor.blocking())
-			{
-				//System.out.println("Task is not blocking, continuing to next task.");
-				continue;
-			}
-			//System.out.println("Task IS blocking, ending the task loop here until next game tick.");
-			break;
 		}
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
+		actionCounter = 0;
+		decideTasks();
+		//System.out.println("current tasks length -> " + currentTasks.size());
+//		for(Task task : currentTasks)
+//		{
+//			TaskDescriptor descriptor = this.descriptorHashMap.get(task);
+//			System.out.println("Task name -> " + descriptor.name());
+//		}
+		//System.out.println();
+		int tasksSize = currentTasks.size();
+		//Upper limit of sleep is between 0 and 25-number of tasks (leaving 5 ticks at the end of the game tick for overhead).
+		int upperBound = tasksSize >= 25 ? 0 : 25-tasksSize;
 		tickCounter++;
-		randomSleep = ThreadLocalRandom.current().nextInt(0, 20);
+		randomSleep = ThreadLocalRandom.current().nextInt(0, upperBound);
+		//System.out.println("Our next random sleep will be " + randomSleep + " client ticks.");
 	}
 
 	public void stop()

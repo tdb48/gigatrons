@@ -53,12 +53,14 @@ public class EnterNex extends StagedTask
 				MousePackets.queueClickPacket();
 				WidgetPackets.queueResumePause(14352385, 1);
 				nexManager.print("Creating instance");
+				incrementActionCount();
 			}
 			else
 			{
 				nexManager.print("Interacting with barrier");
 				MousePackets.queueClickPacket();
 				ObjectPackets.queueObjectAction(nexManager.nexBank.barrier, false, "Pass (private)");
+				incrementActionCount();
 			}
 			return true;
 		}
@@ -76,6 +78,7 @@ public class EnterNex extends StagedTask
 				nexManager.print("Entering instance of " + nexManager.socket.otherName);
 				Dialog.type(nexManager.socket.otherName, true);
 				gameTickManager.setTickWait(5);
+				incrementActionCount();
 				// Enter instance
 			}
 			else if (join != null)
@@ -84,12 +87,14 @@ public class EnterNex extends StagedTask
 				WidgetPackets.queueResumePause(14352385, 2);
 				gameTickManager.setTickWait(2);
 				nexManager.print("Attempting to join instance");
+				incrementActionCount();
 			}
 			else if(nexManager.socket.otherIsInside)
 			{
 				nexManager.print("Interacting with barrier");
 				MousePackets.queueClickPacket();
 				ObjectPackets.queueObjectAction(nexManager.nexBank.barrier, false, "Pass (private)");
+				incrementActionCount();
 			}
 			return true;
 		}

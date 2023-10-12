@@ -36,6 +36,7 @@ public class EnterBank extends StagedTask
 				{
 					nexManager.print("Walking to door");
 					Movement.walk(BANK_TILE);
+					incrementActionCount();
 				}
 			}
 			else
@@ -43,6 +44,7 @@ public class EnterBank extends StagedTask
 				nexManager.print("Opening door");
 				MousePackets.queueClickPacket();
 				ObjectPackets.queueObjectAction(nexManager.nex.bankDoor, false, "Open");
+				incrementActionCount();
 			}
 			return true;
 		}

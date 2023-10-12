@@ -25,6 +25,7 @@ public class DropVial extends Task
 		{
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(vial, "Drop");
+			incrementActionCount();
 			return true;
 		}
 		return false;

@@ -57,6 +57,7 @@ public class NexFinishUp extends StagedTask
 			{
 				nexManager.print("Walking to safety (wrath)");
 				Movement.walk(nexManager.nex.masterMainTile);
+				incrementActionCount();
 			}
 			nexManager.print("Waiting for wrath to disappear");
 			return true;
@@ -71,7 +72,7 @@ public class NexFinishUp extends StagedTask
 				&& healingPotion != null)
 			{
 				nexManager.print("Drinking brew to full");
-				consumable.consume(healingPotion);
+				setActionCount(getActionCount() + consumable.consume(healingPotion));
 			}
 			else if (prayerRestore != null
 				&& (Consumable.isDrained(Skill.PRAYER)
@@ -79,7 +80,7 @@ public class NexFinishUp extends StagedTask
 				|| Consumable.isDrained(Skill.RANGED)))
 			{
 				nexManager.print("Drinking restore for pray or drain");
-				consumable.consume(prayerRestore);
+				setActionCount(getActionCount() + consumable.consume(prayerRestore));
 			}
 		}
 
@@ -91,6 +92,7 @@ public class NexFinishUp extends StagedTask
 			nexManager.print("Picking up " + itemManager.getItemComposition(loot.tileItem.getId()).getName());
 			MousePackets.queueClickPacket();
 			TileItemPackets.queueTileItemAction(loot, false);
+			incrementActionCount();
 		}
 		else if (pet != null
 			&& !gameTickManager.isTickWaiting()
@@ -100,6 +102,7 @@ public class NexFinishUp extends StagedTask
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(pet, "Pick-up");
 			gameTickManager.setTickWait(2);
+			incrementActionCount();
 		}
 		else
 		{

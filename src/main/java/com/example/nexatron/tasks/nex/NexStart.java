@@ -39,6 +39,7 @@ public class NexStart extends StagedTask
 
 		nexManager.print("Walking to start tile at " + nexManager.worldPointString(startTile));
 		Movement.move(startTile);
+		incrementActionCount();
 		return true;
 	}
 

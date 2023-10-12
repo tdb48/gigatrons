@@ -165,12 +165,12 @@ public class Consumable
 		return Inventory.search().withId(ItemID.ANGLERFISH).first().orElse(null);
 	}
 
-	public boolean consume(Widget consumable)
+	public int consume(Widget consumable)
 	{
 		if (consumable == null
 			|| consumable.getActions() == null)
 		{
-			return false;
+			return 0;
 		}
 		String action = "Drink";
 		for (String s : consumable.getActions())
@@ -186,20 +186,22 @@ public class Consumable
 		WidgetPackets.queueWidgetAction(consumable, action);
 		nexManager.shouldReattack = true;
 		gameTickManager.drinkPotion();
-		return true;
+		return 1;
 	}
 
-	public boolean prePot(int item)
+	public int prePot(int item)
 	{
 		if (!InventoryUtil.contains(item))
 		{
 			if (!BankUtil.contains(item))
 			{
 				nexManager.print("Missing " + itemManager.getItemComposition(item).getName());
+				return 0;
 			}
 			else
 			{
 				BankUtil.withdrawOne(item);
+				return 1;
 			}
 		}
 		else
@@ -230,31 +232,31 @@ public class Consumable
 				WidgetPackets.queueWidgetAction(boost, "Drink");
 			}
 			nexManager.print("Drinking/eating " + boost.getName());
+			return 1;
 		}
-		return true;
 	}
 
-	public boolean consumeBrew()
+	public int consumeBrew()
 	{
 		return consume(getBrew());
 	}
 
-	public boolean consumeRestore()
+	public int consumeRestore()
 	{
 		return consume(getRestore());
 	}
 
-	public boolean consumeSCB()
+	public int consumeSCB()
 	{
 		return consume(getSCB());
 	}
 
-	public boolean consumeRange()
+	public int consumeRange()
 	{
 		return consume(getRange());
 	}
 
-	public boolean consumeAnglerf()
+	public int consumeAnglerf()
 	{
 		return consume(getAngler());
 	}

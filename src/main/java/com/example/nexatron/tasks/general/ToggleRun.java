@@ -26,6 +26,7 @@ public class ToggleRun extends Task
 		if (!Movement.isRunEnabled() && Movement.getRunEnergy() >= 1)
 		{
 			Movement.toggleRun();
+			incrementActionCount();
 			return true;
 		}
 		return false;

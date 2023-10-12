@@ -41,24 +41,27 @@ public class AttackShadowMinion extends StagedTask
 		if (!nexManager.hasGearEquipped(setup))
 		{
 			nexManager.print("Equipping gear");
-			nexManager.swap(setup);
+			setActionCount(getActionCount() + nexManager.swap(setup));
 		}
 
 		WorldPoint standTile = decideStandTile();
 		if (nexManager.nex.isNexChasingUs()
 			&& nexManager.nex.nex.getWorldArea().distanceTo(nexManager.nex.centerPoint) >= 2)
 		{
-			nexManager.enableRun(true);
+			setActionCount(getActionCount() + nexManager.enableRun(true));
+//			nexManager.enableRun(true);
 			if (nexManager.nex.distanceToNex() <= 3)
 			{
 				nexManager.print("Stepping under nex " + nexManager.worldPointString(nexManager.nex.getUnderNex()));
 				Movement.walk(nexManager.nex.getUnderNex());
+				incrementActionCount();
 			}
 			else if (standTile != null
 				&& !client.getLocalPlayer().getWorldLocation().equals(standTile))
 			{
 				nexManager.print("Moving to stand tile");
 				Movement.walk(standTile);
+				incrementActionCount();
 			}
 			return true;
 		}
@@ -68,17 +71,20 @@ public class AttackShadowMinion extends StagedTask
 		{
 			if (nexManager.getPlayerPoint().distanceTo(standTile) > 1)
 			{
-				nexManager.enableRun(true);
+				setActionCount(getActionCount() + nexManager.enableRun(true));
+//				nexManager.enableRun(true);
 			}
 			nexManager.print("Moving to stand tile v2");
 			Movement.walk(standTile);
+			incrementActionCount();
 			return true;
 		}
 
 		if (!gameTickManager.isAttackWaiting()
 			&& !client.getLocalPlayer().isInteracting())
 		{
-			nexManager.enableRun(!nexManager.socket.isMaster);
+			setActionCount(getActionCount() + nexManager.enableRun(!nexManager.socket.isMaster));
+//			nexManager.enableRun(!nexManager.socket.isMaster);
 			if ((!nexManager.nex.umbra.isInteracting()
 				|| !nexManager.nex.isInteractingWithUs(nexManager.nex.nex))
 				&& nexManager.socket.isMaster)
@@ -89,6 +95,7 @@ public class AttackShadowMinion extends StagedTask
 			nexManager.print("Attacking umbra");
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(nexManager.nex.umbra, "Attack");
+			incrementActionCount();
 			return true;
 		}
 		return false;

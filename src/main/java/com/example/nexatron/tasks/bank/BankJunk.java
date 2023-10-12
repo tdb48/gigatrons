@@ -35,9 +35,14 @@ public class BankJunk extends StagedTask
 		}
 		if (!BankUtil.isOpen())
 		{
-			return nexManager.nexBank.openBank();
+			if (nexManager.nexBank.openBank() == 0)
+			{
+				return false;
+			}
+			incrementActionCount();
+			return true;
 		}
-		nexManager.bank(junk);
+		setActionCount(nexManager.bank(junk));
 		return true;
 
 	}

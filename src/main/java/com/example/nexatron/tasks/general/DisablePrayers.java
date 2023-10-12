@@ -29,6 +29,7 @@ public class DisablePrayers extends StagedTask
 		if (Prayers.anyActive())
 		{
 			Prayers.disableAll();
+			setActionCount(getActionCount() + Prayers.getActivePrayers().size());
 			return true;
 		}
 		return false;

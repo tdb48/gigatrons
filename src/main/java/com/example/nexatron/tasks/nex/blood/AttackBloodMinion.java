@@ -42,7 +42,8 @@ public class AttackBloodMinion extends StagedTask
 		if (!nexManager.hasGearEquipped(setup))
 		{
 			nexManager.print("Equipping gear");
-			nexManager.swap(setup);
+			setActionCount(getActionCount() + nexManager.swap(setup));
+			//nexManager.swap(setup);
 		}
 
 		if (nexManager.nex.sacrificeActive
@@ -54,6 +55,7 @@ public class AttackBloodMinion extends StagedTask
 			{
 				nexManager.print("Moving to " + nexManager.worldPointString(sacrificeTile));
 				Movement.walk(sacrificeTile);
+				incrementActionCount();
 				return true;
 			}
 		}
@@ -69,6 +71,7 @@ public class AttackBloodMinion extends StagedTask
 			nexManager.print("Attacking cruor");
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(nexManager.nex.cruor, "Attack");
+			incrementActionCount();
 			return true;
 		}
 
@@ -77,6 +80,7 @@ public class AttackBloodMinion extends StagedTask
 			WorldPoint tileUnderNex = nexManager.nex.getUnderNex();
 			nexManager.print("Stepping under nex " + nexManager.worldPointString(tileUnderNex));
 			Movement.walk(tileUnderNex);
+			incrementActionCount();
 			return true;
 		}
 
@@ -86,6 +90,7 @@ public class AttackBloodMinion extends StagedTask
 		{
 			nexManager.print("Moving to prepath tile");
 			Movement.walk(standTile);
+			incrementActionCount();
 			return true;
 		}
 		return false;

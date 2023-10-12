@@ -79,6 +79,7 @@ public class DodgeSmokeDash extends StagedTask
 			}
 			nexManager.print("Walking to start tile at " + nexManager.worldPointString(tile));
 			Movement.move(tile);
+			incrementActionCount();
 			// This is to set it back to the minion tiles, because we used the nex tiles
 			if (nexManager.getStage() == Stage.MINION_SMOKE)
 			{

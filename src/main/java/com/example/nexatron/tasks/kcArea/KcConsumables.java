@@ -38,6 +38,7 @@ public class KcConsumables extends StagedTask
 			nexManager.print("Drinking restore pot");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(restore, "Drink");
+			incrementActionCount();
 			return true;
 		}
 
@@ -48,6 +49,7 @@ public class KcConsumables extends StagedTask
 			nexManager.print("Drinking range pot");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(rangePot, "Drink");
+			incrementActionCount();
 			return true;
 		}
 		Widget anti = Consumable.getAnti();
@@ -57,6 +59,7 @@ public class KcConsumables extends StagedTask
 			nexManager.print("Drinking anti pot");
 			MousePackets.queueClickPacket();
 			WidgetPackets.queueWidgetAction(anti, "Drink");
+			incrementActionCount();
 			return true;
 		}
 

@@ -2,8 +2,11 @@ package com.example.nexatron.taskformat;
 
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.Stage;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 import javax.inject.Inject;
@@ -68,6 +71,15 @@ public abstract class StagedTask extends Task
 
 	public abstract boolean execute();
 
+
+	public List<Stage> getActivationsList()
+	{
+		if(this.activations != null && this.activations.size() > 0)
+		{
+			return new ArrayList<>(this.activations);
+		}
+		return Collections.emptyList();
+	}
 	public Set<Stage> getActivations()
 	{
 		return this.activations;

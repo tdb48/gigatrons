@@ -57,18 +57,26 @@ public class WithdrawSupplies extends StagedTask
 		if (!BankUtil.isOpen())
 		{
 			nexManager.print("Opening bank in supplies");
-			return nexManager.nexBank.openBank();
+			if (nexManager.nexBank.openBank() == 0)
+			{
+				return false;
+			}
+			incrementActionCount();
+			return true;
 		}
 		// If we have too many of a resource, this will return the item id, so we can bank it all and start over
 		if (missingId != -1)
 		{
 			nexManager.print("Wrong supply count, depositing all of " + itemManager.getItemComposition(missingId).getName());
 			BankUtil.depositAll(missingId);
+			incrementActionCount();
 			return true;
 		}
 		return withdrawMissingSupplies(requiredRpot, requiredScb, requiredRestore, requiredBrew);
 	}
 
+	//Incrementing the action count by 1 per withdrawX call (im not sure if its 2 actions for
+	// clicking the X button and then running the script to set value but i've left it as 1 for now
 	public boolean withdrawMissingSupplies(int requiredRpot, int requiredScb, int requiredRestore, int requiredBrew)
 	{
 		Widget bankRestores = Bank.search().withId(RESTORE).first().orElse(null);
@@ -85,24 +93,28 @@ public class WithdrawSupplies extends StagedTask
 		{
 			nexManager.print("Withdrawing " + requiredRpot + " Ranging potions");
 			BankInteraction.withdrawX(bankRpots, requiredRpot);
+			incrementActionCount();
 			returnValue = true;
 		}
 		if (requiredScb > 0)
 		{
 			nexManager.print("Withdrawing " + requiredScb + " Super Combat Potions");
 			BankInteraction.withdrawX(bankScbs, requiredScb);
+			incrementActionCount();
 			returnValue = true;
 		}
 		if (requiredRestore > 0)
 		{
 			nexManager.print("Withdrawing " + requiredRestore + " Super Restores");
 			BankInteraction.withdrawX(bankRestores, requiredRestore);
+			incrementActionCount();
 			returnValue = true;
 		}
 		if (requiredBrew > 0)
 		{
 			nexManager.print("Withdrawing " + requiredBrew + " Saradomin brews");
 			BankInteraction.withdrawX(bankBrews, requiredBrew);
+			incrementActionCount();
 			returnValue = true;
 		}
 		return returnValue;

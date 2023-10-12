@@ -278,13 +278,14 @@ public class NexManager
 		return client.getLocalPlayer().getWorldLocation();
 	}
 
-	public void enableRun(boolean enable)
+	public int enableRun(boolean enable)
 	{
 		if (enable)
 		{
 			if (!Movement.isRunEnabled() && Movement.getRunEnergy() >= 1)
 			{
 				Movement.toggleRun();
+				return 1;
 			}
 		}
 		else
@@ -292,8 +293,10 @@ public class NexManager
 			if (Movement.isRunEnabled())
 			{
 				Movement.toggleRun();
+				return 1;
 			}
 		}
+		return 0;
 	}
 
 	public boolean containsStage(Stage... stages)
@@ -414,11 +417,11 @@ public class NexManager
 		return true;
 	}
 
-	public void bank(ArrayList<Widget> items)
+	public int bank(ArrayList<Widget> items)
 	{
 		if (!BankUtil.isOpen())
 		{
-			return;
+			return 0;
 		}
 		int swaps = (int) (3 + (Math.abs(random.nextGaussian() * 1.5)));
 		int counter = 0;
@@ -426,12 +429,13 @@ public class NexManager
 		{
 			if (counter == swaps)
 			{
-				return;
+				return counter;
 			}
 			print("Banking " + itemManager.getItemComposition(item.getItemId()).getName());
 			BankUtil.depositAll(item.getItemId());
 			counter++;
 		}
+		return counter;
 	}
 
 	public boolean isAntiPoisoned()
@@ -439,7 +443,7 @@ public class NexManager
 		return Static.getClient().getVarpValue(VarPlayer.POISON) < -35;
 	}
 
-	public void swap(ArrayList<Integer> gearList)
+	public int swap(ArrayList<Integer> gearList)
 	{
 		int swaps = (int) (3 + (Math.abs(random.nextGaussian() * 1.5)));
 		int counter = 0;
@@ -514,7 +518,7 @@ public class NexManager
 			{
 				if (counter == swaps)
 				{
-					return;
+					return counter;
 				}
 				int slot = 0;
 				ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
@@ -566,7 +570,7 @@ public class NexManager
 			{
 				if (counter == swaps)
 				{
-					return;
+					return counter;
 				}
 				int slot = 0;
 				ItemContainer invent = client.getItemContainer(InventoryID.INVENTORY.getId());
@@ -612,6 +616,7 @@ public class NexManager
 				}
 			}
 		}
+		return counter;
 	}
 
 
@@ -644,7 +649,7 @@ public class NexManager
 		return unNecessaryItems;
 	}
 
-	public void withdraw(ArrayList<Integer> items)
+	public int withdraw(ArrayList<Integer> items)
 	{
 		int swaps = (int) (3 + (Math.abs(random.nextGaussian() * 1.5)));
 		int counter = 0;
@@ -652,7 +657,7 @@ public class NexManager
 		{
 			if (counter == swaps)
 			{
-				return;
+				break;
 			}
 			if (!BankUtil.contains(item))
 			{
@@ -662,14 +667,14 @@ public class NexManager
 			{
 				print("Withdrawing all" + itemManager.getItemComposition(item).getName());
 				BankUtil.withdrawAll(item);
-				counter++;
 			}
 			else
 			{
 				print("Withdrawing " + itemManager.getItemComposition(item).getName());
 				BankUtil.withdrawOne(item);
-				counter++;
 			}
+			counter++;
 		}
+		return counter;
 	}
 }

@@ -41,7 +41,7 @@ public class AttackSmokeMinion extends StagedTask
 		if (!nexManager.hasGearEquipped(setup))
 		{
 			nexManager.print("Equipping gear");
-			nexManager.swap(setup);
+			setActionCount(getActionCount() + nexManager.swap(setup));
 		}
 
 		WorldPoint mainTile;
@@ -59,17 +59,20 @@ public class AttackSmokeMinion extends StagedTask
 		if (nexManager.nex.isNexChasingUs()
 			&& nexManager.nex.nex.getWorldArea().distanceTo(nexManager.nex.centerPoint) >= 4)
 		{
-			nexManager.enableRun(true);
+			setActionCount(getActionCount() + nexManager.enableRun(true));
+//			nexManager.enableRun(true);
 			if (nexManager.nex.distanceToNex() <= 3)
 			{
 				nexManager.print("Stepping under nex " + nexManager.worldPointString(nexManager.nex.getUnderNex()));
 				Movement.walk(nexManager.nex.getUnderNex());
+				incrementActionCount();
 			}
 			else if (mainTile != null
 				&& !client.getLocalPlayer().getWorldLocation().equals(mainTile))
 			{
 				nexManager.print("Moving to main tile");
 				Movement.walk(mainTile);
+				incrementActionCount();
 			}
 			return true;
 		}
@@ -79,20 +82,24 @@ public class AttackSmokeMinion extends StagedTask
 		{
 			if (nexManager.getPlayerPoint().distanceTo(mainTile) > 1)
 			{
-				nexManager.enableRun(true);
+				setActionCount(getActionCount() + nexManager.enableRun(true));
+//				nexManager.enableRun(true);
 			}
 			nexManager.print("Moving to main tile");
 			Movement.walk(mainTile);
+			incrementActionCount();
 			return true;
 		}
 
 		if (!gameTickManager.isAttackWaiting()
 			&& !client.getLocalPlayer().isInteracting())
 		{
-			nexManager.enableRun(!nexManager.socket.isMaster);
+			setActionCount(getActionCount() + nexManager.enableRun(!nexManager.socket.isMaster));
+//			nexManager.enableRun(!nexManager.socket.isMaster);
 			nexManager.print("Attacking fumus");
 			MousePackets.queueClickPacket();
 			NPCPackets.queueNPCAction(nexManager.nex.fumus, "Attack");
+			incrementActionCount();
 			return true;
 		}
 		return false;

@@ -43,14 +43,15 @@ public class Combat
 		return Static.getClient().getVarpValue(SPEC_ENERGY_VARP) / 10;
 	}
 
-	public static void toggleSpec()
+	public static int toggleSpec()
 	{
 		if (isSpecEnabled())
 		{
-			return;
+			return 0;
 		}
 		MousePackets.queueClickPacket();
 		WidgetPackets.queueWidgetActionPacket(1, 38862884, -1, -1);
+		return 1;
 	}
 
 	public static AttackStyle getAttackStyle()
