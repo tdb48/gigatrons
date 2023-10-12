@@ -71,6 +71,13 @@ public class ProgressStage extends Task
 			}
 			return true;
 		}
+		if (NexConst.TROLLHEIM.contains(nexManager.getPlayerPoint())
+			|| NexConst.GWD.contains(nexManager.getPlayerPoint())
+			|| NexConst.GWD_OUTSIDE.contains(nexManager.getPlayerPoint()))
+		{
+			nexManager.setStage(Stage.RUN_TO_NEX);
+			return true;
+		}
 		else
 		{
 			if (nexManager.getStage().equals(Stage.NEX_ICE)

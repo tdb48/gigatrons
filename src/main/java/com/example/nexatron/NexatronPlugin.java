@@ -18,9 +18,9 @@ import com.example.nexatron.tasks.bank.PrePot;
 import com.example.nexatron.tasks.bank.WithdrawSupplies;
 import com.example.nexatron.tasks.general.DisablePrayers;
 import com.example.nexatron.tasks.general.DropVial;
-import com.example.nexatron.tasks.general.EnterKcArea;
+import com.example.nexatron.tasks.lobby.EnterKcArea;
 import com.example.nexatron.tasks.general.ProgressStage;
-import com.example.nexatron.tasks.general.Reattack;
+import com.example.nexatron.tasks.general.RunToNex;
 import com.example.nexatron.tasks.general.SetFangStyle;
 import com.example.nexatron.tasks.general.ToggleRun;
 import com.example.nexatron.tasks.kcArea.EnterBank;
@@ -48,7 +48,6 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
@@ -141,6 +140,7 @@ public class NexatronPlugin extends Plugin
 			KcConsumables.class,
 			BreakLog.class,
 			LeaveBank.class,
+			RunToNex.class,
 		};
 	}
 

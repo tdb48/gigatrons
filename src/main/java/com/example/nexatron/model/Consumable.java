@@ -149,6 +149,18 @@ public class Consumable
 		return null;
 	}
 
+	public static Widget getStamina()
+	{
+		for (int i : STAM)
+		{
+			if (Inventory.search().withId(i).first().orElse(null) != null)
+			{
+				return Inventory.search().withId(i).first().orElse(null);
+			}
+		}
+		return null;
+	}
+
 	public static Widget getRange()
 	{
 		for (int i : RANGE)

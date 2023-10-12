@@ -19,6 +19,11 @@ public class NexConst
 	public static final int FANG_SLASH_ANIMATION = 390;
 	public static final int FANG_SPEC_ANIMATION = 6118;
 	public static final int ZCB_ANIMATION = 9168;
+	public static final int TROLLHEIM_ROCKS = 3803;
+	public static final int TROLLHEIM_TO_GWD_CRAWL = 26382;
+	public static final int GWD_ENTRANCE = 26419;
+	public static final int NEX_DOOR = 42841;
+
 	public static final ArrayList<Integer> DARTS = new ArrayList<>(Arrays.asList(1043, 1936, 1122));
 	public static final Set<Integer> KC_LOOT = Set.of(
 		ItemID.SUPER_RESTORE3,
@@ -84,6 +89,18 @@ public class NexConst
 	public static final WorldArea LOBBY_AREA = WorldAreas.createArea(
 		new WorldPoint(2850, 5216, 0),
 		new WorldPoint(2862, 5231, 0));
+	public static final WorldArea TROLLHEIM_TELEPORT_AREA = WorldAreas.createArea(
+		new WorldPoint(2886, 3667, 0),
+		new WorldPoint(2896, 3684, 0));
+	public static final WorldArea TROLLHEIM = WorldAreas.createArea(
+		new WorldPoint(2866, 3665, 0),
+		new WorldPoint(2924, 3717, 0));
+	public static final WorldArea GWD_OUTSIDE = WorldAreas.createArea(
+		new WorldPoint(2896, 3719, 0),
+		new WorldPoint(2926, 3750, 0));
+	public static final WorldArea GWD = WorldAreas.createArea(
+		new WorldPoint(2869, 5275, 2),
+		new WorldPoint(2900, 5314, 2));
 	public static final int NEX_SMOKE_PROC = 2720;
 	public static final int NEX_SHADOW_PROC = 2040;
 	public static final int NEX_BLOOD_PROC = 1360;

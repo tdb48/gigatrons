@@ -1,4 +1,4 @@
-package com.example.nexatron.tasks.general;
+package com.example.nexatron.tasks.lobby;
 
 
 import com.example.EthanApiPlugin.Collections.Equipment;

@@ -16,6 +16,7 @@ public enum Stage
 	NEX_ZAROS,
 	NEX_START,
 	NEX_DEAD,
+	RUN_TO_NEX,
 	NONE;
 
 	Stage()
