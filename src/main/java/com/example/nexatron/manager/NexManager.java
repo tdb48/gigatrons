@@ -14,6 +14,7 @@ import com.example.Utility.BankUtil;
 import com.example.Utility.Hopping;
 import com.example.Utility.InventoryUtil;
 import com.example.Utility.Movement;
+import com.example.Utility.Prayer;
 import com.example.Utility.Static;
 import com.example.Utility.WidgetUtil;
 import com.example.nexatron.NexatronConfig;
@@ -56,9 +57,11 @@ import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 
 @Singleton
@@ -97,6 +100,9 @@ public class NexManager
 	@Inject
 	private ReflectBreakHandler chinBreakHandler;
 	private Stage stage = Stage.NONE;
+	public ArrayList<Prayer> prayers = new ArrayList<>();
+	public ArrayList<Widget> switches = new ArrayList<>();
+	public int totalClientTicks = 0;
 
 	@Inject
 	public NexManager(EventBus eventBus, Client client, NexatronConfig config, NexatronPlugin plugin)
@@ -109,8 +115,11 @@ public class NexManager
 
 	public void fullReset()
 	{
+		totalClientTicks = 0;
 		stage = Stage.NONE;
 		shouldReattack = false;
+		prayers = new ArrayList<>();
+		switches = new ArrayList<>();
 	}
 
 
@@ -146,6 +155,14 @@ public class NexManager
 			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", msg, "");
 		}
 	}
+
+
+	@Subscribe
+	public void onClientTick(ClientTick event)
+	{
+		totalClientTicks++;
+	}
+
 	public boolean hasGearEquipped(ArrayList<Integer> gearList)
 	{
 		for (int i : gearList)

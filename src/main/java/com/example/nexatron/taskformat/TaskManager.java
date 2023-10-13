@@ -1,6 +1,8 @@
 package com.example.nexatron.taskformat;
 
+import com.example.Utility.Prayers;
 import com.example.Utility.Static;
+import com.example.nexatron.manager.NexManager;
 import com.google.inject.Injector;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -16,6 +18,8 @@ import org.slf4j.LoggerFactory;
 
 public class TaskManager
 {
+	@Inject
+	NexManager nexManager;
 	private static final Logger log = LoggerFactory.getLogger(TaskManager.class);
 	private final CopyOnWriteArrayList<Task> tasks = new CopyOnWriteArrayList<>();
 	private final HashMap<Task, TaskDescriptor> descriptorHashMap = new HashMap<>();
@@ -129,12 +133,29 @@ public class TaskManager
 		if (!currentTasks.isEmpty())
 		{
 			currentTaskNew = currentTasks.get(0);
-			currentTasks.remove(currentTaskNew);
-			if (currentTaskNew.sleeping())
-			{
-				return;
-			}
 			TaskDescriptor descriptor = this.descriptorHashMap.get(currentTaskNew);
+			if (descriptor.name().equals("Pray")
+				&& Prayers.getPoints() > 0
+				&& !nexManager.prayers.isEmpty())
+			{
+				// If it runs, that means we need to do it again so we dont want to remove it
+				if (currentTaskNew.run())
+				{
+					if (descriptor.blocking())
+					{
+						currentTasks.clear();
+					}
+				}
+				else
+				{
+					currentTasks.remove(currentTaskNew);
+				}
+			}
+			else
+			{
+				currentTasks.remove(currentTaskNew);
+			}
+
 			//resetting the action counter to 0 for this task, it will be incremented based on how many actions are performed during the tasks run() call
 			currentTaskNew.setActionCount(0);
 			if (currentTaskNew.run())

@@ -36,7 +36,7 @@ public class KcPrayer extends StagedTask
 		}
 		if (!this.getPrayers().isEmpty())
 		{
-			if (nexManager.config.prayFlickKc() && Prayers.hasEnabled(getPrayers()))
+			if (nexManager.config.prayFlick() && Prayers.hasEnabled(getPrayers()))
 			{
 				for (Prayer prayer : getPrayers())
 				{

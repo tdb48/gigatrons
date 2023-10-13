@@ -16,7 +16,6 @@ import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
-import static com.example.nexatron.tasks.nex.NexPrayers.AUGURY_UNLOCKED;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import net.runelite.api.TileObject;
@@ -34,6 +33,7 @@ public class RunToNex extends StagedTask
 	public static final WorldPoint TROLLHEIM_CRAWL_TILE = new WorldPoint(2899, 3706, 0);
 	public static final WorldPoint GWD_ENTRANCE_TILE = new WorldPoint(2914, 3745, 0);
 	public static final WorldPoint NEX_ENTRANCE_TILE = new WorldPoint(2883, 5280, 2);
+	public static final int AUGURY_UNLOCKED = 5452;
 
 	@Inject
 	public RunToNex(NexManager nexManager)
