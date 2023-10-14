@@ -41,11 +41,6 @@ public class AttackShadowNex extends StagedTask
 			return false;
 		}
 		setActionCount(getActionCount() + nexManager.enableRun(true));
-		if (!nexManager.hasGearEquipped(nexManager.gearSetup))
-		{
-			nexManager.print("Equipping gear");
-			setActionCount(getActionCount() + nexManager.swap(nexManager.gearSetup));
-		}
 
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
 			&& !Combat.isSpecEnabled()

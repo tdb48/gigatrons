@@ -58,6 +58,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
@@ -103,7 +104,7 @@ public class NexManager
 	public ArrayList<Integer> gearSetup = new ArrayList<>();
 	public ArrayList<Integer> switchesLeft = new ArrayList<>();
 	public int totalClientTicks = 0;
-
+	public int clientTick = 0;
 	@Inject
 	public NexManager(EventBus eventBus, Client client, NexatronConfig config, NexatronPlugin plugin)
 	{
@@ -115,6 +116,7 @@ public class NexManager
 
 	public void fullReset()
 	{
+		clientTick = 0;
 		totalClientTicks = 0;
 		stage = Stage.NONE;
 		shouldReattack = false;
@@ -152,7 +154,7 @@ public class NexManager
 	{
 		if (config.debug() && client.isClientThread())
 		{
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", msg, "");
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", clientTick + ": " + msg, "");
 		}
 	}
 
@@ -161,6 +163,13 @@ public class NexManager
 	public void onClientTick(ClientTick event)
 	{
 		totalClientTicks++;
+		clientTick++;
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		clientTick = 0;
 	}
 
 	public boolean hasGearEquipped(ArrayList<Integer> gearList)

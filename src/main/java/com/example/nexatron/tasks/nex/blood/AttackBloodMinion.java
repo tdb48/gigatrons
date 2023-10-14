@@ -38,13 +38,6 @@ public class AttackBloodMinion extends StagedTask
 			return false;
 		}
 
-		if (!nexManager.hasGearEquipped(nexManager.gearSetup))
-		{
-			nexManager.print("Equipping gear");
-			setActionCount(getActionCount() + nexManager.swap(nexManager.gearSetup));
-			//nexManager.swap(setup);
-		}
-
 		if (nexManager.nex.sacrificeActive
 			&& nexManager.nex.distanceToNex() <= 8)
 		{

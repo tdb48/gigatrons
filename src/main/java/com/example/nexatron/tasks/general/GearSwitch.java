@@ -50,7 +50,6 @@ public class GearSwitch extends StagedTask
 	{
 		if (nexManager.switchesLeft.isEmpty())
 		{
-			nexManager.print("No switches left");
 			return false;
 		}
 		ArrayList<Integer> item = new ArrayList<>();
@@ -64,13 +63,8 @@ public class GearSwitch extends StagedTask
 	@Subscribe(priority = 10)
 	public void onGameTick(GameTick gameTick)
 	{
-		System.out.println("New tick ");
 		nexManager.gearSetup = findSetup();
 		nexManager.switchesLeft = getRemainingSwitches(nexManager.gearSetup);
-		for (int i : nexManager.switchesLeft)
-		{
-			System.out.println("Need this still: " + itemManager.getItemComposition(i).getName());
-		}
 		System.out.println("");
 	}
 
@@ -95,6 +89,10 @@ public class GearSwitch extends StagedTask
 
 	public ArrayList<Integer> findSetup()
 	{
+		if (nexManager.nex.shouldTeleport())
+		{
+			return nexManager.nex.setup.rangeNex();
+		}
 		switch (nexManager.getStage())
 		{
 			case BANK:
@@ -222,7 +220,7 @@ public class GearSwitch extends StagedTask
 				{
 					return nexManager.nex.setup.rangeNex();
 				}
-				if (gameTickManager.attackWait > 1)
+				if (gameTickManager.attackWait > 2)
 				{
 					return nexManager.nex.setup.defensiveNex();
 				}

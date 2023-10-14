@@ -42,11 +42,6 @@ public class AttackIceNex extends StagedTask
 			return false;
 		}
 
-		if (!nexManager.hasGearEquipped(nexManager.gearSetup))
-		{
-			nexManager.print("Equipping gear");
-			setActionCount(getActionCount() + nexManager.swap(nexManager.gearSetup));
-		}
 
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
 			&& !Combat.isSpecEnabled()

@@ -1,13 +1,18 @@
 package com.example.nexatron.model;
 
+import com.example.EthanApiPlugin.Collections.ETileItem;
 import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.EthanApiPlugin.Collections.Players;
+import com.example.EthanApiPlugin.Collections.TileItems;
 import com.example.EthanApiPlugin.Collections.TileObjects;
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Utility.Combat;
+import com.example.Utility.InventoryUtil;
 import com.example.Utility.ObjectUtil;
+import com.example.Utility.Prayers;
 import com.example.Utility.Reachable;
+import com.example.Utility.TileItemUtil;
 import com.example.Utility.WorldAreas;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
@@ -38,6 +43,7 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -770,6 +776,47 @@ public class Nex
 			return true;
 		}
 		return nex.getPoseAnimation() == NexConst.NEX_CHASE_POSE_ANIMATION;
+	}
+
+
+
+	public boolean shouldTeleport()
+	{
+		if (findLoot() != null
+			&& !InventoryUtil.isFull())
+		{
+			return false;
+		}
+		Widget brew = Consumable.getBrew();
+		Widget restore = Consumable.getRestore();
+		Player otherPlayer = nexManager.socket.getOtherPlayer();
+		return nexManager.nex.teleportOut
+			|| (restore == null && Prayers.getPoints() <= 5)
+			|| (brew == null && Combat.getCurrentHealth() <= 60)
+			|| (otherPlayer == null
+			&& !nexManager.getStage().equals(Stage.NEX_ZAROS)
+			&& !nexManager.getStage().equals(Stage.NEX_DEAD)
+			&& !nexManager.getStage().equals(Stage.NEX_START));
+	}
+
+	public ETileItem findLoot()
+	{
+		ArrayList<ETileItem> potentialLoot = TileItemUtil.getAllETileItems(NexConst.HIGH_PRIO_LOOT);
+		if (!potentialLoot.isEmpty())
+		{
+			return potentialLoot.get(0);
+		}
+		potentialLoot = TileItemUtil.getAllETileItems(NexConst.LOW_PRIO_LOOT);
+		if (!potentialLoot.isEmpty())
+		{
+			return potentialLoot.get(0);
+		}
+		potentialLoot = (ArrayList<ETileItem>) TileItems.search().stackAboveXValue(1000000).result();
+		if (!potentialLoot.isEmpty())
+		{
+			return potentialLoot.get(0);
+		}
+		return null;
 	}
 
 	public int hpUntilProc()

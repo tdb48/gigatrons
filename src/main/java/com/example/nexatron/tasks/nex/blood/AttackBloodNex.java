@@ -48,11 +48,6 @@ public class AttackBloodNex extends StagedTask
 		setActionCount(getActionCount() + nexManager.enableRun(true));
 //		nexManager.enableRun(true);
 		NPC target = nexManager.bloodNexDecideTarget();
-		if (!nexManager.hasGearEquipped(nexManager.gearSetup))
-		{
-			nexManager.print("Equipping gear");
-			setActionCount(getActionCount() + nexManager.swap(nexManager.gearSetup));
-		}
 
 		if (target == null)
 		{

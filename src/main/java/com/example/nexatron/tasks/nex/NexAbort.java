@@ -47,62 +47,17 @@ public class NexAbort extends StagedTask
 	public boolean execute()
 	{
 		if (nexManager.nex.altar == null
-			|| !shouldTeleport())
+			|| !nexManager.nex.shouldTeleport())
 		{
 			return false;
 		}
 		setActionCount(getActionCount() + nexManager.enableRun(true));
 //		nexManager.enableRun(true);
 		// To make sure we have an ancient item equipped when leaving!
-		if (!nexManager.hasGearEquipped(nexManager.nex.setup.rangeNex()))
-		{
-			nexManager.print("Equipping range gear");
-			setActionCount(getActionCount() + nexManager.swap(nexManager.nex.setup.rangeNex()));
-			//nexManager.swap(nexManager.nex.setup.rangeNex());
-		}
 		MousePackets.queueClickPacket();
 		ObjectPackets.queueObjectAction(nexManager.nex.altar, false, "Teleport");
 		incrementActionCount();
 		return true;
-	}
-
-	public boolean shouldTeleport()
-	{
-		if (findLoot() != null
-			&& !InventoryUtil.isFull())
-		{
-			return false;
-		}
-		Widget brew = Consumable.getBrew();
-		Widget restore = Consumable.getRestore();
-		Player otherPlayer = nexManager.socket.getOtherPlayer();
-		return nexManager.nex.teleportOut
-			|| (restore == null && Prayers.getPoints() <= 5)
-			|| (brew == null && Combat.getCurrentHealth() <= 60)
-			|| (otherPlayer == null
-			&& !nexManager.getStage().equals(Stage.NEX_ZAROS)
-			&& !nexManager.getStage().equals(Stage.NEX_DEAD)
-			&& !nexManager.getStage().equals(Stage.NEX_START));
-	}
-
-	public ETileItem findLoot()
-	{
-		ArrayList<ETileItem> potentialLoot = TileItemUtil.getAllETileItems(NexConst.HIGH_PRIO_LOOT);
-		if (!potentialLoot.isEmpty())
-		{
-			return potentialLoot.get(0);
-		}
-		potentialLoot = TileItemUtil.getAllETileItems(NexConst.LOW_PRIO_LOOT);
-		if (!potentialLoot.isEmpty())
-		{
-			return potentialLoot.get(0);
-		}
-		potentialLoot = (ArrayList<ETileItem>) TileItems.search().stackAboveXValue(1000000).result();
-		if (!potentialLoot.isEmpty())
-		{
-			return potentialLoot.get(0);
-		}
-		return null;
 	}
 
 }

@@ -42,12 +42,6 @@ public class AttackIceMinion extends StagedTask
 			return false;
 		}
 
-		if (!nexManager.hasGearEquipped(nexManager.gearSetup))
-		{
-			nexManager.print("Equipping gear");
-			setActionCount(getActionCount() + nexManager.swap(nexManager.gearSetup));
-		}
-
 		// If there's a prison, and it's not on us, free the other person
 		if (nexManager.nex.prisonActive
 			&& nexManager.nex.stuckInPrisonTick == 0)

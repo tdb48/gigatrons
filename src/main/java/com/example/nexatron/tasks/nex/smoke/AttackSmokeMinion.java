@@ -37,11 +37,6 @@ public class AttackSmokeMinion extends StagedTask
 			return false;
 		}
 
-		if (!nexManager.hasGearEquipped(nexManager.gearSetup))
-		{
-			nexManager.print("Equipping gear");
-			setActionCount(getActionCount() + nexManager.swap(nexManager.gearSetup));
-		}
 
 		WorldPoint mainTile;
 		if (!nexManager.socket.isMaster

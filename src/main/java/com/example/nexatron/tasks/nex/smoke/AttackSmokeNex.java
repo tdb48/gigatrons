@@ -35,12 +35,6 @@ public class AttackSmokeNex extends StagedTask
 		}
 
 
-		if (!nexManager.hasGearEquipped(nexManager.gearSetup))
-		{
-			nexManager.print("Equipping gear");
-			setActionCount(getActionCount() + nexManager.swap(nexManager.gearSetup));
-		}
-
 		// Step under on tick 1 if boss is interacting with us
 		if (nexManager.nex.nexAttackTick == 2
 			&& nexManager.nex.nex.isInteracting()

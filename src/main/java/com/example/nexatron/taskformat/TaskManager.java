@@ -259,6 +259,10 @@ public class TaskManager
 		int tasksSize = currentTasks.size();
 		//Upper limit of sleep is between 0 and 25-number of tasks (leaving 5 ticks at the end of the game tick for overhead).
 		int upperBound = tasksSize >= 25 ? 0 : 25 - tasksSize;
+		if (upperBound == 0)
+		{
+			upperBound = 1;
+		}
 		tickCounter++;
 		randomSleep = ThreadLocalRandom.current().nextInt(0, upperBound);
 		//System.out.println("Our next random sleep will be " + randomSleep + " client ticks.");
