@@ -37,12 +37,6 @@ public class AttackShadowMinion extends StagedTask
 			return false;
 		}
 
-		ArrayList<Integer> setup = nexManager.nex.setup.rangeNex();
-		if (!nexManager.hasGearEquipped(setup))
-		{
-			nexManager.print("Equipping gear");
-			setActionCount(getActionCount() + nexManager.swap(setup));
-		}
 
 		WorldPoint standTile = decideStandTile();
 		if (nexManager.nex.isNexChasingUs()

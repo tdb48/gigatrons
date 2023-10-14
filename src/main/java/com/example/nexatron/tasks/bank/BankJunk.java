@@ -7,6 +7,7 @@ import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
 import javax.inject.Inject;
+import net.runelite.api.ItemID;
 import net.runelite.api.widgets.Widget;
 
 @TaskDescriptor(
@@ -25,16 +26,6 @@ public class BankJunk extends StagedTask
 	public boolean execute()
 	{
 		ArrayList<Widget> junk = nexManager.getJunk();
-		if (nexManager.hasGearEquipped(nexManager.setup.rangeKc())
-			&& !nexManager.shouldKc())
-		{
-			nexManager.print("Banking all junk");
-			BankUtil.depositInventory();
-			BankUtil.depositInventory();
-			incrementActionCount();
-			incrementActionCount();
-			return true;
-		}
 		if (junk.isEmpty())
 		{
 			return false;
@@ -45,6 +36,16 @@ public class BankJunk extends StagedTask
 			{
 				return false;
 			}
+			incrementActionCount();
+			return true;
+		}
+		if (nexManager.hasEquipped(ItemID.TOXIC_BLOWPIPE)
+			&& !nexManager.shouldKc())
+		{
+			nexManager.print("Banking all junk");
+			BankUtil.depositInventory();
+			BankUtil.depositEquipment();
+			incrementActionCount();
 			incrementActionCount();
 			return true;
 		}

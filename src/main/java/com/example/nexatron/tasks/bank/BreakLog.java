@@ -2,7 +2,6 @@ package com.example.nexatron.tasks.bank;
 
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Utility.Game;
-import com.example.Utility.Movement;
 import com.example.Utility.WorldAreas;
 import com.example.nexatron.NexatronPlugin;
 import com.example.nexatron.manager.GameTickManager;
@@ -10,8 +9,6 @@ import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
-import java.util.ArrayList;
-import java.util.Collections;
 import javax.inject.Inject;
 import net.runelite.api.GameState;
 import net.runelite.api.coords.WorldArea;
@@ -47,25 +44,14 @@ public class BreakLog extends StagedTask
 	{
 		if (plugin.finishKill)
 		{
-			if (!gameTickManager.isTickWaiting())
+			if (gameTickManager.isTickWaiting())
 			{
-				ArrayList<WorldPoint> potentialTiles = (ArrayList<WorldPoint>) BREAK_AREA.toWorldPointList();
-				Collections.shuffle(potentialTiles);
-				logOutTile = potentialTiles.get(0);
-				gameTickManager.setTickWait(5);
+				return true;
 			}
-			if (!BREAK_AREA.contains(nexManager.getPlayerPoint())
-				&& logOutTile != null
-				&& nexManager.socket.isSlave())
-			{
-				Movement.walk(logOutTile);
-				nexManager.print("Walking to log out tile " + nexManager.worldPointString(logOutTile));
-			}
-			else
-			{
-				nexManager.print("Logging out");
-				Game.logout();
-			}
+			gameTickManager.setTickWait(4);
+			nexManager.print("Logging out");
+			Game.logout();
+
 			return true;
 		}
 		return false;

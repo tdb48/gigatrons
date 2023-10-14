@@ -50,7 +50,7 @@ public class SocketInfoBox extends OverlayPanel
 		panelComponent.getChildren().add(LineComponent.builder().left("Master ").right(String.valueOf(plugin.nexManager.socket.isMaster)).rightColor(plugin.nexManager.socket.isMaster ? Color.GREEN : Color.RED).build());
 		panelComponent.getChildren().add(LineComponent.builder().left("Other Player ").right(String.valueOf(plugin.nexManager.socket.otherName)).build());
 //		panelComponent.getChildren().add(LineComponent.builder().left("Teleport out ").right(String.valueOf(plugin.nexManager.socket.teleportOut)).build());
-//		panelComponent.getChildren().add(LineComponent.builder().left("Is ready out ").right(String.valueOf(plugin.nexManager.socket.readyToStart)).rightColor(plugin.nexManager.socket.readyToStart ? Color.GREEN : Color.RED).build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Us ready ").right(String.valueOf(plugin.nexManager.socket.readyToStart)).rightColor(plugin.nexManager.socket.readyToStart ? Color.GREEN : Color.RED).build());
 		panelComponent.getChildren().add(LineComponent.builder().left("Other Ready ").right(String.valueOf(plugin.nexManager.socket.otherReadyToStart)).rightColor(plugin.nexManager.socket.otherReadyToStart ? Color.GREEN : Color.RED).build());
 		panelComponent.getChildren().add(LineComponent.builder().left("Other Inside ").right(String.valueOf(plugin.nexManager.socket.otherIsInside)).rightColor(plugin.nexManager.socket.otherIsInside ? Color.GREEN : Color.RED).build());
 		panelComponent.getChildren().add(LineComponent.builder().left("Other World ").right(String.valueOf(plugin.nexManager.socket.otherWorld)).build());

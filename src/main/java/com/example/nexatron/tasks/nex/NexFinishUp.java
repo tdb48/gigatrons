@@ -84,7 +84,7 @@ public class NexFinishUp extends StagedTask
 			}
 		}
 
-		ETileItem loot = findLoot();
+		ETileItem loot = nexManager.nex.findLoot();
 		NPC pet = NPCs.search().withAction("Pick-up").interactingWith(client.getLocalPlayer()).first().orElse(null);
 		if (loot != null
 			&& !InventoryUtil.isFull())
@@ -121,25 +121,6 @@ public class NexFinishUp extends StagedTask
 		return true;
 	}
 
-	public ETileItem findLoot()
-	{
-		ArrayList<ETileItem> potentialLoot = TileItemUtil.getAllETileItems(NexConst.HIGH_PRIO_LOOT);
-		if (!potentialLoot.isEmpty())
-		{
-			return potentialLoot.get(0);
-		}
-		potentialLoot = TileItemUtil.getAllETileItems(NexConst.LOW_PRIO_LOOT);
-		if (!potentialLoot.isEmpty())
-		{
-			return potentialLoot.get(0);
-		}
-		potentialLoot = (ArrayList<ETileItem>) TileItems.search().stackAboveXValue(1000000).result();
-		if (!potentialLoot.isEmpty())
-		{
-			return potentialLoot.get(0);
-		}
-		return null;
-	}
 
 }
 

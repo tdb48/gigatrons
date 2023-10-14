@@ -31,9 +31,8 @@ public class GetRequiredItems extends StagedTask
 	public boolean execute()
 	{
 		ArrayList<Integer> requiredItems = nexManager.nexBank.requiredItems();
-		ArrayList<Integer> setup = decideSetup();
 		if (nexManager.hasAllItems(requiredItems)
-			&& nexManager.hasGearEquipped(setup))
+			&& nexManager.hasGearEquipped(nexManager.gearSetup))
 		{
 			nexManager.socket.readyToStart = true;
 			return false;
@@ -61,12 +60,12 @@ public class GetRequiredItems extends StagedTask
 		}
 
 		requiredItems.removeAll(InventoryUtil.getAllPlayerItems());
-		if (!nexManager.hasGearEquipped(setup)
-			&& InventoryUtil.hasItem(setup))
-		{
-			nexManager.print("Equipping gear");
-			setActionCount(getActionCount() + nexManager.swap(setup));
-		}
+//		if (!nexManager.hasGearEquipped(nexManager.gearSetup)
+//			&& InventoryUtil.hasItem(nexManager.gearSetup))
+//		{
+//			nexManager.print("Equipping gear");
+//			setActionCount(getActionCount() + nexManager.swap(nexManager.gearSetup));
+//		}
 
 		if (!nexManager.hasAllItems(requiredItems))
 		{
@@ -75,14 +74,5 @@ public class GetRequiredItems extends StagedTask
 			return true;
 		}
 		return false;
-	}
-
-	public ArrayList<Integer> decideSetup()
-	{
-		if (nexManager.shouldKc())
-		{
-			return nexManager.setup.rangeKc();
-		}
-		return nexManager.socket.isMaster ? nexManager.setup.rangeNex() : nexManager.setup.meleeNex();
 	}
 }

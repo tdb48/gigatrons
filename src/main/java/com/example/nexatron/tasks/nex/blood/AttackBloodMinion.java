@@ -38,14 +38,6 @@ public class AttackBloodMinion extends StagedTask
 			return false;
 		}
 
-		ArrayList<Integer> setup = decideSetup();
-		if (!nexManager.hasGearEquipped(setup))
-		{
-			nexManager.print("Equipping gear");
-			setActionCount(getActionCount() + nexManager.swap(setup));
-			//nexManager.swap(setup);
-		}
-
 		if (nexManager.nex.sacrificeActive
 			&& nexManager.nex.distanceToNex() <= 8)
 		{
@@ -75,7 +67,7 @@ public class AttackBloodMinion extends StagedTask
 			return true;
 		}
 
-		if (shouldStepUnderNex())
+		if (nexManager.nex.shouldStepUnderNexBlood())
 		{
 			WorldPoint tileUnderNex = nexManager.nex.getUnderNex();
 			nexManager.print("Stepping under nex " + nexManager.worldPointString(tileUnderNex));
@@ -105,48 +97,4 @@ public class AttackBloodMinion extends StagedTask
 		return nexManager.nex.getMainTile();
 	}
 
-	public boolean shouldStepUnderNex()
-	{
-		// Dont step under if minion is about to die, so nex is close to the altar and we can use it on ice phase
-		if (nexManager.nex.getActiveMinion() != null
-			&& nexManager.nex.getActiveMinion().getHealthRatio() != -1
-			&& nexManager.nex.getNPCHP(nexManager.nex.getActiveMinion()) <= 20)
-		{
-			return false;
-		}
-		return nexManager.nex.cruor.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 6
-			&& nexManager.nex.isNexChasingUs();
-	}
-
-	public ArrayList<Integer> decideSetup()
-	{
-		int distance;
-		if (nexManager.nex.sacrificeActive)
-		{
-			WorldPoint sacrificeTile = nexManager.nex.getBloodMinionSacrificeTile();
-			distance = nexManager.nex.wpDistanceToMinion(sacrificeTile);
-		}
-		else
-		{
-			distance = nexManager.nex.distanceToActiveMinion();
-		}
-
-		if (shouldStepUnderNex())
-		{
-			return nexManager.setup.rangeNex();
-		}
-//		if (gameTickManager.getAttackWait() > 1)
-//		{
-//			return nexManager.nex.setup.defensiveNex();
-//		}
-
-		if (nexManager.socket.isSlave()
-			&& nexManager.nex.cruor != null
-			&& nexManager.nex.cruor.getHealthRatio() != -1
-			&& nexManager.nex.getNPCHP(nexManager.nex.cruor) >= 80)
-		{
-			return nexManager.nex.setup.rangeNex();
-		}
-		return distance >= 3 ? nexManager.nex.setup.rangeNex() : nexManager.nex.setup.meleeNex();
-	}
 }

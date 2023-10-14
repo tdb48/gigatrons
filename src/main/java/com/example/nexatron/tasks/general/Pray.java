@@ -1,4 +1,4 @@
-package com.example.nexatron.tasks;
+package com.example.nexatron.tasks.general;
 
 import com.example.Utility.Combat;
 import com.example.Utility.Prayer;
@@ -29,6 +29,7 @@ import net.runelite.client.eventbus.Subscribe;
 public class Pray extends StagedTask
 {
 	public static final int AUGURY_UNLOCKED = 5452;
+	public ArrayList<Prayer> prayers = new ArrayList<>();
 	@Inject
 	GameTickManager gameTickManager;
 
@@ -54,32 +55,25 @@ public class Pray extends StagedTask
 	// Returning true means we have prayers left to do
 	public boolean execute()
 	{
-		if (nexManager.prayers.isEmpty() || Prayers.getPoints() == 0)
+		if (prayers.isEmpty() || Prayers.getPoints() == 0)
 		{
-			nexManager.print("No prayers");
 			return false;
 		}
-		nexManager.print("Toggling " + nexManager.prayers.get(0).getVarbit());
-		Prayers.toggle(nexManager.prayers.get(0));
-		nexManager.prayers.remove(0);
-		return !nexManager.prayers.isEmpty();
+//		nexManager.print("Toggling " + prayers.get(0).getVarbit() +", on tick " + nexManager.totalClientTicks);
+		Prayers.toggle(prayers.get(0));
+		prayers.remove(0);
+		return !prayers.isEmpty();
 	}
 
 	@Subscribe(priority = 10)
 	public void onGameTick(GameTick gameTick)
 	{
 		List<Prayer> requiredPrayers = getPrayers();
-		nexManager.prayers = filterPrayers(requiredPrayers);
-		nexManager.print("Found prayers ");
-		for (Prayer prayer : nexManager.prayers)
-		{
-			nexManager.print("Found " + prayer);
-		}
+		prayers = filterPrayers(requiredPrayers);
 	}
 
 	public ArrayList<Prayer> filterPrayers(List<Prayer> prayers)
 	{
-		System.out.println("Filter in " + prayers.size());
 		ArrayList<Prayer> toPray = new ArrayList<>();
 		if (nexManager.config.prayFlick()
 			&& plugin.getManager().actionCounter < 8
@@ -87,7 +81,6 @@ public class Pray extends StagedTask
 		{
 			toPray.addAll(prayers);
 			toPray.addAll(prayers);
-			System.out.println("Filter out " + toPray.size());
 			return toPray;
 		}
 		for (Prayer prayer : prayers)
@@ -97,7 +90,6 @@ public class Pray extends StagedTask
 				toPray.add(prayer);
 			}
 		}
-		System.out.println("Filter out " + toPray.size());
 		return toPray;
 	}
 
@@ -123,7 +115,7 @@ public class Pray extends StagedTask
 
 	public Prayer getOffensive()
 	{
-		if (gameTickManager.isAttackWaiting()
+		if (gameTickManager.attackWait > 1
 			&& nexManager.containsStage(Stage.NEX_BLOOD, Stage.MINION_BLOOD, Stage.NEX_ZAROS))
 		{
 			return findBestMagePrayer();
@@ -174,7 +166,7 @@ public class Pray extends StagedTask
 		{
 			// Protect ranged in ice prison
 			if (nexManager.nex.prisonActive
-				&& (nexManager.nex.stuckInPrisonTick > 0 && nexManager.nex.stuckInPrisonTick <= 2))
+				&& (nexManager.nex.stuckInPrisonTick > 0 && nexManager.nex.stuckInPrisonTick <= 3))
 			{
 				return Prayer.PROTECT_FROM_MISSILES;
 			}

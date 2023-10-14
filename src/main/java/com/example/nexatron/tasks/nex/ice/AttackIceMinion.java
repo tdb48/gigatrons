@@ -42,13 +42,6 @@ public class AttackIceMinion extends StagedTask
 			return false;
 		}
 
-		ArrayList<Integer> setup = decideSetup();
-		if (!nexManager.hasGearEquipped(setup))
-		{
-			nexManager.print("Equipping gear");
-			setActionCount(getActionCount() + nexManager.swap(setup));
-		}
-
 		// If there's a prison, and it's not on us, free the other person
 		if (nexManager.nex.prisonActive
 			&& nexManager.nex.stuckInPrisonTick == 0)
@@ -104,7 +97,7 @@ public class AttackIceMinion extends StagedTask
 		}
 
 		// Send nex back to middle when possible
-		if (shouldStepUnderNex())
+		if (nexManager.nex.shouldStepUnderNexIce())
 		{
 			WorldPoint tileUnderNex = nexManager.nex.getUnderNex();
 			nexManager.print("Stepping under nex " + nexManager.worldPointString(tileUnderNex));
@@ -124,33 +117,5 @@ public class AttackIceMinion extends StagedTask
 			return true;
 		}
 		return false;
-	}
-
-	public boolean shouldStepUnderNex()
-	{
-		return nexManager.nex.glacies.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 7
-			&& nexManager.nex.isNexChasingUs()
-			&& !(nexManager.nex.nextSpecial.equals(NexSpecial.PRISON) && nexManager.nex.attacksUntilSpecial <= 2);
-	}
-
-	public ArrayList<Integer> decideSetup()
-	{
-		if (nexManager.nex.prisonActive
-			&& nexManager.nex.stuckInPrisonTick == 0)
-		{
-			return nexManager.nex.setup.meleeNex();
-		}
-		if (shouldStepUnderNex())
-		{
-			return nexManager.setup.rangeNex();
-		}
-		if (nexManager.socket.isMaster
-			&& nexManager.nex.glacies != null
-			&& nexManager.nex.glacies.getHealthRatio() != -1
-			&& nexManager.nex.getNPCHP(nexManager.nex.glacies) <= 60)
-		{
-			return nexManager.setup.meleeNex();
-		}
-		return nexManager.setup.rangeNex();
 	}
 }
