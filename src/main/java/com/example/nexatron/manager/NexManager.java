@@ -105,6 +105,7 @@ public class NexManager
 	public ArrayList<Integer> switchesLeft = new ArrayList<>();
 	public int totalClientTicks = 0;
 	public int clientTick = 0;
+
 	@Inject
 	public NexManager(EventBus eventBus, Client client, NexatronConfig config, NexatronPlugin plugin)
 	{
@@ -437,6 +438,7 @@ public class NexManager
 			print("Banking " + itemManager.getItemComposition(item.getItemId()).getName());
 			BankUtil.depositAll(item.getItemId());
 			counter++;
+			return counter;
 		}
 		return counter;
 	}
@@ -664,8 +666,6 @@ public class NexManager
 			unNecessaryItems.removeIf(n -> Consumable.getNecessaryKcPotions.contains(n.getItemId()));
 			return unNecessaryItems;
 		}
-		unNecessaryItems.removeIf(n -> Consumable.getNecessaryPotions.contains(n.getItemId()));
-
 		if (Consumable.isDrained(Skill.HITPOINTS))
 		{
 			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_ANGLER);
@@ -682,6 +682,10 @@ public class NexManager
 			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_RANGE);
 			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_STAM);
 			unNecessaryItems.removeIf(n -> n.getItemId() == Consumable.PREPOT_ANTI);
+		}
+		else
+		{
+			unNecessaryItems.removeIf(n -> Consumable.getNecessaryPotions.contains(n.getItemId()));
 		}
 		return unNecessaryItems;
 	}

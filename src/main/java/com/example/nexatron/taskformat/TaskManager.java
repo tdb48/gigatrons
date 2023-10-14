@@ -76,7 +76,7 @@ public class TaskManager
 	public String getCurrentTaskNew()
 	{
 		if (this.currentTaskNew == null
-			||  this.descriptorHashMap.get(this.currentTaskNew) == null
+			|| this.descriptorHashMap.get(this.currentTaskNew) == null
 			|| this.descriptorHashMap.get(this.currentTaskNew).name() == null)
 		{
 			return "None";
@@ -151,7 +151,7 @@ public class TaskManager
 			currentTaskNew = currentTasks.get(0);
 			TaskDescriptor descriptor = this.descriptorHashMap.get(currentTaskNew);
 			if (descriptor.name().equals("Pray")
-				&& Prayers.getPoints() > 0 || descriptor.name().equals("Gear"))
+				|| descriptor.name().equals("Gear"))
 			{
 				// If it runs, that means we need to do it again so we dont want to remove it
 				if (currentTaskNew.run())

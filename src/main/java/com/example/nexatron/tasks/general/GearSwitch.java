@@ -42,7 +42,8 @@ public class GearSwitch extends StagedTask
 			Stage.NEX_ICE,
 			Stage.NEX_ZAROS,
 			Stage.KC_AREA,
-			Stage.BANK);
+			Stage.BANK,
+			Stage.NEX_DEAD);
 	}
 
 	// Returning true means we have prayers left to do
@@ -88,6 +89,10 @@ public class GearSwitch extends StagedTask
 
 	public ArrayList<Integer> findSetup()
 	{
+		if (nexManager.shouldKc())
+		{
+			return nexManager.setup.rangeKc();
+		}
 		if (nexManager.nex.shouldTeleport())
 		{
 			return nexManager.nex.setup.rangeNex();
@@ -95,10 +100,6 @@ public class GearSwitch extends StagedTask
 		switch (nexManager.getStage())
 		{
 			case BANK:
-				if (nexManager.shouldKc())
-				{
-					return nexManager.setup.rangeKc();
-				}
 				return nexManager.socket.isMaster ? nexManager.setup.rangeNex() : nexManager.setup.meleeNex();
 
 			case NEX_SMOKE:
@@ -109,6 +110,7 @@ public class GearSwitch extends StagedTask
 			case MINION_SMOKE:
 			case NEX_SHADOW:
 			case MINION_SHADOW:
+			case NEX_DEAD:
 				return nexManager.nex.setup.rangeNex();
 
 			case NEX_BLOOD:
