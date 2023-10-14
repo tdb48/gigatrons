@@ -42,11 +42,10 @@ public class AttackIceNex extends StagedTask
 			return false;
 		}
 
-		ArrayList<Integer> setup = decideSetup();
-		if (!nexManager.hasGearEquipped(setup))
+		if (!nexManager.hasGearEquipped(nexManager.gearSetup))
 		{
 			nexManager.print("Equipping gear");
-			setActionCount(getActionCount() + nexManager.swap(setup));
+			setActionCount(getActionCount() + nexManager.swap(nexManager.gearSetup));
 		}
 
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
@@ -147,30 +146,5 @@ public class AttackIceNex extends StagedTask
 			return true;
 		}
 		return false;
-	}
-
-	public ArrayList<Integer> decideSetup()
-	{
-		if (nexManager.nex.prisonActive
-			&& nexManager.nex.stuckInPrisonTick == 0)
-		{
-			return nexManager.nex.setup.meleeNex();
-		}
-
-		if (nexManager.nex.shouldPrayAltar())
-		{
-			return nexManager.nex.setup.rangeNex();
-		}
-
-		if (nexManager.nex.containTick != 0
-			&& nexManager.nex.containTick <= 14)
-		{
-			return nexManager.nex.setup.rangeNex();
-		}
-
-		return nexManager.nex.hpUntilProc() >= 120
-			&& Combat.getSpecEnergy() >= 75 ?
-			nexManager.nex.setup.rangeNex() :
-			nexManager.nex.setup.meleeNex();
 	}
 }

@@ -47,12 +47,11 @@ public class AttackBloodNex extends StagedTask
 		}
 		setActionCount(getActionCount() + nexManager.enableRun(true));
 //		nexManager.enableRun(true);
-		NPC target = decideTarget();
-		ArrayList<Integer> setup = decideSetup(target);
-		if (!nexManager.hasGearEquipped(setup))
+		NPC target = nexManager.bloodNexDecideTarget();
+		if (!nexManager.hasGearEquipped(nexManager.gearSetup))
 		{
 			nexManager.print("Equipping gear");
-			setActionCount(getActionCount() + nexManager.swap(setup));
+			setActionCount(getActionCount() + nexManager.swap(nexManager.gearSetup));
 		}
 
 		if (target == null)
@@ -63,7 +62,7 @@ public class AttackBloodNex extends StagedTask
 
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
 			&& !Combat.isSpecEnabled()
-			&& targetIsNex(target)
+			&& nexManager.targetIsNex(target)
 			&& !Consumable.isDrained(Skill.RANGED)
 			&& nexManager.nex.attacksUntilSpecial > 1
 			&& Combat.getSpecEnergy() >= 75
@@ -111,7 +110,7 @@ public class AttackBloodNex extends StagedTask
 		WorldPoint stepUnderTile = nexManager.nex.getBloodIceStepUnderNEW();
 		if (stepUnderTile != null
 			&& nexManager.nex.invincibleTick > 0
-			&& targetIsNex(target)
+			&& nexManager.targetIsNex(target)
 			&& !nexManager.nex.sacrificeActive
 			&& !nexManager.getPlayerPoint().equals(stepUnderTile))
 		{
@@ -126,11 +125,11 @@ public class AttackBloodNex extends StagedTask
 		// Step under on tick 2 with designated step under tiles OR if we are far out
 		if ((nexManager.nex.nexAttackTick == 2 || isFar && nexManager.nex.nexAttackTick == 3)
 			&& nexManager.nex.nex.isInteracting()
-			&& targetIsNex(target)
+			&& nexManager.targetIsNex(target)
 			&& nexManager.nex.nex.getInteracting().equals(client.getLocalPlayer())
 			|| nexManager.getPlayerPoint().distanceTo(nexManager.nex.nex.getWorldArea()) > 3
 			&& gameTickManager.isAttackWaiting()
-			&& targetIsNex(target))
+			&& nexManager.targetIsNex(target))
 		{
 			if (stepUnderTile != null)
 			{
@@ -160,7 +159,7 @@ public class AttackBloodNex extends StagedTask
 		// If slave standing next to master attacking reaver, move out
 		if (!nexManager.socket.isMaster
 			&& otherPlayer != null
-			&& !targetIsNex(target)
+			&& !nexManager.targetIsNex(target)
 			&& nexManager.getPlayerPoint().distanceTo(otherPlayer.getWorldLocation()) <= 1)
 		{
 			WorldPoint reaverTile = findReaverTile(target, otherPlayer.getWorldLocation());
@@ -191,69 +190,4 @@ public class AttackBloodNex extends StagedTask
 		possibleTiles.remove(reaver.getWorldLocation().dx(2).dy(-1));
 		return nexManager.findClosestTileToPlayer(possibleTiles);
 	}
-
-	public NPC decideTarget()
-	{
-		if (nexManager.nex.nex == null)
-		{
-			return null;
-		}
-		if (!nexManager.nex.reavers.isEmpty())
-		{
-			// If we are the master, we only want to hit reavers until they are about half hp,
-			// slave hits anything above 10%
-			int threshHold = nexManager.socket.isMaster ? 50 : 20;
-			ArrayList<NPC> targets = new ArrayList<>();
-			for (NPC reaver : nexManager.nex.reavers.keySet())
-			{
-				if (nexManager.nex.reavers.get(reaver) >= threshHold)
-				{
-					targets.add(reaver);
-				}
-			}
-			if (!targets.isEmpty())
-			{
-				return nexManager.findClosestNPC(targets);
-			}
-		}
-		return nexManager.nex.nex;
-	}
-
-	public boolean targetIsNex(NPC target)
-	{
-		return Objects.requireNonNull(target.getName()).toLowerCase().contains("nex");
-	}
-
-	public ArrayList<Integer> decideSetup(NPC target)
-	{
-		if (nexManager.nex.sacrificeActive)
-		{
-			return nexManager.nex.setup.rangeNex();
-		}
-
-		if (nexManager.nex.shouldPrayAltar())
-		{
-			return nexManager.nex.setup.rangeNex();
-		}
-
-//		if (gameTickManager.getAttackWait() > 1)
-//		{
-//			return nexManager.nex.setup.defensiveNex();
-//		}
-
-		if (nexManager.nex.distanceToNex() > 5
-			&& targetIsNex(target))
-		{
-			return nexManager.nex.setup.rangeNex();
-		}
-
-		return targetIsNex(target)
-			&& nexManager.nex.hpUntilProc() >= 80
-			&& !Consumable.isDrained(Skill.RANGED)
-			&& nexManager.nex.attacksUntilSpecial > 1
-			&& Combat.getSpecEnergy() >= 75 ?
-			nexManager.nex.setup.rangeNex() :
-			nexManager.nex.setup.meleeNex();
-	}
-
 }

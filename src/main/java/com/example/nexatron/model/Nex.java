@@ -9,6 +9,7 @@ import com.example.Utility.Combat;
 import com.example.Utility.ObjectUtil;
 import com.example.Utility.Reachable;
 import com.example.Utility.WorldAreas;
+import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.NexSpecial;
@@ -90,6 +91,8 @@ public class Nex
 	Client client;
 	@Inject
 	EventBus eventBus;
+	@Inject
+	GameTickManager gameTickManager;
 
 	public void register()
 	{
@@ -732,6 +735,27 @@ public class Nex
 			nexManager.nex.slaveDodgeTile;
 	}
 
+	public boolean shouldStepUnderNexIce()
+	{
+		return nexManager.nex.glacies.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 7
+			&& nexManager.nex.isNexChasingUs()
+			&& !(nexManager.nex.nextSpecial.equals(NexSpecial.PRISON) && nexManager.nex.attacksUntilSpecial <= 2);
+	}
+
+
+	public boolean shouldStepUnderNexBlood()
+	{
+		// Dont step under if minion is about to die, so nex is close to the altar and we can use it on ice phase
+		if (nexManager.nex.getActiveMinion() != null
+			&& nexManager.nex.getActiveMinion().getHealthRatio() != -1
+			&& nexManager.nex.getNPCHP(nexManager.nex.getActiveMinion()) <= 20)
+		{
+			return false;
+		}
+		return nexManager.nex.cruor.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 6
+			&& nexManager.nex.isNexChasingUs();
+	}
+
 	public boolean isNexChasing()
 	{
 		if (nex == null
@@ -823,6 +847,29 @@ public class Nex
 			}
 		}
 		return nexManager.findClosestTileToWorldPoint(possibleTiles, glacies.getWorldLocation());
+	}
+
+
+	// Soulsplit is 11, deflect is 15
+	public boolean isDeflectMeleeActive()
+	{
+		int zarosCounter = nexManager.nex.nexZarosAttacks;
+		int playerTick = gameTickManager.attackWait;
+		int nexTick = nexManager.nex.nexAttackTick;
+		int headIcon = nexManager.nex.lastSeenHeadIcon;
+
+		if (headIcon == 15
+			&& zarosCounter < 4)
+		{
+			return true;
+		}
+		if (headIcon == 15
+			&& zarosCounter == 4)
+		{
+			return playerTick > nexTick;
+		}
+
+		return false;
 	}
 
 	public void initSmokeNexTiles()

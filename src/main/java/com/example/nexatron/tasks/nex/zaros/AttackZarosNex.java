@@ -42,22 +42,15 @@ public class AttackZarosNex extends StagedTask
 		{
 			return false;
 		}
-		boolean usingFang = false;
-
-		ArrayList<Integer> setup = decideSetup();
-		if (setup.contains(ItemID.OSMUMTENS_FANG))
-		{
-			usingFang = true;
-		}
-		if (!nexManager.hasGearEquipped(setup))
+		if (!nexManager.hasGearEquipped(nexManager.gearSetup))
 		{
 			nexManager.print("Equipping gear");
-			setActionCount(getActionCount() + nexManager.swap(setup));
+			setActionCount(getActionCount() + nexManager.swap(nexManager.gearSetup));
 		}
 
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
 			&& !Combat.isSpecEnabled()
-			&& isDeflectMeleeActive()
+			&& nexManager.nex.isDeflectMeleeActive()
 			&& Combat.getSpecEnergy() >= 75
 			&& !Consumable.isDrained(Skill.RANGED)
 			&& Equipment.search().withId(ItemID.RUBY_DRAGON_BOLTS_E).first().orElse(null) != null
@@ -67,9 +60,8 @@ public class AttackZarosNex extends StagedTask
 			setActionCount(getActionCount() + Combat.toggleSpec());
 //			Combat.toggleSpec();
 		}
-		else if (usingFang
-			&& !Combat.isSpecEnabled()
-			&& !isDeflectMeleeActive()
+		else if (!Combat.isSpecEnabled()
+			&& !nexManager.nex.isDeflectMeleeActive()
 			&& !Consumable.isDrained(Skill.STRENGTH)
 			&& Combat.getSpecEnergy() >= 25
 			&& nexManager.getBossHp() < 220)
@@ -154,76 +146,5 @@ public class AttackZarosNex extends StagedTask
 			return true;
 		}
 		return false;
-	}
-
-	public ArrayList<Integer> decideSetup()
-	{
-		// We have to melee the ice prison
-		if (nexManager.nex.prisonActive
-			&& nexManager.nex.stuckInPrisonTick == 0)
-		{
-			return nexManager.nex.setup.meleeNex();
-		}
-
-		// Range if we somehow still end up with a contain
-		if (nexManager.nex.containTick != 0
-			&& nexManager.nex.containTick <= 14)
-		{
-			return nexManager.nex.setup.rangeNex();
-		}
-
-//		if (gameTickManager.getAttackWait() > 1)
-//		{
-//			return nexManager.nex.setup.defensiveNex();
-//		}
-
-		// If its deflecting melee, use range, otherwise use melee
-
-		if (nexManager.nex.distanceToNex() > 3)
-		{
-			return nexManager.nex.setup.rangeNex();
-		}
-		if (gameTickManager.attackWait > 1)
-		{
-			return nexManager.nex.setup.defensiveNex();
-		}
-		if (isDeflectMeleeActive())
-		{
-			return nexManager.setup.rangeNex();
-		}
-		return nexManager.setup.meleeNex();
-	}
-
-	// Soulsplit is 11, deflect is 15
-	public boolean isDeflectMeleeActive()
-	{
-		int zarosCounter = nexManager.nex.nexZarosAttacks;
-		int playerTick = gameTickManager.attackWait;
-		int nexTick = nexManager.nex.nexAttackTick;
-		int headIcon = nexManager.nex.lastSeenHeadIcon;
-
-		if (headIcon == 15
-			&& zarosCounter < 4)
-		{
-			return true;
-		}
-		if (headIcon == 15
-			&& zarosCounter == 4)
-		{
-			return playerTick > nexTick;
-		}
-
-		return false;
-
-//		if (nexManager.nex.nexAttackTick == gameTickManager.getAttackWait())
-//		{
-//			zarosCounter++;
-//		}
-//		if (zarosCounter == 8 && gameTickManager.getAttackWait() - nexManager.nex.nexAttackTick == 1)
-//		{
-//			return true;
-//		}
-//		return zarosCounter >= 9;
-//			|| zarosCounter == 1;
 	}
 }

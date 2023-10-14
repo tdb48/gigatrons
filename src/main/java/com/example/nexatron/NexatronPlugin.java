@@ -7,7 +7,8 @@ import com.example.nexatron.overlay.NexatronInfoBox;
 import com.example.nexatron.overlay.NexatronOverlay;
 import com.example.nexatron.overlay.SocketInfoBox;
 import com.example.nexatron.taskformat.TaskManager;
-import com.example.nexatron.tasks.Pray;
+import com.example.nexatron.tasks.general.GearSwitch;
+import com.example.nexatron.tasks.general.Pray;
 import com.example.nexatron.tasks.bank.BankJunk;
 import com.example.nexatron.tasks.bank.BreakLog;
 import com.example.nexatron.tasks.bank.EnterNex;
@@ -27,7 +28,6 @@ import com.example.nexatron.tasks.general.ToggleRun;
 import com.example.nexatron.tasks.kcArea.EnterBank;
 import com.example.nexatron.tasks.kcArea.KcAttack;
 import com.example.nexatron.tasks.kcArea.KcConsumables;
-import com.example.nexatron.tasks.kcArea.KcPrayer;
 import com.example.nexatron.tasks.nex.NexAbort;
 import com.example.nexatron.tasks.nex.NexConsumables;
 import com.example.nexatron.tasks.nex.NexFinishUp;
@@ -142,6 +142,7 @@ public class NexatronPlugin extends Plugin
 			BreakLog.class,
 			LeaveBank.class,
 			RunToNex.class,
+			GearSwitch.class,
 		};
 	}
 

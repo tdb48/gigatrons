@@ -34,15 +34,11 @@ public class AttackSmokeNex extends StagedTask
 			return false;
 		}
 
-		// Equipping range gear if boss is healthy and we are over 75 spec, otherwise we fang it
-		ArrayList<Integer> setup = nexManager.getBossHp() >= 3200 && Combat.getSpecEnergy() >= 75 ?
-			nexManager.nex.setup.rangeNex() :
-			nexManager.nex.setup.meleeNex();
 
-		if (!nexManager.hasGearEquipped(setup))
+		if (!nexManager.hasGearEquipped(nexManager.gearSetup))
 		{
 			nexManager.print("Equipping gear");
-			setActionCount(getActionCount() + nexManager.swap(setup));
+			setActionCount(getActionCount() + nexManager.swap(nexManager.gearSetup));
 		}
 
 		// Step under on tick 1 if boss is interacting with us

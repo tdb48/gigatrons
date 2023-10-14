@@ -79,7 +79,8 @@ public class TaskManager
 		{
 			return "None";
 		}
-		String name = this.descriptorHashMap.get(this.currentTaskNew).name();
+		String name = this.descriptorHashMap.get(
+			this.currentTaskNew).name();
 		if (name == null || name.length() == 0)
 		{
 			return "None";
@@ -99,8 +100,21 @@ public class TaskManager
 
 	public void start()
 	{
+		this.currentTaskNew = null;
 		this.eventBus.register(this);
 		this.tasks.sort(Comparator.comparing((t) -> this.descriptorHashMap.get(t).priority()).reversed());
+	}
+
+	public void stop()
+	{
+		this.eventBus.unregister(this);
+		for (Task task : this.tasks)
+		{
+			this.eventBus.unregister(task);
+		}
+		this.tasks.clear();
+		this.descriptorHashMap.clear();
+		this.currentTask = null;
 	}
 
 	@Subscribe
@@ -135,8 +149,7 @@ public class TaskManager
 			currentTaskNew = currentTasks.get(0);
 			TaskDescriptor descriptor = this.descriptorHashMap.get(currentTaskNew);
 			if (descriptor.name().equals("Pray")
-				&& Prayers.getPoints() > 0
-				&& !nexManager.prayers.isEmpty())
+				&& Prayers.getPoints() > 0 || descriptor.name().equals("Gear"))
 			{
 				// If it runs, that means we need to do it again so we dont want to remove it
 				if (currentTaskNew.run())
@@ -153,19 +166,20 @@ public class TaskManager
 			}
 			else
 			{
+				//resetting the action counter to 0 for this task, it will be incremented based on how many actions are performed during the tasks run() call
+				currentTaskNew.setActionCount(0);
+				if (currentTaskNew.run())
+				{
+					//System.out.println("Running task: " + descriptor.name() + " - Current task actions -> " + currentTaskNew.getActionCount() + " - Total actions: " + (actionCounter+currentTaskNew.getActionCount()));
+					if (descriptor.blocking())
+					{
+						currentTasks.clear();
+					}
+				}
 				currentTasks.remove(currentTaskNew);
 			}
 
-			//resetting the action counter to 0 for this task, it will be incremented based on how many actions are performed during the tasks run() call
-			currentTaskNew.setActionCount(0);
-			if (currentTaskNew.run())
-			{
-				//System.out.println("Running task: " + descriptor.name() + " - Current task actions -> " + currentTaskNew.getActionCount() + " - Total actions: " + (actionCounter+currentTaskNew.getActionCount()));
-				if (descriptor.blocking())
-				{
-					currentTasks.clear();
-				}
-			}
+
 			actionCounter += currentTaskNew.getActionCount();
 			if (actionCounter >= 10)
 			{
@@ -248,18 +262,6 @@ public class TaskManager
 		tickCounter++;
 		randomSleep = ThreadLocalRandom.current().nextInt(0, upperBound);
 		//System.out.println("Our next random sleep will be " + randomSleep + " client ticks.");
-	}
-
-	public void stop()
-	{
-		this.eventBus.unregister(this);
-		for (Task task : this.tasks)
-		{
-			this.eventBus.unregister(task);
-		}
-		this.tasks.clear();
-		this.descriptorHashMap.clear();
-		this.currentTask = null;
 	}
 
 }

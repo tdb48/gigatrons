@@ -14,7 +14,6 @@ import com.example.Utility.BankUtil;
 import com.example.Utility.Hopping;
 import com.example.Utility.InventoryUtil;
 import com.example.Utility.Movement;
-import com.example.Utility.Prayer;
 import com.example.Utility.Static;
 import com.example.Utility.WidgetUtil;
 import com.example.nexatron.NexatronConfig;
@@ -39,6 +38,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -100,8 +100,8 @@ public class NexManager
 	@Inject
 	private ReflectBreakHandler chinBreakHandler;
 	private Stage stage = Stage.NONE;
-	public ArrayList<Prayer> prayers = new ArrayList<>();
-	public ArrayList<Widget> switches = new ArrayList<>();
+	public ArrayList<Integer> gearSetup = new ArrayList<>();
+	public ArrayList<Integer> switchesLeft = new ArrayList<>();
 	public int totalClientTicks = 0;
 
 	@Inject
@@ -118,8 +118,8 @@ public class NexManager
 		totalClientTicks = 0;
 		stage = Stage.NONE;
 		shouldReattack = false;
-		prayers = new ArrayList<>();
-		switches = new ArrayList<>();
+		switchesLeft = new ArrayList<>();
+		gearSetup = new ArrayList<>();
 	}
 
 
@@ -175,6 +175,12 @@ public class NexManager
 			}
 		}
 		return true;
+	}
+
+	public boolean hasEquipped(int itemId)
+	{
+		return Equipment.search().withId(itemId).first().orElse(null) != null
+			|| Inventory.search().withId(itemId).first().orElse(null) == null;
 	}
 
 	public String worldPointString(WorldPoint wp)
@@ -431,7 +437,7 @@ public class NexManager
 		return Static.getClient().getVarpValue(VarPlayer.POISON) < -35;
 	}
 
-	public int swap(ArrayList<Integer> gearList)
+	public int swap(List<Integer> gearList)
 	{
 		int swaps = (int) (3 + (Math.abs(random.nextGaussian() * 1.5)));
 		int counter = 0;
@@ -607,6 +613,37 @@ public class NexManager
 		return counter;
 	}
 
+	public boolean targetIsNex(NPC target)
+	{
+		return Objects.requireNonNull(target.getName()).toLowerCase().contains("nex");
+	}
+
+	public NPC bloodNexDecideTarget()
+	{
+		if (nex.nex == null)
+		{
+			return null;
+		}
+		if (!nex.reavers.isEmpty())
+		{
+			// If we are the master, we only want to hit reavers until they are about half hp,
+			// slave hits anything above 10%
+			int threshHold = socket.isMaster ? 50 : 20;
+			ArrayList<NPC> targets = new ArrayList<>();
+			for (NPC reaver : nex.reavers.keySet())
+			{
+				if (nex.reavers.get(reaver) >= threshHold)
+				{
+					targets.add(reaver);
+				}
+			}
+			if (!targets.isEmpty())
+			{
+				return findClosestNPC(targets);
+			}
+		}
+		return nex.nex;
+	}
 
 	public ArrayList<Widget> getJunk()
 	{
