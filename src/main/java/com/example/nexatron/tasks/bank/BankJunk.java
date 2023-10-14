@@ -7,6 +7,7 @@ import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
 import java.util.ArrayList;
 import javax.inject.Inject;
+import net.runelite.api.ItemID;
 import net.runelite.api.widgets.Widget;
 
 @TaskDescriptor(
@@ -38,7 +39,7 @@ public class BankJunk extends StagedTask
 			incrementActionCount();
 			return true;
 		}
-		if (nexManager.hasGearEquipped(nexManager.setup.rangeKc())
+		if (nexManager.hasEquipped(ItemID.TOXIC_BLOWPIPE)
 			&& !nexManager.shouldKc())
 		{
 			nexManager.print("Banking all junk");
