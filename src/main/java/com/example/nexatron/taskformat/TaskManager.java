@@ -75,7 +75,9 @@ public class TaskManager
 
 	public String getCurrentTaskNew()
 	{
-		if (this.currentTaskNew == null)
+		if (this.currentTaskNew == null
+			||  this.descriptorHashMap.get(this.currentTaskNew) == null
+			|| this.descriptorHashMap.get(this.currentTaskNew).name() == null)
 		{
 			return "None";
 		}

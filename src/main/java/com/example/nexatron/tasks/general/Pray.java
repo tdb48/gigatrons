@@ -166,7 +166,7 @@ public class Pray extends StagedTask
 		{
 			// Protect ranged in ice prison
 			if (nexManager.nex.prisonActive
-				&& (nexManager.nex.stuckInPrisonTick > 0 && nexManager.nex.stuckInPrisonTick <= 2))
+				&& (nexManager.nex.stuckInPrisonTick > 0 && nexManager.nex.stuckInPrisonTick <= 3))
 			{
 				return Prayer.PROTECT_FROM_MISSILES;
 			}

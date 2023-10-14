@@ -65,7 +65,6 @@ public class GearSwitch extends StagedTask
 	{
 		nexManager.gearSetup = findSetup();
 		nexManager.switchesLeft = getRemainingSwitches(nexManager.gearSetup);
-		System.out.println("");
 	}
 
 	public ArrayList<Integer> getRemainingSwitches(ArrayList<Integer> gearSetup)

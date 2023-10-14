@@ -43,6 +43,12 @@ public class AttackZarosNex extends StagedTask
 			return false;
 		}
 
+		boolean usingFang = false;
+		if (nexManager.gearSetup.contains(ItemID.OSMUMTENS_FANG))
+		{
+			usingFang = true;
+		}
+
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
 			&& !Combat.isSpecEnabled()
 			&& nexManager.nex.isDeflectMeleeActive()
@@ -55,7 +61,8 @@ public class AttackZarosNex extends StagedTask
 			setActionCount(getActionCount() + Combat.toggleSpec());
 //			Combat.toggleSpec();
 		}
-		else if (!Combat.isSpecEnabled()
+		else if (usingFang
+			&& !Combat.isSpecEnabled()
 			&& !nexManager.nex.isDeflectMeleeActive()
 			&& !Consumable.isDrained(Skill.STRENGTH)
 			&& Combat.getSpecEnergy() >= 25
