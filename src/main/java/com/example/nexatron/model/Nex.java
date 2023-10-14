@@ -898,12 +898,17 @@ public class Nex
 
 
 	// Soulsplit is 11, deflect is 15
-	public boolean isDeflectMeleeActive()
+	public boolean isDeflectMeleeActive(boolean gameTickPrio)
 	{
 		int zarosCounter = nexManager.nex.nexZarosAttacks;
 		int playerTick = gameTickManager.attackWait;
 		int nexTick = nexManager.nex.nexAttackTick;
 		int headIcon = nexManager.nex.lastSeenHeadIcon;
+		if (gameTickPrio)
+		{
+			nexTick++;
+			playerTick++;
+		}
 
 		if (headIcon == 15
 			&& zarosCounter < 4)

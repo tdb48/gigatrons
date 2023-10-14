@@ -711,6 +711,7 @@ public class NexManager
 				BankUtil.withdrawOne(item);
 			}
 			counter++;
+			return 1;
 		}
 		return counter;
 	}

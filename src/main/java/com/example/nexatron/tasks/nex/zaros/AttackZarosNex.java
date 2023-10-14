@@ -51,7 +51,7 @@ public class AttackZarosNex extends StagedTask
 
 		if (Equipment.search().nameContains("crossbow").first().orElse(null) != null
 			&& !Combat.isSpecEnabled()
-			&& nexManager.nex.isDeflectMeleeActive()
+			&& nexManager.nex.isDeflectMeleeActive(false)
 			&& Combat.getSpecEnergy() >= 75
 			&& !Consumable.isDrained(Skill.RANGED)
 			&& Equipment.search().withId(ItemID.RUBY_DRAGON_BOLTS_E).first().orElse(null) != null
@@ -63,7 +63,7 @@ public class AttackZarosNex extends StagedTask
 		}
 		else if (usingFang
 			&& !Combat.isSpecEnabled()
-			&& !nexManager.nex.isDeflectMeleeActive()
+			&& !nexManager.nex.isDeflectMeleeActive(false)
 			&& !Consumable.isDrained(Skill.STRENGTH)
 			&& Combat.getSpecEnergy() >= 25
 			&& nexManager.getBossHp() < 220)

@@ -100,43 +100,42 @@ public class WithdrawSupplies extends StagedTask
 			nexManager.print("We are somehow missing bank widgets?");
 			return true;
 		}
-		boolean returnValue = false;
 		if (requiredRpot > 0)
 		{
 			nexManager.print("Withdrawing " + requiredRpot + " Ranging potions");
 			BankInteraction.withdrawX(bankRpots, requiredRpot);
 			incrementActionCount();
-			returnValue = true;
+			return true;
 		}
 		if (requiredScb > 0)
 		{
 			nexManager.print("Withdrawing " + requiredScb + " Super Combat Potions");
 			BankInteraction.withdrawX(bankScbs, requiredScb);
 			incrementActionCount();
-			returnValue = true;
+			return true;
 		}
 		if (requiredRestore > 0)
 		{
 			nexManager.print("Withdrawing " + requiredRestore + " Super Restores");
 			BankInteraction.withdrawX(bankRestores, requiredRestore);
 			incrementActionCount();
-			returnValue = true;
+			return true;
 		}
 		if (requiredBrew > 0)
 		{
 			nexManager.print("Withdrawing " + requiredBrew + " Saradomin brews");
 			BankInteraction.withdrawX(bankBrews, requiredBrew);
 			incrementActionCount();
-			returnValue = true;
+			return true;
 		}
 		if (requiredAnti > 0)
 		{
 			nexManager.print("Withdrawing " + requiredAnti + " Antidote++");
 			BankInteraction.withdrawX(bankAntis, requiredAnti);
 			incrementActionCount();
-			returnValue = true;
+			return true;
 		}
-		return returnValue;
+		return false;
 	}
 
 	public int getBrewCount()

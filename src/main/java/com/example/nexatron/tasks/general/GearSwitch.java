@@ -223,7 +223,7 @@ public class GearSwitch extends StagedTask
 				{
 					return nexManager.nex.setup.defensiveNex();
 				}
-				if (nexManager.nex.isDeflectMeleeActive())
+				if (nexManager.nex.isDeflectMeleeActive(true))
 				{
 					return nexManager.setup.rangeNex();
 				}
