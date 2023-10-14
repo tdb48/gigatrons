@@ -59,7 +59,7 @@ public class Pray extends StagedTask
 		{
 			return false;
 		}
-		nexManager.print("Toggling " + prayers.get(0).getVarbit() +", on tick " + nexManager.totalClientTicks);
+//		nexManager.print("Toggling " + prayers.get(0).getVarbit() +", on tick " + nexManager.totalClientTicks);
 		Prayers.toggle(prayers.get(0));
 		prayers.remove(0);
 		return !prayers.isEmpty();
