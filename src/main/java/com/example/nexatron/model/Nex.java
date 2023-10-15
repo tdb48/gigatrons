@@ -885,14 +885,14 @@ public class Nex
 		ArrayList<WorldPoint> possibleTiles = (ArrayList<WorldPoint>) WorldAreas.createArea(playerPoint.dx(-4).dy(-4), playerPoint.dx(5).dy(5)).toWorldPointList();
 		possibleTiles.removeIf(n -> !Reachable.isWalkable(n));
 		possibleTiles.removeIf(n -> n.distanceTo(nexManager.nex.nex.getWorldArea()) != distance);
-		if (nexManager.socket.isMaster)
-		{
-			Player otherPlayer = nexManager.socket.getOtherPlayer();
-			if (otherPlayer != null)
-			{
-				possibleTiles.remove(otherPlayer.getWorldLocation());
-			}
-		}
+//		if (nexManager.socket.isMaster)
+//		{
+//			Player otherPlayer = nexManager.socket.getOtherPlayer();
+//			if (otherPlayer != null)
+//			{
+//				possibleTiles.remove(otherPlayer.getWorldLocation());
+//			}
+//		}
 		return nexManager.findClosestTileToWorldPoint(possibleTiles, glacies.getWorldLocation());
 	}
 
