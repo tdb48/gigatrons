@@ -1,6 +1,5 @@
 package com.example.nexatron.taskformat;
 
-import com.example.Utility.Prayers;
 import com.example.Utility.Static;
 import com.example.nexatron.manager.NexManager;
 import com.google.inject.Injector;
@@ -150,8 +149,11 @@ public class TaskManager
 		{
 			currentTaskNew = currentTasks.get(0);
 			TaskDescriptor descriptor = this.descriptorHashMap.get(currentTaskNew);
-			if (descriptor.name().equals("Pray")
-				|| descriptor.name().equals("Gear"))
+			if (descriptorHashMap != null
+				&& descriptor != null
+				&& descriptor.name() != null
+				&& (descriptor.name().equals("Pray")
+				|| descriptor.name().equals("Gear")))
 			{
 				// If it runs, that means we need to do it again so we dont want to remove it
 				if (currentTaskNew.run())
@@ -173,7 +175,8 @@ public class TaskManager
 				if (currentTaskNew.run())
 				{
 					//System.out.println("Running task: " + descriptor.name() + " - Current task actions -> " + currentTaskNew.getActionCount() + " - Total actions: " + (actionCounter+currentTaskNew.getActionCount()));
-					if (descriptor.blocking())
+					if (descriptor != null
+						&& descriptor.blocking())
 					{
 						currentTasks.clear();
 					}
