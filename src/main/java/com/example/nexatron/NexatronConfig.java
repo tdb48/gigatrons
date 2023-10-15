@@ -138,6 +138,17 @@ public interface NexatronConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 1,
+		keyName = "prayFlickKc",
+		name = "Pray Flick KC",
+		description = "Whether to 1 tick flick or not (only at KC itself)",
+		section = "General"
+	)
+	default boolean prayFlickKc()
+	{
+		return false;
+	}
+	@ConfigItem(
 		position = 2,
 		keyName = "kcMode",
 		name = "KC Mode",

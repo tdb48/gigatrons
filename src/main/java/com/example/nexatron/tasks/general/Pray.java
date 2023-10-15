@@ -75,7 +75,17 @@ public class Pray extends StagedTask
 	public ArrayList<Prayer> filterPrayers(List<Prayer> prayers)
 	{
 		ArrayList<Prayer> toPray = new ArrayList<>();
+		if (nexManager.config.prayFlickKc()
+			&& nexManager.containsStage(Stage.KC_AREA)
+			&& plugin.getManager().actionCounter < 8
+			&& Prayers.hasEnabled(prayers))
+		{
+			toPray.addAll(prayers);
+			toPray.addAll(prayers);
+			return toPray;
+		}
 		if (nexManager.config.prayFlick()
+			&& !nexManager.containsStage(Stage.KC_AREA)
 			&& plugin.getManager().actionCounter < 8
 			&& Prayers.hasEnabled(prayers))
 		{
