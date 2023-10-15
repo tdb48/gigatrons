@@ -19,7 +19,7 @@ public class Game
 			client.runScript(915, 10);
 		}
 		Widget logoutButton = client.getWidget(182, 8);
-		Widget logoutDoorButton = client.getWidget(69, 23);
+		Widget logoutDoorButton = client.getWidget(69, 25);
 		if (logoutButton != null)
 		{
 			MousePackets.queueClickPacket();
