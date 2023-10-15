@@ -1,5 +1,6 @@
 package com.example.nexatron.tasks.bank;
 
+import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.Utility.BankUtil;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.Stage;
@@ -39,8 +40,8 @@ public class BankJunk extends StagedTask
 			incrementActionCount();
 			return true;
 		}
-		if (nexManager.hasEquipped(ItemID.TOXIC_BLOWPIPE)
-			&& !nexManager.shouldKc())
+		if (Equipment.search().withId(ItemID.TOXIC_BLOWPIPE).first().orElse(null) != null
+			&&!nexManager.shouldKc())
 		{
 			nexManager.print("Banking all junk");
 			BankUtil.depositInventory();
