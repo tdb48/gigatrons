@@ -68,8 +68,8 @@ public class NexatronInfoBox extends OverlayPanel
 			panelComponent.getChildren().add(LineComponent.builder().left("Runtime ").right((duration.toHours() > 0 ? (duration.toHours() + ":") : ("")) + (new SimpleDateFormat("mm:ss").format(new Date(duration.toMillis())))).build());
 		}
 		panelComponent.getChildren().add(LineComponent.builder().left("Stage ").right(String.valueOf(stage)).build());
-		panelComponent.getChildren().add(LineComponent.builder().left("Task ").right(task).build());
-		panelComponent.getChildren().add(LineComponent.builder().left("Actions ").right(String.valueOf(plugin.getManager().actionCounter)).build());
+//		panelComponent.getChildren().add(LineComponent.builder().left("Task ").right(task).build());
+//		panelComponent.getChildren().add(LineComponent.builder().left("Actions ").right(String.valueOf(plugin.getManager().actionCounter)).build());
 		panelComponent.getChildren().add(LineComponent.builder().left("K / D / Fail ").right(plugin.nexManager.overall.killCount + " / " + plugin.nexManager.overall.deaths + " / " + plugin.nexManager.overall.failedKills).build());
 		int ancientKcDifference = plugin.nexManager.getAncientKc() - plugin.nexManager.nex.startAncientKc;
 		if (ancientKcDifference >= 0)
@@ -82,7 +82,7 @@ public class NexatronInfoBox extends OverlayPanel
 		}
 		if (plugin.nexManager.nex.nex != null)
 		{
-			panelComponent.getChildren().add(LineComponent.builder().left("Nex tick ").right(String.valueOf(plugin.nexManager.nex.nexAttackTick)).build());
+//			panelComponent.getChildren().add(LineComponent.builder().left("Nex tick ").right(String.valueOf(plugin.nexManager.nex.nexAttackTick)).build());
 //			panelComponent.getChildren().add(LineComponent.builder().left("Minion tick ").right(String.valueOf(plugin.nexManager.nex.minionAttackTick)).build());
 //			panelComponent.getChildren().add(LineComponent.builder().left("Player tick ").right(String.valueOf(plugin.nexManager.gameTickManager.getAttackWait())).build());
 			panelComponent.getChildren().add(LineComponent.builder().left("Should flick ").right(String.valueOf(plugin.nexManager.shouldFlick())).rightColor(plugin.nexManager.shouldFlick() ? Color.GREEN : Color.RED).build());
