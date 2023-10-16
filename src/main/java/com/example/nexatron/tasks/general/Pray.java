@@ -1,6 +1,6 @@
 package com.example.nexatron.tasks.general;
 
-import com.example.EthanApiPlugin.Collections.Equipment;
+import com.example.EthanApiPlugin.Collections.NPCs;
 import com.example.Utility.Combat;
 import com.example.Utility.Prayer;
 import com.example.Utility.Prayers;
@@ -18,7 +18,6 @@ import javax.inject.Inject;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
@@ -80,7 +79,7 @@ public class Pray extends StagedTask
 		// If we are coming out of a nex kill, don't pray anything
 		if (!nexManager.shouldKc()
 			&& nexManager.containsStage(Stage.KC_AREA)
-			&& Equipment.search().withId(ItemID.TOXIC_BLOWPIPE).first().orElse(null) == null)
+			&& NPCs.search().interactingWithLocal().first().orElse(null) == null)
 		{
 			return toPray;
 		}
