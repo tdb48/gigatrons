@@ -57,11 +57,11 @@ public class NexatronInfoBox extends OverlayPanel
 		panelComponent.setPreferredSize(new Dimension(graphics.getFontMetrics().stringWidth(title) + 100, 0));
 		if (plugin.nexManager.nex.teleportOut)
 		{
-			panelComponent.getChildren().add(TitleComponent.builder().text("TELEPORTING OUT").color(Color.red).build());
+			panelComponent.getChildren().add(TitleComponent.builder().text("Teleporting out").color(Color.red).build());
 		}
 		if (plugin.finishKill)
 		{
-			panelComponent.getChildren().add(TitleComponent.builder().text("Finishing current kill").color(Color.ORANGE).build());
+			panelComponent.getChildren().add(TitleComponent.builder().text("Finishing kill").color(Color.ORANGE).build());
 		}
 		if (plugin.nexManager.overall.botTimer != null)
 		{

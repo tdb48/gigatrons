@@ -11,6 +11,7 @@ import com.example.nexatron.model.constants.NexConst;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.model.setup.Setup;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -38,6 +39,20 @@ enter instance
  */
 public class NexBank
 {
+	public static ArrayList<Integer> necessaryItems = new ArrayList<>(
+		Arrays.asList(
+			ItemID.SUPER_RESTORE4,
+			ItemID.RANGING_POTION4,
+			ItemID.SARADOMIN_BREW4,
+			ItemID.SUPER_COMBAT_POTION4,
+			ItemID.SUPER_RESTORE1,
+			ItemID.ANGLERFISH,
+			ItemID.ANTIDOTE4_5952,
+			ItemID.SUPER_COMBAT_POTION1,
+			ItemID.RANGING_POTION1,
+			ItemID.STAMINA_POTION1
+		));
+
 	public GameObject barrier = null;
 	public NPC banker = null;
 	public boolean usingGucciRunePouch = false;
@@ -107,6 +122,29 @@ public class NexBank
 				nexManager.nex.meleeOffhand = nexManager.setup.findBestSlot(Setup.MELEE_OFFHAND);
 				nexManager.print("Set melee offhand as " + itemManager.getItemComposition(nexManager.nex.meleeOffhand).getName());
 
+			}
+		}
+		suppliesCheck();
+	}
+
+	public void suppliesCheck()
+	{
+		if (BankUtil.isOpen() && BankUtil.isMainTabOpen())
+		{
+			if (nexManager.socket.isMaster && (!BankUtil.contains(ItemID.COINS_995)
+				|| BankUtil.getFirst(ItemID.COINS_995).getItemQuantity() < 300000))
+			{
+				nexManager.print("Not enough coins");
+				// TODO turn plugin off
+			}
+			for (int i : necessaryItems)
+			{
+				if (nexManager.socket.isMaster && (!BankUtil.contains(i)
+					|| BankUtil.getFirst(i).getItemQuantity() < 50))
+				{
+					nexManager.print("Not enough " + itemManager.getItemComposition(i).getName());
+					// TODO turn plugin off
+				}
 			}
 		}
 	}

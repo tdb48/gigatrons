@@ -51,7 +51,6 @@ public class BreakLog extends StagedTask
 			gameTickManager.setTickWait(4);
 			nexManager.print("Logging out");
 			Game.logout();
-
 			return true;
 		}
 		return false;
