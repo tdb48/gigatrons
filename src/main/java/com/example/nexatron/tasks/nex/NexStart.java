@@ -1,5 +1,6 @@
 package com.example.nexatron.tasks.nex;
 
+import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Utility.Movement;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.Stage;
@@ -36,7 +37,10 @@ public class NexStart extends StagedTask
 		{
 			return false;
 		}
-
+		if (EthanApiPlugin.isMoving())
+		{
+			return false;
+		}
 		nexManager.print("Walking to start tile at " + nexManager.worldPointString(startTile));
 		Movement.move(startTile);
 		incrementActionCount();
