@@ -43,6 +43,7 @@ public class GetRequiredItems extends StagedTask
 			{
 				return false;
 			}
+			nexManager.print("Opening bank @ req items");
 			incrementActionCount();
 			return true;
 		}

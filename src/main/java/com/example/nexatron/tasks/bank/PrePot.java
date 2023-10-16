@@ -42,6 +42,7 @@ public class PrePot extends StagedTask
 			{
 				return false;
 			}
+			nexManager.print("Opening bank @ prepot");
 			incrementActionCount();
 			return true;
 			//return nexManager.nexBank.openBank();

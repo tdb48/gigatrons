@@ -72,6 +72,7 @@ public class WithdrawSupplies extends StagedTask
 			{
 				return false;
 			}
+			nexManager.print("Opening bank @ supplies");
 			incrementActionCount();
 			return true;
 		}

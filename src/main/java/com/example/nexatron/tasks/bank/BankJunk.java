@@ -37,6 +37,7 @@ public class BankJunk extends StagedTask
 			{
 				return false;
 			}
+			nexManager.print("Opening bank @ junk");
 			incrementActionCount();
 			return true;
 		}

@@ -44,6 +44,7 @@ public class HealUp extends StagedTask
 				{
 					return false;
 				}
+				nexManager.print("Opening bank @ heal up");
 				incrementActionCount();
 				return true;
 			}
