@@ -66,6 +66,12 @@ public class Prayers
 		return Prayer.PIETY;
 	}
 
+	public static int getMissingPoints()
+	{
+		return Static.getClient().getRealSkillLevel(Skill.PRAYER) - getPoints();
+	}
+
+
 	public static boolean hasEnabled(List<Prayer> prayers)
 	{
 		for (Prayer prayer : prayers)

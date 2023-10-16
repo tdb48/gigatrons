@@ -1,6 +1,6 @@
 package com.example.nexatron.model.constants;
 
-public enum ThrallMode
+public enum OptionalMode
 {
 	No, Yes, Auto
 }

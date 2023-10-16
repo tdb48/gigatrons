@@ -1,7 +1,7 @@
 package com.example.nexatron;
 
 import com.example.nexatron.model.constants.MasterMode;
-import com.example.nexatron.model.constants.ThrallMode;
+import com.example.nexatron.model.constants.OptionalMode;
 import com.example.nexatron.model.setup.Helm;
 import com.example.nexatron.model.setup.MeleeCape;
 import com.example.nexatron.model.setup.MeleeOffhand;
@@ -105,9 +105,9 @@ public interface NexatronConfig extends Config
 		description = "Whether to use thralls or not, auto means it will look at quest completion",
 		section = "General"
 	)
-	default ThrallMode thralls()
+	default OptionalMode thralls()
 	{
-		return ThrallMode.No;
+		return OptionalMode.No;
 	}
 
 
@@ -132,9 +132,9 @@ public interface NexatronConfig extends Config
 		description = "Whether to 1 tick flick or not (only at nex itself)",
 		section = "General"
 	)
-	default boolean prayFlick()
+	default OptionalMode prayFlick()
 	{
-		return false;
+		return OptionalMode.Auto;
 	}
 
 	@ConfigItem(
@@ -148,6 +148,7 @@ public interface NexatronConfig extends Config
 	{
 		return false;
 	}
+
 	@ConfigItem(
 		position = 2,
 		keyName = "kcMode",

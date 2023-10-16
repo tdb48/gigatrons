@@ -93,7 +93,7 @@ public class Pray extends StagedTask
 			toPray.addAll(prayers);
 			return toPray;
 		}
-		if (nexManager.config.prayFlick()
+		if (nexManager.shouldFlick()
 			&& !nexManager.containsStage(Stage.KC_AREA)
 			&& plugin.getManager().actionCounter < 8
 			&& Prayers.hasEnabled(prayers))

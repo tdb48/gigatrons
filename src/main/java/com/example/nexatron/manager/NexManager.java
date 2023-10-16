@@ -14,6 +14,7 @@ import com.example.Utility.BankUtil;
 import com.example.Utility.Hopping;
 import com.example.Utility.InventoryUtil;
 import com.example.Utility.Movement;
+import com.example.Utility.Prayers;
 import com.example.Utility.Static;
 import com.example.Utility.WidgetUtil;
 import com.example.nexatron.NexatronConfig;
@@ -28,8 +29,8 @@ import com.example.nexatron.model.NexBank;
 import com.example.nexatron.model.Overall;
 import com.example.nexatron.model.Socket;
 import com.example.nexatron.model.constants.NexConst;
+import com.example.nexatron.model.constants.OptionalMode;
 import com.example.nexatron.model.constants.Stage;
-import com.example.nexatron.model.constants.ThrallMode;
 import com.example.nexatron.model.setup.Setup;
 import com.google.inject.Singleton;
 import java.lang.reflect.Field;
@@ -364,11 +365,11 @@ public class NexManager
 
 	public boolean useThralls()
 	{
-		if (config.thralls().equals(ThrallMode.Yes))
+		if (config.thralls().equals(OptionalMode.Yes))
 		{
 			return true;
 		}
-		return config.thralls().equals(ThrallMode.Auto)
+		return config.thralls().equals(OptionalMode.Auto)
 			&& Quest.A_KINGDOM_DIVIDED.getState(client).equals(QuestState.FINISHED);
 	}
 
@@ -622,6 +623,39 @@ public class NexManager
 			}
 		}
 		return counter;
+	}
+
+	public boolean shouldFlick()
+	{
+		if (config.prayFlick().equals(OptionalMode.Yes))
+		{
+			return true;
+		}
+		if (config.prayFlick().equals(OptionalMode.No))
+		{
+			return false;
+		}
+		// Auto
+		int restoreDoses = Consumable.restoreDoseCount();
+		if (containsStage(Stage.NEX_ZAROS)
+			&& restoreDoses <= 4)
+		{
+			return true;
+		}
+		if (EthanApiPlugin.isMoving())
+		{
+			return false;
+		}
+		if (nex.isUnderNex(client.getLocalPlayer()))
+		{
+			return false;
+		}
+		if (nex.brewSipsNeeded > 0
+			&& Prayers.getMissingPoints() < 30)
+		{
+			return false;
+		}
+		return switchesLeft.isEmpty();
 	}
 
 	public boolean targetIsNex(NPC target)

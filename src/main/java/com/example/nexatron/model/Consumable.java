@@ -95,6 +95,34 @@ public class Consumable
 	@Inject
 	GameTickManager gameTickManager;
 
+	public static int restoreDoseCount()
+	{
+		int doseCount = 0;
+		int itemID = 0;
+		for (Widget w : InventoryUtil.getAll(ItemID.SUPER_RESTORE1,
+			ItemID.SUPER_RESTORE2, ItemID.SUPER_RESTORE3, ItemID.SUPER_RESTORE4))
+		{
+			itemID = w.getItemId();
+			if (itemID == ItemID.SUPER_RESTORE1)
+			{
+				doseCount = doseCount + 1;
+			}
+			if (itemID == ItemID.SUPER_RESTORE2)
+			{
+				doseCount = doseCount + 2;
+			}
+			if (itemID == ItemID.SUPER_RESTORE3)
+			{
+				doseCount = doseCount + 3;
+			}
+			if (itemID == ItemID.SUPER_RESTORE4)
+			{
+				doseCount = doseCount + 4;
+			}
+		}
+		return doseCount > 0 ? doseCount : -1;
+	}
+
 	public static boolean isDrained(Skill skill)
 	{
 		return Static.getClient().getBoostedSkillLevel(skill) < Static.getClient().getRealSkillLevel(skill);

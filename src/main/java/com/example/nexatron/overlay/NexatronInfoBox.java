@@ -85,10 +85,11 @@ public class NexatronInfoBox extends OverlayPanel
 			panelComponent.getChildren().add(LineComponent.builder().left("Nex tick ").right(String.valueOf(plugin.nexManager.nex.nexAttackTick)).build());
 //			panelComponent.getChildren().add(LineComponent.builder().left("Minion tick ").right(String.valueOf(plugin.nexManager.nex.minionAttackTick)).build());
 //			panelComponent.getChildren().add(LineComponent.builder().left("Player tick ").right(String.valueOf(plugin.nexManager.gameTickManager.getAttackWait())).build());
+			panelComponent.getChildren().add(LineComponent.builder().left("Should flick ").right(String.valueOf(plugin.nexManager.shouldFlick())).rightColor(plugin.nexManager.shouldFlick() ? Color.GREEN : Color.RED).build());
 
 			if (plugin.nexManager.nex.nextSpecial != null)
 			{
-				panelComponent.getChildren().add(LineComponent.builder().left("Attacks til special ").right(String.valueOf(plugin.nexManager.nex.attacksUntilSpecial)).build());
+//				panelComponent.getChildren().add(LineComponent.builder().left("Attacks til special ").right(String.valueOf(plugin.nexManager.nex.attacksUntilSpecial)).build());
 				panelComponent.getChildren().add(LineComponent.builder().left("Next special ").right(String.valueOf(plugin.nexManager.nex.nextSpecial)).build());
 			}
 //			panelComponent.getChildren().add(LineComponent.builder().left("Zaros counter ").right(String.valueOf(plugin.nexManager.nex.nexZarosAttacks)).build());

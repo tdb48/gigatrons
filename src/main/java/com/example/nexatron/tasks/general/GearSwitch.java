@@ -18,7 +18,7 @@ import net.runelite.client.game.ItemManager;
 
 @TaskDescriptor(
 	name = "Gear",
-	priority = Integer.MAX_VALUE,
+	priority = Integer.MAX_VALUE-1,
 	register = true
 )
 public class GearSwitch extends StagedTask
