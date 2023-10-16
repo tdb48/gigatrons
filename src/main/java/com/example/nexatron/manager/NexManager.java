@@ -637,8 +637,8 @@ public class NexManager
 		}
 		// Auto
 		int restoreDoses = Consumable.restoreDoseCount();
-		if (containsStage(Stage.NEX_ZAROS)
-			&& restoreDoses <= 4)
+		if (containsStage(Stage.NEX_ZAROS, Stage.MINION_ICE)
+			&& restoreDoses <= 6)
 		{
 			return true;
 		}
