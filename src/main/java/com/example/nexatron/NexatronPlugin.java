@@ -10,7 +10,7 @@ import com.example.nexatron.taskformat.TaskManager;
 import com.example.nexatron.tasks.general.GearSwitch;
 import com.example.nexatron.tasks.general.Pray;
 import com.example.nexatron.tasks.bank.BankJunk;
-import com.example.nexatron.tasks.bank.BreakLog;
+import com.example.nexatron.tasks.bank.BreakLogHop;
 import com.example.nexatron.tasks.bank.EnterNex;
 import com.example.nexatron.tasks.bank.GetRequiredItems;
 import com.example.nexatron.tasks.bank.HealUp;
@@ -26,7 +26,7 @@ import com.example.nexatron.tasks.general.RunToNex;
 import com.example.nexatron.tasks.general.SetFangStyle;
 import com.example.nexatron.tasks.general.ToggleRun;
 import com.example.nexatron.tasks.kcArea.EnterBank;
-import com.example.nexatron.tasks.kcArea.KcAttack;
+import com.example.nexatron.tasks.kcArea.KcAttackMages;
 import com.example.nexatron.tasks.kcArea.KcConsumables;
 import com.example.nexatron.tasks.nex.NexAbort;
 import com.example.nexatron.tasks.nex.NexConsumables;
@@ -111,7 +111,7 @@ public class NexatronPlugin extends Plugin
 			DisablePrayers.class,
 //			Reattack.class,
 //			KcPrayer.class,
-			KcAttack.class,
+			KcAttackMages.class,
 			NexAbort.class,
 			AttackSmokeNex.class,
 			NexStart.class,
@@ -139,7 +139,7 @@ public class NexatronPlugin extends Plugin
 			EnterNex.class,
 			EnterKcArea.class,
 			KcConsumables.class,
-			BreakLog.class,
+			BreakLogHop.class,
 			LeaveBank.class,
 			RunToNex.class,
 			GearSwitch.class,

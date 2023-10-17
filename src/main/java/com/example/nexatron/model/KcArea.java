@@ -112,7 +112,6 @@ public class KcArea
 			{
 				return target;
 			}
-			nexManager.print("Can't find any mages that no one is hitting, let's hop");
 			shouldHop = true;
 		}
 		return NPCs.search().nameContains("Reaver").alive().noOneInteractingWith().first().orElse(null);

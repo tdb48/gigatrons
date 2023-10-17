@@ -2,8 +2,8 @@ package com.example.Utility;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import net.runelite.api.GameState;
+import net.runelite.client.game.WorldService;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
@@ -12,10 +12,10 @@ public class Hopping
 {
 
 	// Finds a random world (if staySameRegion, in same region as current world), without dangerous or special worlds
-	public static int getValidWorld(boolean staySameRegion)
+	public static int getValidWorld(boolean staySameRegion, WorldService worldService)
 	{
-		WorldResult result = Static.getWorldService().getWorlds();
-		World currentWorld = getCurrentWorld();
+		WorldResult result = worldService.getWorlds();
+		World currentWorld = getCurrentWorld(worldService);
 		if (result == null || currentWorld == null)
 		{
 			return -1;
@@ -63,22 +63,30 @@ public class Hopping
 		return Static.getClient().getWorld();
 	}
 
-	public static net.runelite.http.api.worlds.World getCurrentWorld()
+	public static net.runelite.http.api.worlds.World getCurrentWorld(WorldService worldService)
 	{
+		if (worldService == null || worldService.getWorlds() == null)
+		{
+			System.out.println("World service is null in get current world");
+			return null;
+		}
 		int worldNumber = getCurrentWorldNumber();
-		return Objects.requireNonNull(Static.getWorldService().getWorlds()).findWorld(worldNumber);
+		return worldService.getWorlds().findWorld(worldNumber);
 	}
 
-	public static void hop(int worldNumber)
+	public static void hop(int worldNumber, WorldService worldService)
 	{
-		if (Static.getWorldService().getWorlds() != null)
+		WorldResult worldResult = worldService.getWorlds();
+		if (worldResult == null || Static.getClient().getGameState() != GameState.LOGGED_IN)
 		{
-			net.runelite.http.api.worlds.World world = Static.getWorldService().getWorlds().findWorld(worldNumber);
-			if (world != null)
-			{
-				System.out.println("Hopping to world " + worldNumber);
-				hop(world);
-			}
+			System.out.println("World result is null");
+			return;
+		}
+		World targetWorld = worldResult.findWorld(worldNumber);
+		if (targetWorld != null)
+		{
+			System.out.println("Hopping to world " + worldNumber);
+			hop(targetWorld);
 		}
 	}
 

@@ -32,7 +32,7 @@ public class Socket
 	public boolean otherHardDiary;
 	public boolean otherReadyToStart;
 	public boolean otherIsInside;
-	public int otherWorld;
+	public int otherWorld = -1;
 	public String otherForcedMaster;
 	public boolean otherNeedKc = false;
 	@Inject

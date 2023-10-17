@@ -2,6 +2,7 @@ package com.example.nexatron.tasks.bank;
 
 import com.example.EthanApiPlugin.EthanApiPlugin;
 import com.example.Utility.Game;
+import com.example.Utility.Hopping;
 import com.example.Utility.WorldAreas;
 import com.example.nexatron.NexatronPlugin;
 import com.example.nexatron.manager.GameTickManager;
@@ -15,6 +16,7 @@ import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.WorldService;
 
 @TaskDescriptor(
 	name = "Break or log",
@@ -22,8 +24,10 @@ import net.runelite.client.eventbus.Subscribe;
 	blocking = true,
 	register = true
 )
-public class BreakLog extends StagedTask
+public class BreakLogHop extends StagedTask
 {
+	@Inject
+	WorldService worldService;
 	public static final WorldPoint SOUTH_WEST = new WorldPoint(2902, 5200, 0);
 	public static final WorldPoint NORTH_EAST = new WorldPoint(2908, 5206, 0);
 	public static final WorldArea BREAK_AREA = WorldAreas.createArea(SOUTH_WEST, NORTH_EAST);
@@ -35,7 +39,7 @@ public class BreakLog extends StagedTask
 	GameTickManager gameTickManager;
 
 	@Inject
-	public BreakLog(NexManager nexManager)
+	public BreakLogHop(NexManager nexManager)
 	{
 		super(nexManager, Stage.BANK);
 	}
@@ -51,6 +55,20 @@ public class BreakLog extends StagedTask
 			gameTickManager.setTickWait(4);
 			nexManager.print("Logging out");
 			Game.logout();
+			return true;
+		}
+		if (nexManager.socket.world != nexManager.socket.otherWorld
+			&& nexManager.socket.otherWorld != -1
+			&& nexManager.socket.isSlave()
+			&& !nexManager.shouldKc())
+		{
+			if (gameTickManager.isTickWaiting())
+			{
+				return true;
+			}
+			gameTickManager.setTickWait(4);
+			nexManager.print("Hopping to master world which is " + nexManager.socket.otherWorld);
+			Hopping.hop(nexManager.socket.otherWorld, worldService);
 			return true;
 		}
 		return false;
