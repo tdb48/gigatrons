@@ -3,7 +3,6 @@ package com.example.nexatron.overlay;
 import com.example.nexatron.NexatronConfig;
 import com.example.nexatron.NexatronPlugin;
 import com.example.nexatron.model.constants.Stage;
-import com.example.nexatron.taskformat.Task;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -36,8 +35,8 @@ public class NexatronInfoBox extends OverlayPanel
 		this.plugin = plugin;
 		this.config = config;
 		this.setPriority(OverlayPriority.LOW);
-		addMenuEntry(RUNELITE_OVERLAY, "TELEPORT OUT", "Nexatron", e -> plugin.teleportOut());
-		addMenuEntry(RUNELITE_OVERLAY, "FINISH KILL THEN LOG", "Nexatron", e -> plugin.setFinishKill());
+		addMenuEntry(RUNELITE_OVERLAY, "Teleport out", "Nexatron", e -> plugin.teleportOut());
+		addMenuEntry(RUNELITE_OVERLAY, "Stop plugin at bank", "Nexatron", e -> plugin.setStopPlugin());
 	}
 
 	@Override
@@ -59,9 +58,9 @@ public class NexatronInfoBox extends OverlayPanel
 		{
 			panelComponent.getChildren().add(TitleComponent.builder().text("Teleporting out").color(Color.red).build());
 		}
-		if (plugin.finishKill)
+		if (plugin.stopPlugin)
 		{
-			panelComponent.getChildren().add(TitleComponent.builder().text("Finishing kill").color(Color.ORANGE).build());
+			panelComponent.getChildren().add(TitleComponent.builder().text("Stopping plugin @ Bank").color(Color.ORANGE).build());
 		}
 		if (plugin.nexManager.overall.botTimer != null)
 		{

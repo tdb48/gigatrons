@@ -72,7 +72,6 @@ public class NexatronPlugin extends Plugin
 	@Inject
 	public NexManager nexManager;
 	public boolean stopPlugin = false;
-	public boolean finishKill = false;
 	@Inject
 	Client client;
 	@Inject
@@ -152,7 +151,7 @@ public class NexatronPlugin extends Plugin
 //		chinBreakHandler.registerPlugin(this);
 //		chinBreakHandler.startPlugin(this);
 		nexManager.allowedToBreak = false;
-		finishKill = false;
+		stopPlugin = false;
 		stopPlugin = false;
 		overlayManager.add(nexatronInfoBox);
 		overlayManager.add(socketInfoBox);
@@ -191,7 +190,6 @@ public class NexatronPlugin extends Plugin
 //		chinBreakHandler.unregisterPlugin(this);
 //		chinBreakHandler.stopPlugin(this);
 		nexManager.allowedToBreak = false;
-		finishKill = false;
 		stopPlugin = false;
 		overlayManager.remove(nexatronInfoBox);
 		overlayManager.remove(socketInfoBox);
@@ -246,9 +244,9 @@ public class NexatronPlugin extends Plugin
 		nexManager.nex.teleportOut = !nexManager.nex.teleportOut;
 	}
 
-	public void setFinishKill()
+	public void setStopPlugin()
 	{
-		finishKill = !finishKill;
+		stopPlugin = !stopPlugin;
 	}
 }
 

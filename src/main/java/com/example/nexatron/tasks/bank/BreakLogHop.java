@@ -46,7 +46,7 @@ public class BreakLogHop extends StagedTask
 
 	public boolean execute()
 	{
-		if (plugin.finishKill)
+		if (plugin.stopPlugin)
 		{
 			if (gameTickManager.isTickWaiting())
 			{
@@ -79,9 +79,9 @@ public class BreakLogHop extends StagedTask
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			if (plugin.finishKill)
+			if (plugin.stopPlugin)
 			{
-				plugin.finishKill = false;
+				plugin.stopPlugin = false;
 				EthanApiPlugin.stopPlugin(plugin);
 			}
 		}

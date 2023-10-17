@@ -23,6 +23,7 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -131,16 +132,17 @@ public class NexBank
 	{
 		if (BankUtil.isOpen() && BankUtil.isMainTabOpen())
 		{
-			if (nexManager.socket.isMaster && (!BankUtil.contains(ItemID.COINS_995)
-				|| BankUtil.getFirst(ItemID.COINS_995).getItemQuantity() < 300000))
+			Widget coins = Bank.search().withId(ItemID.COINS_995).first().orElse(null);
+			if (nexManager.socket.isMaster
+				&& (coins == null || coins.getItemQuantity() < 300000))
 			{
 				nexManager.print("Not enough coins");
 				// TODO turn plugin off
 			}
 			for (int i : necessaryItems)
 			{
-				if (nexManager.socket.isMaster && (!BankUtil.contains(i)
-					|| BankUtil.getFirst(i).getItemQuantity() < 50))
+				Widget item = Bank.search().withId(i).first().orElse(null);
+				if (item == null || item.getItemQuantity() < 50)
 				{
 					nexManager.print("Not enough " + itemManager.getItemComposition(i).getName());
 					// TODO turn plugin off
