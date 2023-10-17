@@ -76,8 +76,9 @@ public class Socket
 	public void onGameTick(GameTick gameTick)
 	{
 		isMaster = decideMaster();
-		sendSocketPacket();
 		world = Hopping.getCurrentWorldNumber();
+		needKc = needToKc();
+		sendSocketPacket();
 	}
 
 	public boolean inRightWorld()
@@ -129,11 +130,11 @@ public class Socket
 
 	public boolean needToKc()
 	{
-		if (nexManager.getAncientKc() >= 600)
+		if (nexManager.getAncientKc() >= nexManager.config.kcThreshold())
 		{
 			return false;
 		}
-		if (nexManager.getAncientKc() < 100)
+		if (nexManager.getAncientKc() <= 80)
 		{
 			return true;
 		}

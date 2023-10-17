@@ -127,6 +127,10 @@ public class KcAttackMages extends StagedTask
 
 	public boolean shouldHop()
 	{
+		if (!nexManager.shouldKc())
+		{
+			return false;
+		}
 		List<Player> players = Players.search().notLocalPlayer().result();
 		for (Player player : players)
 		{

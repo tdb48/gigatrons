@@ -223,11 +223,15 @@ public class NexManager
 
 	public boolean shouldKc()
 	{
-//		if (socket.needToKc() || socket.otherNeedKc)
-//		{
-//			return true;
-//		}
-		return config.kcMode();
+		if (config.kcMode().equals(OptionalMode.Yes))
+		{
+			return true;
+		}
+		if (config.kcMode().equals(OptionalMode.No))
+		{
+			return false;
+		}
+		return socket.needKc || socket.otherNeedKc;
 	}
 
 	public boolean isDDd()
@@ -415,7 +419,6 @@ public class NexManager
 		{
 			if (!playerItems.contains(i))
 			{
-				System.out.println("Missing " + itemManager.getItemComposition(i).getName());
 				return false;
 			}
 		}

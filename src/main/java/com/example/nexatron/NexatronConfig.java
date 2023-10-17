@@ -156,9 +156,21 @@ public interface NexatronConfig extends Config
 		description = "If this is true, the bot will only do tasks to get kc",
 		section = "General"
 	)
-	default boolean kcMode()
+	default OptionalMode kcMode()
 	{
-		return false;
+		return OptionalMode.No;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "kcThreshold",
+		name = "KC Threshold",
+		description = "(For KC Mode AUTO) If we are above this value, we will start killing nex",
+		section = "General"
+	)
+	default int kcThreshold()
+	{
+		return 400;
 	}
 
 	@ConfigItem(
