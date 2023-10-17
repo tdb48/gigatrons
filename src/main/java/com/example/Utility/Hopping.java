@@ -76,6 +76,11 @@ public class Hopping
 
 	public static void hop(int worldNumber, WorldService worldService)
 	{
+		if (BankUtil.isOpen())
+		{
+			BankUtil.close();
+			return;
+		}
 		WorldResult worldResult = worldService.getWorlds();
 		if (worldResult == null || Static.getClient().getGameState() != GameState.LOGGED_IN)
 		{
