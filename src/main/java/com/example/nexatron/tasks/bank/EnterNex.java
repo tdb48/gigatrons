@@ -5,9 +5,9 @@ import com.example.Packets.MousePackets;
 import com.example.Packets.ObjectPackets;
 import com.example.Packets.WidgetPackets;
 import com.example.Utility.Dialog;
+import com.example.Utility.InventoryUtil;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
-import com.example.nexatron.model.Consumable;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
@@ -16,7 +16,7 @@ import net.runelite.api.widgets.Widget;
 
 @TaskDescriptor(
 	name = "Enter Nex",
-	priority = Integer.MAX_VALUE - 50,
+	priority = Integer.MAX_VALUE - 9,
 	blocking = true
 )
 public class EnterNex extends StagedTask
@@ -36,7 +36,8 @@ public class EnterNex extends StagedTask
 			|| !nexManager.socket.otherReadyToStart
 			|| !nexManager.isPrePotted()
 			|| nexManager.shouldKc()
-			|| nexManager.nexBank.barrier == null)
+			|| nexManager.nexBank.barrier == null
+			|| !InventoryUtil.isFull())
 		{
 			return false;
 		}
@@ -88,7 +89,7 @@ public class EnterNex extends StagedTask
 				nexManager.print("Attempting to join instance");
 				incrementActionCount();
 			}
-			else if(nexManager.socket.otherIsInside)
+			else if (nexManager.socket.otherIsInside)
 			{
 				nexManager.print("Interacting with barrier");
 				MousePackets.queueClickPacket();
