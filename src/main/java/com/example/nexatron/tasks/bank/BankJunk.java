@@ -44,7 +44,7 @@ public class BankJunk extends StagedTask
 		}
 		if (Equipment.search().withId(ItemID.TOXIC_BLOWPIPE).first().orElse(null) != null
 			&&!nexManager.shouldKc()
-			&& InventoryUtil.isFull())
+			&& InventoryUtil.getAllInventoryItems().size() > 20)
 		{
 			nexManager.print("Banking all junk");
 			BankUtil.depositInventory();
