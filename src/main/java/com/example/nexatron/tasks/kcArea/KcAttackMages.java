@@ -96,7 +96,7 @@ public class KcAttackMages extends StagedTask
 			}
 		}
 
-		if (Combat.getSpecEnergy() >= 50
+		if (Combat.getSpecEnergy() >= 80
 			&& !Combat.isSpecEnabled()
 			&& Equipment.search().withId(ItemID.TOXIC_BLOWPIPE).first().orElse(null) != null)
 		{
