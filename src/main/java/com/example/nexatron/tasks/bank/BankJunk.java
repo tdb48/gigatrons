@@ -2,6 +2,7 @@ package com.example.nexatron.tasks.bank;
 
 import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.Utility.BankUtil;
+import com.example.Utility.InventoryUtil;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
@@ -42,7 +43,8 @@ public class BankJunk extends StagedTask
 			return true;
 		}
 		if (Equipment.search().withId(ItemID.TOXIC_BLOWPIPE).first().orElse(null) != null
-			&&!nexManager.shouldKc())
+			&&!nexManager.shouldKc()
+			&& InventoryUtil.isFull())
 		{
 			nexManager.print("Banking all junk");
 			BankUtil.depositInventory();
