@@ -1,7 +1,9 @@
 package com.example.Utility;
 
+import java.awt.event.KeyEvent;
 import java.util.Collections;
 import java.util.List;
+import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.util.WorldUtil;
@@ -95,8 +97,30 @@ public class Hopping
 		}
 	}
 
+	public static void sendKey(int key, Client client)
+	{
+		keyEvent(KeyEvent.KEY_PRESSED, key, client);
+		keyEvent(KeyEvent.KEY_RELEASED, key, client);
+	}
+
+	public static void keyEvent(int id, int key, Client client)
+	{
+		KeyEvent e = new KeyEvent(
+			client.getCanvas(), id, System.currentTimeMillis(),
+			0, key, KeyEvent.CHAR_UNDEFINED
+		);
+
+		client.getCanvas().dispatchEvent(e);
+	}
+
 	public static void hop(net.runelite.http.api.worlds.World world)
 	{
+		if (Game.isWelcomeVisible())
+		{
+			System.out.println("Play button visible");
+			sendKey(KeyEvent.VK_ESCAPE, Static.getClient());
+			return;
+		}
 		final net.runelite.api.World rsWorld = Static.getClient().createWorld();
 		rsWorld.setActivity(world.getActivity());
 		rsWorld.setAddress(world.getAddress());
