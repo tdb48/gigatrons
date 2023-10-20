@@ -865,9 +865,9 @@ public class Nex
 	public WorldPoint nearestContainWp(int distance)
 	{
 		WorldPoint playerPoint = nexManager.getPlayerPoint();
-		ArrayList<WorldPoint> possibleTiles = (ArrayList<WorldPoint>) WorldAreas.createArea(playerPoint.dx(-4).dy(-4), playerPoint.dx(5).dy(5)).toWorldPointList();
+		ArrayList<WorldPoint> possibleTiles = (ArrayList<WorldPoint>) WorldAreas.createArea(playerPoint.dx(-6).dy(-6), playerPoint.dx(7).dy(7)).toWorldPointList();
 		possibleTiles.removeIf(n -> !Reachable.isWalkable(n));
-		possibleTiles.removeIf(n -> n.distanceTo(nexManager.nex.nex.getWorldArea()) <= distance);
+		possibleTiles.removeIf(n -> n.distanceTo(nexManager.nex.nex.getWorldArea()) != distance);
 		if (nexManager.socket.isMaster)
 		{
 			Player otherPlayer = nexManager.socket.getOtherPlayer();
