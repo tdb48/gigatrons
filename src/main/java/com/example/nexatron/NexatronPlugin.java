@@ -20,6 +20,7 @@ import com.example.nexatron.tasks.bank.PrePot;
 import com.example.nexatron.tasks.bank.WithdrawSupplies;
 import com.example.nexatron.tasks.general.DisablePrayers;
 import com.example.nexatron.tasks.general.DropVial;
+import com.example.nexatron.tasks.general.SwitchTab;
 import com.example.nexatron.tasks.lobby.EnterKcArea;
 import com.example.nexatron.tasks.general.ProgressStage;
 import com.example.nexatron.tasks.general.RunToNex;
@@ -142,6 +143,7 @@ public class NexatronPlugin extends Plugin
 			LeaveBank.class,
 			RunToNex.class,
 			GearSwitch.class,
+			SwitchTab.class,
 		};
 	}
 
