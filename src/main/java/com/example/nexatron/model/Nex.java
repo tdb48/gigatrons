@@ -744,7 +744,8 @@ public class Nex
 	public boolean shouldStepUnderNexIce()
 	{
 		return nexManager.nex.glacies.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 8
-			&& nexManager.nex.isNexChasingUs()
+			&& nex.getInteracting() != null
+			&& nex.getInteracting().equals(client.getLocalPlayer())
 			&& (nexManager.nex.nextSpecial.equals(NexSpecial.CONTAIN) || nexManager.nex.attacksUntilSpecial > 2);
 	}
 
@@ -759,7 +760,8 @@ public class Nex
 			return false;
 		}
 		return nexManager.nex.cruor.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 6
-			&& nexManager.nex.isNexChasingUs();
+			&& nex.getInteracting() != null
+			&& nex.getInteracting().equals(client.getLocalPlayer());
 	}
 
 	public boolean isNexChasing()
@@ -777,7 +779,6 @@ public class Nex
 		}
 		return nex.getPoseAnimation() == NexConst.NEX_CHASE_POSE_ANIMATION;
 	}
-
 
 
 	public boolean shouldTeleport()
