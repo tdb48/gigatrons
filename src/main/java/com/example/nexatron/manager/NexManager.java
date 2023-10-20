@@ -374,6 +374,7 @@ public class NexManager
 			return true;
 		}
 		return config.thralls().equals(OptionalMode.Auto)
+			&& client.getVarbitValue(NexConst.SPELLBOOK_VARB) == 3
 			&& Quest.A_KINGDOM_DIVIDED.getState(client).equals(QuestState.FINISHED);
 	}
 
@@ -640,6 +641,14 @@ public class NexManager
 		}
 		// Auto
 		int restoreDoses = Consumable.restoreDoseCount();
+		if (restoreDoses <= 0)
+		{
+			return true;
+		}
+		if (!switchesLeft.isEmpty())
+		{
+			return false;
+		}
 		if (containsStage(Stage.NEX_ZAROS, Stage.MINION_ICE)
 			&& restoreDoses <= 6)
 		{

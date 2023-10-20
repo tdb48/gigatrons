@@ -743,9 +743,9 @@ public class Nex
 
 	public boolean shouldStepUnderNexIce()
 	{
-		return nexManager.nex.glacies.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 7
+		return nexManager.nex.glacies.getWorldLocation().distanceTo(nexManager.nex.nex.getWorldArea()) <= 8
 			&& nexManager.nex.isNexChasingUs()
-			&& !(nexManager.nex.nextSpecial.equals(NexSpecial.PRISON) && nexManager.nex.attacksUntilSpecial <= 2);
+			&& (nexManager.nex.nextSpecial.equals(NexSpecial.CONTAIN) || nexManager.nex.attacksUntilSpecial > 2);
 	}
 
 

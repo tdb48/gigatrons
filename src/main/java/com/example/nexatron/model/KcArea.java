@@ -1,13 +1,16 @@
 package com.example.nexatron.model;
 
 import com.example.EthanApiPlugin.Collections.NPCs;
+import com.example.EthanApiPlugin.Collections.Players;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
+import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -68,6 +71,7 @@ public class KcArea
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
+		nexManager.kcArea.shouldHop = shouldHop();
 	}
 
 	public void reset()
@@ -80,6 +84,34 @@ public class KcArea
 		shouldHop = false;
 		reset();
 		bankDoor = null;
+	}
+
+	public boolean shouldHop()
+	{
+		if (!nexManager.shouldKc())
+		{
+			return false;
+		}
+		List<Player> players = Players.search().notLocalPlayer().result();
+		for (Player player : players)
+		{
+			if (player != null
+				&& player.isInteracting()
+				&& player.getInteracting() != null
+				&& player.getInteracting().getName() != null
+				&& player.getInteracting().getName().contains("Mage"))
+			{
+				nexManager.print("Found someone hitting a mage, we're gonna hop worlds");
+				return true;
+			}
+		}
+		if (nexManager.socket.world == nexManager.socket.otherWorld
+			&& nexManager.socket.otherWorld != -1
+			&& nexManager.socket.isSlave())
+		{
+			return true;
+		}
+		return nexManager.kcArea.shouldHop;
 	}
 
 	@Subscribe

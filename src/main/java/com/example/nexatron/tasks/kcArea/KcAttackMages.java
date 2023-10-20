@@ -69,7 +69,6 @@ public class KcAttackMages extends StagedTask
 			return false;
 		}
 
-		nexManager.kcArea.shouldHop = shouldHop();
 		if (npcInteractingWithUs == null
 			&& client.getLocalPlayer().getInteracting() == null)
 		{
@@ -124,33 +123,6 @@ public class KcAttackMages extends StagedTask
 	{
 		return nexManager.kcArea.getTarget();
 	}
-
-	public boolean shouldHop()
-	{
-		if (!nexManager.shouldKc())
-		{
-			return false;
-		}
-		List<Player> players = Players.search().notLocalPlayer().result();
-		for (Player player : players)
-		{
-			if (player != null
-				&& player.isInteracting()
-				&& player.getInteracting() != null
-				&& player.getInteracting().getName() != null
-				&& player.getInteracting().getName().contains("Mage"))
-			{
-				nexManager.print("Found someone hitting a mage, we're gonna hop worlds");
-				return true;
-			}
-		}
-		if (nexManager.socket.world == nexManager.socket.otherWorld
-			&& nexManager.socket.otherWorld != -1
-			&& nexManager.socket.isSlave())
-		{
-			return true;
-		}
-		return nexManager.kcArea.shouldHop;
-	}
+	
 
 }
