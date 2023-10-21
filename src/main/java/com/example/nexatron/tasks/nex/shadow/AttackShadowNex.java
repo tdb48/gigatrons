@@ -12,7 +12,6 @@ import com.example.nexatron.model.Consumable;
 import com.example.nexatron.model.constants.Stage;
 import com.example.nexatron.taskformat.StagedTask;
 import com.example.nexatron.taskformat.TaskDescriptor;
-import java.util.ArrayList;
 import javax.inject.Inject;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -57,7 +56,9 @@ public class AttackShadowNex extends StagedTask
 			nexManager.nex.getDodgeTile() :
 			nexManager.nex.getMainTile();
 
-		if (nexManager.nex.isNexChasingUs())
+		if (nexManager.nex.isNexChasingUs()
+			|| nexManager.nex.nex.getInteracting() != null
+			&& nexManager.nex.nex.getInteracting().equals(client.getLocalPlayer()))
 		{
 			if (nexManager.nex.distanceToNex() <= 3)
 			{
