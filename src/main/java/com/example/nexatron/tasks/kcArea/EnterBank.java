@@ -37,7 +37,7 @@ public class EnterBank extends StagedTask
 		{
 			if (restore == null
 				|| rangePot == null
-				|| anti == null
+				|| (anti == null && nexManager.kcArea.canKillMage())
 				|| !nexManager.shouldKc())
 			{
 				if (!nexManager.getPlayerPoint().equals(BANK_TILE))
