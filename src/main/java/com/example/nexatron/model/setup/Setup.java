@@ -93,11 +93,10 @@ public class Setup
 	public ArrayList<Integer> rangeKc()
 	{
 		int cape = config.rangeCape().itemId;
-		int rangeHelm = config.helm().itemId;
+		int rangeHelm = ItemID.ANCIENT_COIF;
 		if (config.autoDecide())
 		{
 			cape = nexManager.nex.rangeCape;
-			rangeHelm = nexManager.nex.helm;
 		}
 		if (!nexManager.kcArea.canKillMage())
 		{
@@ -106,12 +105,14 @@ public class Setup
 		return new ArrayList<>(
 			Arrays.asList(
 				ItemID.TOXIC_BLOWPIPE,
-				ItemID.MASORI_BODY_F,
-				ItemID.MASORI_CHAPS_F,
+				ItemID.ANCIENT_DHIDE_BODY,
+				ItemID.ANCIENT_CHAPS,
 				cape,
 				rangeHelm,
+				ItemID.ANCIENT_DHIDE_BOOTS,
 				ItemID.NECKLACE_OF_ANGUISH,
 				ItemID.LIGHTBEARER,
+				ItemID.ANCIENT_BLESSING,
 				ItemID.ANCIENT_BRACERS));
 	}
 
