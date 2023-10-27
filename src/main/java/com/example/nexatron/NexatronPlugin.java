@@ -3,6 +3,7 @@ package com.example.nexatron;
 import com.example.Utility.Dialog;
 import com.example.nexatron.manager.GameTickManager;
 import com.example.nexatron.manager.NexManager;
+import com.example.nexatron.model.ReaverManager;
 import com.example.nexatron.overlay.NexatronInfoBox;
 import com.example.nexatron.overlay.NexatronOverlay;
 import com.example.nexatron.overlay.SocketInfoBox;
@@ -72,6 +73,8 @@ public class NexatronPlugin extends Plugin
 	public NexatronConfig config;
 	@Inject
 	public NexManager nexManager;
+	@Inject
+	public ReaverManager reaverManager;
 	public boolean stopPlugin = false;
 	@Inject
 	Client client;
@@ -152,6 +155,10 @@ public class NexatronPlugin extends Plugin
 	{
 //		chinBreakHandler.registerPlugin(this);
 //		chinBreakHandler.startPlugin(this);
+
+		//Reavermanager addition
+		reaverManager.register();
+
 		nexManager.allowedToBreak = false;
 		stopPlugin = false;
 		stopPlugin = false;
@@ -191,6 +198,10 @@ public class NexatronPlugin extends Plugin
 	{
 //		chinBreakHandler.unregisterPlugin(this);
 //		chinBreakHandler.stopPlugin(this);
+
+		//Reavermanager addition
+		reaverManager.unregister();
+
 		nexManager.allowedToBreak = false;
 		stopPlugin = false;
 		overlayManager.remove(nexatronInfoBox);
