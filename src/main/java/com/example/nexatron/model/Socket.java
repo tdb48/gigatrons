@@ -11,6 +11,7 @@ import com.example.socket.packet.SocketReceivePacket;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.EventBus;
@@ -35,6 +36,8 @@ public class Socket
 	public int otherWorld = -1;
 	public String otherForcedMaster;
 	public boolean otherNeedKc = false;
+
+	public boolean otherCanKillMages;
 	@Inject
 	NexManager nexManager;
 	@Inject
@@ -70,9 +73,10 @@ public class Socket
 		otherWorld = -1;
 		otherForcedMaster = "";
 		otherNeedKc = false;
+		otherCanKillMages = false;
 	}
 
-	@Subscribe(priority = -1)
+	@Subscribe(priority = 10000)
 	public void onGameTick(GameTick gameTick)
 	{
 		isMaster = decideMaster();
@@ -98,6 +102,7 @@ public class Socket
 		payload.put("teleport", teleportOut);
 		payload.put("needKc", needKc);
 		payload.put("forcedMaster", nexManager.config.forceMaster().name());
+		payload.put("canKillMages", canKillMage());
 		eventBus.post(new SocketBroadcastPacket(payload));
 	}
 
@@ -126,6 +131,7 @@ public class Socket
 		otherWorld = payload.getInt("world");
 		otherNeedKc = payload.getBoolean("needKc");
 		otherForcedMaster = payload.getString("forcedMaster");
+		otherCanKillMages = payload.getBoolean("canKillMages");
 	}
 
 	public boolean needToKc()
@@ -195,6 +201,11 @@ public class Socket
 //				nexManager.print("Unexpected socket state (socket debug)");
 				return client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_HARD) == 2;
 		}
+	}
+
+	public boolean canKillMage()
+	{
+		return client.getRealSkillLevel(Skill.SLAYER) >= 83;
 	}
 
 	public Player getOtherPlayer()

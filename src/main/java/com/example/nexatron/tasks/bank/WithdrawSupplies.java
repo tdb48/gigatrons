@@ -53,7 +53,15 @@ public class WithdrawSupplies extends StagedTask
 			requiredScb = 0;
 			requiredBrew = 0;
 			requiredRpot = 3 - Inventory.getItemAmount(RPOT);
-			requiredRestore = (28 - 3 - 2) - Inventory.getItemAmount(RESTORE);
+			if(nexManager.kcArea.canKillMage())
+			{
+				requiredRestore = (28 - 3 - 2) - Inventory.getItemAmount(RESTORE);
+			}
+			else
+			{
+				requiredRestore = (28 - 3) - Inventory.getItemAmount(RESTORE);
+			}
+
 		}
 //			int missingId = getMissingSupplyId(nexManager.config.restoreCount(), nexManager.config.scbCount(), nexManager.config.rangeCount());
 		if (requiredRpot == 0

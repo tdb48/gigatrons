@@ -71,6 +71,7 @@ public class KcArea
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
+		System.out.println("Should hop -> " + shouldHop);
 		nexManager.kcArea.shouldHop = shouldHop();
 	}
 
@@ -99,9 +100,33 @@ public class KcArea
 				&& player.isInteracting()
 				&& player.getInteracting() != null
 				&& player.getInteracting().getName() != null
-				&& player.getInteracting().getName().contains("Mage"))
+				&& player.getInteracting().getName().contains("Mage")
+				&& canKillMage())
 			{
-				nexManager.print("Found someone hitting a mage, we're gonna hop worlds");
+				//COMMENT THIS IF STATEMENT OUT IF BUGS START
+//				if (player.getName() != null && nexManager.socket.otherName != null && player.getName().equals(nexManager.socket.otherName))
+//				{
+//					System.out.println("Someone else hitting mages but its my duo partner so i dont care");
+//					return false;
+//				}
+//				System.out.println("Found someone hitting a mage, we're gonna hop worlds");
+//				nexManager.print("Found someone hitting a mage, we're gonna hop worlds");
+				return true;
+			}
+			if (player != null
+				&& player.isInteracting()
+				&& player.getInteracting() != null
+				&& player.getInteracting().getName() != null
+				&& player.getInteracting().getName().contains("Reaver")
+				&& !canKillMage())
+			{
+				//COMMENT THIS IF STATEMENT OUT IF BUGS START
+//				if (player.getName() != null && nexManager.socket.otherName != null && player.getName().equals(nexManager.socket.otherName))
+//				{
+//					return false;
+//				}
+//				System.out.println("Found someone hitting a reaver, we're gonna hop worlds");
+//				nexManager.print("Found someone hitting a reaver, we're gonna hop worlds");
 				return true;
 			}
 		}
@@ -109,6 +134,21 @@ public class KcArea
 			&& nexManager.socket.otherWorld != -1
 			&& nexManager.socket.isSlave())
 		{
+//			System.out.println("My world: " +nexManager.socket.world + " | Other world: " + nexManager.socket.otherWorld);
+			//If other account is killing mages and I CANT kill mages
+			// OR
+			//other account is killing reavers and I CAN kill mages
+			//return false, we can share a world
+			//This actually minimizes the chance of us being crashed i think
+			if ((nexManager.socket.otherCanKillMages && !canKillMage())
+				|| (!nexManager.socket.otherCanKillMages && canKillMage()))
+			{
+//				System.out.println("Returning false in socket check thing down here");
+//				nexManager.print("Returning false in socket check thing down here");
+				return false;
+			}
+//			System.out.println("Returning TRUE in socket check thing down here");
+//			nexManager.print("Returning TRUE in socket check thing down here");
 			return true;
 		}
 		return nexManager.kcArea.shouldHop;
@@ -144,7 +184,8 @@ public class KcArea
 			{
 				return target;
 			}
-			shouldHop = true;
+			//UNCOMMENT THIS IF BAD THINGS START HAPPENING
+			//shouldHop = true;
 		}
 		return NPCs.search().nameContains("Reaver").alive().noOneInteractingWith().first().orElse(null);
 	}
