@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
@@ -46,6 +47,7 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public class Nex
 {
@@ -89,6 +91,7 @@ public class Nex
 	public int meleeCape = -1;
 	public int helm = -1;
 	public int meleeOffhand = -1;
+	public long highestIdleTime = -1;
 	@Inject
 	public Setup setup;
 	@Inject
@@ -149,11 +152,13 @@ public class Nex
 		meleeCape = -1;
 		helm = -1;
 		meleeOffhand = -1;
+		highestIdleTime = -1;
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
+		updateIdleTime();
 		if (nex != null)
 		{
 			setReaverHp();
@@ -1118,6 +1123,31 @@ public class Nex
 		return nex.isInteracting()
 			&& !nex.getInteracting().equals(client.getLocalPlayer())
 			&& (nexAttackTick == 3 || nexAttackTick == 4);
+	}
+
+	public String getIdleTime()
+	{
+		long lastActivity = Long.min(client.getMouseIdleTicks(), client.getKeyboardIdleTicks());
+		return DurationFormatUtils.formatDuration(lastActivity * Constants.CLIENT_TICK_LENGTH, "mm:ss");
+	}
+	public String transformIdleTime(long idleMillis)
+	{
+		if(idleMillis <= 0)
+		{
+			return "00:00";
+		}
+		return DurationFormatUtils.formatDuration(idleMillis * Constants.CLIENT_TICK_LENGTH, "mm:ss");
+	}
+
+	public void updateIdleTime()
+	{
+		long lastActivity = Long.min(client.getMouseIdleTicks(), client.getKeyboardIdleTicks());
+		if(lastActivity > highestIdleTime)
+		{
+//			System.out.println("Previous idle rec: " + highestIdleTime);
+//			System.out.println("Updating rec idle time to -> " + lastActivity);
+			highestIdleTime = lastActivity;
+		}
 	}
 
 	public void deinitTiles()

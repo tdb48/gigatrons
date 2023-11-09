@@ -47,7 +47,7 @@ public class NexatronInfoBox extends OverlayPanel
 			return null;
 		}
 		Stage stage = plugin.nexManager.getStage();
-		String task = plugin.getManager().getCurrentTaskNew();
+		//String task = plugin.getManager().getCurrentTaskNew();
 		String title = "Nexatron";
 		Duration duration = Duration.between(plugin.nexManager.overall.botTimer, Instant.now());
 		panelComponent.getChildren().clear();
@@ -98,6 +98,9 @@ public class NexatronInfoBox extends OverlayPanel
 				panelComponent.getChildren().add(LineComponent.builder().left("Prison tick?").right(String.valueOf(plugin.nexManager.nex.stuckInPrisonTick)).build());
 			}
 		}
+		panelComponent.getChildren().add(LineComponent.builder().left("Idle Time ").right(plugin.nexManager.nex.getIdleTime()).build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Rec Idle Time ").right(plugin.nexManager.nex.transformIdleTime(plugin.nexManager.nex.highestIdleTime)).build());
+
 		return panelComponent.render(graphics);
 	}
 

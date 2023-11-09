@@ -71,7 +71,7 @@ public class KcArea
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		System.out.println("Should hop -> " + shouldHop);
+//		System.out.println("Should hop -> " + shouldHop);
 		nexManager.kcArea.shouldHop = shouldHop();
 	}
 
