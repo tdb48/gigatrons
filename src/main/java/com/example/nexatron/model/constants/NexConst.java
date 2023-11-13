@@ -28,7 +28,8 @@ public class NexConst
 	public static final Set<Integer> KC_LOOT = Set.of(
 		ItemID.SUPER_RESTORE3,
 		ItemID.DRAGON_BOOTS,
-		ItemID.BLOOD_ESSENCE);
+		ItemID.BLOOD_ESSENCE,
+		ItemID.NIHIL_SHARD);
 	public static final Set<Integer> HIGH_PRIO_LOOT = Set.of(
 		ItemID.TORVA_FULL_HELM_DAMAGED,
 		ItemID.TORVA_PLATEBODY_DAMAGED,

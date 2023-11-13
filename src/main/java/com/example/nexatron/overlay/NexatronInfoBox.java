@@ -101,6 +101,9 @@ public class NexatronInfoBox extends OverlayPanel
 		panelComponent.getChildren().add(LineComponent.builder().left("Idle Time ").right(plugin.nexManager.nex.getIdleTime()).build());
 		panelComponent.getChildren().add(LineComponent.builder().left("Rec Idle Time ").right(plugin.nexManager.nex.transformIdleTime(plugin.nexManager.nex.highestIdleTime)).build());
 
+		//Damage taken
+		panelComponent.getChildren().add(LineComponent.builder().left("Phase damage ").right(String.valueOf(plugin.nexManager.phaseDamageTaken)).build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Total damage ").right(String.valueOf(plugin.nexManager.totalDamageTaken)).build());
 		return panelComponent.render(graphics);
 	}
 

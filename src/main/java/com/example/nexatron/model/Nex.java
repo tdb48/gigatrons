@@ -138,6 +138,8 @@ public class Nex
 		sacrificeTiles.clear();
 		nexZarosAttacks = 0;
 		lastSeenHeadIcon = -1;
+		nexManager.totalDamageTaken = 0;
+		nexManager.phaseDamageTaken = 0;
 	}
 
 	public void fullReset()

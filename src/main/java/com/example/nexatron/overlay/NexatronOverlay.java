@@ -2,6 +2,8 @@ package com.example.nexatron.overlay;
 
 import com.example.nexatron.NexatronConfig;
 import com.example.nexatron.NexatronPlugin;
+import com.example.nexatron.model.Reaver;
+import com.google.common.base.Strings;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,21 +26,24 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 
 public class NexatronOverlay extends Overlay
 {
 	Client client;
 	NexatronPlugin plugin;
 	NexatronConfig config;
+	ModelOutlineRenderer modelOutlineRenderer;
 	Stroke stroke = new BasicStroke((float) 2);
 	Stroke stroke2 = new BasicStroke((float) 1);
 
 	@Inject
-	public NexatronOverlay(Client client, NexatronPlugin plugin, NexatronConfig config)
+	public NexatronOverlay(Client client, NexatronPlugin plugin, NexatronConfig config, ModelOutlineRenderer modelOutlineRenderer)
 	{
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+		this.modelOutlineRenderer = modelOutlineRenderer;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -69,6 +74,63 @@ public class NexatronOverlay extends Overlay
 				renderTextLocation(graphics2D, String.valueOf(entry.getValue()), 14, Font.BOLD, Color.PINK, textLocation);
 			}
 		}
+
+		///////////Reaver overlay\\\\\\\\\\\\
+		if(config.showKcOverlay())
+		{
+			for(Reaver reaver : plugin.reaverManager.reavers.values())
+			{
+				if(reaver == null || reaver.getReaver() == null || !reaver.getReaver().getWorldLocation().isInScene(client))
+				{
+					continue;
+				}
+				//Location and npc index
+				drawTile(graphics2D, reaver.getCurrentLocation(), Color.GREEN, 5, String.valueOf(reaver.getIndex()), stroke);
+
+				//Hitpoints
+				String text = "HP: " + reaver.getHitpoints();
+				Point textLocation = Perspective.getCanvasTextLocation(client, graphics2D, reaver.getReaver().getLocalLocation(), text, 160);
+				renderTextLocation(graphics2D, text, 15, Font.PLAIN, Color.GREEN, textLocation);
+
+				//Distance to any center area tile
+				int distance = reaver.getCurrentLocation().distanceTo(plugin.reaverManager.centralArea);
+				String distanceText = "Dist: " + distance;
+				Point distanceTextLocation = Perspective.getCanvasTextLocation(client, graphics2D, reaver.getReaver().getLocalLocation(), distanceText, 25);
+				renderTextLocation(graphics2D, distanceText, 15, Font.PLAIN, Color.CYAN, distanceTextLocation);
+
+				//Spawn locations
+				drawTile(graphics2D, reaver.getSpawnLocation(), Color.BLUE, 50, String.valueOf(reaver.getIndex()), stroke);
+			}
+			for(WorldPoint wp : plugin.reaverManager.centralArea.toWorldPointList())
+			{
+				if(wp.isInScene(client))
+				{
+					drawTile(graphics2D, wp, Color.GREEN, 0, "", stroke2);
+					//drawPoint(wp, graphics2D, Color.GREEN);
+				}
+
+			}
+			for(WorldPoint wp : plugin.reaverManager.southWestArea.toWorldPointList())
+			{
+				if(wp.isInScene(client))
+				{
+					drawTile(graphics2D, wp, Color.GREEN, 0, "", stroke2);
+					//drawPoint(wp, graphics2D, Color.GREEN);
+				}
+			}
+			if(plugin.nexManager.reaverTest != null && plugin.nexManager.reaverTest.getWorldLocation().isInScene(client))
+			{
+				modelOutlineRenderer.drawOutline(plugin.nexManager.reaverTest, 2, Color.MAGENTA, 2);
+				//int distance = plugin.nexManager.reaverTest.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation());
+				//String text = "Dist: " + distance;
+				//Point textLocation = Perspective.getCanvasTextLocation(client, graphics2D, plugin.nexManager.reaverTest.getLocalLocation(), text, 0);
+				//renderTextLocation(graphics2D, text, 15, Font.PLAIN, Color.GREEN, textLocation);
+
+			}
+			/////////////////////////////////////////
+		}
+
+
 		return null;
 	}
 
@@ -147,5 +209,35 @@ public class NexatronOverlay extends Overlay
 		}
 	}
 
+	private void drawTile(Graphics2D graphics, WorldPoint point, Color color, int alpha, String label, Stroke borderStroke)
+	{
+		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+
+		if (point.distanceTo(playerLocation) >= 32)
+		{
+			return;
+		}
+
+		LocalPoint lp = LocalPoint.fromWorld(client, point);
+		if (lp == null)
+		{
+			return;
+		}
+
+		Polygon poly = Perspective.getCanvasTilePoly(client, lp);
+		if (poly != null)
+		{
+			OverlayUtil.renderPolygon(graphics, poly, color, new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha), borderStroke);
+		}
+		if (!Strings.isNullOrEmpty(label))
+		{
+			Point canvasTextLocation = Perspective.getCanvasTextLocation(client, graphics, lp, label, 0);
+			if (canvasTextLocation != null)
+			{
+				graphics.setFont(new Font("Arial", Font.PLAIN, 13));
+				OverlayUtil.renderTextLocation(graphics, canvasTextLocation, label, color);
+			}
+		}
+	}
 
 }

@@ -242,7 +242,16 @@ public interface NexatronConfig extends Config
 	{
 		return true;
 	}
-
+	@ConfigItem(
+		position = 911,
+		keyName = "showKcOverlay",
+		name = "Show KC Overlay",
+		description = "Show KC Room overlay"
+	)
+	default boolean showKcOverlay()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		position = 9999,

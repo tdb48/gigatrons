@@ -43,8 +43,12 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import lombok.Getter;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Hitsplat;
+import net.runelite.api.HitsplatID;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -57,9 +61,11 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.annotations.HitsplatType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
@@ -71,6 +77,7 @@ public class NexManager
 {
 	public final Client client;
 	private final EventBus eventBus;
+	@Getter
 	private final NexatronPlugin plugin;
 	@Inject
 	public GameTickManager gameTickManager;
@@ -107,6 +114,11 @@ public class NexManager
 	public int totalClientTicks = 0;
 	public int clientTick = 0;
 
+	public int totalDamageTaken = 0;
+	public int phaseDamageTaken = 0;
+
+	public NPC reaverTest = null;
+
 	@Inject
 	public NexManager(EventBus eventBus, Client client, NexatronConfig config, NexatronPlugin plugin)
 	{
@@ -124,6 +136,9 @@ public class NexManager
 		shouldReattack = false;
 		switchesLeft = new ArrayList<>();
 		gearSetup = new ArrayList<>();
+		totalDamageTaken = 0;
+		phaseDamageTaken = 0;
+		reaverTest = null;
 	}
 
 
@@ -158,6 +173,33 @@ public class NexManager
 		{
 			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", clientTick + ": " + msg, "");
 		}
+	}
+
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied event)
+	{
+		Actor a = event.getActor();
+		if(!(a instanceof Player))
+		{
+			return;
+		}
+		Player p = (Player) a;
+		if(!p.equals(client.getLocalPlayer()))
+		{
+			return;
+		}
+		Hitsplat splat = event.getHitsplat();
+		int splatId = splat.getHitsplatType();
+		int damageAmount = splat.getAmount();
+		//Damage taken
+		if(splatId == 16)
+		{
+			totalDamageTaken += damageAmount;
+			phaseDamageTaken += damageAmount;
+		}
+//		System.out.println("Is mine? " + splat.isMine());
+//		System.out.println("Amount: " + splat.getAmount());
+//		System.out.println("Hitsplat Id -> " + splatId);
 	}
 
 

@@ -54,6 +54,10 @@ public class KcAttackMages extends StagedTask
 		{
 			return false;
 		}
+		if(!nexManager.kcArea.canKillMage())
+		{
+			return false;
+		}
 		Widget restore = Consumable.getRestore();
 		NPC npcInteractingWithUs = NPCs.search().alive().interactingWithLocal().first().orElse(null);
 		if (Prayers.getPoints() == 0

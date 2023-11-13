@@ -103,11 +103,13 @@ public class ProgressStage extends Task
 				nexManager.nex.dashTick = 0;
 				nexManager.nex.initSmokeNexTiles();
 				nexManager.socket.readyToStart = false;
+				nexManager.phaseDamageTaken = 0;
 				nexManager.setStage(Stage.NEX_SMOKE);
 			}
 			if (message.contains("fumus, don't fail me!"))
 			{
 				nexManager.nex.initSmokeMinionTiles();
+				//nexManager.phaseDamageTaken = 0;
 				nexManager.setStage(Stage.MINION_SMOKE);
 			}
 			if (message.contains("darken my shadow!"))
@@ -115,12 +117,14 @@ public class ProgressStage extends Task
 				nexManager.nex.attacksUntilSpecial = 0;
 				nexManager.nex.invincibleTick = 4;
 				nexManager.nex.initShadowNexTiles(false);
+				nexManager.phaseDamageTaken = 0;
 				nexManager.setStage(Stage.NEX_SHADOW);
 			}
 			if (message.contains("umbra, don't fail me!"))
 			{
 				nexManager.nex.attacksUntilSpecial = 0;
 				nexManager.nex.initShadowMinionTiles();
+				//nexManager.phaseDamageTaken = 0;
 				nexManager.setStage(Stage.MINION_SHADOW);
 			}
 			if (message.contains("flood my lungs with blood!"))
@@ -130,12 +134,14 @@ public class ProgressStage extends Task
 				nexManager.nex.nextSpecial = nexManager.nex.nextSpecial.equals(NexSpecial.SHADOWS) ?
 					NexSpecial.SACRIFICE :
 					NexSpecial.SIPHON;
+				nexManager.phaseDamageTaken = 0;
 				nexManager.setStage(Stage.NEX_BLOOD);
 			}
 			if (message.contains("cruor, don't fail me!"))
 			{
 				nexManager.nex.attacksUntilSpecial = 0;
 				nexManager.nex.initBloodMinionTiles();
+				//nexManager.phaseDamageTaken = 0;
 				nexManager.setStage(Stage.MINION_BLOOD);
 			}
 			if (message.contains("infuse me with the power of ice!"))
@@ -144,16 +150,19 @@ public class ProgressStage extends Task
 					NexSpecial.PRISON :
 					NexSpecial.SACRIFICE;
 				nexManager.nex.invincibleTick = 4;
+				nexManager.phaseDamageTaken = 0;
 				nexManager.setStage(Stage.NEX_ICE);
 			}
 			if (message.contains("glacies, don't fail me!"))
 			{
 				nexManager.nex.initIceMinionTiles();
+				//nexManager.phaseDamageTaken = 0;
 				nexManager.setStage(Stage.MINION_ICE);
 			}
 			if (message.contains("now, the power of zaros!"))
 			{
 				nexManager.nex.invincibleTick = 4;
+				nexManager.phaseDamageTaken = 0;
 				nexManager.setStage(Stage.NEX_ZAROS);
 			}
 			if (message.contains("my wrath"))
