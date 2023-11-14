@@ -204,7 +204,7 @@ public class ReaverManager
 			{
 				continue;
 			}
-			if(n.getInteracting().equals(client.getLocalPlayer()))
+			if(n.getInteracting() != null && client.getLocalPlayer() != null && n.getInteracting().equals(client.getLocalPlayer()))
 			{
 				if(n.getWorldArea().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 5)
 				{
@@ -235,7 +235,7 @@ public class ReaverManager
 			{
 				continue;
 			}
-			if(n.getInteracting().equals(client.getLocalPlayer()))
+			if(n.getInteracting() != null && client.getLocalPlayer() != null && n.getInteracting().equals(client.getLocalPlayer()))
 			{
 				return true;
 			}

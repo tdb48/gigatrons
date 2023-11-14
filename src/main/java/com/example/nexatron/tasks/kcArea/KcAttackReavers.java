@@ -55,7 +55,7 @@ public class KcAttackReavers extends StagedTask
 		{
 			return false;
 		}
-		if(nexManager.kcArea.canKillMage())
+		if (nexManager.kcArea.canKillMage())
 		{
 			return false;
 		}
@@ -73,31 +73,48 @@ public class KcAttackReavers extends StagedTask
 			}
 			return false;
 		}
-		if (npcInteractingWithUs == null
-			&& client.getLocalPlayer().getInteracting() == null)
+
+		ETileItem loot = TileItemUtil.getClosestETileItem(NexConst.KC_LOOT);
+		if (loot != null
+			&& !InventoryUtil.isFull())
 		{
-			ETileItem loot = TileItemUtil.getClosestETileItem(NexConst.KC_LOOT);
-			if (loot != null
-				&& !InventoryUtil.isFull())
+			nexManager.print("Picking up " + itemManager.getItemComposition(loot.tileItem.getId()).getName());
+			MousePackets.queueClickPacket();
+			TileItemPackets.queueTileItemAction(loot, false);
+			incrementActionCount();
+			return true;
+		}
+
+		//We need to hop so this should take priority over kcing
+		if (nexManager.kcArea.shouldHop)
+		{
+			//If we have a reaver agrod on us we need to finish it before we can hop
+			if (nexManager.getPlugin().reaverManager.hasAtleastOneReaverAgrod() && !client.getLocalPlayer().isInteracting())
 			{
-				nexManager.print("Picking up " + itemManager.getItemComposition(loot.tileItem.getId()).getName());
+				NPC n = nexManager.getPlugin().reaverManager.getHittableInteractingReaver();
+				if (n == null)
+				{
+					//System.out.println("Backup reaver is also null");
+					nexManager.print("Reaver somehow null (we r trying to finish them off n hop worlds)");
+					return false;
+				}
+				nexManager.print("Attacking " + n.getName() + "Index: " + n.getIndex());
 				MousePackets.queueClickPacket();
-				TileItemPackets.queueTileItemAction(loot, false);
+				NPCPackets.queueNPCAction(n, "Attack");
 				incrementActionCount();
 				return true;
 			}
-			if (nexManager.kcArea.shouldHop)
+			if (gameTickManager.isTickWaiting())
 			{
-				if (gameTickManager.isTickWaiting())
-				{
-					return true;
-				}
-				gameTickManager.setTickWait(4);
-				nexManager.print("We should be hopping, gonna hop to " + Hopping.getValidWorld(true, worldService));
-				Hopping.hop(Hopping.getValidWorld(true, worldService), worldService);
+				nexManager.print("Tick waiting in should hop logic.");
 				return true;
 			}
+			gameTickManager.setTickWait(4);
+			nexManager.print("We should be hopping, gonna hop to " + Hopping.getValidWorld(true, worldService));
+			Hopping.hop(Hopping.getValidWorld(true, worldService), worldService);
+			return true;
 		}
+
 		if (Combat.getSpecEnergy() >= 80
 			&& !Combat.isSpecEnabled()
 			&& Equipment.search().withId(ItemID.TOXIC_BLOWPIPE).first().orElse(null) != null)
@@ -126,10 +143,10 @@ public class KcAttackReavers extends StagedTask
 		if (reaver == null)
 		{
 			//System.out.println("Reaver class object is null in KcAttackReavers.");
-			if(nexManager.getPlugin().reaverManager.hasAtleastOneReaverAgrod())
+			if (nexManager.getPlugin().reaverManager.hasAtleastOneReaverAgrod())
 			{
 				NPC n = nexManager.getPlugin().reaverManager.getHittableInteractingReaver();
-				if(n == null)
+				if (n == null)
 				{
 					//System.out.println("Backup reaver is also null");
 					return false;
@@ -148,6 +165,7 @@ public class KcAttackReavers extends StagedTask
 		NPC targetNPC = reaver.getReaver();
 		if (targetNPC == null)
 		{
+
 			if (reaver.getTimeUntilRespawn() > 0)
 			{
 				//System.out.println("Time until respawn: " + reaver.getTimeUntilRespawn() + " -> pathing to appropriate tile");
@@ -186,6 +204,7 @@ public class KcAttackReavers extends StagedTask
 				}
 			}
 		}
+
 		else
 		{
 			//Should do a check here for if we have a reaver agrod on us already
@@ -220,7 +239,8 @@ public class KcAttackReavers extends StagedTask
 					if (client.getLocalPlayer().getWorldLocation().equals(wp))
 					{
 						//System.out.println("Player is already on the wp its trying to path to, will attack a closer reaver while waiting (if available)");
-						if (client.getLocalPlayer().isInteracting() && client.getLocalPlayer().getInteracting().equals(targetNPC))
+						if (client.getLocalPlayer().isInteracting() && client.getLocalPlayer().getInteracting() != null
+							&& client.getLocalPlayer().getInteracting().equals(targetNPC))
 						{
 							//System.out.println("Returning without doin anythin cuz we already attacking a reaverington");
 							return false;
@@ -240,7 +260,8 @@ public class KcAttackReavers extends StagedTask
 			}
 			else
 			{
-				if (client.getLocalPlayer().isInteracting() && client.getLocalPlayer().getInteracting().equals(targetNPC))
+				if (client.getLocalPlayer().isInteracting() && client.getLocalPlayer().getInteracting() != null
+					&& client.getLocalPlayer().getInteracting().equals(targetNPC))
 				{
 					//System.out.println("We are already attacking the npc we want to attack. do nuthin.");
 					return false;
