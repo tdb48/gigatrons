@@ -213,20 +213,19 @@ public class EthanApiPlugin extends Plugin {
 
     @SneakyThrows
     public static HeadIcon getHeadIcon(NPC npc) {
-        Method getHeadIconArrayMethod = null;
+        Method getHeadIconMethod = null;
         for (Method declaredMethod : npc.getComposition().getClass().getDeclaredMethods()) {
-            if (declaredMethod.getReturnType() == short[].class && declaredMethod.getParameterTypes().length == 0) {
-                getHeadIconArrayMethod = declaredMethod;
-                if (getHeadIconArrayMethod == null) {
+            if (declaredMethod.getName().length() == 2 && declaredMethod.getReturnType() == short.class && declaredMethod.getParameterCount() == 1) {
+                getHeadIconMethod = declaredMethod;
+                getHeadIconMethod.setAccessible(true);
+                short headIcon = (short) getHeadIconMethod.invoke(npc.getComposition(), 0);
+                getHeadIconMethod.setAccessible(false);
+
+                if (headIcon == -1) {
                     continue;
                 }
-                getHeadIconArrayMethod.setAccessible(true);
-                short[] headIconArray = (short[]) getHeadIconArrayMethod.invoke(npc.getComposition());
-                getHeadIconArrayMethod.setAccessible(false);
-                if (headIconArray == null || headIconArray.length == 0) {
-                    continue;
-                }
-                return HeadIcon.values()[headIconArray[0]];
+
+                return HeadIcon.values()[headIcon];
             }
         }
         return null;
@@ -431,7 +430,7 @@ public class EthanApiPlugin extends Plugin {
             }
         }
         doAction.setAccessible(true);
-        doAction.invoke(null, var0, var1, var2, var3, var4, var5, var6, var7, var8, (byte) 102);
+        doAction.invoke(null, var0, var1, var2, var3, var4, var5, var6, var7, var8, (byte) 88);
         doAction.setAccessible(false);
     }
 
@@ -657,7 +656,6 @@ public class EthanApiPlugin extends Plugin {
     }
 
     public static ArrayList<WorldPoint> pathToGoal(WorldPoint goal, HashSet<WorldPoint> dangerous) {
-
         ArrayList<List<WorldPoint>> paths = new ArrayList<>();
         paths.add(List.of(client.getLocalPlayer().getWorldLocation()));
         HashSet<WorldPoint> walkableTiles = new HashSet<>(reachableTiles());
@@ -669,7 +667,6 @@ public class EthanApiPlugin extends Plugin {
     }
 
     public static ArrayList<WorldPoint> pathToGoal(HashSet<WorldPoint> goalSet, HashSet<WorldPoint> dangerous) {
-
         ArrayList<List<WorldPoint>> paths = new ArrayList<>();
         paths.add(List.of(client.getLocalPlayer().getWorldLocation()));
         HashSet<WorldPoint> walkableTiles = new HashSet<>(reachableTiles());
@@ -702,6 +699,9 @@ public class EthanApiPlugin extends Plugin {
                                                    HashSet<WorldPoint> impassible, HashSet<WorldPoint> dangerous,
                                                    HashSet<WorldPoint> walkable, HashSet<WorldPoint> walked) {
         Queue<List<WorldPoint>> queue = new LinkedList<>(paths);
+        if(queue.isEmpty()){
+            queue.add(List.of(client.getLocalPlayer().getWorldLocation()));
+        }
         ArrayDeque<Node> nodeQueue = new ArrayDeque<>();
         if (Collections.disjoint(walkable, goal)) {
             return null;
