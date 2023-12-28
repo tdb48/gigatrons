@@ -38,7 +38,7 @@ public class ReaverManager
 	public ConcurrentHashMap<Integer, Reaver> reavers = new ConcurrentHashMap<>();
 
 	public WorldArea centralArea = new WorldArea(new WorldPoint(2875, 5208, 0), 8, 8);
-	public HashSet<Integer> centralNpcIndexs = new HashSet<>(Set.of(2228,2232,2230,2222,2234,1822,1821,1824,1829));
+	public HashSet<Integer> centralNpcIndexs = new HashSet<>(Set.of(15137,15135,15142,14260,14245,14258,14242,14246,14250));
 	public WorldArea southWestArea = new WorldArea(new WorldPoint(2859, 5205, 0), 8, 6);
 	public HashSet<Integer> southWestNpcIndexs = new HashSet<>(Set.of(2214,2218,2222,2217,2232,2228,2230));
 
@@ -276,18 +276,18 @@ public class ReaverManager
 
 	public void initialiseReavers()
 	{
-		reavers.put(2228,new Reaver(2228,findSpawnLocation(2228)));
-		reavers.put(2232,new Reaver(2232,findSpawnLocation(2232)));
-		reavers.put(2230,new Reaver(2230,findSpawnLocation(2230)));
-		reavers.put(2217,new Reaver(2217,findSpawnLocation(2217)));
-		reavers.put(2214,new Reaver(2214,findSpawnLocation(2214)));
-		reavers.put(2218,new Reaver(2218,findSpawnLocation(2218)));
-		reavers.put(2222,new Reaver(2222,findSpawnLocation(2222)));
-		reavers.put(1822,new Reaver(1822,findSpawnLocation(1822)));
-		reavers.put(2234,new Reaver(2234,findSpawnLocation(2234)));
-		reavers.put(1824,new Reaver(1824,findSpawnLocation(1824)));
-		reavers.put(1821,new Reaver(1821,findSpawnLocation(1821)));
-		reavers.put(1829,new Reaver(1829,findSpawnLocation(1829)));
+		reavers.put(15137,new Reaver(15137,findSpawnLocation(15137)));
+		reavers.put(15135,new Reaver(15135,findSpawnLocation(15135)));
+		reavers.put(15142,new Reaver(15142,findSpawnLocation(15142)));
+		reavers.put(15134,new Reaver(15134,findSpawnLocation(15134)));
+		reavers.put(14262,new Reaver(14262,findSpawnLocation(14262)));
+		reavers.put(14256,new Reaver(14256,findSpawnLocation(14256)));
+		reavers.put(14260,new Reaver(14260,findSpawnLocation(14260)));
+		reavers.put(14258,new Reaver(14258,findSpawnLocation(14258)));
+		reavers.put(14245,new Reaver(14245,findSpawnLocation(14245)));
+		reavers.put(14246,new Reaver(14246,findSpawnLocation(14246)));
+		reavers.put(14242,new Reaver(14242,findSpawnLocation(14242)));
+		reavers.put(14250,new Reaver(14250,findSpawnLocation(14250)));
 	}
 
 	public WorldPoint findSpawnLocation(int reaverIndex)
@@ -296,51 +296,51 @@ public class ReaverManager
 		int y = 0;
 		switch (reaverIndex)
 		{
-			case 2228:
+			case 14256:
 				x = 2870;
 				y = 5222;
 				break;
-			case 2232:
+			case 14260:
 				x = 2875;
 				y = 5214;
 				break;
-			case 2230:
+			case 14258:
 				x = 2873;
 				y = 5208;
 				break;
-			case 2217:
+			case 14245:
 				x = 2858;
 				y = 5208;
 				break;
-			case 2214:
+			case 14242:
 				x = 2854;
 				y = 5206;
 				break;
-			case 2218:
+			case 14246:
 				x = 2859;
 				y = 5200;
 				break;
-			case 2222:
+			case 14250:
 				x = 2864;
 				y = 5203;
 				break;
-			case 1822:
+			case 15135:
 				x = 2885;
 				y = 5208;
 				break;
-			case 2234:
+			case 14262:
 				x = 2878;
 				y = 5201;
 				break;
-			case 1824:
+			case 15137:
 				x = 2887;
 				y = 5215;
 				break;
-			case 1821:
+			case 15134:
 				x = 2885;
 				y = 5197;
 				break;
-			case 1829:
+			case 15142:
 				x = 2895;
 				y = 5207;
 			default:
