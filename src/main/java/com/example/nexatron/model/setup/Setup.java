@@ -24,6 +24,7 @@ public class Setup
 	public static final ArrayList<Integer> MELEE_CAPE =
 		new ArrayList<>(Arrays.asList(
 			ItemID.INFERNAL_CAPE,
+			ItemID.INFERNAL_CAPE_L,
 			ItemID.FIRE_CAPE
 		));
 	public static final ArrayList<Integer> MELEE_OFFHAND =
@@ -34,7 +35,8 @@ public class Setup
 	public static final ArrayList<Integer> HELM =
 		new ArrayList<>(Arrays.asList(
 			ItemID.NEITIZNOT_FACEGUARD,
-			ItemID.HELM_OF_NEITIZNOT
+			ItemID.HELM_OF_NEITIZNOT,
+			ItemID.BERSERKER_HELM
 		));
 	@Inject
 	NexManager nexManager;
