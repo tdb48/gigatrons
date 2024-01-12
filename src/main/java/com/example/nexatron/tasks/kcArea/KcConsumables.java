@@ -31,7 +31,11 @@ public class KcConsumables extends StagedTask
 		{
 			return false;
 		}
-		Widget restore = Consumable.getRestore();
+		Widget restore = Consumable.getPrayer();
+		if(restore == null)
+		{
+			restore = Consumable.getRestore();
+		}
 		if ((Consumable.isDrainedMore(Skill.PRAYER, 32) || Consumable.isDrained(Skill.SLAYER))
 			&& restore != null)
 		{

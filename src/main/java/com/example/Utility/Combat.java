@@ -54,6 +54,16 @@ public class Combat
 		return 1;
 	}
 
+	public static void toggleSpecVoid()
+	{
+		if (isSpecEnabled())
+		{
+			return;
+		}
+		MousePackets.queueClickPacket();
+		WidgetPackets.queueWidgetActionPacket(1, 38862884, -1, -1);
+	}
+
 	public static AttackStyle getAttackStyle()
 	{
 		return Combat.AttackStyle.fromIndex(Static.getClient().getVarpValue(43));

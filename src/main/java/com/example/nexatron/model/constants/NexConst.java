@@ -19,6 +19,7 @@ public class NexConst
 	public static final int FANG_SLASH_ANIMATION = 390;
 	public static final int FANG_SPEC_ANIMATION = 6118;
 	public static final int ZCB_ANIMATION = 9168;
+	public static final int ACB_ANIMATION = 7552;
 	public static final int TROLLHEIM_ROCKS = 3803;
 	public static final int TROLLHEIM_TO_GWD_CRAWL = 26382;
 	public static final int GWD_ENTRANCE = 26419;
@@ -47,6 +48,7 @@ public class NexConst
 		ItemID.NIHIL_HORN,
 		ItemID.ZARYTE_VAMBRACES);
 	public static final Set<Integer> LOW_PRIO_LOOT = Set.of(
+		ItemID.FIRE_RUNE,
 		246, // noted wine of zamorak
 		2434, // ppot 4
 		454, // noted coal

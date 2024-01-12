@@ -134,6 +134,7 @@ public class GameTickManager
 			if (animationChanged.getActor().getAnimation() == NexConst.FANG_ANIMATION
 				|| animationChanged.getActor().getAnimation() == NexConst.FANG_SLASH_ANIMATION
 				|| animationChanged.getActor().getAnimation() == NexConst.ZCB_ANIMATION
+				|| animationChanged.getActor().getAnimation() == NexConst.ACB_ANIMATION
 				|| animationChanged.getActor().getAnimation() == NexConst.FANG_SPEC_ANIMATION)
 			{
 				attack(5);

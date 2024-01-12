@@ -3,6 +3,7 @@ package com.example.nexatron.model.setup;
 import com.example.EthanApiPlugin.Collections.Bank;
 import com.example.EthanApiPlugin.Collections.Equipment;
 import com.example.EthanApiPlugin.Collections.Inventory;
+import com.example.Utility.Static;
 import com.example.nexatron.NexatronConfig;
 import com.example.nexatron.manager.NexManager;
 import com.example.nexatron.model.constants.NexConst;
@@ -103,19 +104,54 @@ public class Setup
 		if (!nexManager.kcArea.canKillMage())
 		{
 			rangeHelm = ItemID.SERPENTINE_HELM;
+			if(Static.getClient() != null)
+			{
+				if (Static.getClient().getLocalPlayer() != null)
+				{
+					if(Static.getClient().getLocalPlayer().getName() != null)
+					{
+						if(Static.getClient().getLocalPlayer().getName().contains("ExampleRsn")
+							&& Static.getClient().getLocalPlayer().getName().contains("PlaceholderRsn"))
+						{
+							rangeHelm = ItemID.MAGMA_HELM;
+						}
+					}
+				}
+			}
+
+
 		}
-		return new ArrayList<>(
-			Arrays.asList(
-				ItemID.TOXIC_BLOWPIPE,
-				ItemID.ANCIENT_DHIDE_BODY,
-				ItemID.ANCIENT_CHAPS,
-				cape,
-				rangeHelm,
-				ItemID.ANCIENT_DHIDE_BOOTS,
-				ItemID.NECKLACE_OF_ANGUISH,
-				ItemID.LIGHTBEARER,
-				ItemID.ANCIENT_BLESSING,
-				ItemID.ANCIENT_BRACERS));
+		if (config.useAlternateKcGear())
+		{
+			return new ArrayList<>(
+				Arrays.asList(
+					ItemID.TOXIC_BLOWPIPE,
+					ItemID.MASORI_BODY_F,
+					ItemID.MASORI_CHAPS_F,
+					cape,
+					rangeHelm,
+					ItemID.ANCIENT_DHIDE_BOOTS,
+					ItemID.NECKLACE_OF_ANGUISH,
+					ItemID.LIGHTBEARER,
+					ItemID.ANCIENT_BLESSING,
+					ItemID.ANCIENT_BRACERS));
+		}
+		else
+		{
+			return new ArrayList<>(
+				Arrays.asList(
+					ItemID.TOXIC_BLOWPIPE,
+					ItemID.ANCIENT_DHIDE_BODY,
+					ItemID.ANCIENT_CHAPS,
+					cape,
+					rangeHelm,
+					ItemID.ANCIENT_DHIDE_BOOTS,
+					ItemID.NECKLACE_OF_ANGUISH,
+					ItemID.LIGHTBEARER,
+					ItemID.ANCIENT_BLESSING,
+					ItemID.ANCIENT_BRACERS));
+		}
+
 	}
 
 	public ArrayList<Integer> rangeNex()
@@ -127,19 +163,38 @@ public class Setup
 			cape = nexManager.nex.rangeCape;
 			rangeHelm = nexManager.nex.helm;
 		}
-		return new ArrayList<>(
-			Arrays.asList(
-				ItemID.ZARYTE_CROSSBOW,
-				ItemID.MASORI_BODY_F,
-				ItemID.MASORI_CHAPS_F,
-				cape,
-				rangeHelm,
-				ItemID.NECKLACE_OF_ANGUISH,
-				ItemID.TWISTED_BUCKLER,
-				ItemID.LIGHTBEARER,
-				ItemID.BARROWS_GLOVES,
-				ItemID.PRIMORDIAL_BOOTS,
-				getBolts()));
+		if (config.useAcb())
+		{
+			return new ArrayList<>(
+				Arrays.asList(
+					ItemID.ARMADYL_CROSSBOW,
+					ItemID.MASORI_BODY_F,
+					ItemID.MASORI_CHAPS_F,
+					cape,
+					rangeHelm,
+					ItemID.NECKLACE_OF_ANGUISH,
+					ItemID.TWISTED_BUCKLER,
+					ItemID.LIGHTBEARER,
+					ItemID.BARROWS_GLOVES,
+					ItemID.PRIMORDIAL_BOOTS,
+					getBolts()));
+		}
+		else
+		{
+			return new ArrayList<>(
+				Arrays.asList(
+					ItemID.ZARYTE_CROSSBOW,
+					ItemID.MASORI_BODY_F,
+					ItemID.MASORI_CHAPS_F,
+					cape,
+					rangeHelm,
+					ItemID.NECKLACE_OF_ANGUISH,
+					ItemID.TWISTED_BUCKLER,
+					ItemID.LIGHTBEARER,
+					ItemID.BARROWS_GLOVES,
+					ItemID.PRIMORDIAL_BOOTS,
+					getBolts()));
+		}
 	}
 
 	public ArrayList<Integer> meleeNex()
@@ -177,16 +232,33 @@ public class Setup
 			cape = nexManager.nex.meleeCape;
 			helm = nexManager.nex.helm;
 		}
-		return new ArrayList<>(
-			Arrays.asList(
-				ItemID.ZARYTE_CROSSBOW,
-				ItemID.MASORI_BODY_F,
-				ItemID.MASORI_CHAPS_F,
-				cape,
-				helm,
-				ItemID.AMULET_OF_BLOOD_FURY,
-				ItemID.TWISTED_BUCKLER,
-				ItemID.LIGHTBEARER,
-				ItemID.BARROWS_GLOVES));
+		if (config.useAcb())
+		{
+			return new ArrayList<>(
+				Arrays.asList(
+					ItemID.ARMADYL_CROSSBOW,
+					ItemID.MASORI_BODY_F,
+					ItemID.MASORI_CHAPS_F,
+					cape,
+					helm,
+					ItemID.AMULET_OF_BLOOD_FURY,
+					ItemID.TWISTED_BUCKLER,
+					ItemID.LIGHTBEARER,
+					ItemID.BARROWS_GLOVES));
+		}
+		else
+		{
+			return new ArrayList<>(
+				Arrays.asList(
+					ItemID.ZARYTE_CROSSBOW,
+					ItemID.MASORI_BODY_F,
+					ItemID.MASORI_CHAPS_F,
+					cape,
+					helm,
+					ItemID.AMULET_OF_BLOOD_FURY,
+					ItemID.TWISTED_BUCKLER,
+					ItemID.LIGHTBEARER,
+					ItemID.BARROWS_GLOVES));
+		}
 	}
 }

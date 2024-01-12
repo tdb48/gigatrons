@@ -35,6 +35,14 @@ public class Consumable
 			ItemID.SUPER_RESTORE3,
 			ItemID.SUPER_RESTORE4
 		));
+
+	public static final ArrayList<Integer> PRAYER =
+		new ArrayList<>(Arrays.asList(
+			ItemID.PRAYER_POTION1,
+			ItemID.PRAYER_POTION2,
+			ItemID.PRAYER_POTION3,
+			ItemID.PRAYER_POTION4
+		));
 	public static final ArrayList<Integer> RANGE =
 		new ArrayList<>(Arrays.asList(
 			ItemID.RANGING_POTION1,
@@ -161,6 +169,18 @@ public class Consumable
 	public static Widget getRestore()
 	{
 		for (int i : RESTORE)
+		{
+			if (Inventory.search().withId(i).first().orElse(null) != null)
+			{
+				return Inventory.search().withId(i).first().orElse(null);
+			}
+		}
+		return null;
+	}
+
+	public static Widget getPrayer()
+	{
+		for (int i : PRAYER)
 		{
 			if (Inventory.search().withId(i).first().orElse(null) != null)
 			{

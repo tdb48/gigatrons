@@ -59,7 +59,12 @@ public class KcAttackReavers extends StagedTask
 		{
 			return false;
 		}
-		Widget restore = Consumable.getRestore();
+		Widget restore = Consumable.getPrayer();
+		if(restore == null)
+		{
+			restore = Consumable.getRestore();
+		}
+		//Widget restore = Consumable.getRestore();
 		NPC npcInteractingWithUs = NPCs.search().alive().interactingWithLocal().first().orElse(null);
 		if (Prayers.getPoints() == 0
 			|| restore == null)
@@ -289,6 +294,7 @@ public class KcAttackReavers extends StagedTask
 //			incrementActionCount();
 //			return true;
 //		}
+		nexManager.print("Down bottom of reavers method returning false");
 		/**
 		 *
 		 */

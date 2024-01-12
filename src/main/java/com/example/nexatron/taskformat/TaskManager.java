@@ -139,7 +139,7 @@ public class TaskManager
 		randomSleepCounter = 0;
 		previousTick = tickCounter;
 
-		//DONT run tasks while phasing into instances which is what i think this pose anim is
+		//DONT run tasks while phasing into instances
 		if (Static.getClient().getLocalPlayer().getPoseAnimation() == 5538)
 		{
 			return;

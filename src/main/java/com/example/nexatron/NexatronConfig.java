@@ -97,6 +97,29 @@ public interface NexatronConfig extends Config
 		return MeleeOffhand.DDEF;
 	}
 
+	@ConfigItem(
+		position = 105,
+		keyName = "useAcb",
+		name = "Use ACB",
+		description = "Use ACB instead of ZCB (for limit testing purposes)",
+		section = "Setup"
+	)
+	default boolean useAcb()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 106,
+		keyName = "useAlternateKcGear",
+		name = "Use Masori for KC",
+		description = "Use masori top/bottom while getting KC",
+		section = "Setup"
+	)
+	default boolean useAlternateKcGear()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		position = 1,
