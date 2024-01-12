@@ -186,7 +186,7 @@ public class BabaAttackMonkey extends StagedTask
 			//Add more logic here to factor in room time into using spec (if room is nearly over i think its better to keep spec vs HP to potentially 2x bgs baba)
 			if (!Combat.isSpecEnabled() && Combat.getSpecEnergy() == 100 && Combat.getMissingHealth() >= 20)
 			{
-				Combat.toggleSpec();
+				Combat.toggleSpecVoid();
 			}
 //			System.out.println("Returning attack shaman at top");
 			return attackWithRange(playerPoint, shaman, false);

@@ -55,7 +55,7 @@ public class AttackObelisk extends StagedTask
 		}
 		if (!Combat.isSpecEnabled() && Combat.getSpecEnergy() == 100 && toaManager.hasGearEquipped(toaManager.meleeSetup.getAllItemsBgs()))
 		{
-			Combat.toggleSpec();
+			Combat.toggleSpecVoid();
 		}
 		if (gameTickManager.isAttackWaiting())
 		{

@@ -48,7 +48,7 @@ public class AkkhaAttackBossOrbs extends StagedTask
 
 		if (Combat.getSpecEnergy() >= 25)
 		{
-			Combat.toggleSpec();
+			Combat.toggleSpecVoid();
 		}
 		NPC akkha = NPCUtil.findNearest(ToaConstants.FINAL_AKKHA);
 		if (toaManager.akkha.targetPoint != null && (!playerPoint.equals(toaManager.akkha.targetPoint) || toaManager.akkha.orbTiles.contains(playerPoint)))

@@ -68,7 +68,7 @@ public class KephriBossBrawler extends StagedTask
 		if (shouldWeSpec())
 		{
 			toaManager.print("Toggling spec");
-			Combat.toggleSpec();
+			Combat.toggleSpecVoid();
 		}
 		KephriRowTest row = toaManager.kephri.optimalRow;
 		if (row == null)

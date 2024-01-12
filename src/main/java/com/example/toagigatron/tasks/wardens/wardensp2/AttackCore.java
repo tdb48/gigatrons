@@ -70,7 +70,7 @@ public class AttackCore extends StagedTask
 		if (!Combat.isSpecEnabled() && canDDSSpec())
 		{
 			toaManager.print("P2 - Toggling spec");
-			Combat.toggleSpec();
+			Combat.toggleSpecVoid();
 		}
 		if (core == null)
 		{

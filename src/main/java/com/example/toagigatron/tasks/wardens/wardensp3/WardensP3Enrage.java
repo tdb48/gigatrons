@@ -47,7 +47,7 @@ public class WardensP3Enrage extends StagedTask
 		}
 		if (!Combat.isSpecEnabled() && Combat.getSpecEnergy() >= bgsSpecRequired() && toaManager.hasGearEquipped(gearSet))
 		{
-			Combat.toggleSpec();
+			Combat.toggleSpecVoid();
 		}
 
 		WorldPoint playerPoint = client.getLocalPlayer().getWorldLocation();
@@ -80,7 +80,7 @@ public class WardensP3Enrage extends StagedTask
 //		Equipment.contains(ItemID.TOXIC_BLOWPIPE))
 		{
 			toaManager.print("Enabling bp spec");
-			Combat.toggleSpec();
+			Combat.toggleSpecVoid();
 		}
 		if (!gameTickManager.isAttackWaiting()) //&& client.getLocalDestinationLocation() == null
 		{

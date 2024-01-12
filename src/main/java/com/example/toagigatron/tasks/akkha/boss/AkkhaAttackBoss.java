@@ -49,7 +49,7 @@ public class AkkhaAttackBoss extends StagedTask
 //		// toggle spec if wearing melee gear and full spec
 //		if (toaManager.hasGearEquipped(toaManager.meleeSetup.getAllItems()) && Combat.getSpecEnergy() >= 75)
 //		{
-//			Combat.toggleSpec();
+//			Combat.toggleSpecVoid();
 //		}
 
 		int akkhaId = toaManager.akkha.akkhaBoss.getId();

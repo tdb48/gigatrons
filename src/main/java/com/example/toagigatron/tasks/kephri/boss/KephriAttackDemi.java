@@ -82,7 +82,7 @@ public class KephriAttackDemi extends StagedTask
 					&& !Combat.isSpecEnabled()
 					&& !Equipment.search().withId(ItemID.OSMUMTENS_FANG).empty())
 				{
-					Combat.toggleSpec();
+					Combat.toggleSpecVoid();
 				}
 				toaManager.print("Attacking Arcane Scarab");
 				MousePackets.queueClickPacket();
@@ -115,7 +115,7 @@ public class KephriAttackDemi extends StagedTask
 					&& !Combat.isSpecEnabled()
 					&& !Equipment.search().withId(ItemID.OSMUMTENS_FANG).empty())
 				{
-					Combat.toggleSpec();
+					Combat.toggleSpecVoid();
 				}
 				toaManager.print("Attacking Spitting Scarab");
 				MousePackets.queueClickPacket();
@@ -132,7 +132,7 @@ public class KephriAttackDemi extends StagedTask
 				&& !Combat.isSpecEnabled()
 				&& !Equipment.search().withId(ItemID.OSMUMTENS_FANG).empty())
 			{
-				Combat.toggleSpec();
+				Combat.toggleSpecVoid();
 			}
 
 			if (toaManager.kephri.kephriBombTick == 2)

@@ -46,7 +46,7 @@ public class AttackWardensP3 extends StagedTask
 		}
 		if (!Combat.isSpecEnabled() && Combat.getSpecEnergy() >= bgsBpSpecRequired() && toaManager.hasGearEquipped(toaManager.meleeSetup.getAllItemsBgs()))
 		{
-			Combat.toggleSpec();
+			Combat.toggleSpecVoid();
 		}
 		if (gameTickManager.isAttackWaiting())
 		{

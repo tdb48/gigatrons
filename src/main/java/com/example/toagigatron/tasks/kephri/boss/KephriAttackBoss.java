@@ -73,7 +73,7 @@ public class KephriAttackBoss extends StagedTask
 //		if (shouldWeSpec())
 //		{
 //			toaManager.print("Toggling spec");
-//			Combat.toggleSpec();
+//			Combat.toggleSpecVoid();
 //		}
 //		WorldPoint stepBackTile = getStepBackTile();
 //		WorldPoint stepBackStartTile = getStepBackStartTile();

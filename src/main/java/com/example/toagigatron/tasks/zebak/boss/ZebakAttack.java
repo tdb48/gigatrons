@@ -163,7 +163,7 @@ public class ZebakAttack extends StagedTask
 			if (!Combat.isSpecEnabled())
 			{
 				toaManager.print("enabling spec for bgs");
-				Combat.toggleSpec();
+				Combat.toggleSpecVoid();
 			}
 			if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().equals(toaManager.zebak.zebakBoss))
 			{
@@ -196,7 +196,7 @@ public class ZebakAttack extends StagedTask
 			&& Equipment.search().withId(toaManager.rangeSetup.blowpipe).first().orElse(null) != null)
 		{
 			toaManager.print("enabling blowpipe spec");
-			Combat.toggleSpec();
+			Combat.toggleSpecVoid();
 		}
 		else if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().equals(toaManager.zebak.zebakBoss))
 		{

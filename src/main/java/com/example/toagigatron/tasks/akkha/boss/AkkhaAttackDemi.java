@@ -59,7 +59,7 @@ public class AkkhaAttackDemi extends StagedTask
 		// toggle spec if wearing melee gear and full spec
 		if (toaManager.hasGearEquipped(demiGear) && Combat.getMissingHealth() > 20 && Combat.getSpecEnergy() >= 50)
 		{
-			Combat.toggleSpec();
+			Combat.toggleSpecVoid();
 		}
 
 		NPC targetShadow = toaManager.akkha.findNpcInArea(toaManager.akkha.activeShadows, toaManager.akkha.nextQuadrant.area);

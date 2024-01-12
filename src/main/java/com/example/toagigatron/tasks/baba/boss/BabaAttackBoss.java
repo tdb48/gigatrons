@@ -104,7 +104,7 @@ public class BabaAttackBoss extends StagedTask
 
 			if (!Combat.isSpecEnabled())
 			{
-				Combat.toggleSpec();
+				Combat.toggleSpecVoid();
 			}
 			if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().equals(toaManager.baba.babaBoss))
 			{
@@ -121,7 +121,7 @@ public class BabaAttackBoss extends StagedTask
 		}
 		else if (Combat.getSpecEnergy() >= 25)
 		{
-			Combat.toggleSpec();
+			Combat.toggleSpecVoid();
 		}
 		else if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().equals(toaManager.baba.babaBoss))
 		{
