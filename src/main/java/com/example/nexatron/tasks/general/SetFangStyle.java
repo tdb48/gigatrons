@@ -36,20 +36,20 @@ public class SetFangStyle extends StagedTask
 
 	public boolean execute()
 	{
-		if (Equipment.search().nameContains("fang").first().orElse(null) == null)
-		{
-			return false;
-		}
-		Combat.AttackStyle attackStyle = nexManager.getStage().equals(Stage.MINION_BLOOD)
-			? Combat.AttackStyle.THIRD
-			: Combat.AttackStyle.SECOND;
-		if (!Combat.getAttackStyle().equals(attackStyle))
-		{
-			nexManager.print("Switching fang style ");
-			Combat.toggleStyle(attackStyle);
-			incrementActionCount();
-			return true;
-		}
+//		if (Equipment.search().nameContains("fang").first().orElse(null) == null)
+//		{
+//			return false;
+//		}
+//		Combat.AttackStyle attackStyle = nexManager.getStage().equals(Stage.MINION_BLOOD)
+//			? Combat.AttackStyle.THIRD
+//			: Combat.AttackStyle.SECOND;
+//		if (!Combat.getAttackStyle().equals(attackStyle))
+//		{
+//			nexManager.print("Switching fang style ");
+//			Combat.toggleStyle(attackStyle);
+//			incrementActionCount();
+//			return true;
+//		}
 		return false;
 	}
 }
