@@ -6,9 +6,13 @@ I wanted to open source our project as I lost interest in botting a few years ag
 ## ToA
 We believe this to be the absolute first ToA bot, with the first drop being on 03/03/2023 only a few months after ToA release. We ran the bot doing 370 in budget gear (~400m). Since we were the first bots, we were able to run it 24/7 for months and get accounts as much as up to 3000 KC. I believe basically every room will be broken now since ToA has had so many updates, but it could still be good inspiration!
 
+![ToA Gigatron running six clients at once](images/toa.png)
+
 ## Nex
 This bot is built to do instanced duo Nex and uses a socket for communication between accounts so you could run it on separate VMs/PCs. It does an extremely good job at taking as little damage as possible, so well that it can sometimes do two kill trips in budget gear. We wrote a relatively complex system for venoming and tracking venom ticks on reavers to farm killcount as efficiently as possible. 
 Breaks have to be agreed on between accounts. Needing a break is a flag that goes over the socket, so an account wanting to stop is something the other finds out about, instead of one client logging out and leaving the other alone in an instance.
+
+![Nexatron after a Nex kill, with the socket panel on the right](images/nex.png)
 
 ## The task system
 
